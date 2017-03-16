@@ -296,7 +296,9 @@ public:
   std::vector<npc *> npcs;
   std::map<int, om_vehicle> vehicles;
   std::vector<city> cities;
+  std::vector<city> stations;
   std::vector<city> roads_out;
+  std::vector<city> railroads_out;
 
     std::vector<const overmap_special *> unplaced_mandatory_specials;
 
@@ -396,12 +398,14 @@ public:
     oter_id random_shop() const;
     oter_id random_park() const;
     oter_id random_house() const;
+	oter_id random_station() const;
 
   // Overall terrain
   void place_river(point pa, point pb);
   void place_forest();
   // City Building
   void place_cities();
+  void place_stations();
   void put_building( int x, int y, om_direction::type dir, const city &town );
 
   void build_city_street( int cx, int cy, int cs, om_direction::type dir, const city &town );
@@ -414,6 +418,9 @@ public:
     // Connection laying
     void build_connection( const point &source, const point &dest, int z, const int_id<oter_type_t> &type_id );
     void connect_closest_points( const std::vector<point> &points, int z, const int_id<oter_type_t> &type_id );
+    // Rail Connection laying
+    void rail_build_connection( const point &source, const point &dest, int z, const int_id<oter_type_t> &type_id );
+    void rail_connect_closest_points( const std::vector<point> &points, int z, const int_id<oter_type_t> &type_id );
   // Polishing
   bool check_ot_type(const std::string &otype, int x, int y, int z) const;
   void polish(const int z, const std::string &terrain_type="all");

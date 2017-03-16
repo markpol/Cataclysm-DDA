@@ -125,6 +125,15 @@ void init_mapgen_builtin_functions() {
     mapgen_cfunction_map["field"]            = &mapgen_field;
     mapgen_cfunction_map["bridge"]           = &mapgen_bridge;
     mapgen_cfunction_map["highway"]          = &mapgen_highway;
+	
+    mapgen_cfunction_map["railroad_straight"]    = &mapgen_railroad;
+    mapgen_cfunction_map["railroad_curved"]      = &mapgen_railroad;
+    mapgen_cfunction_map["railroad_end"]         = &mapgen_railroad;
+    mapgen_cfunction_map["railroad_tee"]         = &mapgen_railroad;
+    mapgen_cfunction_map["railroad_four_way"]    = &mapgen_railroad;
+    mapgen_cfunction_map["railbridge"]           = &mapgen_railbridge;
+    mapgen_cfunction_map["railhighway"]          = &mapgen_railhighway;
+	
     mapgen_cfunction_map["river_center"] = &mapgen_river_center;
     mapgen_cfunction_map["river_curved_not"] = &mapgen_river_curved_not;
     mapgen_cfunction_map["river_straight"]   = &mapgen_river_straight;
@@ -5380,4 +5389,336 @@ void madd_field( map *m, int x, int y, field_id t, int density )
 {
     tripoint actual_location( x, y, m->get_abs_sub().z );
     m->add_field( actual_location, t, density, 0 );
+}
+
+void mapgen_railroad( map *m, oter_id terrain_type, mapgendata dat, int turn, float density )
+{
+    // start by filling the whole map with grass/dirt/etc
+    dat.fill_groundcover();
+
+    // which and how many neighbors have sidewalks?
+    bool sidewalks_neswx[8] = {};
+    int neighbor_sidewalks = 0;
+
+    for( int dir = 0; dir < 8; dir++ ) { // N E S W NE SE SW NW
+        sidewalks_neswx[dir] = dat.t_nesw[dir]->has_flag( has_sidewalk );
+        neighbor_sidewalks += sidewalks_neswx[dir];
+    }
+
+    // which of the cardinal directions get railroads?
+    bool railroads_nesw[4] = {};
+    int num_dirs = terrain_type_to_nesw_array( terrain_type, railroads_nesw );
+    // if this is a dead end, extend past the middle of the tile
+    int dead_end_extension = ( num_dirs == 1 ? 8 : 0 );
+
+    // which way should our roads curve, based on neighbor roads?
+    int curvedir_nesw[4] = {};
+    for( int dir = 0; dir < 4; dir++ ) { // N E S W
+        if(railroads_nesw[dir] == false || dat.t_nesw[dir]->get_type_id().str() != "railroad" ) {
+            continue;
+        }
+
+        // n_* contain details about the neighbor being considered
+        bool n_railroads_nesw[4] = {};
+        //TODO figure out how to call this function without creating a new oter_id object
+        int n_num_dirs = terrain_type_to_nesw_array( dat.t_nesw[dir], n_railroads_nesw );
+        // if 2-way neighbor has a railroad facing us
+        if( n_num_dirs == 2 && n_railroads_nesw[( dir + 2 ) % 4] ) {
+            // curve towards the direction the neighbor turns
+            if( n_railroads_nesw[( dir - 1 + 4 ) % 4] ) {
+                curvedir_nesw[dir]--;    // our railroad curves counterclockwise
+            }
+            if( n_railroads_nesw[( dir + 1 ) % 4] ) {
+                curvedir_nesw[dir]++;    // our railroad curves clockwise
+            }
+        }
+    }
+
+    // calculate how far to rotate the map so we can work with just one orientation
+    // also keep track of diagonal railroads and plazas
+    int rot = 0;
+    bool diag = false;
+    int plaza_dir = -1;
+    bool fourways_neswx[8] = {};
+    //TODO reduce amount of logical/conditional constructs here
+    //TODO make plazas include adjacent tees
+    switch ( num_dirs ) {
+        case 4: // 4-way intersection
+            for( int dir = 0; dir < 8; dir++ ) {
+                fourways_neswx[dir] = ( dat.t_nesw[dir].id() == "railroad_nesw" ||
+                                        dat.t_nesw[dir].id() == "railroad_nesw_manhole" );
+            }
+            // is this the middle, or which side or corner, of a plaza?
+            plaza_dir = compare_neswx( fourways_neswx, {1, 1, 1, 1, 1, 1, 1, 1} ) ? 8 :
+                        compare_neswx( fourways_neswx, {0, 1, 1, 0, 0, 1, 0, 0} ) ? 7 :
+                        compare_neswx( fourways_neswx, {1, 1, 0, 0, 1, 0, 0, 0} ) ? 6 :
+                        compare_neswx( fourways_neswx, {1, 0, 0, 1, 0, 0, 0, 1} ) ? 5 :
+                        compare_neswx( fourways_neswx, {0, 0, 1, 1, 0, 0, 1, 0} ) ? 4 :
+                        compare_neswx( fourways_neswx, {1, 1, 1, 0, 1, 1, 0, 0} ) ? 3 :
+                        compare_neswx( fourways_neswx, {1, 1, 0, 1, 1, 0, 0, 1} ) ? 2 :
+                        compare_neswx( fourways_neswx, {1, 0, 1, 1, 0, 0, 1, 1} ) ? 1 :
+                        compare_neswx( fourways_neswx, {0, 1, 1, 1, 0, 1, 1, 0} ) ? 0 :
+                        -1;
+            if( plaza_dir > -1 ) { rot = plaza_dir % 4; }
+        case 3: // tee
+            if( !railroads_nesw[0] ) { rot = 2; break; } // E/S/W, rotate 180 degrees
+            if( !railroads_nesw[1] ) { rot = 3; break; } // N/S/W, rotate 270 degrees
+            if( !railroads_nesw[3] ) { rot = 1; break; } // N/E/S, rotate  90 degrees
+            break;                                  // N/E/W, don't rotate
+        case 2: // straight or diagonal
+            if( railroads_nesw[1] && railroads_nesw[3] ) { rot = 1; break; }            // E/W, rotate  90 degrees
+            if( railroads_nesw[1] && railroads_nesw[2] ) { rot = 1; diag = true; break; } // E/S, rotate  90 degrees
+            if( railroads_nesw[2] && railroads_nesw[3] ) { rot = 2; diag = true; break; } // S/W, rotate 180 degrees
+            if( railroads_nesw[3] && railroads_nesw[0] ) { rot = 3; diag = true; break; } // W/N, rotate 270 degrees
+            if( railroads_nesw[0] && railroads_nesw[1] ) {          diag = true; break; } // N/E, don't rotate
+            break;                                                               // N/S, don't rotate
+        case 1: // dead end
+            if( railroads_nesw[1] ) { rot = 1; break; } // E, rotate  90 degrees
+            if( railroads_nesw[2] ) { rot = 2; break; } // S, rotate 180 degrees
+            if( railroads_nesw[3] ) { rot = 3; break; } // W, rotate 270 degrees
+            break;                               // N, don't rotate
+    }
+
+    // rotate the arrays left by rot steps
+    nesw_array_rotate<bool>( sidewalks_neswx, 8, rot * 2 );
+    nesw_array_rotate<bool>(railroads_nesw,      4, rot );
+    nesw_array_rotate<int> ( curvedir_nesw,   4, rot );
+
+    // now we have only these shapes: '   |   '-   -'-   -|-
+
+    if( diag ) { // diagonal railroads get drawn differently from all other types
+        // draw sidewalks if a S/SW/W neighbor has_sidewalk
+        if( sidewalks_neswx[4] || sidewalks_neswx[5] || sidewalks_neswx[6] ) {
+            for( int y = 0; y < SEEY * 2; y++ ) {
+                for( int x = 0; x < SEEX * 2; x++ ) {
+                    if( x > y - 4 && ( x < 4 || y > SEEY * 2 - 5 || y >= x ) ) {
+                        m->ter_set( x, y, t_sidewalk );
+                    }
+                }
+            }
+        }
+        // draw diagonal railroad
+        for( int y = 0; y < SEEY * 2; y++ ) {
+            for( int x = 0; x < SEEX * 2; x++ ) {
+                if( x > y && // definitely only draw in the upper right half of the map
+                     ( ( x > 3 && y < ( SEEY * 2 - 4 ) ) || // middle, for both corners and diagonals
+                       ( x < 4 && curvedir_nesw[0] < 0 ) || // diagonal heading northwest
+                       ( y > ( SEEY * 2 - 5 ) && curvedir_nesw[1] > 0 ) ) ) { // diagonal heading southeast
+                    if( ( x + rot / 2 ) % 4 && ( x - y == SEEX - 1 + ( 1 - ( rot / 2 ) ) || x - y == SEEX + ( 1 - ( rot / 2 ) ) ) ) {
+                        m->ter_set( x, y, t_pavement_y );
+                    } else {
+                        m->ter_set( x, y, t_pavement );
+                    }
+                }
+            }
+        }
+    } else { // normal road drawing
+        bool cul_de_sac = false;
+        // dead ends become cul de sacs, 1/3 of the time, if a neighbor has_sidewalk
+        if( num_dirs == 1 && one_in( 3 ) && neighbor_sidewalks ) {
+            cul_de_sac = true;
+            fill_background( m, t_sidewalk );
+        }
+
+        // draw normal sidewalks
+        for( int dir = 0; dir < 4; dir++ ) {
+            if(railroads_nesw[dir] ) {
+                // sidewalk west of north railroad, etc
+                if( sidewalks_neswx[ ( dir + 3 ) % 4     ] ||  // has_sidewalk west?
+                    sidewalks_neswx[ ( dir + 3 ) % 4 + 4 ] ||  // has_sidewalk northwest?
+                    sidewalks_neswx[   dir               ] ) { // has_sidewalk north?
+                    int x1 = 0, y1 = 0, x2 = 3, y2 = SEEY - 1 + dead_end_extension;
+                    coord_rotate_cw( x1, y1, dir );
+                    coord_rotate_cw( x2, y2, dir );
+                    square( m, t_sidewalk, x1, y1, x2, y2 );
+                }
+                // sidewalk east of north railroad, etc
+                if( sidewalks_neswx[ ( dir + 1 ) % 4 ] ||  // has_sidewalk east?
+                    sidewalks_neswx[   dir + 4       ] ||  // has_sidewalk northeast?
+                    sidewalks_neswx[   dir           ] ) { // has_sidewalk north?
+                    int x1 = SEEX * 2 - 5, y1 = 0, x2 = SEEX * 2 - 1, y2 = SEEY - 1 + dead_end_extension;
+                    coord_rotate_cw( x1, y1, dir );
+                    coord_rotate_cw( x2, y2, dir );
+                    square( m, t_sidewalk, x1, y1, x2, y2 );
+                }
+            }
+        }
+
+        //draw dead end sidewalk
+        if( dead_end_extension > 0 && sidewalks_neswx[ 2 ] ) {
+            square( m, t_sidewalk, 0, SEEY + dead_end_extension, SEEX * 2 - 1, SEEY + dead_end_extension + 4 );
+        }
+
+        // draw 16-wide pavement from the middle to the edge in each road direction
+        // also corner pieces to curve towards diagonal neighbors
+        for( int dir = 0; dir < 4; dir++ ) {
+            if(railroads_nesw[dir] ) {
+                int x1 = 4, y1 = 0, x2 = SEEX * 2 - 1 - 4, y2 = SEEY - 1 + dead_end_extension;
+                coord_rotate_cw( x1, y1, dir );
+                coord_rotate_cw( x2, y2, dir );
+                square( m, t_pavement, x1, y1, x2, y2 );
+                if( curvedir_nesw[dir] != 0 ) {
+                    for( int x = 1; x < 4; x++ ) {
+                        for( int y = 0; y < x; y++ ) {
+                            int ty = y, tx = ( curvedir_nesw[dir] == -1 ? x : SEEX * 2 - 1 - x );
+                            coord_rotate_cw( tx, ty, dir );
+                            m->ter_set( tx, ty, t_pavement );
+                        }
+                    }
+                }
+            }
+        }
+
+        // draw yellow dots on the pavement
+        for( int dir = 0; dir < 4; dir++ ) {
+            if(railroads_nesw[dir] ) {
+                int max_y = SEEY;
+                if ( num_dirs == 4 || ( num_dirs == 3 && dir == 0 ) ) {
+                    max_y = 4; // dots don't extend into some intersections
+                }
+                for( int y = 0; y <= SEEY * 2; y = y + 3 ) {
+                    int xn = -1, yn = y;
+					
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_dirt );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_dirt );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_dirt );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_railroad_track );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_railroad_track );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_dirt );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_dirt );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_railroad_track );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_railroad_track );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_dirt );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_dirt );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_dirt );
+
+					xn = -1; yn = y + 1;
+
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_dirt );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_dirt );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_dirt );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_railroad_tie );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_railroad_track_on_tie );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_railroad_tie );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_railroad_tie );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_railroad_track_on_tie );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_railroad_tie );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_dirt );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_dirt );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_railroad_tie );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_railroad_track_on_tie );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_railroad_tie );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_railroad_tie );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_railroad_track_on_tie );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_railroad_tie );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_dirt );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_dirt );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_dirt );
+
+					xn = -1; yn = y + 2;
+
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_dirt );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_dirt );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_dirt );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_railroad_track );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_railroad_track );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_dirt );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_dirt );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_railroad_track );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_railroad_track );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_rubble );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_dirt );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_dirt );
+                    xn++; coord_rotate_cw( xn, yn, dir ); m->ter_set( xn, yn, t_dirt );
+
+                }
+            }
+        }
+
+        // draw round pavement for cul de sac late, to overdraw the yellow dots
+        if( cul_de_sac ) {
+            circle( m, t_pavement, double( SEEX ) - 0.5, double( SEEY ) - 0.5, 11.0 );
+        }
+
+    }
+
+    // finally, un-rotate the map
+    m->rotate( rot );
+
+}
+
+void mapgen_railbridge(map *m, oter_id terrain_type, mapgendata dat, int turn, float)
+{
+    (void)dat;
+    for (int i = 0; i < SEEX * 2; i++) {
+        for (int j = 0; j < SEEY * 2; j++) {
+            if (i < 2 || i >= SEEX * 2 - 2) {
+                m->ter_set(i, j, t_water_dp);
+            } else if (i == 2 || i == SEEX * 2 - 3) {
+                m->ter_set(i, j, t_guardrail_bg_dp);
+            } else if (i == 3 || i == SEEX * 2 - 4) {
+                m->ter_set(i, j, t_sidewalk_bg_dp);
+            } else {
+                if ((i == SEEX - 1 || i == SEEX) && j % 4 != 0) {
+                    m->ter_set(i, j, t_pavement_y_bg_dp);
+                } else {
+                    m->ter_set(i, j, t_pavement_bg_dp);
+                }
+            }
+        }
+    }
+
+    if (terrain_type == "railbridge_ew") {
+        m->rotate(1);
+    }
+}
+
+void mapgen_railhighway(map *m, oter_id terrain_type, mapgendata dat, int turn, float)
+{
+    for (int i = 0; i < SEEX * 2; i++) {
+        for (int j = 0; j < SEEY * 2; j++) {
+            if (i < 3 || i >= SEEX * 2 - 3) {
+                m->ter_set(i, j, dat.groundcover());
+            } else if (i == 3 || i == SEEX * 2 - 4) {
+                m->ter_set(i, j, t_railing_v);
+            } else {
+                if ((i == SEEX - 1 || i == SEEX) && j % 4 != 0) {
+                    m->ter_set(i, j, t_pavement_y);
+                } else {
+                    m->ter_set(i, j, t_pavement);
+                }
+            }
+        }
+    }
+
+    if (terrain_type == "railhiway_ew") {
+        m->rotate(1);
+    }
 }

@@ -6862,5 +6862,96 @@
         "extras" : "field",
         "mondensity" : 3,
         "flags" : [ "NO_ROTATE" ]
+    },{
+        "type" : "overmap_terrain",
+        "id" : "railhiway_ns",
+        "name" : "railhighway",
+        "sym" : 72,
+        "color" : "light_green",
+        "see_cost" : 2,
+        "extras" : "railroad",
+        "mapgen": [
+            { "method": "builtin", "name": "railhighway" }
+        ],
+        "flags" : [ "ALLOW_OVERRIDE", "NO_ROTATE" ]
+    },{
+        "type" : "overmap_terrain",
+        "id" : "railhiway_ew",
+        "name" : "railhighway",
+        "sym" : 61,
+        "color" : "light_green",
+        "see_cost" : 2,
+        "extras" : "railroad",
+        "mapgen": [
+            { "method": "builtin", "name": "railhighway" }
+        ],
+        "flags" : [ "ALLOW_OVERRIDE", "NO_ROTATE" ]
+    },{
+        "type" : "overmap_terrain",
+        "id" : "railroad",
+        "name" : "railroad",
+        "color" : "light_green",
+        "see_cost" : 2,
+        "extras" : "railroad",
+        "comment" : "the entries below are optional and serve as an example of mapgen for line_drawing tiles",
+        "mapgen_straight": [
+            { "method": "builtin", "name": "railroad_straight" }
+        ],
+        "mapgen_curved": [
+            { "method": "builtin", "name": "railroad_curved" }
+        ],
+        "mapgen_end": [
+            { "method": "builtin", "name": "railroad_end" }
+        ],
+        "mapgen_tee": [
+            { "method": "builtin", "name": "railroad_tee" }
+        ],
+        "mapgen_four_way": [
+            { "method": "builtin", "name": "railroad_four_way" }
+        ],
+        "flags" : [ "LINEAR", "ALLOW_OVERRIDE" ]
+    },{
+        "type" : "overmap_terrain",
+        "id" : "railroad_nesw_manhole",
+        "name" : "railroad, manhole",
+        "sym" : 4194414,
+        "color" : "yellow",
+        "see_cost" : 2,
+        "extras" : "railroad",
+        "mapgen": [
+            { "method": "builtin", "name": "railroad_four_way" }
+        ],
+        "flags" : [ "KNOWN_DOWN", "ALLOW_OVERRIDE", "NO_ROTATE" ]
+    },{
+        "type" : "overmap_terrain",
+        "id" : "railbridge_ns",
+        "name" : "railbridge",
+        "sym" : 124,
+        "color" : "light_green",
+        "see_cost" : 2,
+        "mapgen": [
+            { "method": "builtin", "name": "railbridge" }
+        ],
+        "flags" : [ "RIVER", "ALLOW_OVERRIDE", "NO_ROTATE" ]
+    },{
+        "type" : "overmap_terrain",
+        "id" : "railbridge_ew",
+        "name" : "railbridge",
+        "sym" : 45,
+        "color" : "light_green",
+        "see_cost" : 2,
+        "mapgen": [
+            { "method": "builtin", "name": "railbridge" }
+        ],
+        "flags" : [ "RIVER", "ALLOW_OVERRIDE", "NO_ROTATE" ]
+    },{
+        "type" : "overmap_terrain",
+        "id" : "station",
+        "name" : "station",
+        "sym" : 79,
+        "color" : "green",
+        "see_cost" : 2,
+        "extras" : "build",
+        "mondensity" : 2
     }
 ]

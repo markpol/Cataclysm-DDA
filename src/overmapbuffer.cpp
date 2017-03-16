@@ -480,7 +480,7 @@ bool overmapbuffer::reveal_route( const tripoint &source, const tripoint &dest, 
 
         const auto &oter = get_om_global( omx, omy ).get_ter( omx, omy, base.z );
 
-        if( !is_ot_type( "road", oter ) && !is_ot_type ( "bridge", oter ) && !is_ot_type( "hiway", oter ) ) {
+        if( !is_ot_type( "road", oter ) && !is_ot_type ( "bridge", oter ) && !is_ot_type( "hiway", oter ) && !is_ot_type( "railroad", oter ) && !is_ot_type ( "railbridge", oter ) && !is_ot_type( "railhiway", oter )) {
             if( is_river( oter ) ) {
                 return -1; // Can't walk on water
             }

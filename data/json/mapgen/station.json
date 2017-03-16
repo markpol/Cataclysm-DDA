@@ -1,0 +1,51 @@
+[
+  {
+    "type": "mapgen",
+    "method": "json",
+    "om_terrain": [ "station" ],
+    "weight": 100,
+    "object": {
+      "fill_ter": "t_dirt",
+      "rows": [
+        "........................",
+        ".w.HHHHHHHHHHHHHHHHHH.w.",
+        "...^^x^^^x^^^^x^^^x^^...",
+        ".m.^-x---x-^^-x---x-^.m.",
+        "...^^x^^^x^^^^x^^^x^^...",
+        "...^-x---x-^^-x---x-^...",
+        "...^^x^^^x^^^^x^^^x^^...",
+        "...^-x---x-^^-x---x-^...",
+        "...^^x^^^x^^^^x^^^x^^...",
+        "...^-x---x-^^-x---x-^...",
+        "...^^x^^^x^^^^x^^^x^^...",
+        "...^-x---x-^^-x---x-^...",
+        "...^^x^^^x^^^^x^^^x^^...",
+        "...^-x---x-^^-x---x-^...",
+        "...^^x^^^x^^^^x^^^x^^...",
+        "...^-x---x-^^-x---x-^...",
+        "...^^x^^^x^^^^x^^^x^^...",
+        "...^-x---x-^^-x---x-^...",
+        ".V.^^x^^^x^^^^x^^^x^^.V.",
+        ".V.^-x---x-^^-x---x-^.V.",
+        ".V.^^x^^^x^^^^x^^^x^^.V.",
+        ".V.^-x---x-^^-x---x-^.V.",
+        ".V.^^x^^^x^^^^x^^^x^^.V.",
+        "...^-x---x-^^-x---x-^..."
+      ],
+      "terrain": {
+        " ": [ "t_dirt", "t_dirt", "t_grass", "t_grass", "t_grass", "t_grass", "t_grass", "t_shrub" ],
+        ".": "t_pavement",
+        ":": "t_pavement_y",
+        "]": "t_sidewalk",
+        "^": "t_rubble",
+        "x": "t_railroad_track",
+        "-": "t_railroad_tie_v",
+        "|": "t_railroad_tie_h",
+        "w": "t_crossbuck_wood",
+        "m": "t_crossbuck_metal",
+        "V": "t_buffer_stop_v",
+        "H": "t_buffer_stop_h"
+      }
+    }
+  }
+]

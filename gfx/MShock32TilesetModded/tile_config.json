@@ -24266,6 +24266,21 @@
           "id": "vp_xlframe_vertical_2",
           "fg": 3054,
           "rotates": true
+        },
+        {
+          "id": "t_railroad_track",
+          "fg": 3055,
+          "rotates": true
+        },
+        {
+          "id": "t_railroad_tie",
+          "fg": 3056,
+          "rotates": true
+        },
+        {
+          "id": "t_railroad_track_on_tie",
+          "fg": 3057,
+          "rotates": true
         }
       ]
     },
