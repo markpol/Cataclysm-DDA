@@ -12,6 +12,7 @@
 #include "morale_types.h"
 #include "messages.h"
 #include "material.h"
+#include "requirements.h"
 #include "event.h"
 #include "crafting.h"
 #include "ui.h"
@@ -39,6 +40,10 @@ const skill_id skill_mechanics( "mechanics" );
 const skill_id skill_survival( "survival" );
 const skill_id skill_firstaid( "firstaid" );
 const skill_id skill_fabrication( "fabrication" );
+
+const quality_id quality_sew( "SEW" );
+
+const requirement_id requirement_filament( "filament" );
 
 const species_id ZOMBIE( "ZOMBIE" );
 
@@ -2205,9 +2210,16 @@ long ammobelt_actor::use( player *p, item *, bool, const tripoint& ) const
 void repair_item_actor::load( JsonObject &obj )
 {
     // Mandatory:
-    JsonArray jarr = obj.get_array( "materials" );
-    while( jarr.has_more() ) {
-        materials.emplace( jarr.next_string() );
+    JsonArray jarr_materials = obj.get_array( "materials" );
+    while(jarr_materials.has_more() ) {
+        materials.emplace(jarr_materials.next_string() );
+    }
+
+    JsonArray jarr_requirements = obj.get_array("requirements");
+    if (!jarr_requirements.empty()) {
+        while (jarr_requirements.has_more()) {
+            requirements.emplace(jarr_requirements.next_string());
+        }
     }
 
     // TODO: Make skill non-mandatory while still erroring on invalid skill
@@ -2384,20 +2396,42 @@ int repair_item_actor::repair_recipe_difficulty( const player &pl,
     return min;
 }
 
-bool repair_item_actor::can_repair( player &pl, const item &tool, const item &fix, bool print_msg ) const
+bool repair_item_actor::can_repair(player &pl, const item &tool, const item &fix, bool print_msg) const
 {
-    if( !could_repair( pl, tool, print_msg ) ) {
+    if (!could_repair(pl, tool, print_msg)) {
         return false;
     }
 
     // In some rare cases (indices getting scrambled after inventory overflow)
     //  our `fix` can be a different item.
-    if( fix.is_null() ) {
-        if( print_msg ) {
-            pl.add_msg_if_player( m_info, _("You do not have that item!") );
+    if (fix.is_null()) {
+        if (print_msg) {
+            pl.add_msg_if_player(m_info, _("You do not have that item!"));
         }
         return false;
     }
+
+    if (!requirements.empty())
+    {
+        const inventory &crafting_inv = pl.crafting_inventory();
+        std::map< requirement_id, bool > requirements_are_met;
+        for (auto const &requirement : requirements) {
+            auto req_id = requirement_id(requirement);
+            auto req = req_id.obj();
+            requirements_are_met[req_id] = req.can_make_with_inventory(crafting_inv);
+        }
+        bool all_requirements_are_met = requirements_are_met.begin()->second;
+        for (auto const &r : requirements_are_met) {
+            all_requirements_are_met = all_requirements_are_met && r.second;
+        }
+        if ( !all_requirements_are_met ) {
+            if (print_msg) {
+                pl.add_msg_if_player(m_info, _("Repair requirements are not met."));
+            }
+            return false;
+        }
+    }
+
     if( fix.is_firearm() ) {
         if( print_msg ) {
             pl.add_msg_if_player( m_info, _("That requires gunsmithing tools.") );
@@ -2542,6 +2576,20 @@ repair_item_actor::attempt_hint repair_item_actor::repair( player &pl, item &too
     if( !can_repair( pl, tool, fix, true ) ) {
         return AS_CANT;
     }
+ 
+    item *t = &(tool);
+    item *i = &(fix);
+    player *p = &(pl);
+    const inventory &crafting_inv = p->crafting_inventory();
+    const int filament_required = i->volume() / 125_ml;
+    const auto req_success = requirement_filament.obj() * filament_required;
+    const auto req = requirement_filament.obj();
+
+    const bool has_enough_filament = req_success.can_make_with_inventory(crafting_inv);
+
+    if ( !has_enough_filament && ( t->has_quality( quality_sew ) ) ) {
+        return AS_CANT;
+    }
 
     const int current_skill_level = pl.get_skill_level( used_skill );
     const auto action = default_action( fix, current_skill_level );
@@ -2560,6 +2608,17 @@ repair_item_actor::attempt_hint repair_item_actor::repair( player &pl, item &too
         roll = SUCCESS;
     } else {
         roll = NEUTRAL;
+    }
+
+    if (t->has_quality(quality_sew)) {
+        p->add_msg_if_player(m_info,
+            _("You have used %d thread charges."), roll == SUCCESS ? filament_required : 1);
+        for (const auto &it : roll == SUCCESS ? req_success.get_components() : req.get_components() ) {
+            p->consume_items(it);
+        }
+        for (const auto &it : roll == SUCCESS ? req_success.get_tools() : req.get_tools() ) {
+            p->consume_tools(it);
+        }
     }
 
     if( action == RT_NOTHING ) {
