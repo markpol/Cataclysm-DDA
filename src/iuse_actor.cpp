@@ -2407,20 +2407,20 @@ int repair_item_actor::repair_recipe_difficulty( const player &pl,
 
 bool repair_item_actor::can_repair(player &pl, const item &tool, const item &fix, bool print_msg) const
 {
-    if (!could_repair(pl, tool, print_msg)) {
+    if( !could_repair( pl, tool, print_msg ) ) {
         return false;
     }
 
     // In some rare cases (indices getting scrambled after inventory overflow)
     //  our `fix` can be a different item.
-    if (fix.is_null()) {
-        if (print_msg) {
+    if( fix.is_null() ) {
+        if ( print_msg ) {
             pl.add_msg_if_player(m_info, _("You do not have that item!"));
         }
         return false;
     }
 
-    if (!requirements.empty())
+    if( !requirements.empty() )
     {
         bool all_reqs_are_met = true;
 
@@ -2428,22 +2428,21 @@ bool repair_item_actor::can_repair(player &pl, const item &tool, const item &fix
 
         const int req_amount = fix.volume() / 125_ml;
 
-        for (auto const &requirement : requirements) {
-            auto req_id = requirement_id(requirement);
+        for( auto const &requirement : requirements ) {
+            auto req_id = requirement_id( requirement );
 
             auto req = req_id.obj() * req_amount;
-            auto req_is_met = req.can_make_with_inventory(crafting_inv);
+            auto req_is_met = req.can_make_with_inventory( crafting_inv );
 
             all_reqs_are_met = all_reqs_are_met && req_is_met;
 
-            if ( !req_is_met ){
-                pl.add_msg_if_player(m_bad, _("Minimum required amount (%d) of `%s` is missing!"), req_amount, req_id);
+            if( !req_is_met ){
+                pl.add_msg_if_player( m_bad, _("Minimum required amount (%d) of `%s` is missing!"), req_amount, req_id );
             }
         }
 
-        if ( !all_reqs_are_met ) {
-            if (print_msg) {
-                pl.add_msg_if_player(m_critical, _("Minimum repair requirements were not met."));
+        if( !all_reqs_are_met ) {
+                pl.add_msg_if_player( m_critical, _("Minimum repair requirements were not met.") );
             }
             return false;
         }
@@ -2613,30 +2612,25 @@ repair_item_actor::attempt_hint repair_item_actor::repair( player &pl, item &too
         roll = NEUTRAL;
     }
 
-    if (!requirements.empty())
-    {
-
+    if( !requirements.empty() ) {
         const inventory &crafting_inv = pl.crafting_inventory();
-
         const int req_amount = fix.volume() / 125_ml;
-
-        for (auto const &requirement : requirements) {
-            auto req_id = requirement_id(requirement);
+        for( auto const &requirement : requirements ) {
+            auto req_id = requirement_id( requirement );
 
             auto req = req_id.obj() * req_amount;
-            auto req_is_met = req.can_make_with_inventory(crafting_inv);
+            auto req_is_met = req.can_make_with_inventory( crafting_inv );
 
-            if (roll == SUCCESS && req_is_met) {
+            if( roll == SUCCESS && req_is_met ) {
                 pl.add_msg_if_player(m_info, _("You have spent %d material requirements."), req_amount );
-                for (const auto &it : req.get_components() ) {
+                for( const auto &it : req.get_components() ) {
                     pl.consume_items(it);
                 }
-                for (const auto &it : req.get_tools() ) {
+                for( const auto &it : req.get_tools() ) {
                     pl.consume_tools(it);
                 }
             }
         }
-
     }
 
     if( action == RT_NOTHING ) {
@@ -2845,7 +2839,7 @@ long heal_actor::finish_using( player &healer, player &patient, item &it, hp_par
 
     if( (patient.hp_cur[healed] >= 1) && (dam > 0)) { // Prevent first-aid from mending limbs
         patient.heal(healed, dam);
-    } else if ((patient.hp_cur[healed] >= 1) && (dam < 0)) {
+    } else if( ( patient.hp_cur[healed] >= 1 ) && ( dam < 0 ) ) {
         const body_part bp = player::hp_to_bp( healed );
         patient.apply_damage( nullptr, bp, -dam ); //hurt takes + damage
     }
