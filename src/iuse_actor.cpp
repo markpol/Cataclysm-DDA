@@ -2442,6 +2442,7 @@ bool repair_item_actor::can_repair(player &pl, const item &tool, const item &fix
         }
 
         if( !all_reqs_are_met ) {
+            if( print_msg ) {
                 pl.add_msg_if_player( m_critical, _("Minimum repair requirements were not met.") );
             }
             return false;
