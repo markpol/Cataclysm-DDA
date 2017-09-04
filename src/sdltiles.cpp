@@ -62,7 +62,7 @@ extern bool tile_iso;
 extern WINDOW *w_hit_animation;
 
 // used to replace SDL_RenderFillRect with a more efficient SDL_RenderCopy
-SDL_Texture* alternate_rect_tex = NULL;
+SDL_Texture_Ptr alternate_rect_tex = NULL;
 bool alternate_rect_tex_enabled = false;
 
 #ifdef SDL_SOUND
@@ -272,7 +272,7 @@ void generate_alt_rect_texture()
     static const Uint32 bmask = 0x00ff0000;
     static const Uint32 amask = 0xff000000;
 #endif
-    SDL_Surface *altsurf = SDL_CreateRGBSurface( 0, 1, 1, 32, rmask, gmask, bmask, amask );
+    SDL_Surface_Ptr altsurf = SDL_CreateRGBSurface( 0, 1, 1, 32, rmask, gmask, bmask, amask );
     SDL_FillRect( altsurf, NULL, SDL_MapRGB( altsurf->format, 255, 255, 255 ) );
     alternate_rect_tex = SDL_CreateTextureFromSurface( renderer.get(), altsurf );
     SDL_FreeSurface( altsurf );
@@ -527,10 +527,7 @@ void WinDestroy()
 #endif
     clear_texture_pool();
 
-    if( alternate_rect_tex ){
-        SDL_DestroyTexture( alternate_rect_tex );
-        alternate_rect_tex = NULL;
-    }
+    alternate_rect_tex.reset();
 
     if(joystick) {
         SDL_JoystickClose(joystick);
