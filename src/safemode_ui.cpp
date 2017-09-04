@@ -308,7 +308,7 @@ void safemode::show( const std::string &custom_name_in, bool is_safemode_in )
                                          .title( _( "Safe Mode Rule:" ) )
                                          .width( 30 )
                                          .text( current_tab[line].rule )
-                                         .query() );
+                                         .query_string() );
             } else if( column == COLUMN_WHITE_BLACKLIST ) {
                 current_tab[line].whitelist = !current_tab[line].whitelist;
             } else if( column == COLUMN_ATTITUDE ) {
@@ -335,7 +335,7 @@ void safemode::show( const std::string &custom_name_in, bool is_safemode_in )
                                                 " " + get_options().get_option( "SAFEMODEPROXIMITY" ).getDefaultText() )
                                   .max_length( 3 )
                                   .only_digits( true )
-                                  .query();
+                                  .query_string();
                 if( text.empty() ) {
                     current_tab[line].proximity = get_option<int>( "SAFEMODEPROXIMITY" );
                 } else {
@@ -637,14 +637,10 @@ bool safemode::save( const bool is_character_in )
     if( is_character ) {
         file = world_generator->active_world->world_path + "/" + base64_encode(
                    g->u.name ) + ".sfm.json";
-        std::ifstream fin;
-
-        fin.open( ( world_generator->active_world->world_path + "/" +
-                    base64_encode( g->u.name ) + ".sav" ).c_str() );
-        if( !fin.is_open() ) {
+        if( !file_exist( world_generator->active_world->world_path + "/" +
+                         base64_encode( g->u.name ) + ".sav" ) ) {
             return true; //Character not saved yet.
         }
-        fin.close();
     }
 
     return write_to_file( file, [&]( std::ostream & fout ) {

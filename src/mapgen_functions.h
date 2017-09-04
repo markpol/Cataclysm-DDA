@@ -57,9 +57,10 @@ int terrain_type_to_nesw_array( oter_id terrain_type, bool array[4] );
 
 // @todo pass mapgendata by reference.
 typedef void (*building_gen_pointer)(map *,oter_id,mapgendata,int,float);
-extern std::map<std::string, building_gen_pointer> mapgen_cfunction_map;
+building_gen_pointer get_mapgen_cfunction( const std::string &ident );
 ter_id grass_or_dirt();
 ter_id dirt_or_pile();
+ter_id clay_or_sand();
 
 // helper functions for mapgen.cpp, so that we can avoid having a massive switch statement (sorta)
 void mapgen_null(map *m, oter_id terrain_type, mapgendata dat, int turn, float density);
@@ -115,7 +116,6 @@ void mapgen_office_tower_1(map *m, oter_id terrain_type, mapgendata dat, int tur
 void mapgen_office_tower_b_entrance(map *m, oter_id terrain_type, mapgendata dat, int turn, float density);
 void mapgen_office_tower_b(map *m, oter_id terrain_type, mapgendata dat, int turn, float density);
 void mapgen_sub_station(map *m, oter_id terrain_type, mapgendata dat, int turn, float density);
-void mapgen_s_garage(map *m, oter_id terrain_type, mapgendata dat, int turn, float density);
 void mapgen_police(map *m, oter_id terrain_type, mapgendata dat, int turn, float density);
 void mapgen_bank(map *m, oter_id terrain_type, mapgendata dat, int turn, float density);
 void mapgen_pawn(map *m, oter_id terrain_type, mapgendata dat, int turn, float density);
@@ -220,9 +220,6 @@ void mapgen_ants_food(map *m, oter_id terrain_type, mapgendata dat, int turn, fl
 void mapgen_ants_larvae(map *m, oter_id terrain_type, mapgendata dat, int turn, float density);
 void mapgen_ants_queen(map *m, oter_id terrain_type, mapgendata dat, int turn, float density);
 void mapgen_tutorial(map *m, oter_id terrain_type, mapgendata dat, int turn, float density);
-
-//
-void init_mapgen_builtin_functions();
 
 // Temporary wrappers
 void madd_trap( map *m, int x, int y, trap_id t );

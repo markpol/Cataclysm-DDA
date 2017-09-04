@@ -50,7 +50,7 @@ class actmenu_cb : public uimenu_callback
         }
         ~actmenu_cb() override { }
 
-        bool key( const input_event &event, int /*num*/, uimenu * /*menu*/ ) override {
+        bool key( const input_event &event, int idx, uimenu * /*menu*/ ) override {
             const std::string action = ctxt.input_to_action( event );
             if( action == "HELP_KEYBINDINGS" ) {
                 ctxt.display_help();
@@ -59,8 +59,9 @@ class actmenu_cb : public uimenu_callback
             // Don't write a message if unknown command was sent
             // Only when an inexistent tool was selected
             auto itemless_action = am.find( action );
-            if( itemless_action != am.end() ) {
+            if( itemless_action != am.end() && idx == -1 ) {
                 popup( _( "You do not have an item that can perform this action." ) );
+                return true;
             }
             return false;
         }
@@ -120,7 +121,7 @@ item_action_map item_action_generator::map_actions_to_items( player &p,
 
             const use_function *func = actual_item->get_use( use );
             if( !( func && func->get_actor_ptr() &&
-                   func->get_actor_ptr()->can_use( &p, actual_item, false, p.pos() ) ) ) {
+                   func->get_actor_ptr()->can_use( p, *actual_item, false, p.pos() ) ) ) {
                 continue;
             }
             if( !actual_item->ammo_sufficient() ) {
@@ -218,7 +219,7 @@ void game::item_action_menu()
     // A bit of a hack for now. If more pseudos get implemented, this should be un-hacked
     std::vector<item *> pseudos;
     item toolset( "toolset", calendar::turn );
-    if( u.has_active_bionic( "bio_tools" ) ) {
+    if( u.has_active_bionic( bionic_id( "bio_tools" ) ) ) {
         pseudos.push_back( &toolset );
     }
 
@@ -242,7 +243,7 @@ void game::item_action_menu()
     std::vector<std::tuple<item_action_id, std::string, std::string>> menu_items;
     // Sorts menu items by action.
     typedef decltype( menu_items )::iterator Iter;
-    const auto sort_menu = [&menu_items]( Iter from, Iter to ) {
+    const auto sort_menu = []( Iter from, Iter to ) {
         std::sort( from, to, []( const std::tuple<item_action_id, std::string, std::string> &lhs,
         const std::tuple<item_action_id, std::string, std::string> &rhs ) {
             return std::get<1>( lhs ).compare( std::get<1>( rhs ) ) < 0;

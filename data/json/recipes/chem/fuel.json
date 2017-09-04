@@ -8,7 +8,7 @@
     "skill_used": "cooking",
     "difficulty": 5,
     "time": 30000,
-    "book_learn": [ [ "textbook_chemistry", 5 ], [ "brewing_cookbook", 4 ] ],
+    "book_learn": [ [ "textbook_chemistry" ], [ "brewing_cookbook", 4 ] ],
     "qualities": [
         { "id": "BOIL", "level": 2 },
         { "id": "DISTILL", "level": 2 }
@@ -18,15 +18,7 @@
        [ [ "thermometer", -1 ] ]
      ],
      "components": [ [
-        [ "moonshine", 14 ],
-        [ "vodka", 14 ],
-        [ "whiskey", 14 ],
-        [ "single_malt_whiskey", 14 ],
-        [ "brandy", 14 ],
-        [ "rum", 14 ],
-        [ "gin", 14 ],
-        [ "tequila", 14 ],
-        [ "mixed_alcohol_strong", 14 ],
+        [ "hard_liquor", 14, "LIST" ],
         [ "bum_wine", 56 ],
         [ "fruit_wine", 56 ],
         [ "wash_moonshine", 42 ],
@@ -44,7 +36,7 @@
     "skill_used": "cooking",
     "difficulty": 3,
     "time": 30000,
-    "book_learn": [ [ "textbook_chemistry", 4 ], [ "brewing_cookbook", 3 ] ],
+    "book_learn": [ [ "textbook_chemistry" ], [ "brewing_cookbook" ] ],
     "qualities": [
         { "id": "BOIL", "level": 2 },
         { "id": "DISTILL", "level": 1 }
@@ -53,17 +45,9 @@
        [ [ "fire", -1 ], [ "hotplate", 60 ], [ "toolset", 60 ] ]
      ],
      "components": [ [
-       [ "vodka", 14 ],
-       [ "whiskey", 14 ],
-       [ "single_malt_whiskey", 14 ],
-       [ "brandy", 14 ],
-       [ "rum", 14 ],
-       [ "gin", 14 ],
-       [ "tequila", 14 ],
+       [ "hard_liquor", 14, "LIST" ],
        [ "bum_wine", 56 ],
-       [ "fruit_wine", 56 ],
-       [ "moonshine", 14 ],
-       [ "mixed_alcohol_strong", 14 ]
+       [ "fruit_wine", 56 ]
     ] ]
   },
   {

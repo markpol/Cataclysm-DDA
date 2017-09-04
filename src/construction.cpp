@@ -32,10 +32,16 @@
 #include <map>
 #include <sstream>
 
+static const skill_id skill_fabrication( "fabrication" );
 static const skill_id skill_electronics( "electronics" );
-static const skill_id skill_carpentry( "carpentry" );
 static const skill_id skill_unarmed( "unarmed" );
 static const skill_id skill_throw( "throw" );
+
+static const trait_id trait_DEBUG_HS( "DEBUG_HS" );
+static const trait_id trait_NOPAIN( "NOPAIN" );
+static const trait_id trait_PAINRESIST_TROGLO( "PAINRESIST_TROGLO" );
+static const trait_id trait_STOCKY_TROGLO( "STOCKY_TROGLO" );
+static const trait_id trait_WEB_ROPE( "WEB_ROPE" );
 
 // Construction functions.
 namespace construct
@@ -63,6 +69,10 @@ void done_dig_stair( const tripoint & );
 void done_mine_downstair( const tripoint & );
 void done_mine_upstair( const tripoint & );
 void done_window_curtains( const tripoint & );
+void done_extract_sand( const tripoint & );
+void done_extract_clay( const tripoint & );
+
+void failure_standard( const tripoint & );
 };
 
 // Helper functions, nobody but us needs to call these.
@@ -134,7 +144,7 @@ void draw_grid( WINDOW *w, const int list_width )
 nc_color construction_color( std::string &con_name, bool highlight )
 {
     nc_color col = c_dkgray;
-    if( g->u.has_trait( "DEBUG_HS" ) ) {
+    if( g->u.has_trait( trait_id( "DEBUG_HS" ) ) ) {
         col = c_white;
     } else if( can_construct( con_name ) ) {
         construction *con_first = nullptr;
@@ -197,13 +207,12 @@ void construction_menu()
     draw_grid( w_con, w_list_width + w_list_x0 );
 
     //tabcount needs to be increased to add more categories
-    int tabcount = 10;
-    std::string construct_cat[] = {_( "All" ), _( "Constructions" ), _( "Furniture" ),
-                                   _( "Digging and Mining" ), _( "Repairing" ),
-                                   _( "Reinforcing" ), _( "Decorative" ),
-                                   _( "Farming and Woodcutting" ), _( "Others" ),
-                                   _( "Filter" )
-                                  };
+    const int tabcount = 10;
+    std::array<std::string, tabcount> construct_cat = {{
+        _( "All" ), _( "Constructions" ), _( "Furniture" ), _( "Digging and Mining" ),
+        _( "Repairing" ), _( "Reinforcing" ), _( "Decorative" ), _( "Farming and Woodcutting" ),
+        _( "Others" ), _( "Filter" )
+    }};
 
     bool update_info = true;
     bool update_cat = true;
@@ -456,6 +465,12 @@ void construction_menu()
                             current_buffer.insert( current_buffer.end(), folded_result_string.begin(),
                                                    folded_result_string.end() );
                         }
+                        if( !current_con->pre_note.empty() ) {
+                            std::vector<std::string> folded_result_string =
+                                foldstring( _( current_con->pre_note.c_str() ), available_window_width );
+                            current_buffer.insert( current_buffer.end(), folded_result_string.begin(),
+                                                   folded_result_string.end() );
+                        }
                         // get pre-folded versions of the rest of the construction project to be displayed later
 
                         // get time needed
@@ -642,7 +657,7 @@ bool character_has_skill_for( const Character &c, const construction &con )
 
 bool player_can_build( player &p, const inventory &pinv, const construction &con )
 {
-    if( p.has_trait( "DEBUG_HS" ) ) {
+    if( p.has_trait( trait_DEBUG_HS ) ) {
         return true;
     }
 
@@ -734,7 +749,7 @@ void place_construction( const std::string &desc )
     }
 
     if( valid.find( dirp ) == valid.end() ) {
-        add_msg( m_info, _( "You cannot build there!" ) );
+        cons.front()->explain_failure( dirp );
         return;
     }
 
@@ -801,24 +816,27 @@ bool construct::check_empty( const tripoint &p )
              g->m.i_at( p ).empty() && g->m.veh_at( p ) == NULL );
 }
 
+inline std::array<tripoint, 4> get_orthogonal_neighbors( const tripoint &p )
+{
+    return {{
+        tripoint( p.x, p.y - 1, p.z ),
+        tripoint( p.x, p.y + 1, p.z ),
+        tripoint( p.x - 1, p.y, p.z ),
+        tripoint( p.x + 1, p.y, p.z )
+    }};
+}
+
 bool construct::check_support( const tripoint &p )
 {
     // need two or more orthogonally adjacent supports
-    int num_supports = 0;
     if( g->m.impassable( p ) ) {
         return false;
     }
-    if( g->m.has_flag( "SUPPORTS_ROOF", tripoint( p.x, p.y - 1, p.z ) ) ) {
-        ++num_supports;
-    }
-    if( g->m.has_flag( "SUPPORTS_ROOF", tripoint( p.x, p.y + 1, p.z ) ) ) {
-        ++num_supports;
-    }
-    if( g->m.has_flag( "SUPPORTS_ROOF", tripoint( p.x - 1, p.y, p.z ) ) ) {
-        ++num_supports;
-    }
-    if( g->m.has_flag( "SUPPORTS_ROOF", tripoint( p.x + 1, p.y, p.z ) ) ) {
-        ++num_supports;
+    int num_supports = 0;
+    for( const tripoint &nb : get_orthogonal_neighbors( p ) ) {
+        if( g->m.has_flag( "SUPPORTS_ROOF", nb ) ) {
+            num_supports++;
+        }
     }
     return num_supports >= 2;
 }
@@ -861,13 +879,13 @@ void construct::done_tree( const tripoint &p )
 
 void construct::done_trunk_log( const tripoint &p )
 {
-    g->m.spawn_item( p.x, p.y, "log", rng( 5, 15 ), 0, calendar::turn );
+    g->m.spawn_item( p.x, p.y, "log", rng( 2, 3 ), 0, calendar::turn );
 }
 
 void construct::done_trunk_plank( const tripoint &p )
 {
     ( void )p; //unused
-    int num_logs = rng( 5, 15 );
+    int num_logs = rng( 2, 3 );
     for( int i = 0; i < num_logs; ++i ) {
         iuse::cut_log_into_planks( &( g->u ) );
     }
@@ -900,7 +918,7 @@ void construct::done_vehicle( const tripoint &p )
     std::string name = string_input_popup()
                        .title( _( "Enter new vehicle name:" ) )
                        .width( 20 )
-                       .query();
+                       .query_string();
     if( name.empty() ) {
         name = _( "Car" );
     }
@@ -980,7 +998,7 @@ void construct::done_digormine_stair( const tripoint &p, bool dig )
     tmpmap.load( pos_sm.x, pos_sm.y, pos_sm.z - 1, false );
     tripoint const local_tmp = tmpmap.getlocal( abs_pos );
 
-    bool dig_muts = g->u.has_trait( "PAINRESIST_TROGLO" ) || g->u.has_trait( "STOCKY_TROGLO" );
+    bool dig_muts = g->u.has_trait( trait_PAINRESIST_TROGLO ) || g->u.has_trait( trait_STOCKY_TROGLO );
 
     int no_mut_penalty = dig_muts ? 10 : 0;
     int mine_penalty = dig ? 0 : 10;
@@ -1053,7 +1071,7 @@ void construct::done_mine_upstair( const tripoint &p )
         return;
     }
 
-    bool dig_muts = g->u.has_trait( "PAINRESIST_TROGLO" ) || g->u.has_trait( "STOCKY_TROGLO" );
+    bool dig_muts = g->u.has_trait( trait_PAINRESIST_TROGLO ) || g->u.has_trait( trait_STOCKY_TROGLO );
 
     int no_mut_penalty = dig_muts ? 15 : 0;
     g->u.mod_hunger( 20 + no_mut_penalty );
@@ -1077,6 +1095,44 @@ void construct::done_window_curtains( const tripoint & )
     g->u.add_msg_if_player( _("After boarding up the window the curtains and curtain rod are left.") );
 }
 
+void construct::done_extract_sand( const tripoint &p )
+{
+    g->m.spawn_item( g->u.pos(), "material_sand", 1, rng(300,600) );
+    if (one_in(10)) {
+        g->m.ter_set( p, t_dirt );
+    }
+    g->u.add_msg_if_player( _("You gather some sand.") );
+}
+void construct::done_extract_clay( const tripoint &p )
+{
+    g->m.spawn_item( g->u.pos(), "clay_lump", rng(6,12) );
+    if (one_in(10)) {
+        g->m.ter_set( p, t_dirt );
+    }
+    g->u.add_msg_if_player( _("You gather some clay.") );
+}
+
+void construct::failure_standard( const tripoint & )
+{
+    add_msg( m_info, _( "You cannot build there!" ) );
+}
+
+template <typename T>
+void assign_or_debugmsg( T &dest, const std::string &fun_id, const std::map<std::string, T> &possible )
+{
+    const auto iter = possible.find( fun_id );
+    if( iter != possible.end() ) {
+        dest = iter->second;
+    } else {
+        dest = possible.find( "" )->second;
+        const std::string list_available = enumerate_as_string( possible.begin(), possible.end(),
+        []( const std::pair<std::string, T> &pr ) {
+            return pr.first;
+        } );
+        debugmsg( "Unknown function: %s, available values are %s", fun_id.c_str(), list_available.c_str() );
+    }
+};
+
 void load_construction(JsonObject &jo)
 {
     construction con;
@@ -1090,7 +1146,7 @@ void load_construction(JsonObject &jo)
             con.required_skills[skill_id( arr.get_string( 0 ) )] = arr.get_int( 1 );
         }
     } else {
-        skill_id legacy_skill( jo.get_string( "skill", skill_carpentry.str() ) );
+        skill_id legacy_skill( jo.get_string( "skill", skill_fabrication.str() ) );
         int legacy_diff = jo.get_int( "difficulty" );
         con.required_skills[ legacy_skill ] = legacy_diff;
     }
@@ -1108,7 +1164,7 @@ void load_construction(JsonObject &jo)
         requirement_data::load_requirement( jo, req_id );
         con.requirements = requirement_id( req_id );
     }
-
+    con.pre_note = jo.get_string( "pre_note", "" );
     con.pre_terrain = jo.get_string("pre_terrain", "");
     if (con.pre_terrain.size() > 1
         && con.pre_terrain[0] == 'f'
@@ -1128,50 +1184,37 @@ void load_construction(JsonObject &jo)
     }
 
     con.pre_flags = jo.get_tags("pre_flags");
+    
+    static const std::map<std::string, std::function<bool( const tripoint & )>> pre_special_map = {{
+        { "", construct::check_nothing },
+        { "check_empty", construct::check_empty },
+        { "check_support", construct::check_support },
+        { "check_deconstruct", construct::check_deconstruct },
+        { "check_up_OK", construct::check_up_OK },
+        { "check_down_OK", construct::check_down_OK },
+    }};
+    static const std::map<std::string, std::function<void( const tripoint & )>> post_special_map = {{
+        { "", construct::done_nothing },
+        { "done_tree", construct::done_tree },
+        { "done_trunk_log", construct::done_trunk_log },
+        { "done_trunk_plank", construct::done_trunk_plank },
+        { "done_vehicle", construct::done_vehicle },
+        { "done_deconstruct", construct::done_deconstruct },
+        { "done_dig_stair", construct::done_dig_stair },
+        { "done_mine_downstair", construct::done_mine_downstair },
+        { "done_mine_upstair", construct::done_mine_upstair },
+        { "done_window_curtains", construct::done_window_curtains },
+        { "done_extract_sand", construct::done_extract_sand },
+        { "done_extract_clay", construct::done_extract_clay },
+    }};
+    static const std::map<std::string, std::function<void( const tripoint & )>> explain_fail_map = {{
+        { "", construct::failure_standard },
+    }};
 
-    std::string prefunc = jo.get_string("pre_special", "");
-    if (prefunc == "check_empty") {
-        con.pre_special = &construct::check_empty;
-    } else if (prefunc == "check_support") {
-        con.pre_special = &construct::check_support;
-    } else if (prefunc == "check_deconstruct") {
-        con.pre_special = &construct::check_deconstruct;
-    } else if (prefunc == "check_up_OK") {
-        con.pre_special = &construct::check_up_OK;
-    } else if (prefunc == "check_down_OK") {
-        con.pre_special = &construct::check_down_OK;
-    } else {
-        if (prefunc != "") {
-            debugmsg("Unknown pre_special function: %s", prefunc.c_str());
-        }
-        con.pre_special = &construct::check_nothing;
-    }
-
-    std::string postfunc = jo.get_string("post_special", "");
-    if (postfunc == "done_tree") {
-        con.post_special = &construct::done_tree;
-    } else if (postfunc == "done_trunk_log") {
-        con.post_special = &construct::done_trunk_log;
-    } else if (postfunc == "done_trunk_plank") {
-        con.post_special = &construct::done_trunk_plank;
-    } else if (postfunc == "done_vehicle") {
-        con.post_special = &construct::done_vehicle;
-    } else if (postfunc == "done_deconstruct") {
-        con.post_special = &construct::done_deconstruct;
-    } else if (postfunc == "done_dig_stair") {
-        con.post_special = &construct::done_dig_stair;
-    } else if (postfunc == "done_mine_downstair") {
-        con.post_special = &construct::done_mine_downstair;
-    } else if (postfunc == "done_mine_upstair") {
-        con.post_special = &construct::done_mine_upstair;
-    } else if (postfunc == "done_window_curtains") {
-        con.post_special = &construct::done_window_curtains;
-    } else {
-        if (postfunc != "") {
-            debugmsg("Unknown post_special function: %s", postfunc.c_str());
-        }
-        con.post_special = &construct::done_nothing;
-    }
+    assign_or_debugmsg( con.pre_special, jo.get_string( "pre_special", "" ), pre_special_map );
+    assign_or_debugmsg( con.post_special, jo.get_string( "post_special", "" ), post_special_map );
+    assign_or_debugmsg( con.explain_failure, jo.get_string( "explain_failure", "" ), explain_fail_map );
+    con.vehicle_start = jo.get_bool( "vehicle_start", false );
 
     constructions.push_back(con);
 }
@@ -1234,10 +1277,10 @@ int construction::print_time( WINDOW *w, int ypos, int xpos, int width,
 float construction::time_scale() const
 {
     //incorporate construction time scaling
-    if( get_world_option<int>( "CONSTRUCTION_SCALING" ) == 0 ) {
+    if( get_option<int>( "CONSTRUCTION_SCALING" ) == 0 ) {
         return calendar::season_ratio();
     } else {
-        return get_world_option<int>( "CONSTRUCTION_SCALING" ) / 100.0;
+        return get_option<int>( "CONSTRUCTION_SCALING" ) / 100.0;
     }
 }
 
@@ -1311,7 +1354,7 @@ void finalize_constructions()
     }
 
     for( construction &con : constructions ) {
-        if( con.post_special == &construct::done_vehicle ) {
+        if( con.vehicle_start ) {
             const_cast<requirement_data &>( con.requirements.obj() ).get_components().push_back( frame_items );
         }
     }

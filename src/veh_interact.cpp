@@ -45,6 +45,13 @@ static inline const char * status_color( bool status )
     return status ? good : bad;
 }
 
+// cap JACK requirements to support arbitrarily large vehicles
+static double jack_qality( const vehicle &veh )
+{
+    const units::quantity<double, units::mass::unit_type> mass = std::min( veh.total_mass(), JACK_LIMIT );
+    return ceil( mass / TOOL_LIFT_FACTOR );
+}
+
 /** Can part currently be reloaded with anything? */
 static auto can_refill = []( const vehicle_part &pt ) { return pt.can_reload(); };
 
@@ -136,6 +143,8 @@ vehicle_part &veh_interact::select_part( const vehicle &veh, const part_selector
 
     return *res;
 }
+
+static const trait_id trait_DEBUG_HS( "DEBUG_HS" );
 
 /**
  * Creates a blank veh_interact window.
@@ -372,8 +381,7 @@ void veh_interact::cache_tool_availability()
                            map_selector( g->u.pos(), PICKUP_RANGE ).max_quality( JACK ),
                            vehicle_selector(g->u.pos(), 2, true, *veh ).max_quality( JACK ) } );
 
-    // cap JACK requirements at 8000kg to support arbritrarily large vehicles
-    double qual = ceil( double( std::min( veh->total_mass(), 8000 ) * 1000 ) / TOOL_LIFT_FACTOR );
+    const double qual = jack_qality( *veh );
 
     has_jack = g->u.has_quality( JACK, qual ) ||
                map_selector( g->u.pos(), PICKUP_RANGE ).has_quality( JACK, qual ) ||
@@ -588,13 +596,13 @@ bool veh_interact::can_install_part() {
     item base( sel_vpart_info->item );
     if( base.is_wheel() ) {
         qual = JACK;
-        lvl = std::ceil( double( std::min( veh->total_mass() * 1000, JACK_LIMIT ) ) / TOOL_LIFT_FACTOR );
+        lvl = jack_qality( *veh );
         str = veh->lift_strength();
         use_aid = max_jack >= lvl;
         use_str = g->u.can_lift( *veh );
     } else {
         qual = LIFT;
-        lvl = std::ceil( double( base.weight() ) / TOOL_LIFT_FACTOR );
+        lvl = std::ceil( units::quantity<double, units::mass::unit_type>( base.weight() ) / TOOL_LIFT_FACTOR );
         str = base.lift_strength();
         use_aid = max_lift >= lvl;
         use_str = g->u.can_lift( base );
@@ -610,7 +618,7 @@ bool veh_interact::can_install_part() {
     werase( w_msg );
     fold_and_print( w_msg, 0, 1, getmaxx( w_msg ) - 2, c_ltgray, msg.str() );
     wrefresh( w_msg );
-    return ok || g->u.has_trait( "DEBUG_HS" );
+    return ok || g->u.has_trait( trait_DEBUG_HS );
 }
 
 /**
@@ -708,7 +716,8 @@ bool veh_interact::do_install( std::string &msg )
                                                    part.has_flag("SECURITY") ||
                                                    part.has_flag("SEAT") ||
                                                    part.has_flag("BED") ||
-                                                   part.has_flag("DOOR_MOTOR"); };
+                                                   part.has_flag("DOOR_MOTOR") ||
+                                                   part.has_flag("WATER_PURIFIER"); };
     tab_filters[4] = [&](const vpart_info *p) { auto &part = *p;
                                                    return(part.has_flag(VPFLAG_OBSTACLE) || // Hull
                                                    part.has_flag("ROOF") ||
@@ -1277,13 +1286,13 @@ bool veh_interact::can_remove_part( int idx ) {
     item base( sel_vpart_info->item );
     if( base.is_wheel() ) {
         qual = JACK;
-        lvl = std::ceil( double( std::min( veh->total_mass() * 1000, JACK_LIMIT ) ) / TOOL_LIFT_FACTOR );
+        lvl = jack_qality( *veh );
         str = veh->lift_strength();
         use_aid = max_jack >= lvl;
         use_str = g->u.can_lift( *veh );
     } else {
         qual = LIFT;
-        lvl = ceil( double( base.weight() ) / TOOL_LIFT_FACTOR );
+        lvl = ceil( units::quantity<double, units::mass::unit_type>( base.weight() ) / TOOL_LIFT_FACTOR );
         str = base.lift_strength();
         use_aid = max_lift >= lvl;
         use_str = g->u.can_lift( base );
@@ -1304,7 +1313,7 @@ bool veh_interact::can_remove_part( int idx ) {
     werase( w_msg );
     fold_and_print( w_msg, 0, 1, getmaxx( w_msg ) - 2, c_ltgray, msg.str() );
     wrefresh( w_msg );
-    return ok || g->u.has_trait( "DEBUG_HS" );
+    return ok || g->u.has_trait( trait_DEBUG_HS );
 }
 
 bool veh_interact::do_remove( std::string &msg )
@@ -1466,7 +1475,7 @@ bool veh_interact::do_assign_crew( std::string &msg )
         if( menu.ret == 0 ) {
             pt.unset_crew();
         } else if( menu > 0 ) {
-            const auto &who = *g->active_npc[g->npc_by_id( menu.ret )];
+            const auto &who = *g->npc_by_id( menu.ret );
             veh->assign_seat( pt, who );
         }
 
@@ -1481,17 +1490,17 @@ bool veh_interact::do_rename( std::string & )
     std::string name = string_input_popup()
                        .title( _( "Enter new vehicle name:" ) )
                        .width( 20 )
-                       .query();
-    if(name.length() > 0) {
-        (veh->name = name);
-        if (veh->tracking_on) {
+                       .query_string();
+    if( name.length() > 0 ) {
+        veh->name = name;
+        if( veh->tracking_on ) {
             overmap_buffer.remove_vehicle( veh );
             // Add the vehicle again, this time with the new name
             overmap_buffer.add_vehicle( veh );
         }
     }
     // refresh w_disp & w_part windows:
-    move_cursor(0, 0);
+    move_cursor( 0, 0 );
 
     return false;
 }
@@ -1507,10 +1516,10 @@ bool veh_interact::do_relabel( std::string &msg )
                        .title( _( "New label:" ) )
                        .width( 20 )
                        .text( veh->get_label( -ddx, -ddy ) )
-                       .query();
+                       .query_string();
     veh->set_label(-ddx, -ddy, text); // empty input removes the label
     // refresh w_disp & w_part windows:
-    move_cursor(0, 0);
+    move_cursor( 0, 0 );
 
     return false;
 }
@@ -1535,7 +1544,7 @@ int veh_interact::part_at (int dx, int dy)
  */
 bool veh_interact::can_potentially_install(const vpart_info &vpart)
 {
-    return g->u.has_trait( "DEBUG_HS" ) || vpart.install_requirements().can_make_with_inventory( crafting_inv );
+    return g->u.has_trait( trait_DEBUG_HS ) || vpart.install_requirements().can_make_with_inventory( crafting_inv );
 }
 
 /**
@@ -1558,6 +1567,7 @@ void veh_interact::move_cursor (int dx, int dy)
     int vdy = -ddy;
     point q = veh->coord_translate (point(vdx, vdy));
     tripoint vehp = veh->global_pos3() + q;
+    const bool has_critter = g->critter_at( vehp );
     bool obstruct = g->m.impassable_ter_furn( vehp );
     vehicle *oveh = g->m.veh_at( vehp );
     if( oveh != nullptr && oveh != veh ) {
@@ -1577,6 +1587,9 @@ void veh_interact::move_cursor (int dx, int dy)
         int divider_index = 0;
         for( const auto &e : vpart_info::all() ) {
             const vpart_info &vp = e.second;
+            if( has_critter && vp.has_flag( VPFLAG_OBSTACLE ) ) {
+                continue;
+            }
             if( veh->can_mount( vdx, vdy, vp.get_id() ) ) {
                 if ( vp.get_id() != vpart_shapes[ vp.name()+ vp.item][0]->get_id() )
                     continue; // only add first shape to install list
@@ -1809,7 +1822,7 @@ void veh_interact::display_stats()
                     velocity_units( VU_VEHICLE ) );
     fold_and_print( w_stats, y[2], x[2], w[2], c_ltgray,
                     _( "Mass: <color_ltblue>%5.0f</color> %s" ),
-                    convert_weight( veh->total_mass() * 1000.0f ), weight_units() );
+                    convert_weight( veh->total_mass() ), weight_units() );
     fold_and_print( w_stats, y[3], x[3], w[3], c_ltgray,
                     _( "Cargo Volume: <color_ltgray>%s/%s</color> %s" ),
                     format_volume( total_cargo - free_cargo ).c_str(),
@@ -1890,7 +1903,6 @@ void veh_interact::display_name()
 
 /**
  * Prints the list of usable commands, and highlights the hotkeys used to activate them.
- * @param mode What command we are currently using. ' ' for no command.
  */
 void veh_interact::display_mode()
 {
@@ -1955,6 +1967,7 @@ size_t veh_interact::display_esc(WINDOW *win)
  * when installing new parts or changing tires.
  * @param pos The current cursor position in the list.
  * @param list The list to display parts from.
+ * @param header Number of lines occupied by the list header
  */
 void veh_interact::display_list(size_t pos, std::vector<const vpart_info*> list, const int header)
 {
@@ -2034,7 +2047,7 @@ void veh_interact::display_details( const vpart_info *part )
     fold_and_print(w_details, line+2, col_1, column_width, c_white,
                    "%s: <color_ltgray>%.1f%s</color>",
                    small_mode ? _("Wgt") : _("Weight"),
-                   convert_weight(item::find_type( part->item )->weight),
+                   convert_weight( item::find_type( part->item )->weight ),
                    weight_units());
     if ( part->folded_volume != 0 ) {
         fold_and_print(w_details, line+2, col_2, column_width, c_white,
@@ -2153,7 +2166,7 @@ item consume_vpart_item( const vpart_id &vpid )
     std::vector<bool> candidates;
     const itype_id itid = vpid.obj().item;
 
-    if(g->u.has_trait("DEBUG_HS")) {
+    if(g->u.has_trait( trait_DEBUG_HS )) {
         return item(itid, calendar::turn);
     }
 
@@ -2286,7 +2299,7 @@ void veh_interact::complete_vehicle()
             }
         }
         if( base.is_null() ) {
-            if( !g->u.has_trait( "DEBUG_HS" ) ) {
+            if( !g->u.has_trait( trait_DEBUG_HS ) ) {
                 add_msg( m_info, _( "Could not find base part in requirements for %s." ), vpinfo.name().c_str() );
                 break;
             } else {
@@ -2306,36 +2319,48 @@ void veh_interact::complete_vehicle()
             break;
         }
 
-        if ( vpinfo.has_flag("CONE_LIGHT") ) {
-            // Need map-relative coordinates to compare to output of look_around.
-            // Need to call coord_translate() directly since it's a new part.
-            point q = veh->coord_translate(point(dx, dy));
+        // Need map-relative coordinates to compare to output of look_around.
+        // Need to call coord_translate() directly since it's a new part.
+        const point q = veh->coord_translate( point( dx, dy ) );
 
+        if ( vpinfo.has_flag("CONE_LIGHT") ) {
             // Stash offset and set it to the location of the part so look_around will start there.
             int px = g->u.view_offset.x;
             int py = g->u.view_offset.y;
             g->u.view_offset.x = veh->global_x() + q.x - g->u.posx();
             g->u.view_offset.y = veh->global_y() + q.y - g->u.posy();
-            popup(_("Choose a facing direction for the new headlight."));
+            popup(_("Choose a facing direction for the new headlight.  Press space to continue."));
             tripoint headlight_target = g->look_around(); // Note: no way to cancel
             // Restore previous view offsets.
             g->u.view_offset.x = px;
             g->u.view_offset.y = py;
 
-            int delta_x = headlight_target.x - (veh->global_x() + q.x);
-            int delta_y = headlight_target.y - (veh->global_y() + q.y);
+            int dir = 0;
+            if(headlight_target.x == INT_MIN) {
+                dir = 0;
+            } else {
+                int delta_x = headlight_target.x - (veh->global_x() + q.x);
+                int delta_y = headlight_target.y - (veh->global_y() + q.y);
 
-            const double PI = 3.14159265358979f;
-            int dir = int(atan2(static_cast<float>(delta_y), static_cast<float>(delta_x)) * 180.0 / PI);
-            dir -= veh->face.dir();
-            while(dir < 0) {
-                dir += 360;
-            }
-            while(dir > 360) {
-                dir -= 360;
+                const double PI = 3.14159265358979f;
+                dir = int(atan2(static_cast<float>(delta_y), static_cast<float>(delta_x)) * 180.0 / PI);
+                dir -= veh->face.dir();
+                while(dir < 0) {
+                    dir += 360;
+                }
+                while(dir > 360) {
+                    dir -= 360;
+                }
             }
 
             veh->parts[partnum].direction = dir;
+        }
+
+        const tripoint vehp = { q.x + veh->global_x(), q.y + veh->global_y(), g->u.posz() };
+        //@todo allow boarding for non-players as well.
+        player * const pl = g->critter_at<player>( vehp );
+        if( vpinfo.has_flag( VPFLAG_BOARDABLE ) && pl ) {
+            g->m.board_vehicle( vehp, pl );
         }
 
         add_msg( m_good, _("You install a %1$s into the %2$s." ), veh->parts[ partnum ].name().c_str(), veh->name.c_str() );

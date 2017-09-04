@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
         const char *section_default = nullptr;
         const char *section_map_sharing = "Map sharing";
         const char *section_user_directory = "User directories";
-        const arg_handler first_pass_arguments[] = {
+        const std::array<arg_handler, 12> first_pass_arguments = {{
             {
                 "--seed", "<string of letters and or numbers>",
                 "Sets the random number generator's seed value",
@@ -233,11 +233,11 @@ int main(int argc, char *argv[])
                     return 1;
                 }
             }
-        };
+        }};
 
         // The following arguments are dependent on one or more of the previous flags and are run
         // in a second pass.
-        const arg_handler second_pass_arguments[] = {
+        const std::array<arg_handler, 9> second_pass_arguments = {{
             {
                 "--worldmenu", nullptr,
                 "Enables the world menu in the map-sharing code",
@@ -329,7 +329,7 @@ int main(int argc, char *argv[])
                     return 1;
                 }
             },
-        };
+        }};
 
         // Process CLI arguments.
         const size_t num_first_pass_arguments =
@@ -340,8 +340,8 @@ int main(int argc, char *argv[])
         const char **saved_argv = (const char **)++argv;
         while (argc) {
             if(!strcmp(argv[0], "--help")) {
-                printHelpMessage(first_pass_arguments, num_first_pass_arguments,
-                    second_pass_arguments, num_second_pass_arguments);
+                printHelpMessage(first_pass_arguments.data(), num_first_pass_arguments,
+                    second_pass_arguments.data(), num_second_pass_arguments);
                 return 0;
             } else {
                 bool arg_handled = false;
@@ -406,8 +406,6 @@ int main(int argc, char *argv[])
         DebugLog(D_WARNING, D_MAIN) << "Error while setlocale(LC_ALL, '').";
     }
 
-    // Options strings loaded with system locale. Even though set_language calls these, we
-    // need to call them from here too.
     get_options().init();
     get_options().load();
     set_language();
@@ -439,9 +437,6 @@ int main(int argc, char *argv[])
     try {
         g->load_static_data();
         if (verifyexit) {
-            if(g->game_error()) {
-                exit_handler(-999);
-            }
             exit_handler(0);
         }
         if( !dump.empty() ) {
@@ -460,9 +455,6 @@ int main(int argc, char *argv[])
     // Now we do the actual game.
 
     g->init_ui();
-    if(g->game_error()) {
-        exit_handler(-999);
-    }
 
     curs_set(0); // Invisible cursor here, because MAPBUFFER.load() is crash-prone
 
@@ -489,9 +481,6 @@ int main(int argc, char *argv[])
         }
 
         while( !g->do_turn() );
-        if( g->game_error() ) {
-            break;
-        }
     };
 
 
@@ -556,9 +545,6 @@ void exit_handler(int s)
 
         int exit_status = 0;
         if( g != NULL ) {
-            if( g->game_error() ) {
-                exit_status = 1;
-            }
             delete g;
         }
 

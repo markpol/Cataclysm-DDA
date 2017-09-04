@@ -238,7 +238,7 @@ void player::sort_armor()
     int middle_w = ( win_w - 4 ) - left_w - right_w;
 
     int tabindex = num_bp;
-    int tabcount = num_bp + 1;
+    const int tabcount = num_bp + 1;
 
     int leftListSize;
     int leftListIndex  = 0;
@@ -249,10 +249,12 @@ void player::sort_armor()
     int rightListOffset = 0;
 
     std::vector<item *> tmp_worn;
-    std::string  armor_cat[] = {_( "Torso" ), _( "Head" ), _( "Eyes" ), _( "Mouth" ), _( "L. Arm" ), _( "R. Arm" ),
-                                _( "L. Hand" ), _( "R. Hand" ), _( "L. Leg" ), _( "R. Leg" ), _( "L. Foot" ),
-                                _( "R. Foot" ), _( "All" )
-                               };
+    std::array<std::string, 13> armor_cat = {{
+            _( "Torso" ), _( "Head" ), _( "Eyes" ), _( "Mouth" ), _( "L. Arm" ), _( "R. Arm" ),
+            _( "L. Hand" ), _( "R. Hand" ), _( "L. Leg" ), _( "R. Leg" ), _( "L. Foot" ),
+            _( "R. Foot" ), _( "All" )
+        }
+    };
 
     // Layout window
     WINDOW *w_sort_armor = newwin( win_h, win_w, win_y, win_x );
@@ -536,6 +538,10 @@ void player::sort_armor()
                     // remove the item, asking to drop it if necessary
                     takeoff( *tmp_worn[leftListIndex] );
                     wrefresh( w_sort_armor );
+                    // prevent out of bounds in subsequent tmp_worn[leftListIndex]
+                    int new_index_upper_bound = std::max( 0, ( ( int ) tmp_worn.size() ) - 2 );
+                    leftListIndex = std::min( leftListIndex, new_index_upper_bound );
+                    selected = -1;
                 }
             }
         } else if( action == "ASSIGN_INVLETS" ) {
@@ -552,7 +558,7 @@ void player::sort_armor()
                     } else if( invlet_to_position( invlet ) != INT_MIN ) {
                         ++iiter;
                     } else {
-                        w.invlet = invlet;
+                        inv.reassign_item( w, invlet );
                         ++witer;
                         ++iiter;
                     }

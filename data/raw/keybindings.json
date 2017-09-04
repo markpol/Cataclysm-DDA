@@ -26,6 +26,54 @@
     {
         "type" : "keybinding",
         "id":"UP",
+        "category": "UIMENU",
+        "name":"Pan up",
+        "bindings":[
+            {
+                "input_method":"keyboard",
+                "key":"UP"
+            }
+        ]
+    },
+    {
+        "type" : "keybinding",
+        "id":"DOWN",
+        "category": "UIMENU",
+        "name":"Pan down",
+        "bindings":[
+            {
+                "input_method":"keyboard",
+                "key":"DOWN"
+            }
+        ]
+    },
+    {
+        "type" : "keybinding",
+        "id" : "FILTER",
+        "category" : "UIMENU",
+        "name" : "Filter",
+        "bindings":[
+            {
+                "input_method":"keyboard",
+                "key":"/"
+            }
+        ]
+    },
+    {
+        "type" : "keybinding",
+        "id": "QUIT",
+        "category": "UIMENU",
+        "name": "Cancel menu",
+        "bindings":[
+            {
+                "input_method":"keyboard",
+                "key":"ESC"
+            }
+        ]
+    },
+    {
+        "type" : "keybinding",
+        "id":"UP",
         "name":"Pan up",
         "bindings":[
             {
@@ -1079,6 +1127,18 @@
             {
                 "input_method":"keyboard",
                 "key":"O"
+            }
+        ]
+    },
+    {
+        "type" : "keybinding",
+        "id":"TOGGLE_CITY_LABELS",
+        "category":"OVERMAP",
+        "name":"Toggle City Labels",
+        "bindings":[
+            {
+                "input_method":"keyboard",
+                "key":"C"
             }
         ]
     },
@@ -2768,6 +2828,18 @@
     },
     {
         "type" : "keybinding",
+        "id": "ITEMS_DEFAULT",
+        "category": "ADVANCED_INVENTORY",
+        "name": "Restore default layout"
+    },
+    {
+        "type" : "keybinding",
+        "id": "SAVE_DEFAULT",
+        "category": "ADVANCED_INVENTORY",
+        "name": "Save default layout"
+    },
+    {
+        "type" : "keybinding",
         "id": "repair_fabric",
         "category": "ITEM_ACTIONS",
         "name": "Sew",
@@ -2780,25 +2852,34 @@
     },
     {
         "type" : "keybinding",
-        "id": "KNIFE",
+        "id": "repair_metal",
         "category": "ITEM_ACTIONS",
-        "name": "Knife",
         "bindings":[
             {
                 "input_method":"keyboard",
-                "key":"k"
+                "key":"w"
             }
         ]
     },
     {
         "type" : "keybinding",
-        "id": "repair_metal",
+        "id": "firestarter",
         "category": "ITEM_ACTIONS",
-        "name": "Solder/Weld",
         "bindings":[
             {
                 "input_method":"keyboard",
-                "key":"w"
+                "key":"f"
+            }
+        ]
+    },
+    {
+        "type" : "keybinding",
+        "id": "holster",
+        "category": "ITEM_ACTIONS",
+        "bindings":[
+            {
+                "input_method":"keyboard",
+                "key":"h"
             }
         ]
     },

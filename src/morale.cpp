@@ -23,87 +23,7 @@ static const efftype_id effect_took_prozac( "took_prozac" );
 
 namespace
 {
-static const std::string item_name_placeholder = "%i"; // Used to address an item name
-
-const std::string &get_morale_data( const morale_type id )
-{
-    static const std::array<std::string, NUM_MORALE_TYPES> morale_data = { {
-            { "This is a bug (player.cpp:moraledata)" },
-            { _( "Enjoyed %i" ) },
-            { _( "Enjoyed a hot meal" ) },
-            { _( "Music" ) },
-            { _( "Enjoyed honey" ) },
-            { _( "Played Video Game" ) },
-            { _( "Marloss Bliss" ) },
-            { _( "Mutagenic Anticipation" ) },
-            { _( "Good Feeling" ) },
-            { _( "Supported" ) },
-            { _( "Looked at photos" ) },
-
-            { _( "Nicotine Craving" ) },
-            { _( "Caffeine Craving" ) },
-            { _( "Alcohol Craving" ) },
-            { _( "Opiate Craving" ) },
-            { _( "Speed Craving" ) },
-            { _( "Cocaine Craving" ) },
-            { _( "Crack Cocaine Craving" ) },
-            { _( "Mutagen Craving" ) },
-            { _( "Diazepam Craving" ) },
-            { _( "Marloss Craving" ) },
-
-            { _( "Disliked %i" ) },
-            { _( "Ate Human Flesh" ) },
-            { _( "Ate Meat" ) },
-            { _( "Ate Vegetables" ) },
-            { _( "Ate Fruit" ) },
-            { _( "Lactose Intolerance" ) },
-            { _( "Ate Junk Food" ) },
-            { _( "Wheat Allergy" ) },
-            { _( "Ate Indigestible Food" ) },
-            { _( "Wet" ) },
-            { _( "Dried Off" ) },
-            { _( "Cold" ) },
-            { _( "Hot" ) },
-            { _( "Bad Feeling" ) },
-            { _( "Killed Innocent" ) },
-            { _( "Killed Friend" ) },
-            { _( "Guilty about Killing" ) },
-            { _( "Guilty about Mutilating Corpse" ) },
-            { _( "Fey Mutation" ) },
-            { _( "Chimerical Mutation" ) },
-            { _( "Mutation" ) },
-
-            { _( "Moodswing" ) },
-            { _( "Read %i" ) },
-            { _( "Got comfy" ) },
-
-            { _( "Heard Disturbing Scream" ) },
-
-            { _( "Masochism" ) },
-            { _( "Hoarder" ) },
-            { _( "Stylish" ) },
-            { _( "Optimist" ) },
-            { _( "Bad Tempered" ) },
-            //~ You really don't like wearing the Uncomfy Gear
-            { _( "Uncomfy Gear" ) },
-            { _( "Found kitten <3" ) },
-
-            { _( "Got a Haircut" ) },
-            { _( "Freshly Shaven" ) },
-
-            { _( "Barfed" ) },
-
-            { _( "Filthy Gear" ) }
-        }
-    };
-
-    if( static_cast<size_t>( id ) >= morale_data.size() ) {
-        debugmsg( "invalid morale type: %d", id );
-        return morale_data[0];
-    }
-
-    return morale_data[id];
-}
+static const std::string item_name_placeholder = "%s"; // Used to address an item name
 
 bool is_permanent_morale( const morale_type id )
 {
@@ -179,16 +99,7 @@ static const morale_mult prozac( 1.0, 0.25 );
 
 std::string player_morale::morale_point::get_name() const
 {
-    std::string name = get_morale_data( type );
-
-    if( item_type != nullptr ) {
-        name = string_replace( name, item_name_placeholder, item_type->nname( 1 ) );
-    } else if( name.find( item_name_placeholder ) != std::string::npos ) {
-        debugmsg( "Morale #%d (%s) requires item_type to be specified.", type,
-                  name.c_str() );
-    }
-
-    return name;
+    return type.obj().describe( item_type );
 }
 
 int player_morale::morale_point::get_net_bonus() const
@@ -304,22 +215,22 @@ player_morale::player_morale() :
     const auto update_constrained = std::bind( &player_morale::update_constrained_penalty, _1 );
     const auto update_masochist   = std::bind( &player_morale::update_masochist_bonus, _1 );
 
-    mutations["OPTIMISTIC"]    = mutation_data(
-                                     std::bind( set_optimist, _1, 4 ),
-                                     std::bind( set_optimist, _1, 0 ) );
-    mutations["BADTEMPER"]     = mutation_data(
-                                     std::bind( set_badtemper, _1, -4 ),
-                                     std::bind( set_badtemper, _1, 0 ) );
-    mutations["STYLISH"]       = mutation_data(
-                                     std::bind( set_stylish, _1, true ),
-                                     std::bind( set_stylish, _1, false ) );
-    mutations["FLOWERS"]       = mutation_data( update_constrained );
-    mutations["ROOTS"]         = mutation_data( update_constrained );
-    mutations["ROOTS2"]        = mutation_data( update_constrained );
-    mutations["ROOTS3"]        = mutation_data( update_constrained );
-    mutations["MASOCHIST"]     = mutation_data( update_masochist );
-    mutations["MASOCHIST_MED"] = mutation_data( update_masochist );
-    mutations["CENOBITE"]      = mutation_data( update_masochist );
+    mutations[trait_id( "OPTIMISTIC" )]    = mutation_data(
+                std::bind( set_optimist, _1, 4 ),
+                std::bind( set_optimist, _1, 0 ) );
+    mutations[trait_id( "BADTEMPER" )]     = mutation_data(
+                std::bind( set_badtemper, _1, -4 ),
+                std::bind( set_badtemper, _1, 0 ) );
+    mutations[trait_id( "STYLISH" )]       = mutation_data(
+                std::bind( set_stylish, _1, true ),
+                std::bind( set_stylish, _1, false ) );
+    mutations[trait_id( "FLOWERS" )]       = mutation_data( update_constrained );
+    mutations[trait_id( "ROOTS1" )]         = mutation_data( update_constrained );
+    mutations[trait_id( "ROOTS2" )]        = mutation_data( update_constrained );
+    mutations[trait_id( "ROOTS3" )]        = mutation_data( update_constrained );
+    mutations[trait_id( "MASOCHIST" )]     = mutation_data( update_masochist );
+    mutations[trait_id( "MASOCHIST_MED" )] = mutation_data( update_masochist );
+    mutations[trait_id( "CENOBITE" )]      = mutation_data( update_masochist );
 }
 
 void player_morale::add( morale_type type, int bonus, int max_bonus,
@@ -328,7 +239,7 @@ void player_morale::add( morale_type type, int bonus, int max_bonus,
 {
     if( ( duration == 0 ) & !is_permanent_morale( type ) ) {
         debugmsg( "Tried to set a non-permanent morale \"%s\" as permanent.",
-                  get_morale_data( type ).c_str() );
+                  type.obj().describe( item_type ).c_str() );
         return;
     }
 
@@ -579,13 +490,13 @@ void player_morale::invalidate()
     level_is_valid = false;
 }
 
-bool player_morale::has_mutation( const std::string &mid )
+bool player_morale::has_mutation( const trait_id &mid )
 {
     const auto &mutation = mutations.find( mid );
     return ( mutation != mutations.end() && mutation->second.get_active() );
 }
 
-void player_morale::set_mutation( const std::string &mid, bool active )
+void player_morale::set_mutation( const trait_id &mid, bool active )
 {
     const auto &mutation = mutations.find( mid );
     if( mutation != mutations.end() ) {
@@ -593,12 +504,12 @@ void player_morale::set_mutation( const std::string &mid, bool active )
     }
 }
 
-void player_morale::on_mutation_gain( const std::string &mid )
+void player_morale::on_mutation_gain( const trait_id &mid )
 {
     set_mutation( mid, true );
 }
 
-void player_morale::on_mutation_loss( const std::string &mid )
+void player_morale::on_mutation_loss( const trait_id &mid )
 {
     set_mutation( mid, false );
 }
@@ -727,8 +638,9 @@ void player_morale::update_stylish_bonus()
 
 void player_morale::update_masochist_bonus()
 {
-    const bool amateur_masochist = has_mutation( "MASOCHIST" );
-    const bool advanced_masochist = has_mutation( "MASOCHIST_MED" ) || has_mutation( "CENOBITE" );
+    const bool amateur_masochist = has_mutation( trait_id( "MASOCHIST" ) );
+    const bool advanced_masochist = has_mutation( trait_id( "MASOCHIST_MED" ) ) ||
+                                    has_mutation( trait_id( "CENOBITE" ) );
     const bool any_masochist = amateur_masochist || advanced_masochist;
 
     int bonus = 0;
@@ -783,10 +695,11 @@ void player_morale::update_constrained_penalty()
     };
     int pen = 0;
 
-    if( has_mutation( "FLOWERS" ) ) {
+    if( has_mutation( trait_id( "FLOWERS" ) ) ) {
         pen += bp_pen( bp_head, 10 );
     }
-    if( has_mutation( "ROOTS" ) || has_mutation( "ROOTS2" ) || has_mutation( "ROOTS3" ) ) {
+    if( has_mutation( trait_id( "ROOTS1" ) ) || has_mutation( trait_id( "ROOTS2" ) ) ||
+        has_mutation( trait_id( "ROOTS3" ) ) ) {
         pen += bp_pen( bp_foot_l, 5 );
         pen += bp_pen( bp_foot_r, 5 );
     }
@@ -795,7 +708,7 @@ void player_morale::update_constrained_penalty()
 
 void player_morale::update_squeamish_penalty()
 {
-    if( !get_world_option<bool>( "FILTHY_MORALE" ) ) {
+    if( !get_option<bool>( "FILTHY_MORALE" ) ) {
         set_permanent( MORALE_PERM_FILTHY, 0 );
         return;
     }
