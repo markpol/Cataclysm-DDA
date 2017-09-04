@@ -275,7 +275,6 @@ void generate_alt_rect_texture()
     SDL_Surface_Ptr altsurf( SDL_CreateRGBSurface( 0, 1, 1, 32, rmask, gmask, bmask, amask ) );
     SDL_FillRect( altsurf.get(), NULL, SDL_MapRGB( altsurf->format, 255, 255, 255 ) );
     SDL_Texture_Ptr alternate_rect_tex( SDL_CreateTextureFromSurface( renderer.get(), altsurf.get() ) );
-    SDL_FreeSurface( altsurf.get() );
 
     // test to make sure color modulation is supported by renderer
     if( SDL_SetTextureColorMod( alternate_rect_tex.get(), 0, 0, 0 ) ){
