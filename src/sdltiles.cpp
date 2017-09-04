@@ -272,15 +272,15 @@ void generate_alt_rect_texture()
     static const Uint32 bmask = 0x00ff0000;
     static const Uint32 amask = 0xff000000;
 #endif
-    SDL_Surface_Ptr altsurf = SDL_CreateRGBSurface( 0, 1, 1, 32, rmask, gmask, bmask, amask );
-    SDL_FillRect( altsurf, NULL, SDL_MapRGB( altsurf->format, 255, 255, 255 ) );
-    alternate_rect_tex = SDL_CreateTextureFromSurface( renderer.get(), altsurf );
-    SDL_FreeSurface( altsurf );
+    SDL_Surface_Ptr altsurf( SDL_CreateRGBSurface( 0, 1, 1, 32, rmask, gmask, bmask, amask ) );
+    SDL_FillRect( altsurf.get(), NULL, SDL_MapRGB( altsurf->format, 255, 255, 255 ) );
+    SDL_Texture_Ptr alternate_rect_tex( SDL_CreateTextureFromSurface( renderer.get(), altsurf.get() ) );
+    SDL_FreeSurface( altsurf.get() );
 
     // test to make sure color modulation is supported by renderer
-    if( SDL_SetTextureColorMod( alternate_rect_tex, 0, 0, 0 ) ){
+    if( SDL_SetTextureColorMod( alternate_rect_tex.get(), 0, 0, 0 ) ){
         alternate_rect_tex_enabled = false;
-        SDL_DestroyTexture( alternate_rect_tex );
+        SDL_DestroyTexture( alternate_rect_tex.get() );
         alternate_rect_tex = NULL;
         dbg( D_ERROR ) << "generate_alt_rect_texture color modulation test failed: " << SDL_GetError();
     } else {
@@ -290,14 +290,14 @@ void generate_alt_rect_texture()
 
 void draw_alt_rect( SDL_Rect &rect, unsigned char color )
 {
-    SDL_SetTextureColorMod( alternate_rect_tex, windowsPalette[color].r, windowsPalette[color].g, windowsPalette[color].b );
-    SDL_RenderCopy( renderer.get(), alternate_rect_tex, NULL, &rect );
+    SDL_SetTextureColorMod( alternate_rect_tex.get(), windowsPalette[color].r, windowsPalette[color].g, windowsPalette[color].b );
+    SDL_RenderCopy( renderer.get(), alternate_rect_tex.get(), NULL, &rect );
 }
 
 void draw_alt_rect( SDL_Rect &rect, int r, int g, int b )
 {
-    SDL_SetTextureColorMod( alternate_rect_tex, r, g, b );
-    SDL_RenderCopy( renderer.get(), alternate_rect_tex, NULL, &rect );
+    SDL_SetTextureColorMod( alternate_rect_tex.get(), r, g, b );
+    SDL_RenderCopy( renderer.get(), alternate_rect_tex.get(), NULL, &rect );
 }
 
 void ClearScreen()

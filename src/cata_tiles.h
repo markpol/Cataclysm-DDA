@@ -21,9 +21,6 @@ class JsonObject;
 struct visibility_variables;
 
 extern void set_displaybuffer_rendertarget();
-extern SDL_Texture *alternate_rect_tex;
-extern bool alternate_rect_tex_enabled;
-extern void draw_alt_rect( SDL_Rect &rect, int r, int g, int b );
 
 void clear_texture_pool();
 
@@ -96,6 +93,10 @@ struct SDL_Surface_deleter {
     void operator()( SDL_Surface *const ptr );
 };
 using SDL_Surface_Ptr = std::unique_ptr<SDL_Surface, SDL_Surface_deleter>;
+
+extern SDL_Texture_Ptr alternate_rect_tex;
+extern bool alternate_rect_tex_enabled;
+extern void draw_alt_rect( SDL_Rect &rect, int r, int g, int b );
 
 // Cache of a single tile, used to avoid redrawing what didn't change.
 struct tile_drawing_cache {
