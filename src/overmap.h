@@ -42,10 +42,16 @@ struct oter_weight {
 };
 
 struct city_settings {
+   int railroad_station_radius = 300;
    int shop_radius = 80;  // this is not a cut and dry % but rather an inverse voodoo number; rng(0,99) > VOODOO * distance / citysize;
    int park_radius = 130; // in theory, adjusting these can make a town with a few shops and alot of parks + houses......by increasing shop_radius
+   weighted_int_list<oter_weight> railroad_stations;
    weighted_int_list<oter_weight> shops;
    weighted_int_list<oter_weight> parks;
+
+    oter_id pick_railroad_station() const {
+        return railroad_stations.pick()->id->get_first();
+    }
 
     oter_id pick_shop() const {
         return shops.pick()->id->get_first();
@@ -351,8 +357,8 @@ public:
   std::vector<radio_tower> radios;
   std::map<int, om_vehicle> vehicles;
   std::vector<city> cities;
-  std::vector<city> stations;
   std::vector<city> roads_out;
+  std::vector<city> railroad_stations;
   std::vector<city> railroads_out;
 
         /// Adds the npc. The overmap takes ownership of the pointer.
@@ -459,14 +465,14 @@ public:
     oter_id random_shop() const;
     oter_id random_park() const;
     oter_id random_house() const;
-    oter_id random_station() const;
+    oter_id random_railroad_station() const;
 
   // Overall terrain
   void place_river(point pa, point pb);
   void place_forest();
   // City Building
   void place_cities();
-  void place_stations();
+  void place_railroad_stations();
   void put_building( int x, int y, om_direction::type dir, const city &town );
 
   void build_city_street( const overmap_connection &connection, const point &p, int cs, om_direction::type dir, const city &town );
@@ -484,11 +490,6 @@ public:
     void build_connection( const overmap_connection &connection, const pf::path &path, int z );
     void build_connection( const point &source, const point &dest, int z, const overmap_connection &connection );
     void connect_closest_points( const std::vector<point> &points, int z, const overmap_connection &connection );
-
-    // Rail Connection laying
-    void rail_build_connection( const point &source, const point &dest, int z, const int_id<oter_type_t> &type_id );
-    void rail_connect_closest_points( const std::vector<point> &points, int z, const int_id<oter_type_t> &type_id );
-
   // Polishing
   bool check_ot_type(const std::string &otype, int x, int y, int z) const;
   void chip_rock(int x, int y, int z);

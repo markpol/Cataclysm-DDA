@@ -108,8 +108,12 @@
       "swamp_spread_chance": 8500,          "//": "one_in(n) chance a swampy forest makes a swamp in a non-forest. Apparently.",
       "city": {
           "type": "town",
+          "railroad_station_radius": 300,
           "shop_radius": 80,                "//": "determine radial frequency of shops / parks / houses for towns. tldr: less means more",
           "park_radius": 130,               "//": "this is not a cut and dry % but rather an inverse voodoo number; rng(0,99) > VOODOO * distance / citysize;",
+          "railroad_stations": {                        "//": "weighted list for railroad_station overmap terrains",
+              "railroad_station": 1
+          },
           "parks": {                        "//": "weighted list for park overmap terrains",
               "park": 4,
               "pool": 1

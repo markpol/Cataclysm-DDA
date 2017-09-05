@@ -376,9 +376,9 @@ bool is_ot_type(const std::string &otype, const oter_id &oter)
     return oter_str.str()[compare_size] == '_';
 }
 
-bool railroad_allowed(const oter_id &ter)
+oter_id overmap::random_railroad_station() const
 {
-    return ter->has_flag( allow_override );
+    return settings.city_spec.pick_railroad_station();
 }
 
 oter_id overmap::random_shop() const
@@ -397,13 +397,6 @@ oter_id overmap::random_house() const
     const oter_id house_base( "house_base_north" );
 
     return one_in( settings.house_basement_chance) ? house : house_base;
-}
-
-oter_id overmap::random_station() const
-{
-    const oter_id station("station_north");
-
-    return station;
 }
 
 /*
@@ -578,10 +571,6 @@ bool oter_t::has_connection( om_direction::type dir ) const
     // @todo It's a DAMN UGLY hack. Remove it as soon as possible.
     static const oter_str_id road_manhole( "road_nesw_manhole" );
     if( id == road_manhole ) {
-        return true;
-    }
-    static const oter_str_id railroad_manhole("railroad_nesw_manhole");
-    if (id == railroad_manhole) {
         return true;
     }
     return om_lines::has_segment( line, dir );
@@ -1682,9 +1671,8 @@ void overmap::generate( const overmap *north, const overmap *east,
     // Cities and forests come next.
     // These're agnostic of adjacent maps, so it's very simple.
     place_cities();
+    place_railroad_stations();
     place_forest();
-
-    place_stations();
 
     // Ideally we should have at least two exit points for roads, on different sides
     if (roads_out.size() < 2) {
@@ -1779,17 +1767,18 @@ void overmap::generate( const overmap *north, const overmap *east,
     const string_id<overmap_connection> local_road( "local_road" );
     connect_closest_points( road_points, 0, *local_road );
 
-    std::vector<point> railroad_points; // stations and railroads_out together
+    std::vector<point> railroad_points; // railroad_stations and railroads_out together
     // Compile our master list of railroads; it's less messy if railroads_out is first
-    railroad_points.reserve( railroads_out.size() + stations.size() );
+    railroad_points.reserve( railroads_out.size() + railroad_stations.size() );
     for( const auto &elem : railroads_out ) {
         railroad_points.emplace_back( elem.x, elem.y );
     }
-    for( const auto &elem : stations ) {
+    for( const auto &elem : railroad_stations ) {
         railroad_points.emplace_back( elem.x, elem.y );
     }
     // And finally connect them via railroads.
-    connect_closest_points( railroad_points, 0, oter_type_id( "railroad" ) );
+    const string_id<overmap_connection> local_railroad( "local_railroad" );
+    connect_closest_points( railroad_points, 0, *local_railroad );
 
     place_specials( enabled_specials );
     polish_river();
@@ -1809,7 +1798,6 @@ void overmap::generate( const overmap *north, const overmap *east,
     place_radios();
     dbg(D_INFO) << "overmap::generate done";
 }
-
 
 bool overmap::generate_sub(int const z)
 {
@@ -3443,16 +3431,16 @@ void overmap::place_cities()
     }
 }
 
-void overmap::place_stations()
+void overmap::place_railroad_stations()
 {
-    int op_station_size = get_world_option<int>( "CITY_SIZE" );
-    if( op_station_size <= 0 ) {
+    int op_railroad_station_size = get_option<int>( "CITY_SIZE" );
+    if( op_railroad_station_size <= 0 ) {
         return;
     }
-    int op_station_spacing = get_world_option<int>( "CITY_SPACING" );
+    int op_railroad_station_spacing = get_option<int>( "CITY_SPACING" );
 
-    // spacing dictates how much of the map is covered in stations
-    //   station  |  stations  |   size N stations per overmap
+    // spacing dictates how much of the map is covered in railroad_stations
+    //   railroad_station  |  railroad_stations  |   size N railroad_stations per overmap
     // spacing | % of map |  2  |  4  |  8  |  12 |  16
     //     0   |   ~99    |2025 | 506 | 126 |  56 |  31
     //     1   |    50    |1012 | 253 |  63 |  28 |  15
@@ -3465,17 +3453,20 @@ void overmap::place_stations()
     //     8   |     0    |   7 |   1 |   0 |   0 |   0
 
     const double omts_per_overmap = OMAPX * OMAPY;
-    const double station_map_coverage_ratio = 1.0/std::pow(2.0, op_station_spacing);
-    const double omts_per_station = (op_station_size*2+1) * (op_station_size*2+1) * 3 / 4;
+    const double railroad_station_map_coverage_ratio = 1.0/std::pow(2.0, op_railroad_station_spacing);
+    const double omts_per_railroad_station = (op_railroad_station_size*2+1) * (op_railroad_station_size*2+1) * 3 / 4;
 
-    // how many stations on this overmap?
-    const int NUM_STATIONS =
-        roll_remainder(omts_per_overmap * station_map_coverage_ratio / omts_per_station);
+    // how many railroad_stations on this overmap?
+    const int NUM_RAILROAD_STATIONS =
+        roll_remainder(omts_per_overmap * railroad_station_map_coverage_ratio / omts_per_railroad_station);
 
-    // place a seed for NUM_STATIONS stations, and maybe one more
-    while ( stations.size() < size_t(NUM_STATIONS) ) {
-        // randomly make some stations smaller or larger
-        int size = rng(op_station_size-1, op_station_size+1);
+    const string_id<overmap_connection> local_railroad_id( "local_railroad" );
+    const overmap_connection &local_railroad( *local_railroad_id );
+
+    // place a seed for NUM_RAILROAD_STATIONS railroad_stations, and maybe one more
+    while ( railroad_stations.size() < size_t(NUM_RAILROAD_STATIONS) ) {
+        // randomly make some railroad_stations smaller or larger
+        int size = rng(op_railroad_station_size-1, op_railroad_station_size+1);
         if(one_in(3)) {          // 33% tiny
             size = 1;
         } else if (one_in(2)) {  // 33% small
@@ -3487,24 +3478,25 @@ void overmap::place_stations()
         }
         size = std::max(size,1);
 
-        // TODO put stations closer to the edge when they can span overmaps
-        // don't draw stations across the edge of the map, they will get clipped
+        // TODO put railroad_stations closer to the edge when they can span overmaps
+        // don't draw railroad_stations across the edge of the map, they will get clipped
         int cx = rng(size - 1, OMAPX - size);
         int cy = rng(size - 1, OMAPY - size);
         if (ter(cx, cy, 0) == settings.default_oter ) {
-            ter(cx, cy, 0) = oter_id( "railroad_nesw" ); // every station starts with an intersection
+            ter(cx, cy, 0) = oter_id( "railroad_nesw" ); // every railroad_station starts with an intersection
             city tmp;
             tmp.x = cx;
             tmp.y = cy;
             tmp.s = size;
-            stations.push_back(tmp);
+            railroad_stations.push_back(tmp);
 
             const auto start_dir = om_direction::random();
             auto cur_dir = start_dir;
 
             do {
-                build_city_street( cx, cy, size, cur_dir, tmp );
+                build_city_street( local_railroad, point( cx, cy ), size, cur_dir, tmp );
             } while( ( cur_dir = om_direction::turn_right( cur_dir ) ) != start_dir );
+
         }
     }
 }
@@ -4013,72 +4005,6 @@ void overmap::connect_closest_points( const std::vector<point> &points, int z, c
         }
         if( closest > 0 ) {
             build_connection( points[i], points[k], z, connection );
-        }
-    }
-}
-
-void overmap::rail_build_connection( const point &source, const point &dest, int z, const int_id<oter_type_t> &type_id )
-{
-    const int disp = type_id == oter_type_id( "railroad" ) ? 5 : 2;
-
-    const auto estimate = [&]( const pf::node &prev, const pf::node &cur ) {
-        // Reject nodes that don't allow railroads to cross them (e.g. buildings)
-        const auto &id( ter( cur.x, cur.y, z ) );
-
-        if( !railroad_allowed( id ) ) {
-            return -1;
-        }
-        // Reject nodes that make corners on the river
-        if( prev.dir != cur.dir && ( is_river( ter( prev.x, prev.y, z ) ) ||
-                                     is_river( ter( cur.x, cur.y, z ) ) ) ) {
-            return -1;
-        }
-
-        int res = ( std::abs( dest.x - cur.x ) + std::abs( dest.y - cur.y ) ) / disp;
-        // Prefer existing roads.
-        res += id->type_is( type_id ) ? 0 : 3;
-        // Prefer flat land over bridges
-        res += !is_river( id ) ? 0 : 2;
-        // Try not to turn too much
-        //res += (mn.d == d) ? 0 : 1;
-        return res;
-    };
-
-    const oter_id railbridge_ns( "railbridge_ns" );
-    const oter_id railbridge_ew( "railbridge_ew" );
-
-    for( const auto &node : pf::find_path( source, dest, OMAPX, OMAPY, estimate ) ) {
-        auto &id( ter( node.x, node.y, z ) );
-
-        if( is_river( id ) ) {
-            id = node.dir == 1 || node.dir == 3 ? railbridge_ns : railbridge_ew;
-        } else {
-            // @todo Eliminate discrepancy which requires casting and rotation. That is, make 'node' support 'om_direction'.
-            const om_direction::type dir( om_direction::turn_left( static_cast<om_direction::type>( node.dir ) ) );
-            const size_t prev_line( id->type_is( type_id ) ? id->get_line() : 0 );
-
-            id = type_id->get_linear( om_lines::set_segment( prev_line, dir ) );
-        }
-    }
-}
-
-void overmap::rail_connect_closest_points( const std::vector<point> &points, int z, const int_id<oter_type_t> &type_id )
-{
-    if( points.size() == 1 ) {
-        return;
-    }
-    for( size_t i = 0; i < points.size(); ++i ) {
-        int closest = -1;
-        int k;
-        for( size_t j = i + 1; j < points.size(); j++ ) {
-            const int distance = trig_dist( points[i].x, points[i].y, points[j].x, points[j].y );
-            if( distance < closest || closest < 0) {
-                closest = distance;
-                k = j;
-            }
-        }
-        if( closest > 0 ) {
-            rail_build_connection( points[i], points[k], z, type_id );
         }
     }
 }
