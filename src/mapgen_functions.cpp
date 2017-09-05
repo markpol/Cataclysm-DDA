@@ -1332,7 +1332,7 @@ void mapgen_road( map *m, oter_id terrain_type, mapgendata dat, int turn, float 
 ///////////////////
 
 // mapgen_railroad
-void mapgen_railroad( map *m, oter_id terrain_type, mapgendata dat /* , int turn, float density */)
+void mapgen_railroad( map *m, oter_id terrain_type, mapgendata dat, int, float )
 {
     // start by filling the whole map with grass/dirt/etc
     dat.fill_groundcover();
@@ -1932,7 +1932,7 @@ void mapgen_bridge(map *m, oter_id terrain_type, mapgendata dat, int turn, float
 }
 
 ///////////////////
-void mapgen_railroad_bridge(map *m, oter_id terrain_type, mapgendata dat /* , int turn, float */)
+void mapgen_railroad_bridge(map *m, oter_id terrain_type, mapgendata dat, int, float )
 {
     const auto is_river = [&]( const om_direction::type dir ) {
         return dat.t_nesw[static_cast<int>(om_direction::add(dir, terrain_type->get_dir()))]->is_river();
