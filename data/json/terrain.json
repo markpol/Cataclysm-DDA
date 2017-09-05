@@ -6557,7 +6557,7 @@
       "items": [
         { "item": "2x4", "count": [ 2, 5 ] },
         { "item": "nail", "count": [ 3, 8 ] },
-        { "item": "splinter", "count": [ 2 ] }
+        { "item": "splinter", "count": 2 }
       ]
     },
     "flags": [ "BASHABLE", "TRANSPARENT", "NOITEM", "MOUNTABLE" ]
@@ -6578,7 +6578,7 @@
       "items": [
         { "item": "2x4", "count": [ 2, 5 ] },
         { "item": "nail", "count": [ 3, 8 ] },
-        { "item": "splinter", "count": [ 2 ] }
+        { "item": "splinter", "count": 2 }
       ]
     },
     "flags": [ "BASHABLE", "TRANSPARENT", "NOITEM", "MOUNTABLE" ]
