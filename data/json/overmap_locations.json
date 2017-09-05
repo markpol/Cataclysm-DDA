@@ -66,5 +66,12 @@
             "road",
             "road_nesw_manhole"
         ]
+    },{
+        "type": "overmap_location",
+        "id": "railroad",
+        "mode": "allow",
+        "terrains": [
+            "railroad"
+        ]
     }
 ]

@@ -43,5 +43,26 @@
         "flags": [ "ORTHOGONAL" ]
       }
     ]
-  }
+  },{
+    "type": "overmap_connection",
+    "id": "local_railroad",
+    "subtypes": [
+      {
+        "terrain": "railroad",
+        "locations": [ "field", "railroad" ]
+      },{
+        "terrain": "railroad",
+        "locations": [ "forest" ],
+        "basic_cost": 20
+      },{
+        "terrain": "railroad",
+        "locations": [ "swamp" ],
+        "basic_cost": 80
+      },{
+        "terrain": "railroad_bridge",
+        "locations": [ "water" ],
+        "basic_cost": 120
+      }
+    ]
+  },
 ]

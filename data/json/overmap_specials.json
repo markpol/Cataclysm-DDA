@@ -1771,8 +1771,8 @@
     "id": "Railroad Station",
     "type": "overmap_special",
     "connections": [
-      { "point": [ 1, 2, 0 ], "terrain": "railroad" },
-      { "point": [ 0, 2, 0 ], "terrain": "road" }
+      { "point": [ 1, 2, 0 ], "terrain": "railroad", "existing" : true },
+      { "point": [ 0, 2, 0 ], "terrain": "road", "existing" : true }
     ],
     "overmaps": [
       { "point": [ 1, 2, 0 ], "overmap": "railroad_end_north" },
