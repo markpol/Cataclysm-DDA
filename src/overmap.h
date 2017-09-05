@@ -42,16 +42,12 @@ struct oter_weight {
 };
 
 struct city_settings {
-   int railroad_station_radius = 300;
    int shop_radius = 80;  // this is not a cut and dry % but rather an inverse voodoo number; rng(0,99) > VOODOO * distance / citysize;
    int park_radius = 130; // in theory, adjusting these can make a town with a few shops and alot of parks + houses......by increasing shop_radius
-   weighted_int_list<oter_weight> railroad_stations;
+   int railroad_station_radius = 300;
    weighted_int_list<oter_weight> shops;
    weighted_int_list<oter_weight> parks;
-
-    oter_id pick_railroad_station() const {
-        return railroad_stations.pick()->id->get_first();
-    }
+   weighted_int_list<oter_weight> railroad_stations;
 
     oter_id pick_shop() const {
         return shops.pick()->id->get_first();
@@ -60,6 +56,11 @@ struct city_settings {
     oter_id pick_park() const {
         return parks.pick()->id->get_first();
     }
+
+    oter_id pick_railroad_station() const {
+        return railroad_stations.pick()->id->get_first();
+    }
+
 };
 
 /*

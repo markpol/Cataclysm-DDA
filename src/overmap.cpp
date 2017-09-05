@@ -859,6 +859,9 @@ void load_region_settings( JsonObject &jo )
         if ( ! cjo.read("park_radius", new_region.city_spec.park_radius) && strict ) {
             jo.throw_error("city: park_radius required for default");
         }
+        if ( ! cjo.read("railroad_station_radius", new_region.city_spec.railroad_station_radius) && strict ) {
+            jo.throw_error("city: railroad_station_radius required for default");
+        }
         if ( ! cjo.has_object("shops") && strict ) {
             if ( strict ) {
                 jo.throw_error("city: \"shops\": { ... } required for default");
@@ -885,6 +888,21 @@ void load_region_settings( JsonObject &jo )
                 if( key != "//" ) {
                     if( wjo.has_int( key ) ) {
                         new_region.city_spec.parks.add( { oter_type_str_id( key ) }, wjo.get_int( key ) );
+                    }
+                }
+            }
+        }
+        if ( ! cjo.has_object("railroad_stations") && strict ) {
+            if ( strict ) {
+                jo.throw_error("city: \"railroad_stations\": { ... } required for default");
+            }
+        } else {
+            JsonObject wjo = cjo.get_object("railroad_stations");
+            std::set<std::string> keys = wjo.get_member_names();
+            for( const auto &key : keys ) {
+                if( key != "//" ) {
+                    if( wjo.has_int( key ) ) {
+                        new_region.city_spec.railroad_stations.add( { oter_type_str_id( key ) }, wjo.get_int( key ) );
                     }
                 }
             }
@@ -1045,6 +1063,7 @@ void apply_region_overlay(JsonObject &jo, regional_settings &region)
 
     cityjo.read("shop_radius", region.city_spec.shop_radius);
     cityjo.read("park_radius", region.city_spec.park_radius);
+    cityjo.read("railroad_station_radius", region.city_spec.railroad_station_radius);
 
     JsonObject shopsjo = cityjo.get_object("shops");
     std::set<std::string> shopkeys = shopsjo.get_member_names();
@@ -1066,6 +1085,15 @@ void apply_region_overlay(JsonObject &jo, regional_settings &region)
         }
     }
 
+    JsonObject railroad_stationsjo = cityjo.get_object("railroad_stations");
+    std::set<std::string> railroad_stationkeys = railroad_stationsjo.get_member_names();
+    for( const auto &key : railroad_stationkeys ) {
+        if( key != "//" ) {
+            if( railroad_stationsjo.has_int( key ) ) {
+                region.city_spec.railroad_stations.add_or_replace( { oter_type_str_id( key ) }, railroad_stationsjo.get_int( key ) );
+            }
+        }
+    }
 }
 
 const overmap_special_terrain &overmap_special::get_terrain_at( const tripoint &p ) const
