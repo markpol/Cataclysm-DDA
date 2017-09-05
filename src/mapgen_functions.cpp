@@ -1332,7 +1332,7 @@ void mapgen_road( map *m, oter_id terrain_type, mapgendata dat, int turn, float 
 ///////////////////
 
 // mapgen_railroad
-void mapgen_railroad( map *m, oter_id terrain_type, mapgendata dat, int turn, float density )
+void mapgen_railroad( map *m, oter_id terrain_type, mapgendata dat /* , int turn, float density */)
 {
     // start by filling the whole map with grass/dirt/etc
     dat.fill_groundcover();
@@ -1512,9 +1512,9 @@ void mapgen_railroad( map *m, oter_id terrain_type, mapgendata dat, int turn, fl
         // draw yellow dots on the pavement
         for( int dir = 0; dir < 4; dir++ ) {
             if(railroads_nesw[dir] ) {
-                int max_y = SEEY;
+                //int max_y = SEEY;
                 if ( num_dirs == 4 || ( num_dirs == 3 && dir == 0 ) ) {
-                    max_y = 4; // dots don't extend into some intersections
+                    //max_y = 4; // dots don't extend into some intersections
                 }
                 for( int y = 0; y <= SEEY * 2; y = y + 3 ) {
                     int xn = -1, yn = y;
@@ -1634,27 +1634,6 @@ void mapgen_railroad( map *m, oter_id terrain_type, mapgendata dat, int turn, fl
                     circle( m, t_water_sh, 4, SEEY * 2 - 5, 3 );
                 }
             }
-        }
-    }
-
-    // spawn some vehicles
-    if( plaza_dir != 8 ) {
-        vspawn_id( neighbor_sidewalks ? "default_city" : "default_country" ).obj().apply(
-            *m,
-            num_dirs == 4 ? "railroad_four_way" :
-            num_dirs == 3 ? "railroad_tee"      :
-            num_dirs == 1 ? "railroad_end"      :
-            diag          ? "railroad_curved"   :
-            "railroad_straight"
-        );
-    }
-
-    // spawn some monsters
-    if( neighbor_sidewalks ) {
-        m->place_spawns( mongroup_id( "GROUP_ZOMBIE" ), 2, 0, 0, SEEX * 2 - 1, SEEX * 2 - 1, density );
-        // 1 per 10 overmaps
-        if( one_in( 10000 ) ) {
-            m->add_spawn( mon_zombie_jackson, 1, SEEX, SEEY );
         }
     }
 
@@ -1953,7 +1932,7 @@ void mapgen_bridge(map *m, oter_id terrain_type, mapgendata dat, int turn, float
 }
 
 ///////////////////
-void mapgen_railroad_bridge(map *m, oter_id terrain_type, mapgendata dat, int turn, float)
+void mapgen_railroad_bridge(map *m, oter_id terrain_type, mapgendata dat /* , int turn, float */)
 {
     const auto is_river = [&]( const om_direction::type dir ) {
         return dat.t_nesw[static_cast<int>(om_direction::add(dir, terrain_type->get_dir()))]->is_river();
