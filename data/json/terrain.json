@@ -6527,7 +6527,7 @@
     "id": "t_railroad_track",
     "type": "terrain",
     "name": "railroad track",
-    "symbol": "x",
+    "symbol": "X",
     "color": [ "cyan" ],
     "move_cost": 2,
     "flags": [ "TRANSPARENT" ]
@@ -6536,7 +6536,7 @@
     "id": "t_railroad_track_on_tie",
     "type": "terrain",
     "name": "railroad track",
-    "symbol": "x",
+    "symbol": "X",
     "color": [ "cyan" ],
     "move_cost": 2,
     "flags": [ "TRANSPARENT" ]
