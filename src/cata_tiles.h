@@ -94,8 +94,8 @@ struct SDL_Surface_deleter {
 };
 using SDL_Surface_Ptr = std::unique_ptr<SDL_Surface, SDL_Surface_deleter>;
 
-extern SDL_Texture_Ptr alternate_rect_tex;
-extern bool alternate_rect_tex_enabled;
+extern SDL_Texture_Ptr alt_rect_tex;
+extern bool alt_rect_tex_enabled;
 extern void draw_alt_rect( SDL_Rect &rect, int r, int g, int b );
 
 // Cache of a single tile, used to avoid redrawing what didn't change.
