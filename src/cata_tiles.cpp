@@ -2835,7 +2835,7 @@ void cata_tiles::tile_loading_report(arraytype const & array, int array_length, 
 
 inline void cata_tiles::handle_draw_rect( SDL_Rect &rect, int r, int g, int b )
 {
-    if( alternate_rect_tex_enabled ){
+    if( alt_rect_tex_enabled ){
         draw_alt_rect( rect, r, g, b );
     } else {
         SDL_SetRenderDrawColor( renderer, r, g, b, 255 );

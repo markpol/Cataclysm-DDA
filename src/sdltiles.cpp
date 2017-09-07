@@ -62,8 +62,8 @@ extern bool tile_iso;
 extern WINDOW *w_hit_animation;
 
 // used to replace SDL_RenderFillRect with a more efficient SDL_RenderCopy
-SDL_Texture_Ptr alternate_rect_tex = NULL;
-bool alternate_rect_tex_enabled = false;
+SDL_Texture_Ptr alt_rect_tex = NULL;
+bool alt_rect_tex_enabled = false;
 
 #ifdef SDL_SOUND
 /** The music we're currently playing. */
@@ -272,31 +272,31 @@ void generate_alt_rect_texture()
     static const Uint32 bmask = 0x00ff0000;
     static const Uint32 amask = 0xff000000;
 #endif
-    SDL_Surface_Ptr altsurf( SDL_CreateRGBSurface( 0, 1, 1, 32, rmask, gmask, bmask, amask ) );
-    SDL_FillRect( altsurf.get(), NULL, SDL_MapRGB( altsurf->format, 255, 255, 255 ) );
-    alternate_rect_tex.reset( SDL_CreateTextureFromSurface( renderer.get(), altsurf.get() ) )
-    altsurf.reset();
+    SDL_Surface_Ptr alt_surf( SDL_CreateRGBSurface( 0, 1, 1, 32, rmask, gmask, bmask, amask ) );
+    SDL_FillRect( alt_surf.get(), NULL, SDL_MapRGB( alt_surf->format, 255, 255, 255 ) );
+    alt_rect_tex.reset( SDL_CreateTextureFromSurface( renderer.get(), alt_surf.get() ) )
+    alt_surf.reset();
 
     // test to make sure color modulation is supported by renderer
-    if( SDL_SetTextureColorMod( alternate_rect_tex.get(), 0, 0, 0 ) ){
-        alternate_rect_tex_enabled = false;
-        alternate_rect_tex.reset();
+    if( SDL_SetTextureColorMod( alt_rect_tex.get(), 0, 0, 0 ) ){
+        alt_rect_tex_enabled = false;
+        alt_rect_tex.reset();
         dbg( D_ERROR ) << "generate_alt_rect_texture color modulation test failed: " << SDL_GetError();
     } else {
-        alternate_rect_tex_enabled = true;
+        alt_rect_tex_enabled = true;
     }
 }
 
 void draw_alt_rect( SDL_Rect &rect, unsigned char color )
 {
-    SDL_SetTextureColorMod( alternate_rect_tex.get(), windowsPalette[color].r, windowsPalette[color].g, windowsPalette[color].b );
-    SDL_RenderCopy( renderer.get(), alternate_rect_tex.get(), NULL, &rect );
+    SDL_SetTextureColorMod( alt_rect_tex.get(), windowsPalette[color].r, windowsPalette[color].g, windowsPalette[color].b );
+    SDL_RenderCopy( renderer.get(), alt_rect_tex.get(), NULL, &rect );
 }
 
 void draw_alt_rect( SDL_Rect &rect, int r, int g, int b )
 {
-    SDL_SetTextureColorMod( alternate_rect_tex.get(), r, g, b );
-    SDL_RenderCopy( renderer.get(), alternate_rect_tex.get(), NULL, &rect );
+    SDL_SetTextureColorMod( alt_rect_tex.get(), r, g, b );
+    SDL_RenderCopy( renderer.get(), alt_rect_tex.get(), NULL, &rect );
 }
 
 void ClearScreen()
@@ -526,7 +526,7 @@ void WinDestroy()
 #endif
     clear_texture_pool();
 
-    alternate_rect_tex.reset();
+    alt_rect_tex.reset();
 
     if(joystick) {
         SDL_JoystickClose(joystick);
@@ -540,7 +540,7 @@ void WinDestroy()
 
 inline void FillRectDIB( SDL_Rect &rect, unsigned char color )
 {
-    if( alternate_rect_tex_enabled ){
+    if( alt_rect_tex_enabled ){
         draw_alt_rect( rect, color );
     } else {
         if( SDL_SetRenderDrawColor( renderer.get(), windowsPalette[color].r, windowsPalette[color].g, windowsPalette[color].b, 255) != 0 ){
