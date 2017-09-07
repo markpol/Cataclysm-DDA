@@ -6923,11 +6923,38 @@
         ],
         "flags" : [ "RIVER" ]
     },{
-    "id": "railroad_station",
+    "id": "railroad_station_1_1",
     "type": "overmap_terrain",
     "name": "railroad station",
     "sym": 79,
-    "color": "green",
+    "color": "i_green",
+    "see_cost": 2,
+    "mondensity": 2,
+    "extras": "build"
+  },{
+    "id": "railroad_station_1_2",
+    "type": "overmap_terrain",
+    "name": "railroad station",
+    "sym": 79,
+    "color": "light_green",
+    "see_cost": 2,
+    "mondensity": 2,
+    "extras": "build"
+  },{
+    "id": "railroad_station_1_3",
+    "type": "overmap_terrain",
+    "name": "railroad station",
+    "sym": 79,
+    "color": "i_green",
+    "see_cost": 2,
+    "mondensity": 2,
+    "extras": "build"
+  },{
+    "id": "railroad_station_1_4",
+    "type": "overmap_terrain",
+    "name": "railroad station",
+    "sym": 79,
+    "color": "light_green",
     "see_cost": 2,
     "mondensity": 2,
     "extras": "build"

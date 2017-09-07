@@ -376,11 +376,6 @@ bool is_ot_type(const std::string &otype, const oter_id &oter)
     return oter_str.str()[compare_size] == '_';
 }
 
-oter_id overmap::random_railroad_station() const
-{
-    return settings.city_spec.pick_railroad_station();
-}
-
 oter_id overmap::random_shop() const
 {
     return settings.city_spec.pick_shop();
@@ -858,11 +853,7 @@ void load_region_settings( JsonObject &jo )
         }
         if ( ! cjo.read("park_radius", new_region.city_spec.park_radius) && strict ) {
             jo.throw_error("city: park_radius required for default");
-        }
-        if ( ! cjo.read("railroad_station_radius", new_region.city_spec.railroad_station_radius) && strict ) {
-            jo.throw_error("city: railroad_station_radius required for default");
-        }
-        if ( ! cjo.has_object("shops") && strict ) {
+        }        if ( ! cjo.has_object("shops") && strict ) {
             if ( strict ) {
                 jo.throw_error("city: \"shops\": { ... } required for default");
             }
@@ -888,21 +879,6 @@ void load_region_settings( JsonObject &jo )
                 if( key != "//" ) {
                     if( wjo.has_int( key ) ) {
                         new_region.city_spec.parks.add( { oter_type_str_id( key ) }, wjo.get_int( key ) );
-                    }
-                }
-            }
-        }
-        if ( ! cjo.has_object("railroad_stations") && strict ) {
-            if ( strict ) {
-                jo.throw_error("city: \"railroad_stations\": { ... } required for default");
-            }
-        } else {
-            JsonObject wjo = cjo.get_object("railroad_stations");
-            std::set<std::string> keys = wjo.get_member_names();
-            for( const auto &key : keys ) {
-                if( key != "//" ) {
-                    if( wjo.has_int( key ) ) {
-                        new_region.city_spec.railroad_stations.add( { oter_type_str_id( key ) }, wjo.get_int( key ) );
                     }
                 }
             }
@@ -1063,7 +1039,6 @@ void apply_region_overlay(JsonObject &jo, regional_settings &region)
 
     cityjo.read("shop_radius", region.city_spec.shop_radius);
     cityjo.read("park_radius", region.city_spec.park_radius);
-    cityjo.read("railroad_station_radius", region.city_spec.railroad_station_radius);
 
     JsonObject shopsjo = cityjo.get_object("shops");
     std::set<std::string> shopkeys = shopsjo.get_member_names();
@@ -1081,16 +1056,6 @@ void apply_region_overlay(JsonObject &jo, regional_settings &region)
         if( key != "//" ) {
             if( parksjo.has_int( key ) ) {
                 region.city_spec.parks.add_or_replace( { oter_type_str_id( key ) }, parksjo.get_int( key ) );
-            }
-        }
-    }
-
-    JsonObject railroad_stationsjo = cityjo.get_object("railroad_stations");
-    std::set<std::string> railroad_stationkeys = railroad_stationsjo.get_member_names();
-    for( const auto &key : railroad_stationkeys ) {
-        if( key != "//" ) {
-            if( railroad_stationsjo.has_int( key ) ) {
-                region.city_spec.railroad_stations.add_or_replace( { oter_type_str_id( key ) }, railroad_stationsjo.get_int( key ) );
             }
         }
     }
@@ -3461,70 +3426,29 @@ void overmap::place_cities()
 
 void overmap::place_railroad_stations()
 {
-    int op_railroad_station_size = get_option<int>( "CITY_SIZE" );
-    if( op_railroad_station_size <= 0 ) {
-        return;
-    }
-    int op_railroad_station_spacing = get_option<int>( "CITY_SPACING" );
+    const int NUM_RAILROAD_STATIONS = 4;
 
-    // spacing dictates how much of the map is covered in railroad_stations
-    //   railroad_station  |  railroad_stations  |   size N railroad_stations per overmap
-    // spacing | % of map |  2  |  4  |  8  |  12 |  16
-    //     0   |   ~99    |2025 | 506 | 126 |  56 |  31
-    //     1   |    50    |1012 | 253 |  63 |  28 |  15
-    //     2   |    25    | 506 | 126 |  31 |  14 |   7
-    //     3   |    12    | 253 |  63 |  15 |   7 |   3
-    //     4   |     6    | 126 |  31 |   7 |   3 |   1
-    //     5   |     3    |  63 |  15 |   3 |   1 |   0
-    //     6   |     1    |  31 |   7 |   1 |   0 |   0
-    //     7   |     0    |  15 |   3 |   0 |   0 |   0
-    //     8   |     0    |   7 |   1 |   0 |   0 |   0
-
-    const double omts_per_overmap = OMAPX * OMAPY;
-    const double railroad_station_map_coverage_ratio = 1.0/std::pow(2.0, op_railroad_station_spacing);
-    const double omts_per_railroad_station = (op_railroad_station_size*2+1) * (op_railroad_station_size*2+1) * 3 / 4;
-
-    // how many railroad_stations on this overmap?
-    const int NUM_RAILROAD_STATIONS =
-        roll_remainder(omts_per_overmap * railroad_station_map_coverage_ratio / omts_per_railroad_station);
-
-    const string_id<overmap_connection> local_railroad_id( "local_railroad" );
-    const overmap_connection &local_railroad( *local_railroad_id );
-
-    // place a seed for NUM_RAILROAD_STATIONS railroad_stations, and maybe one more
-    while ( railroad_stations.size() < size_t(NUM_RAILROAD_STATIONS) ) {
-        // randomly make some railroad_stations smaller or larger
-        int size = rng(op_railroad_station_size-1, op_railroad_station_size+1);
-        if(one_in(3)) {          // 33% tiny
-            size = 1;
-        } else if (one_in(2)) {  // 33% small
-            size = size * 2 / 3;
-        } else if (one_in(2)) {  // 17% large
-            size = size * 3 / 2;
-        } else {                 // 17% huge
-            size = size * 2;
-        }
-        size = std::max(size,1);
-
+    while ( railroad_stations.size() < size_t( NUM_RAILROAD_STATIONS ) ) {
+        int railroad_station_size = 2;
         // TODO put railroad_stations closer to the edge when they can span overmaps
         // don't draw railroad_stations across the edge of the map, they will get clipped
-        int cx = rng(size - 1, OMAPX - size);
-        int cy = rng(size - 1, OMAPY - size);
-        if (ter(cx, cy, 0) == settings.default_oter ) {
-            ter(cx, cy, 0) = oter_id( "railroad_nesw" ); // every railroad_station starts with an intersection
-            city tmp;
-            tmp.x = cx;
-            tmp.y = cy;
-            tmp.s = size;
-            railroad_stations.push_back(tmp);
-
-            const auto start_dir = om_direction::random();
-            auto cur_dir = start_dir;
-
-            do {
-                build_city_street( local_railroad, point( cx, cy ), size, cur_dir, tmp );
-            } while( ( cur_dir = om_direction::turn_right( cur_dir ) ) != start_dir );
-
+        int cx = rng( railroad_station_size - 1, OMAPX - railroad_station_size );
+        int cy = rng( railroad_station_size - 1, OMAPY - railroad_station_size );
+        if ( ter( cx, cy, 0 ) == settings.default_oter ){
+             /*
+             ter(cx, cy, 0) = oter_id( "railroad_station_1_1" );
+             ter(cx + 1, cy, 0) = oter_id( "railroad_station_1_2" );
+             ter(cx, cy + 1, 0) = oter_id( "railroad_station_1_3" );
+             ter(cx + 1, cy + 1, 0) = oter_id( "railroad_station_1_4" );
+             ter(cx, cy - 1, 0) = oter_id( "railroad" );
+             */
+             ter( cx - 1, cy, 0 ) = oter_id( "railroad_station_1_1_north" );
+             //ter( cx, cy, 0 ) = oter_id( "railroad_straight_north" );
+             city tmp;
+             tmp.x = cx;
+             tmp.y = cy;
+             tmp.s = railroad_station_size;
+             railroad_stations.push_back( tmp );
         }
     }
 }
