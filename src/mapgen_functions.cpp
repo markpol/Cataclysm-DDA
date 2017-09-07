@@ -1478,14 +1478,6 @@ XxXXxXXxXXxXXxXXxXXxXXxX\n\
             break;
         case 2: // straight or diagonal
             if( diag ) { // diagonal railroads get drawn differently from all other types
-            DebugLog( D_INFO, DC_ALL ) << "loc" << m->getlocal(0,0).x << "/" << m->getlocal(0,0).y;
-            DebugLog( D_INFO, DC_ALL ) << "curvedir_nesw[0]" << curvedir_nesw[0];
-            DebugLog( D_INFO, DC_ALL ) << "curvedir_nesw[1]" << curvedir_nesw[1];
-            DebugLog( D_INFO, DC_ALL ) << "curvedir_nesw[2]" << curvedir_nesw[2];
-            DebugLog( D_INFO, DC_ALL ) << "curvedir_nesw[3]" << curvedir_nesw[3];
-            DebugLog( D_INFO, DC_ALL ) << "diag" << diag;
-                // draw diagonal railroad
-                if( curvedir_nesw[0] < 0 ){ // diagonal heading ???
                     mapf::formatted_set_simple( m, 0, 0, "\
 ...^^X^^X^^..^^X^^X^^...\n\
 ...^#x##x#^..^#x##x#^...\n\
@@ -1523,121 +1515,6 @@ XxXXxXXxXXxXXxXXxXXxXXxX\n\
                         f_null,
                         f_null,
                         f_null ) );
-                } else if( curvedir_nesw[0] >= 0 ){ // diagonal heading ???
-                    mapf::formatted_set_simple( m, 0, 0, "\
-...^^X^^X^^..^^X^^X^^...\n\
-...^#x##x#^..^#x##x#^...\n\
-...^^X^^X^^..^^X^^X^^^..\n\
-...^^X^^X^^..^^X^^X^^^^^\n\
-...^#x##x#^..^#x##x#^^#^\n\
-...^^X^^X^^..^^X^^XxXXxX\n\
-...^^X^^X^^..^^X^^^#^^#^\n\
-...^#x##x#^...^^X^^#^^#^\n\
-...^^X^^X^^...^^^XXxXXxX\n\
-...^^X^^X^^....^^^^#^^#^\n\
-...^#x##x#^......^^^^^^^\n\
-...^^X^^X^^.............\n\
-...^^X^^X^^^............\n\
-...^#x##x#^^^^^^^^^^^^^^\n\
-...^^X^^X^#^^#^^#^^#^^#^\n\
-...^^X^^XXxXXxXXxXXxXXxX\n\
-...^^X^^^^#^^#^^#^^#^^#^\n\
-...^^^X^^^#^^#^^#^^#^^#^\n\
-....^^^XXXxXXxXXxXXxXXxX\n\
-.....^^^^^#^^#^^#^^#^^#^\n\
-......^^^^^^^^^^^^^^^^^^\n\
-........................\n\
-........................\n\
-........................",
-                    mapf::ter_bind( ". ^ # X x",
-                        t_dirt,
-                        t_rubble,
-                        t_railroad_tie,
-                        t_railroad_track,
-                        t_railroad_track_on_tie ),
-                    mapf::furn_bind( ". ^ # X x",
-                        f_null,
-                        f_null,
-                        f_null,
-                        f_null,
-                        f_null ) );
-                } else if( curvedir_nesw[1] < 0 ){ // diagonal heading ???
-                    mapf::formatted_set_simple( m, 0, 0, "\
-...^^X^^X^^..^^X^^X^^...\n\
-...^#x##x#^..^#x##x#^...\n\
-...^^X^^X^^..^^X^^X^^^..\n\
-...^^X^^X^^..^^X^^X^^^^^\n\
-...^#x##x#^..^#x##x#^^#^\n\
-...^^X^^X^^..^^X^^XxXXxX\n\
-...^^X^^X^^..^^X^^^#^^#^\n\
-...^#x##x#^...^^X^^#^^#^\n\
-...^^X^^X^^...^^^XXxXXxX\n\
-...^^X^^X^^....^^^^#^^#^\n\
-...^#x##x#^......^^^^^^^\n\
-...^^X^^X^^.............\n\
-...^^X^^X^^^............\n\
-...^#x##x#^^^^^^^^^^^^^^\n\
-...^^X^^X^#^^#^^#^^#^^#^\n\
-...^^X^^XXxXXxXXxXXxXXxX\n\
-...^^X^^^^#^^#^^#^^#^^#^\n\
-...^^^X^^^#^^#^^#^^#^^#^\n\
-....^^^XXXxXXxXXxXXxXXxX\n\
-.....^^^^^#^^#^^#^^#^^#^\n\
-......^^^^^^^^^^^^^^^^^^\n\
-........................\n\
-........................\n\
-........................",
-                    mapf::ter_bind( ". ^ # X x",
-                        t_dirt,
-                        t_rubble,
-                        t_railroad_tie,
-                        t_railroad_track,
-                        t_railroad_track_on_tie ),
-                    mapf::furn_bind( ". ^ # X x",
-                        f_null,
-                        f_null,
-                        f_null,
-                        f_null,
-                        f_null ) );
-                } else if( curvedir_nesw[1] >= 0 ){ // diagonal heading ???
-                    mapf::formatted_set_simple( m, 0, 0, "\
-...^^X^^X^^..^^X^^X^^...\n\
-...^#x##x#^..^#x##x#^...\n\
-...^^X^^X^^..^^X^^X^^^..\n\
-...^^X^^X^^..^^X^^X^^^^^\n\
-...^#x##x#^..^#x##x#^^#^\n\
-...^^X^^X^^..^^X^^XxXXxX\n\
-...^^X^^X^^..^^X^^^#^^#^\n\
-...^#x##x#^...^^X^^#^^#^\n\
-...^^X^^X^^...^^^XXxXXxX\n\
-...^^X^^X^^....^^^^#^^#^\n\
-...^#x##x#^......^^^^^^^\n\
-...^^X^^X^^.............\n\
-...^^X^^X^^^............\n\
-...^#x##x#^^^^^^^^^^^^^^\n\
-...^^X^^X^#^^#^^#^^#^^#^\n\
-...^^X^^XXxXXxXXxXXxXXxX\n\
-...^^X^^^^#^^#^^#^^#^^#^\n\
-...^^^X^^^#^^#^^#^^#^^#^\n\
-....^^^XXXxXXxXXxXXxXXxX\n\
-.....^^^^^#^^#^^#^^#^^#^\n\
-......^^^^^^^^^^^^^^^^^^\n\
-........................\n\
-........................\n\
-........................",
-                    mapf::ter_bind( ". ^ # X x",
-                        t_dirt,
-                        t_rubble,
-                        t_railroad_tie,
-                        t_railroad_track,
-                        t_railroad_track_on_tie ),
-                    mapf::furn_bind( ". ^ # X x",
-                        f_null,
-                        f_null,
-                        f_null,
-                        f_null,
-                        f_null ) );
-                }
             } else { // normal railroad drawing
                 mapf::formatted_set_simple( m, 0, 0, "\
 ...^^X^^X^^..^^X^^X^^...\n\
