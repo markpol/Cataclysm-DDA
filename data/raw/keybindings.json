@@ -1144,6 +1144,18 @@
     },
     {
         "type" : "keybinding",
+        "id":"TOGGLE_RAILROAD_STATION_LABELS",
+        "category":"OVERMAP",
+        "name":"Toggle Railroad Station Labels",
+        "bindings":[
+            {
+                "input_method":"keyboard",
+                "key":"R"
+            }
+        ]
+    },
+    {
+        "type" : "keybinding",
         "id":"TOGGLE_EXPLORED",
         "category":"OVERMAP",
         "name":"Toggle Explored",

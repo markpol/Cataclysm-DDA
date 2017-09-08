@@ -456,6 +456,7 @@ public:
 
 
   static void draw_city_labels(WINDOW *w, const tripoint &center);
+  static void draw_railroad_station_labels(WINDOW *w, const tripoint &center);
 
     oter_id random_shop() const;
     oter_id random_park() const;

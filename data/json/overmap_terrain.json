@@ -6927,7 +6927,7 @@
     "type": "overmap_terrain",
     "name": "railroad station",
     "sym": 79,
-    "color": "i_green",
+    "color": "ltgreen",
     "see_cost": 2,
     "mondensity": 2,
     "extras": "build"
@@ -6936,7 +6936,7 @@
     "type": "overmap_terrain",
     "name": "railroad station",
     "sym": 79,
-    "color": "light_green",
+    "color": "ltgreen",
     "see_cost": 2,
     "mondensity": 2,
     "extras": "build"
@@ -6945,7 +6945,7 @@
     "type": "overmap_terrain",
     "name": "railroad station",
     "sym": 79,
-    "color": "i_green",
+    "color": "ltgreen",
     "see_cost": 2,
     "mondensity": 2,
     "extras": "build"
@@ -6954,7 +6954,7 @@
     "type": "overmap_terrain",
     "name": "railroad station",
     "sym": 79,
-    "color": "light_green",
+    "color": "ltgreen",
     "see_cost": 2,
     "mondensity": 2,
     "extras": "build"

@@ -54,12 +54,12 @@
       },{
         "terrain": "railroad",
         "locations": [ "railroad_road_intersection" ],
-        "basic_cost": 5,
+        "basic_cost": 2,
         "flags": [ "ORTHOGONAL" ]
       },{
         "terrain": "railroad",
         "locations": [ "swamp" ],
-        "basic_cost": 50,
+        "basic_cost": 5,
         "flags": [ "ORTHOGONAL" ]
       },{
         "terrain": "railroad_bridge",

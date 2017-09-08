@@ -60,6 +60,7 @@ class uistatedata : public JsonSerializer, public JsonDeserializer
         bool overmap_blinking = true;           // toggles active blinking of overlays.
         bool overmap_show_overlays = false;     // whether overlays are shown or not.
         bool overmap_show_city_labels = true;
+        bool overmap_show_railroad_station_labels = true;
 
         bool debug_ranged;
         tripoint adv_inv_last_coords = {-999, -999, -999};
@@ -141,6 +142,7 @@ class uistatedata : public JsonSerializer, public JsonDeserializer
             json.member("overmap_blinking", overmap_blinking);
             json.member("overmap_show_overlays", overmap_show_overlays);
             json.member("overmap_show_city_labels", overmap_show_city_labels);
+            json.member("overmap_show_railroad_station_labels", overmap_show_railroad_station_labels);
             json.member( "vmenu_show_items", vmenu_show_items );
             json.member("list_item_sort", list_item_sort);
             json.member("list_item_filter_active", list_item_filter_active);
@@ -227,6 +229,7 @@ class uistatedata : public JsonSerializer, public JsonDeserializer
             jo.read("overmap_blinking", overmap_blinking);
             jo.read("overmap_show_overlays", overmap_show_overlays);
             jo.read("overmap_show_city_labels", overmap_show_city_labels);
+            jo.read("overmap_show_railroad_station_labels", overmap_show_railroad_station_labels);
 
             if( !jo.read( "vmenu_show_items", vmenu_show_items ) ) {
                 // This is an old save: 1 means view items, 2 means view monsters,
