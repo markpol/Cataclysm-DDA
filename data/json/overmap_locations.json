@@ -73,5 +73,14 @@
         "terrains": [
             "railroad"
         ]
+    },{
+        "type": "overmap_location",
+        "id": "railroad_road_intersection",
+        "mode": "allow",
+        "terrains": [
+            "road",
+            "hiway_ns",
+            "hiway_ew"
+        ]
     }
 ]

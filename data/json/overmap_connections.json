@@ -49,19 +49,23 @@
     "subtypes": [
       {
         "terrain": "railroad",
-        "locations": [ "field", "railroad" ]
+        "locations": [ "wilderness", "railroad" ],
+        "flags": [ "ORTHOGONAL" ]
       },{
         "terrain": "railroad",
-        "locations": [ "forest" ],
-        "basic_cost": 20
+        "locations": [ "railroad_road_intersection" ],
+        "basic_cost": 5,
+        "flags": [ "ORTHOGONAL" ]
       },{
         "terrain": "railroad",
         "locations": [ "swamp" ],
-        "basic_cost": 80
+        "basic_cost": 50,
+        "flags": [ "ORTHOGONAL" ]
       },{
         "terrain": "railroad_bridge",
         "locations": [ "water" ],
-        "basic_cost": 120
+        "basic_cost": 100,
+        "flags": [ "ORTHOGONAL" ]
       }
     ]
   }
