@@ -1146,7 +1146,7 @@
         "type" : "keybinding",
         "id":"TOGGLE_RAILROAD_STATION_LABELS",
         "category":"OVERMAP",
-        "name":"Toggle Railroad Station Labels",
+        "name":"Toggle Station Labels",
         "bindings":[
             {
                 "input_method":"keyboard",
