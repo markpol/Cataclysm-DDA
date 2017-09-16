@@ -57,7 +57,7 @@
         "basic_cost": 2,
         "flags": [ "ORTHOGONAL" ]
       },{
-        "terrain": "railroad_road_intersection",
+        "terrain": "railroad_level_crossing",
         "locations": [ "road" ],
         "basic_cost": 100
       },{
