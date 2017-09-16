@@ -53,14 +53,13 @@
         "flags": [ "ORTHOGONAL" ]
       },{
         "terrain": "railroad",
-        "locations": [ "railroad_road_intersection" ],
+        "locations": [ "swamp" ],
         "basic_cost": 2,
         "flags": [ "ORTHOGONAL" ]
       },{
-        "terrain": "railroad",
-        "locations": [ "swamp" ],
-        "basic_cost": 5,
-        "flags": [ "ORTHOGONAL" ]
+        "terrain": "railroad_road_intersection",
+        "locations": [ "road" ],
+        "basic_cost": 100
       },{
         "terrain": "railroad_bridge",
         "locations": [ "water" ],
