@@ -92,6 +92,7 @@
 #include "game_constants.h"
 #include "string_input_popup.h"
 #include "monexamine.h"
+#include "loading_ui.h"
 
 #include <map>
 #include <set>
@@ -301,7 +302,7 @@ void game::load_static_data()
     get_safemode().load_global();
 }
 
-bool game::check_mod_data( const std::vector<std::string> &opts )
+bool game::check_mod_data( const std::vector<std::string> &opts, loading_ui &ui )
 {
     auto &mods = world_generator->get_mod_manager()->mod_map;
     auto &tree = world_generator->get_mod_manager()->get_tree();
@@ -321,8 +322,8 @@ bool game::check_mod_data( const std::vector<std::string> &opts )
     if( check.empty() ) {
         // if no loadable mods then test core data only
         try {
-            load_core_data();
-            DynamicDataLoader::get_instance().finalize_loaded_data();
+            load_core_data( ui );
+            DynamicDataLoader::get_instance().finalize_loaded_data( ui );
         } catch( const std::exception &err ) {
             std::cerr << "Error loading data from json: " << err.what() << std::endl;
         }
@@ -346,16 +347,16 @@ bool game::check_mod_data( const std::vector<std::string> &opts )
         std::cout << "Checking mod " << mod.name << " [" << mod.ident << "]" << std::endl;
 
         try {
-            load_core_data();
+            load_core_data( ui );
 
             // Load any dependencies
             for( auto &dep : tree.get_dependencies_of_X_as_strings( mod.ident ) ) {
-                load_data_from_dir( mods[dep]->path, mods[dep]->ident );
+                load_data_from_dir( mods[dep]->path, mods[dep]->ident, ui );
             }
 
             // Load mod itself
-            load_data_from_dir( mod.path, mod.ident );
-            DynamicDataLoader::get_instance().finalize_loaded_data();
+            load_data_from_dir( mod.path, mod.ident, ui );
+            DynamicDataLoader::get_instance().finalize_loaded_data( ui );
         } catch( const std::exception &err ) {
             std::cerr << "Error loading data: " << err.what() << std::endl;
         }
@@ -369,24 +370,24 @@ bool game::is_core_data_loaded() const
     return DynamicDataLoader::get_instance().is_data_finalized();
 }
 
-void game::load_core_data()
+void game::load_core_data( loading_ui &ui )
 {
     // core data can be loaded only once and must be first
     // anyway.
     DynamicDataLoader::get_instance().unload_data();
 
     init_lua();
-    load_data_from_dir( FILENAMES[ "jsondir" ], "core" );
+    load_data_from_dir( FILENAMES[ "jsondir" ], "core", ui );
 }
 
-void game::load_data_from_dir( const std::string &path, const std::string &src )
+void game::load_data_from_dir( const std::string &path, const std::string &src, loading_ui &ui )
 {
     // Process a preload file before the .json files,
     // so that custom IUSE's can be defined before
     // the items that need them are parsed
     lua_loadmod( path, "preload.lua" );
 
-    DynamicDataLoader::get_instance().load_data_from_path( path, src );
+    DynamicDataLoader::get_instance().load_data_from_path( path, src, ui );
 
     // main.lua will be executed after JSON, allowing to
     // work with items defined by mod's JSON
@@ -732,9 +733,10 @@ void game::reenter_fullscreen()
 void game::setup()
 {
     popup_status( _( "Please wait while the world data loads..." ), _( "Loading core data" ) );
-    load_core_data();
+    loading_ui ui( true );
+    load_core_data( ui );
 
-    load_world_modfiles(world_generator->active_world);
+    load_world_modfiles( world_generator->active_world, ui );
 
     m =  map( get_option<bool>( "ZLEVELS" ) );
 
@@ -871,7 +873,7 @@ bool game::start_game(std::string worldname)
         for( size_t i = 0; i < num_zombies(); ) {
             if( rl_dist( zombie( i ).pos(), u.pos() ) <= 5 ||
                 m.clear_path( zombie( i ).pos(), u.pos(), 40, 1, 100 ) ) {
-                remove_zombie( i );
+                remove_zombie( zombie( i ) );
             } else {
                 i++;
             }
@@ -3282,7 +3284,7 @@ bool game::handle_action()
             if (safe_mode == SAFE_MODE_STOP) {
                 add_msg(m_info, _("Ignoring enemy!"));
                 for( auto &elem : new_seen_mon ) {
-                    monster &critter = zombie( elem );
+                    monster &critter = *elem;
                     critter.ignoring = rl_dist( u.pos(), critter.pos() );
                 }
                 set_safe_mode( SAFE_MODE_ON );
@@ -3729,7 +3731,7 @@ void game::load(std::string worldname, const save_t &name)
     draw();
 }
 
-void game::load_world_modfiles(WORLDPTR world)
+void game::load_world_modfiles( WORLDPTR world, loading_ui &ui )
 {
     erase();
     refresh();
@@ -3761,42 +3763,49 @@ void game::load_world_modfiles(WORLDPTR world)
         // are resolved during the creation of the world.
         // That means world->active_mod_order contains a list
         // of mods in the correct order.
-        load_packs( _( "Please wait while the world data loads..." ), mods );
+        load_packs( _( "Loading files" ), mods, ui );
 
         // Load additional mods from that world-specific folder
-        load_data_from_dir( world->world_path + "/mods", "custom" );
+        load_data_from_dir( world->world_path + "/mods", "custom", ui );
     }
 
     erase();
     refresh();
-    popup_status( _( "Please wait while the world data loads..." ), _( "Finalizing and verifying" ) );
 
-    DynamicDataLoader::get_instance().finalize_loaded_data();
+    DynamicDataLoader::get_instance().finalize_loaded_data( ui );
 }
 
-bool game::load_packs( const std::string &msg, const std::vector<std::string>& packs )
+bool game::load_packs( const std::string &msg, const std::vector<std::string>& packs, loading_ui &ui )
 {
+    ui.new_context( msg );
     std::vector<std::string> missing;
+    std::vector<std::string> available;
 
     mod_manager *mm = world_generator->get_mod_manager();
     for( const auto &e : packs ) {
-        if( !mm->has_mod( e ) ) {
+        if( mm->has_mod( e ) ) {
+            available.emplace_back( e );
+            ui.add_entry( e );
+        } else {
             missing.push_back( e );
-            continue;
         }
+    }
 
+    ui.show();
+    for( const auto &e : available ) {
         MOD_INFORMATION &mod = *mm->mod_map[e];
-        popup_status( msg.c_str(), _( "Loading content (%s)" ), e.c_str() );
-        load_data_from_dir( mod.path, mod.ident );
+        load_data_from_dir( mod.path, mod.ident, ui );
 
         // if mod specifies legacy migrations load any that are required
         if( !mod.legacy.empty() ) {
             for( int i = get_option<int>( "CORE_VERSION" ); i < core_version; ++i ) {
                 popup_status( msg.c_str(), _( "Applying legacy migration (%s %i/%i)" ),
                               e.c_str(), i, core_version - 1 );
-                load_data_from_dir( string_format( "%s/%i", mod.legacy.c_str(), i ), mod.ident );
+                load_data_from_dir( string_format( "%s/%i", mod.legacy.c_str(), i ), mod.ident, ui );
             }
         }
+
+        ui.proceed();
     }
 
     for( const auto &e : missing ) {
@@ -5642,15 +5651,8 @@ int game::mon_info(WINDOW *w)
                     }
 
                     if (!passmon) {
-                        int news = mon_at( critter.pos(), true );
-                        if( news != -1 ) {
-                            newseen++;
-                            new_seen_mon.push_back( news );
-                        } else {
-                            debugmsg( "%s at (%d,%d,%d) was not found in the tracker",
-                                      critter.disp_name().c_str(),
-                                      critter.posx(), critter.posy(), critter.posz() );
-                        }
+                        newseen++;
+                        new_seen_mon.push_back( shared_from( critter ) );
                     }
                 }
             }
@@ -5677,7 +5679,7 @@ int game::mon_info(WINDOW *w)
     if (newseen > mostseen) {
         if (newseen - mostseen == 1) {
             if (!new_seen_mon.empty()) {
-                monster &critter = zombie( new_seen_mon.back() );
+                monster &critter = *new_seen_mon.back();
                 cancel_activity_query(_("%s spotted!"), critter.name().c_str());
                 if (u.has_trait( trait_id( "M_DEFENDER" ) ) && critter.type->in_species( PLANT )) {
                     add_msg(m_warning, _("We have detected a %s."), critter.name().c_str());
@@ -5857,7 +5859,7 @@ void game::cleanup_dead()
         // From here on, pointers to creatures get invalidated as dead creatures get removed.
         for( size_t i = 0; i < num_zombies(); ) {
             if( zombie( i ).is_dead() ) {
-                remove_zombie( i );
+                remove_zombie( zombie( i ) );
             } else {
                 i++;
             }
@@ -6511,7 +6513,7 @@ void game::emp_blast( const tripoint &p )
                         m.spawn_item( x, y, ammodef.first, 1, ammodef.second, calendar::turn );
                     }
                 }
-                remove_zombie( mon_at( critter.pos() ) );
+                remove_zombie( critter );
             } else {
                 add_msg(_("The EMP blast fries the %s!"), critter.name().c_str());
                 int dam = dice(10, 10);
@@ -6562,9 +6564,11 @@ npc *game::npc_by_id(const int id) const
 template<typename T>
 T *game::critter_at( const tripoint &p, bool allow_hallucination )
 {
-    const int mindex = mon_at( p, allow_hallucination );
-    if( mindex != -1 ) {
-        return dynamic_cast<T*>( &zombie( mindex ) );
+    if( const std::shared_ptr<monster> mon_ptr = critter_tracker->find( p ) ) {
+        if( !allow_hallucination && mon_ptr->is_hallucination() ) {
+            return nullptr;
+        }
+        return dynamic_cast<T*>( mon_ptr.get() );
     }
     if( p == u.pos() ) {
         return dynamic_cast<T*>( &u );
@@ -6589,6 +6593,31 @@ template const player *game::critter_at<player>( const tripoint &, bool ) const;
 template const Character *game::critter_at<Character>( const tripoint &, bool ) const;
 template Character *game::critter_at<Character>( const tripoint &, bool );
 template const Creature *game::critter_at<Creature>( const tripoint &, bool ) const;
+
+template<typename T>
+std::shared_ptr<T> game::shared_from( const T &critter )
+{
+    if( const std::shared_ptr<monster> mon_ptr = critter_tracker->find( critter.pos() ) ) {
+        return std::dynamic_pointer_cast<T>( mon_ptr );
+    }
+    if( static_cast<const Creature*>( &critter ) == static_cast<const Creature*>( &u ) ) {
+        // u is not stored in a shared_ptr, but it won't go out of scope anyway
+        const std::shared_ptr<player> player_ptr( &u, []( player * ) { } );
+        return std::dynamic_pointer_cast<T>( player_ptr );
+    }
+    for( auto &cur_npc : active_npc ) {
+        if( static_cast<const Creature*>( cur_npc.get() ) == static_cast<const Creature*>( &critter ) ) {
+            return std::dynamic_pointer_cast<T>( cur_npc );
+        }
+    }
+    return nullptr;
+}
+
+template std::shared_ptr<Creature> game::shared_from<Creature>( const Creature & );
+template std::shared_ptr<Character> game::shared_from<Character>( const Character & );
+template std::shared_ptr<player> game::shared_from<player>( const player & );
+template std::shared_ptr<monster> game::shared_from<monster>( const monster & );
+template std::shared_ptr<npc> game::shared_from<npc>( const npc & );
 
 monster *game::summon_mon( const mtype_id& id, const tripoint &p )
 {
@@ -6627,7 +6656,8 @@ size_t game::num_zombies() const
 
 monster &game::zombie( const int idx ) const
 {
-    return *critter_tracker->find( idx );
+    //@todo hack. Get rid of this function and replace with visitor function.
+    return *critter_tracker->from_temporary_id( idx );
 }
 
 bool game::update_zombie_pos( const monster &critter, const tripoint &pos )
@@ -6635,9 +6665,9 @@ bool game::update_zombie_pos( const monster &critter, const tripoint &pos )
     return critter_tracker->update_pos( critter, pos );
 }
 
-void game::remove_zombie(const int idx)
+void game::remove_zombie( const monster &critter )
 {
-    critter_tracker->remove(idx);
+    critter_tracker->remove( critter );
 }
 
 void game::clear_zombies()
@@ -6663,17 +6693,6 @@ bool game::spawn_hallucination()
     } else {
         return false;
     }
-}
-
-int game::mon_at( const tripoint &p, bool allow_hallucination ) const
-{
-    const int mon_index = critter_tracker->mon_at( p );
-    if( mon_index == -1 ||
-        allow_hallucination || !zombie( mon_index ).is_hallucination() ) {
-        return mon_index;
-    }
-
-    return -1;
 }
 
 void game::rebuild_mon_at_cache()
@@ -9199,7 +9218,7 @@ game::vmenu_ret game::list_items( const std::vector<map_item_stack> &item_list )
             calcStartPos( iStartPos, iActive, iMaxRows, iItemNum );
             int iNum = 0;
             active_pos = tripoint_zero;
-            bool high = true;
+            bool high = false;
             bool low = false;
             int index = 0;
             int iCatSortOffset = 0;
@@ -9210,9 +9229,11 @@ game::vmenu_ret game::list_items( const std::vector<map_item_stack> &item_list )
                 }
             }
             for( auto iter = filtered_items.begin(); iter != filtered_items.end(); ++index ) {
-                if( index < highPEnd + iCatSortOffset ) {
+                if( highPEnd > 0 && index < highPEnd + iCatSortOffset ) {
                     high = true;
+                    low = false;
                 } else if( index >= lowPStart + iCatSortOffset ) {
+                    high = false;
                     low = true;
                 } else {
                     high = false;
@@ -9405,7 +9426,7 @@ game::vmenu_ret game::list_monsters( const std::vector<Creature *> &monster_list
             iLastActivePos = recentered;
         } else if (action == "fire") {
             if( cCurMon != nullptr && rl_dist( u.pos(), cCurMon->pos() ) <= max_gun_range ) {
-                last_target = critter_tracker->find( mon_at( cCurMon->pos(), true ) );
+                last_target = shared_from( *cCurMon );
                 u.view_offset = stored_view_offset;
                 return game::vmenu_ret::FIRE;
             }
@@ -11058,7 +11079,7 @@ bool game::check_safe_mode_allowed( bool repeat_safe_mode_warnings )
         spotted_creature_name = _( "a survivor" );
         get_safemode().lastmon_whitelist = get_safemode().npc_type_name();
     } else {
-        spotted_creature_name = zombie( new_seen_mon.back() ).name();
+        spotted_creature_name = new_seen_mon.back()->name();
         get_safemode().lastmon_whitelist = spotted_creature_name;
     }
 
@@ -11083,11 +11104,11 @@ void game::set_safe_mode( safe_mode_type mode )
 
 bool game::disable_robot( const tripoint &p )
 {
-    const int mondex = mon_at( p );
-    if( mondex == -1 ) {
+    monster *const mon_ptr = critter_at<monster>( p );
+    if( !mon_ptr ) {
         return false;
     }
-    monster &critter = zombie( mondex );
+    monster &critter = *mon_ptr;
     if( critter.friendly == 0 ) {
         // Can only disable / reprogram friendly monsters
         return false;
@@ -11107,7 +11128,7 @@ bool game::disable_robot( const tripoint &p )
                 }
             }
         }
-        remove_zombie( mondex );
+        remove_zombie( critter );
         return true;
     }
     // Manhacks are special, they have their own menu here.
@@ -12544,7 +12565,7 @@ void game::vertical_move(int movez, bool force)
                 critter.staircount = 10 + turns;
                 critter.on_unload();
                 coming_to_stairs.push_back(critter);
-                remove_zombie( i );
+                remove_zombie( critter );
             } else {
                 i++;
             }
@@ -13162,7 +13183,7 @@ void game::despawn_monster(int mondex)
     }
 
     critter.on_unload();
-    remove_zombie( mondex );
+    remove_zombie( critter );
 }
 
 void game::shift_monsters( const int shiftx, const int shifty, const int shiftz )
@@ -13481,6 +13502,8 @@ void intro()
     const int minHeight = FULL_SCREEN_HEIGHT;
     const int minWidth = FULL_SCREEN_WIDTH;
     WINDOW *tmp = newwin(minHeight, minWidth, 0, 0);
+    WINDOW_PTR w_tmpptr( tmp );
+
     while (maxy < minHeight || maxx < minWidth) {
         werase(tmp);
         if (maxy < minHeight && maxx < minWidth) {
@@ -13498,6 +13521,7 @@ void intro()
                                                        "make the terminal just a smidgen taller?"),
                            minWidth, minHeight, maxx, maxy);
         }
+        wrefresh(tmp);
         inp_mngr.wait_for_any_key();
         getmaxyx(stdscr, maxy, maxx);
     }
@@ -13518,7 +13542,6 @@ void intro()
 #endif
 
     wrefresh(tmp);
-    delwin(tmp);
     erase();
 }
 
