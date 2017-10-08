@@ -7163,7 +7163,7 @@
     "type": "overmap_terrain",
     "name": "railroad station",
     "sym": 79,
-    "color": "ltgreen",
+    "color": "green",
     "see_cost": 2,
     "mondensity": 2,
     "extras": "build"
@@ -7171,8 +7171,8 @@
     "id": "railroad_station_1_2",
     "type": "overmap_terrain",
     "name": "railroad station",
-    "sym": 79,
-    "color": "ltgreen",
+    "sym": 4194414,
+    "color": "ltred",
     "see_cost": 2,
     "mondensity": 2,
     "extras": "build"
@@ -7181,7 +7181,7 @@
     "type": "overmap_terrain",
     "name": "railroad station",
     "sym": 79,
-    "color": "ltgreen",
+    "color": "green",
     "see_cost": 2,
     "mondensity": 2,
     "extras": "build"
@@ -7190,7 +7190,52 @@
     "type": "overmap_terrain",
     "name": "railroad station",
     "sym": 79,
-    "color": "ltgreen",
+    "color": "green",
+    "see_cost": 2,
+    "mondensity": 2,
+    "extras": "build"
+  },{
+    "id": "railroad_station_1_5",
+    "type": "overmap_terrain",
+    "name": "railroad station",
+    "sym": 4194414,
+    "color": "ltred",
+    "see_cost": 2,
+    "mondensity": 2,
+    "extras": "build"
+  },{
+    "id": "railroad_station_1_6",
+    "type": "overmap_terrain",
+    "name": "railroad station",
+    "sym": 79,
+    "color": "green",
+    "see_cost": 2,
+    "mondensity": 2,
+    "extras": "build"
+  },{
+    "id": "railroad_station_1_7",
+    "type": "overmap_terrain",
+    "name": "railroad station",
+    "sym": 79,
+    "color": "green",
+    "see_cost": 2,
+    "mondensity": 2,
+    "extras": "build"
+  },{
+    "id": "railroad_station_1_8",
+    "type": "overmap_terrain",
+    "name": "railroad station",
+    "sym": 4194414,
+    "color": "ltred",
+    "see_cost": 2,
+    "mondensity": 2,
+    "extras": "build"
+  },{
+    "id": "railroad_station_1_9",
+    "type": "overmap_terrain",
+    "name": "railroad station",
+    "sym": 79,
+    "color": "green",
     "see_cost": 2,
     "mondensity": 2,
     "extras": "build"

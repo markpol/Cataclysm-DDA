@@ -71,7 +71,10 @@
         "id": "railroad",
         "mode": "allow",
         "terrains": [
-            "railroad"
+            "railroad",
+            "school_1_2",
+            "school_1_5",
+            "school_1_8"
         ]
     }
 ]

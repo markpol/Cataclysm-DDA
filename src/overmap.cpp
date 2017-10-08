@@ -1652,8 +1652,6 @@ void overmap::generate( const overmap *north, const overmap *east,
         }
     }
 
-    // Railroad stations
-    place_railroad_stations();
     // Cities and forests come next.
     // These're agnostic of adjacent maps, so it's very simple.
     place_cities();
@@ -1698,6 +1696,9 @@ void overmap::generate( const overmap *north, const overmap *east,
             roads_out.push_back( random_entry_removed( viable_roads ) );
         }
     }
+
+    // Railroad stations
+    place_railroad_stations();
 
     if (railroads_out.size() < 2) {
         std::vector<city> viable_railroads;
@@ -3510,30 +3511,37 @@ void overmap::place_railroad_stations()
     const int NUM_RAILROAD_STATIONS = 4;
 
     while ( railroad_stations.size() < size_t( NUM_RAILROAD_STATIONS ) ) {
-        int railroad_station_size = 2;
+        int railroad_station_size = 3;
         // TODO put railroad_stations closer to the edge when they can span overmaps
         // don't draw railroad_stations across the edge of the map, they will get clipped
-        int cx = rng( railroad_station_size - 1, OMAPX - railroad_station_size );
-        int cy = rng( railroad_station_size - 1, OMAPY - railroad_station_size );
+        int cx = rng( railroad_station_size, OMAPX - railroad_station_size);
+        int cy = rng( railroad_station_size, OMAPY - railroad_station_size);
         if ( ter( cx, cy, 0 ) == settings.default_oter ){
-             /*
-             ter(cx, cy, 0) = oter_id( "railroad_station_1_1" );
-             ter(cx + 1, cy, 0) = oter_id( "railroad_station_1_2" );
-             ter(cx, cy + 1, 0) = oter_id( "railroad_station_1_3" );
-             ter(cx + 1, cy + 1, 0) = oter_id( "railroad_station_1_4" );
-             ter(cx, cy - 1, 0) = oter_id( "railroad" );
-             */
-             ter( cx - 1, cy, 0 ) = oter_id( "railroad_station_1_1_north" );
-             ter( cx - 1, cy, 0 ) = oter_id( "railroad_station_1_2_north" );
-             ter( cx - 1, cy - 1, 0 ) = oter_id( "railroad_station_1_3_north" );
-             ter( cx - 1, cy - 1, 0 ) = oter_id( "railroad_station_1_4_north" );
 
-             //ter( cx, cy, 0 ) = oter_id( "railroad_straight_north" );
-             city tmp;
-             tmp.x = cx;
-             tmp.y = cy;
-             tmp.s = railroad_station_size;
-             railroad_stations.push_back( tmp );
+             ter( cx + 3, cy + 1, 0 ) = oter_id( "road_end_west" );
+             ter( cx + 1, cy - 1, 0 ) = oter_id( "railroad_ns" );
+             ter( cx + 1, cy - 3, 0 ) = oter_id( "railroad_ns" );
+             ter( cx + 0, cy + 0, 0 ) = oter_id( "railroad_station_1_3_north" );
+             ter( cx + 1, cy + 0, 0 ) = oter_id( "railroad_station_1_2_north" );
+             ter( cx + 2, cy + 0, 0 ) = oter_id( "railroad_station_1_1_north" );
+             ter( cx + 0, cy + 1, 0 ) = oter_id( "railroad_station_1_6_north" );
+             ter( cx + 1, cy + 1, 0 ) = oter_id( "railroad_station_1_5_north" );
+             ter( cx + 2, cy + 1, 0 ) = oter_id( "railroad_station_1_4_north" );
+             ter( cx + 0, cy + 2, 0 ) = oter_id( "railroad_station_1_9_north" );
+             ter( cx + 1, cy + 2, 0 ) = oter_id( "railroad_station_1_8_north" );
+             ter( cx + 2, cy + 2, 0 ) = oter_id( "railroad_station_1_7_north" );
+
+             city tmp1;
+             tmp1.x = cx + 1;
+             tmp1.y = cy - 1;
+             tmp1.s = railroad_station_size;
+             railroad_stations.push_back( tmp1 );
+
+             city tmp2;
+             tmp2.x = cx + 1;
+             tmp2.y = cy - 3;
+             tmp2.s = railroad_station_size;
+             railroad_stations.push_back( tmp2 );
         }
     }
 }

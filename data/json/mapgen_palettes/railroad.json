@@ -15,7 +15,10 @@
       "w": "t_crossbuck_wood",
       "m": "t_crossbuck_metal",
       "V": "t_buffer_stop_v",
-      "H": "t_buffer_stop_h"
+      "H": "t_buffer_stop_h",
+      "_": "t_concrete",
+      "|": "t_railing_h",
+      "W": "t_concrete_wall"
     }
   }
 ]
