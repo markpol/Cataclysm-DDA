@@ -1,5 +1,5 @@
-#include <string>
 #include "veh_interact.h"
+#include <string>
 #include "vehicle.h"
 #include "overmapbuffer.h"
 #include "game.h"
@@ -8,6 +8,7 @@
 #include "map.h"
 #include "output.h"
 #include "catacharset.h"
+#include "string_formatter.h"
 #include "crafting.h"
 #include "options.h"
 #include "debug.h"
@@ -235,16 +236,11 @@ void veh_interact::allocate_windows()
     move_cursor(0, 0); // display w_disp & w_parts
 }
 
-void veh_interact::set_title( std::string msg, ... ) const
+void veh_interact::set_title( const std::string &msg ) const
 {
-    va_list args;
-    va_start( args, msg );
-    const auto str = vstring_format( msg, args );
-    va_end( args );
-
     werase( w_mode );
     nc_color col = c_ltgray;
-    print_colored_text( w_mode, 0, 1, col, col, str );
+    print_colored_text( w_mode, 0, 1, col, col, msg );
     wrefresh( w_mode );
 }
 
@@ -271,10 +267,10 @@ bool veh_interact::format_reqs( std::ostringstream& msg, const requirement_data 
         msg << string_format( "> <color_%1$s>%2$s</color>", status_color( true ), _( "NONE" ) ) << "\n";
     }
 
-    auto comps = reqs.get_folded_components_list( getmaxx( w_msg ), c_white, inv );
+    auto comps = reqs.get_folded_components_list( getmaxx( w_msg ) - 2, c_white, inv );
     std::copy( comps.begin(), comps.end(), std::ostream_iterator<std::string>( msg, "\n" ) );
 
-    auto tools = reqs.get_folded_tools_list( getmaxx( w_msg ), c_white, inv );
+    auto tools = reqs.get_folded_tools_list( getmaxx( w_msg ) - 2, c_white, inv );
     std::copy( tools.begin(), tools.end(), std::ostream_iterator<std::string>( msg, "\n" ) );
 
     return ok;
@@ -1075,9 +1071,9 @@ bool veh_interact::overview( std::function<bool(const vehicle_part &pt)> enable,
             // if tank contains something then display the contents in milliliters
             auto details = []( const vehicle_part &pt, WINDOW *w, int y ) {
                 right_print( w, y, 1, item::find_type( pt.ammo_current() )->color,
-                             "%s     <color_ltgray>%3s</color>",
+                             string_format( "%s     <color_ltgray>%3s</color>",
                              pt.ammo_current() != "null" ? item::nname( pt.ammo_current() ).c_str() : "",
-                             pt.enabled ? _( "Yes" ) : _( "No" ) );
+                             pt.enabled ? _( "Yes" ) : _( "No" ) ) );
             };
 
             // display engine fauls (if any)
@@ -1092,7 +1088,7 @@ bool veh_interact::overview( std::function<bool(const vehicle_part &pt)> enable,
                 }
                 wrefresh( w_msg );
             };
-            opts.emplace_back( "ENGINE", &pt, enable && enable( pt ) ? hotkey++ : '\0', details, msg );
+            opts.emplace_back( "ENGINE", &pt, action && enable && enable( pt ) ? hotkey++ : '\0', details, msg );
         }
     }
 
@@ -1102,11 +1098,11 @@ bool veh_interact::overview( std::function<bool(const vehicle_part &pt)> enable,
                 if( pt.ammo_current() != "null" ) {
                     auto stack = units::legacy_volume_factor / item::find_type( pt.ammo_current() )->stack_size;
                     right_print( w, y, 1, item::find_type( pt.ammo_current() )->color,
-                                 "%s  %5.1fL", item::nname( pt.ammo_current() ).c_str(),
-                                 round_up( to_liter( pt.ammo_remaining() * stack ), 1 ) );
+                                 string_format( "%s  %5.1fL", item::nname( pt.ammo_current().c_str() ),
+                                 round_up( to_liter( pt.ammo_remaining() * stack ), 1 ) ) );
                 }
             };
-            opts.emplace_back( "TANK", &pt, enable && enable( pt ) ? hotkey++ : '\0', details );
+            opts.emplace_back( "TANK", &pt, action && enable && enable( pt ) ? hotkey++ : '\0', details );
         }
     }
 
@@ -1116,28 +1112,28 @@ bool veh_interact::overview( std::function<bool(const vehicle_part &pt)> enable,
             auto details = []( const vehicle_part &pt, WINDOW *w, int y ) {
                 int pct = ( double( pt.ammo_remaining() ) / pt.ammo_capacity() ) * 100;
                 right_print( w, y, 1, item::find_type( pt.ammo_current() )->color,
-                             "%i    %3i%%", pt.ammo_capacity(), pct );
+                             string_format( "%i    %3i%%", pt.ammo_capacity(), pct ) );
             };
-           opts.emplace_back( "BATTERY", &pt, enable && enable( pt ) ? hotkey++ : '\0', details );
+           opts.emplace_back( "BATTERY", &pt, action && enable && enable( pt ) ? hotkey++ : '\0', details );
         }
     }
 
     auto details_ammo = []( const vehicle_part &pt, WINDOW *w, int y ) {
         if( pt.ammo_remaining() ) {
             right_print( w, y, 1, item::find_type( pt.ammo_current() )->color,
-                         "%s   %5i", item::nname( pt.ammo_current() ).c_str(), pt.ammo_remaining() );
+                         string_format( "%s   %5i", item::nname( pt.ammo_current() ).c_str(), pt.ammo_remaining() ) );
         }
     };
 
     for( auto &pt : veh->parts ) {
         if( pt.is_reactor() && !pt.is_broken() ) {
-            opts.emplace_back( "REACTOR", &pt, enable && enable( pt ) ? hotkey++ : '\0', details_ammo );
+            opts.emplace_back( "REACTOR", &pt, action && enable && enable( pt ) ? hotkey++ : '\0', details_ammo );
         }
     }
 
     for( auto &pt : veh->parts ) {
         if( pt.is_turret() && !pt.is_broken() ) {
-            opts.emplace_back( "TURRET", &pt, enable && enable( pt ) ? hotkey++ : '\0', details_ammo );
+            opts.emplace_back( "TURRET", &pt, action && enable && enable( pt ) ? hotkey++ : '\0', details_ammo );
         }
     }
 
@@ -1145,11 +1141,11 @@ bool veh_interact::overview( std::function<bool(const vehicle_part &pt)> enable,
         auto details = []( const vehicle_part &pt, WINDOW *w, int y ) {
             const npc *who = pt.crew();
             if( who ) {
-                right_print( w, y, 1, pt.passenger_id == who->getID() ? c_green : c_ltgray, "%s", who->name.c_str() );
+                right_print( w, y, 1, pt.passenger_id == who->getID() ? c_green : c_ltgray, who->name );
             }
         };
         if( pt.is_seat() && !pt.is_broken() ) {
-            opts.emplace_back( "SEAT", &pt, enable && enable( pt ) ? hotkey++ : '\0', details );
+            opts.emplace_back( "SEAT", &pt, action && enable && enable( pt ) ? hotkey++ : '\0', details );
         }
     }
 
@@ -1179,10 +1175,18 @@ bool veh_interact::overview( std::function<bool(const vehicle_part &pt)> enable,
                 last = opts[idx].key;
             }
 
+            bool highlighted = false;
+            // No action means no selecting, just highlight relevant ones
+            if( pos < 0 && enable && !action ) {
+                highlighted = enable( pt );
+            } else if( pos == idx ) {
+                highlighted = true;
+            }
+
             // print part name
             nc_color col = opts[idx].hotkey ? c_white : c_dkgray;
             trim_and_print( w_list, y, 1, getmaxx( w_list ) - 1,
-                            idx == pos ? hilite( col ) : col,
+                            highlighted ? hilite( col ) : col,
                             "<color_dkgray>%c </color>%s",
                             opts[idx].hotkey ? opts[idx].hotkey : ' ', pt.name().c_str() );
 
@@ -1306,7 +1310,7 @@ bool veh_interact::can_remove_part( int idx ) {
                           status_color( use_str ), str ) << "\n";
 
     if( !veh->can_unmount( idx ) ) {
-        msg << string_format( _( "> <color_%1$s>%2$s</color>" ), status_color( false ), "Remove attached parts first" ) << "\n";
+        msg << string_format( _( "> <color_%1$s>%2$s</color>" ), status_color( false ), _( "Remove attached parts first" ) ) << "\n";
         ok = false;
     }
 
@@ -1352,7 +1356,13 @@ bool veh_interact::do_remove( std::string &msg )
         werase (w_parts);
         veh->print_part_desc (w_parts, 0, getmaxy( w_parts ) - 1, getmaxx( w_parts ), cpart, pos);
         wrefresh (w_parts);
-        bool can_remove = can_remove_part( parts_here[ pos ] );
+        int part = parts_here[ pos ];
+
+        bool can_remove = can_remove_part( part );
+
+        auto sel = [&]( const vehicle_part &pt ) { return &pt == &veh->parts[part]; };
+        overview( sel );
+
         //read input
         const std::string action = main_context.handle_input();
         if (can_remove && (action == "REMOVE" || action == "CONFIRM")) {
@@ -1403,9 +1413,9 @@ bool veh_interact::do_tirechange( std::string &msg )
             return false;
 
         case LACK_TOOLS:
-            msg = string_format( _( "To change a wheel you need a <color_%1$s>wrench</color> and either "
-                                    "<color_%2$s>lifting equipment</color> or <color_%3$s>%4$d</color> strength." ),
-                                 status_color( has_wrench ), status_color( has_jack ),
+            msg = string_format( _( "To change a wheel you need a <color_%1$s>wrench</color>, a <color_%2$s>wheel</color>, and either "
+                                    "<color_%3$s>lifting equipment</color> or <color_%4$s>%5$d</color> strength." ),
+                                 status_color( has_wrench ), status_color( has_wheel ), status_color( has_jack ),
                                  status_color( g->u.can_lift( *veh ) ), veh->lift_strength() );
             return false;
 
@@ -1464,7 +1474,7 @@ bool veh_interact::do_assign_crew( std::string &msg )
         menu.return_invalid = true;
 
         if( pt.crew() ) {
-            menu.addentry( 0, true, 'c', "Clear assignment" );
+            menu.addentry( 0, true, 'c', _( "Clear assignment" ) );
         }
 
         for( const npc *e : g->allies() ) {
@@ -1475,7 +1485,7 @@ bool veh_interact::do_assign_crew( std::string &msg )
         if( menu.ret == 0 ) {
             pt.unset_crew();
         } else if( menu > 0 ) {
-            const auto &who = *g->npc_by_id( menu.ret );
+            const auto &who = *g->critter_by_id<npc>( menu.ret );
             veh->assign_seat( pt, who );
         }
 
@@ -2080,8 +2090,8 @@ void veh_interact::display_details( const vpart_info *part )
         }
 
         fold_and_print(w_details, line+3, col_1, column_width, c_white,
-                       (label + ": <color_ltgray>%d</color>").c_str(),
-                       part->size);
+                       "%s: <color_ltgray>%d</color>", label.c_str(),
+                       to_milliliter( part->size ) );
     }
     if ( part->epower != 0 ) {
         fold_and_print(w_details, line+3, col_2, column_width, c_white,

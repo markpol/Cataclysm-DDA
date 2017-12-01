@@ -5,6 +5,7 @@
 #include "input.h"
 #include "output.h"
 #include "rng.h"
+#include "string_formatter.h"
 #include "translations.h"
 #include "text_snippets.h"
 #include <cmath>  // max in help_main
@@ -1031,8 +1032,6 @@ A: Ask the helpful people on the forum at smf.cataclysmdda.com or at the irc cha
 
     return text;
 }
-
-extern input_context get_default_mode_input_context();
 
 void display_help()
 {

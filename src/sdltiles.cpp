@@ -21,8 +21,8 @@
 #include "get_version.h"
 #include "init.h"
 #include "path_info.h"
+#include "string_formatter.h"
 #include "filesystem.h"
-#include "map.h"
 #include "game.h"
 #include "lightmap.h"
 #include "rng.h"
@@ -30,6 +30,7 @@
 #include "cata_utility.h"
 #include "color_loader.h"
 #include "font_loader.h"
+#include "loading_ui.h"
 
 #if (defined _WIN32 || defined WINDOWS)
 #   include "platform_win.h"
@@ -59,7 +60,6 @@ static unsigned long lastupdate = 0;
 static unsigned long interval = 25;
 static bool needupdate = false;
 extern bool tile_iso;
-extern WINDOW *w_hit_animation;
 
 // used to replace SDL_RenderFillRect with a more efficient SDL_RenderCopy
 SDL_Texture_Ptr alt_rect_tex = NULL;
@@ -216,21 +216,20 @@ static SDL_Window_Ptr window;
 static SDL_Renderer_Ptr renderer;
 static SDL_PixelFormat_Ptr format;
 static SDL_Texture_Ptr display_buffer;
-int WindowWidth;        //Width of the actual window, not the curses window
-int WindowHeight;       //Height of the actual window, not the curses window
+static int WindowWidth;        //Width of the actual window, not the curses window
+static int WindowHeight;       //Height of the actual window, not the curses window
 // input from various input sources. Each input source sets the type and
 // the actual input value (key pressed, mouse button clicked, ...)
 // This value is finally returned by input_manager::get_input_event.
-input_event last_input;
+static input_event last_input;
 
-int inputdelay;         //How long getch will wait for a character to be typed
-Uint32 delaydpad = std::numeric_limits<Uint32>::max();     // Used for entering diagonal directions with d-pad.
-Uint32 dpad_delay = 100;   // Delay in milli-seconds between registering a d-pad event and processing it.
-bool dpad_continuous = false;  // Whether we're currently moving continously with the dpad.
-int lastdpad = ERR;      // Keeps track of the last dpad press.
-int queued_dpad = ERR;   // Queued dpad press, for individual button presses.
-//WINDOW *_windows;  //Probably need to change this to dynamic at some point
-//int WindowCount;        //The number of curses windows currently in use
+static constexpr int ERR = -1;
+static int inputdelay;         //How long getch will wait for a character to be typed
+static Uint32 delaydpad = std::numeric_limits<Uint32>::max();     // Used for entering diagonal directions with d-pad.
+static Uint32 dpad_delay = 100;   // Delay in milli-seconds between registering a d-pad event and processing it.
+static bool dpad_continuous = false;  // Whether we're currently moving continously with the dpad.
+static int lastdpad = ERR;      // Keeps track of the last dpad press.
+static int queued_dpad = ERR;   // Queued dpad press, for individual button presses.
 int fontwidth;          //the width of the font, background is always this size
 int fontheight;         //the height of the font, background is always this size
 static int TERMINAL_WIDTH;
@@ -238,24 +237,12 @@ static int TERMINAL_HEIGHT;
 
 static SDL_Joystick *joystick; // Only one joystick for now.
 
-// Cache of bitmap fonts family.
-// Used only while fontlist.txt is created.
-static std::set<std::string> bitmap_fonts;
-
 static std::vector<curseline> oversized_framebuffer;
 static std::vector<curseline> terminal_framebuffer;
 static WINDOW *winBuffer; //tracking last drawn window to fix the framebuffer
 static int fontScaleBuffer; //tracking zoom levels to fix framebuffer w/tiles
 extern WINDOW *w_hit_animation; //this window overlays w_terrain which can be oversized
 
-//***********************************
-//Tile-version specific functions   *
-//***********************************
-
-void init_interface()
-{
-    return; // dummy function, we have nothing to do here
-}
 //***********************************
 //Non-curses, Window functions      *
 //***********************************
@@ -1263,6 +1250,7 @@ void CheckMessages()
 {
     SDL_Event ev;
     bool quit = false;
+    bool text_refresh = false;
     if(HandleDPad()) {
         return;
     }
@@ -1298,6 +1286,11 @@ void CheckMessages()
                 if( lc <= 0 ) {
                     // a key we don't know in curses and won't handle.
                     break;
+#ifdef __linux__
+                } else if( SDL_COMPILEDVERSION == SDL_VERSIONNUM( 2, 0, 5 ) && ev.key.repeat ) {
+                    // https://bugzilla.libsdl.org/show_bug.cgi?id=3637
+                    break;
+#endif
                 } else if( add_alt_code( lc ) ) {
                     // key was handled
                 } else {
@@ -1323,7 +1316,19 @@ void CheckMessages()
                     const unsigned lc = UTF8_getch( &c, &len );
                     last_input = input_event( lc, CATA_INPUT_KEYBOARD );
                     last_input.text = ev.text.text;
+                    text_refresh = true;
                 }
+            break;
+            case SDL_TEXTEDITING:
+            {
+                const char *c = ev.edit.text;
+                int len = strlen( ev.edit.text );
+                const unsigned lc = UTF8_getch( &c, &len );
+                last_input = input_event( lc, CATA_INPUT_KEYBOARD );
+                last_input.edit = ev.edit.text;
+                last_input.edit_refresh = true;
+                text_refresh = true;
+            }
             break;
             case SDL_JOYBUTTONDOWN:
                 last_input = input_event(ev.jbutton.button, CATA_INPUT_KEYBOARD);
@@ -1365,6 +1370,9 @@ void CheckMessages()
                 quit = true;
                 break;
         }
+        if( text_refresh ) {
+            break;
+        }
     }
     if (needupdate) {
         try_sdl_update();
@@ -1385,7 +1393,7 @@ static bool ends_with(const std::string &text, const std::string &suffix) {
 //Psuedo-Curses Functions           *
 //***********************************
 
-static void font_folder_list(std::ofstream& fout, std::string path)
+static void font_folder_list(std::ofstream& fout, std::string path, std::set<std::string> &bitmap_fonts)
 {
     for( const auto &f : get_files_from_path( "", path, true, false ) ) {
             TTF_Font_Ptr fnt( TTF_OpenFont( f.c_str(), 12 ) );
@@ -1448,39 +1456,36 @@ static void font_folder_list(std::ofstream& fout, std::string path)
 
 static void save_font_list()
 {
+    std::set<std::string> bitmap_fonts;
     std::ofstream fout(FILENAMES["fontlist"].c_str(), std::ios_base::trunc);
 
-    font_folder_list(fout, FILENAMES["fontdir"]);
+    font_folder_list(fout, FILENAMES["fontdir"], bitmap_fonts);
 
 #if (defined _WIN32 || defined WINDOWS)
     char buf[256];
     GetSystemWindowsDirectory(buf, 256);
     strcat(buf, "\\fonts");
-    font_folder_list(fout, buf);
+    font_folder_list(fout, buf, bitmap_fonts);
 #elif (defined _APPLE_ && defined _MACH_)
     /*
     // Well I don't know how osx actually works ....
-    font_folder_list(fout, "/System/Library/Fonts");
-    font_folder_list(fout, "/Library/Fonts");
+    font_folder_list(fout, "/System/Library/Fonts", bitmap_fonts);
+    font_folder_list(fout, "/Library/Fonts", bitmap_fonts);
 
     wordexp_t exp;
     wordexp("~/Library/Fonts", &exp, 0);
-    font_folder_list(fout, exp.we_wordv[0]);
+    font_folder_list(fout, exp.we_wordv[0], bitmap_fonts);
     wordfree(&exp);*/
 #else // Other POSIX-ish systems
-    font_folder_list(fout, "/usr/share/fonts");
-    font_folder_list(fout, "/usr/local/share/fonts");
+    font_folder_list(fout, "/usr/share/fonts", bitmap_fonts);
+    font_folder_list(fout, "/usr/local/share/fonts", bitmap_fonts);
     char *home;
     if( ( home = getenv( "HOME" ) ) ) {
         std::string userfontdir = home;
         userfontdir += "/.fonts";
-        font_folder_list( fout, userfontdir );
+        font_folder_list( fout, userfontdir, bitmap_fonts );
     }
 #endif
-
-    bitmap_fonts.clear();
-
-    fout << "end of list" << std::endl;
 }
 
 static std::string find_system_font(std::string name, int& faceIndex)
@@ -1508,18 +1513,12 @@ static std::string find_system_font(std::string name, int& faceIndex)
         std::string fname;
         std::string fpath;
         std::string iline;
-        int index = 0;
-        do {
-            getline(fin, fname);
-            if (fname == "end of list") break;
-            getline(fin, fpath);
-            getline(fin, iline);
-            index = atoi(iline.c_str());
+        while( getline( fin, fname ) && getline( fin, fpath ) && getline( fin, iline ) ) {
             if (0 == strcasecmp(fname.c_str(), name.c_str())) {
-                faceIndex = index;
+                faceIndex = atoi( iline.c_str() );
                 return fpath;
             }
-        } while (!fin.eof());
+        }
     }
 
     return "";
@@ -1534,15 +1533,13 @@ static int test_face_size(std::string f, int size, int faceIndex)
         char* style = TTF_FontFaceStyleName( fnt.get() );
         if(style != NULL) {
             int faces = TTF_FontFaces( fnt.get() );
-            bool found = false;
-            for(int i = faces - 1; i >= 0 && !found; i--) {
+            for(int i = faces - 1; i >= 0; i--) {
                 const TTF_Font_Ptr tf( TTF_OpenFontIndex( f.c_str(), size, i ) );
                 char* ts = NULL;
                 if( tf ) {
                    if( NULL != ( ts = TTF_FontFaceStyleName( tf.get() ) ) ) {
                        if( 0 == strcasecmp( ts, style ) && TTF_FontHeight( tf.get() ) <= size ) {
-                           faceIndex = i;
-                           found = true;
+                           return i;
                        }
                    }
                 }
@@ -1566,20 +1563,18 @@ int projected_window_height(int)
 }
 
 //Basic Init, create the font, backbuffer, etc
-WINDOW *curses_init(void)
+void init_interface()
 {
     last_input = input_event();
     inputdelay = -1;
 
     font_loader fl;
-    if( !fl.load() ) {
-        return nullptr;
-    }
+    fl.load();
     ::fontwidth = fl.fontwidth;
     ::fontheight = fl.fontheight;
 
     if(!InitSDL()) {
-        return NULL;
+        throw std::runtime_error( "InitSDL failed" );
     }
 
     find_videodisplays();
@@ -1588,7 +1583,7 @@ WINDOW *curses_init(void)
     TERMINAL_HEIGHT = get_option<int>( "TERMINAL_Y" );
 
     if(!WinCreate()) {
-        return NULL;
+        throw std::runtime_error( "WinCreate failed" ); //@todo throw from WinCreate
     }
 
     dbg( D_INFO ) << "Initializing SDL Tiles context";
@@ -1604,6 +1599,7 @@ WINDOW *curses_init(void)
         use_tiles = false;
     }
 
+    color_loader<SDL_Color>().load( windowsPalette );
     init_colors();
 
     // initialize sound set
@@ -1612,13 +1608,13 @@ WINDOW *curses_init(void)
     // Reset the font pointer
     font = Font::load_font( fl.typeface, fl.fontsize, fl.fontwidth, fl.fontheight, fl.fontblending );
     if( !font ) {
-        return NULL;
+        throw std::runtime_error( "loading font data failed" );
     }
     map_font = Font::load_font( fl.map_typeface, fl.map_fontsize, fl.map_fontwidth, fl.map_fontheight, fl.fontblending );
     overmap_font = Font::load_font( fl.overmap_typeface, fl.overmap_fontsize,
                                     fl.overmap_fontwidth, fl.overmap_fontheight, fl.fontblending );
-    mainwin = newwin(get_terminal_height(), get_terminal_width(),0,0);
-    return mainwin;   //create the 'stdscr' window and return its ref
+    stdscr = newwin(get_terminal_height(), get_terminal_width(),0,0);
+    //newwin calls `new WINDOW`, and that will throw, but not return nullptr.
 }
 
 std::unique_ptr<Font> Font::load_font(const std::string &typeface, int fontsize, int fontwidth, int fontheight, const bool fontblending )
@@ -1643,7 +1639,7 @@ std::unique_ptr<Font> Font::load_font(const std::string &typeface, int fontsize,
 }
 
 //Ends the terminal, destroy everything
-int curses_destroy(void)
+int endwin()
 {
     tilecontext.reset();
     font.reset();
@@ -1664,33 +1660,21 @@ SDL_Color color_loader<SDL_Color>::from_rgb( const int r, const int g, const int
     return result;
 }
 
-
-// This function mimics the ncurses interface. It must not throw.
-// Instead it should return ERR or OK, see man curs_color
-int start_color()
-{
-    return color_loader<SDL_Color>().load( windowsPalette ) ? OK : ERR;
-}
-
 void input_manager::set_timeout( const int t )
 {
     input_timeout = t;
     inputdelay = t;
 }
 
-extern WINDOW *mainwin;
-
 // This is how we're actually going to handle input events, SDL getch
 // is simply a wrapper around this.
-input_event input_manager::get_input_event(WINDOW *win) {
+input_event input_manager::get_input_event() {
     previously_pressed_key = 0;
     // standards note: getch is sometimes required to call refresh
     // see, e.g., http://linux.die.net/man/3/getch
     // so although it's non-obvious, that refresh() call (and maybe InvalidateRect?) IS supposed to be there
 
-    if(win == NULL) win = mainwin;
-
-    wrefresh(win);
+    wrefresh( stdscr );
 
     if (inputdelay < 0)
     {
@@ -1980,13 +1964,13 @@ bool is_draw_tiles_mode() {
     return use_tiles;
 }
 
-SDL_Color cursesColorToSDL(int color) {
-    const int pair_id = ( color & A_COLOR ) >> 17;
+SDL_Color cursesColorToSDL( const nc_color &color ) {
+    const int pair_id = color.to_color_pair_index();
     const auto pair = colorpairs[pair_id];
 
     int palette_index = pair.FG != 0 ? pair.FG : pair.BG;
 
-    if( color & A_BOLD ) {
+    if( color.is_bold() ) {
         palette_index += color_loader<SDL_Color>::COLOR_NAMES_COUNT / 2;
     }
 
@@ -2295,7 +2279,8 @@ void load_soundset() {
 
     current_soundpack_path = soundpack_path;
     try {
-        DynamicDataLoader::get_instance().load_data_from_path( soundpack_path, "core" );
+        loading_ui ui( false );
+        DynamicDataLoader::get_instance().load_data_from_path( soundpack_path, "core", ui );
     } catch( const std::exception &err ) {
         dbg( D_ERROR ) << "failed to load sounds: " << err.what();
     }
