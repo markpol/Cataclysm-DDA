@@ -10,6 +10,7 @@
 #include "material.h"
 #include "messages.h"
 #include "monster.h"
+#include "string_formatter.h"
 #include "morale_types.h"
 #include "mutation.h"
 #include "options.h"
@@ -837,8 +838,7 @@ void player::consume_effects( const item &food )
         int numslime = 1;
         for( int i = 0; i < numslime && !valid.empty(); i++ ) {
             const tripoint target = random_entry_removed( valid );
-            if( g->summon_mon( mon_player_blob, target ) ) {
-                monster *slime = g->monster_at( target );
+            if( monster *const slime = g->summon_mon( mon_player_blob, target ) ) {
                 slime->friendly = -1;
             }
         }
@@ -1002,14 +1002,14 @@ bool player::feed_furnace_with( item &it )
     } else {
         const int profitable_energy = std::min( energy, max_power_level - power_level );
         add_msg_player_or_npc( m_info,
-                               ngettext( _( "You digest your %s and recharge %d point of energy." ),
-                                         _( "You digest your %s and recharge %d points of energy." ),
+                               ngettext( "You digest your %s and recharge %d point of energy.",
+                                         "You digest your %s and recharge %d points of energy.",
                                          profitable_energy
                                        ),
-                               ngettext( _( "<npcname> digests a %s and recharges %d point of energy." ),
-                                         _( "<npcname> digests a %s and recharges %d points of energy." ),
+                               ngettext( "<npcname> digests a %s and recharges %d point of energy.",
+                                         "<npcname> digests a %s and recharges %d points of energy.",
                                          profitable_energy
-                                       ), it.tname().c_str()
+                                       ), it.tname().c_str(), profitable_energy
                              );
         charge_power( profitable_energy );
     }
