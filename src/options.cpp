@@ -1230,6 +1230,11 @@ void options_manager::init()
         false, COPT_CURSES_HIDE
         );
 
+    add( "SDL_GPU_RENDERING", "graphics", translate_marker( "Use sdl_gpu" ),
+        translate_marker( "Use sdl_gpu library renderer for hardware acceleration.  Requires restart." ),
+        false, COPT_CURSES_HIDE
+        );
+
     add( "SCALING_MODE", "graphics", translate_marker( "Scaling mode" ),
         translate_marker( "Sets the scaling mode, 'none' ( default ) displays at the game's native resolution, 'nearest'  uses low-quality but fast scaling, and 'linear' provides high-quality scaling." ),
         //~ Do not scale the game image to the window size.

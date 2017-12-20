@@ -134,12 +134,22 @@ Dependencies:
 
   * SDL
   * SDL_ttf
+  * SDL_gpu (generally not packaged, you will need to build from source)
   * freetype
   * build essentials
 
 Install:
 
     sudo apt-get install libsdl1.2-dev libsdl-ttf2.0-dev libfreetype6-dev build-essential
+
+### Installing SDL_gpu
+
+This is relatively new and may not be available as a package. To build and install it, run:
+
+    git clone https://github.com/mutability/sdl-gpu.git
+    cd sdl-gpu
+    cmake -G "Unix Makefiles"
+    sudo make install
 
 ### Building
 
@@ -186,6 +196,19 @@ Install:
 If you are not on a Debian derivative (Linux Mint, Ubuntu, etc), you will have to use a different command than apt-get to install [the MXE requirements](http://mxe.cc/#requirements). Building all these packages from MXE might take a while even on a fast computer. Be patient. If you are not planning on building for both 32-bit and 64-bit, you might want to adjust your MXE_TARGETS.
 
 ### Building (SDL)
+
+First you need a SDL_gpu install. Run:
+
+    git clone https://github.com/mutability/sdl-gpu.git
+
+    PLATFORM="i686-w64-mingw32.static"
+    mkdir sdl-gpu/mxe-${PLATFORM}
+    cd sdl-gpu/mxe-${PLATFORM}
+    cmake .. -DCMAKE_TOOLCHAIN_FILE=~/src/mxe/usr/${PLATFORM}/share/cmake/mxe-conf.cmake -DSDL_gpu_BUILD_SHARED=OFF -DSDL_gpu_BUILD_DEMOS=OFF
+    make install
+    # change PLATFORM to "x86_64-w64-mingw32.static" for a 64-bit build
+
+Then to build C:DDA, run:
 
 Run:
 
