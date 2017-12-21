@@ -775,6 +775,7 @@ std::vector<std::pair<std::string, std::string>> options_manager::build_renderer
 {
     std::vector<std::pair<std::string, std::string>> renderer_names;
 
+#ifdef TILES
     int numRenderDrivers = SDL_GetNumRenderDrivers();
     DebugLog( D_INFO, DC_ALL ) << "Number of render drivers on your system: " << numRenderDrivers;
     for( int ii = 0; ii < numRenderDrivers; ii++ ){
@@ -783,6 +784,7 @@ std::vector<std::pair<std::string, std::string>> options_manager::build_renderer
         DebugLog( D_INFO, DC_ALL ) << "Render driver: " << ii << "/" << ri.name;
         renderer_names.emplace_back( ri.name, translate_marker( ri.name ) );
     }
+#endif
 
     if( renderer_names.empty() ) {
 #if (defined _WIN32 || defined WINDOWS )
