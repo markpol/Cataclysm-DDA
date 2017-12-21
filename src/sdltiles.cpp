@@ -416,11 +416,27 @@ bool WinCreate()
         return false;
     }
 
-    bool software_renderer = get_option<bool>( "SOFTWARE_RENDERING" );
+    std::string riname = "opengl";
+    if( !get_option<std::string>( "RENDERER" ).empty() ) {
+        std::string riname = get_option<std::string>( "RENDERER" );
+    }
+    bool software_renderer = riname == "software";
+
     if( !software_renderer ) {
         dbg( D_INFO ) << "Attempting to initialize accelerated SDL renderer.";
 
-        renderer.reset( SDL_CreateRenderer( ::window.get(), -1, SDL_RENDERER_ACCELERATED |
+        int numRenderDrivers = SDL_GetNumRenderDrivers();
+        int rendertouse = -1;
+        for( int ii = 0; ii < numRenderDrivers; ii++ ){
+            SDL_RendererInfo ri;
+            SDL_GetRenderDriverInfo( ii, &ri );
+            if( riname == ri.name ){
+                rendertouse = ii;
+                break;
+            }
+        }
+
+        renderer.reset( SDL_CreateRenderer( ::window.get(), rendertouse, SDL_RENDERER_ACCELERATED |
                                             SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE ) );
         if( !renderer ) {
             dbg( D_ERROR ) << "Failed to initialize accelerated renderer, falling back to software rendering: " << SDL_GetError();

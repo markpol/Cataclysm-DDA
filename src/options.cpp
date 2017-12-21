@@ -770,6 +770,30 @@ std::vector<std::pair<std::string, std::string>> options_manager::build_soundpac
     return soundpack_names;
 }
 
+std::vector<std::pair<std::string, std::string>> options_manager::build_renderer_list()
+{
+    std::vector<std::pair<std::string, std::string>> renderer_names;
+
+    int numRenderDrivers = SDL_GetNumRenderDrivers();
+    DebugLog( D_INFO, DC_ALL ) << "Number of render drivers on your system is: " << numRenderDrivers;
+    for( int ii = 0; ii < numRenderDrivers; ii++ ){
+        SDL_RendererInfo ri;
+        SDL_GetRenderDriverInfo( ii, &ri );
+        DebugLog( D_INFO, DC_ALL ) << "Render driver:" << ii << ":" << ri.name;
+        renderer_names.emplace_back( ri.name, translate_marker( ri.name ) );
+    }
+
+    if( renderer_names.empty() ) {
+#if (defined _WIN32 || defined WINDOWS )
+        renderer_names.emplace_back( "direct3d", translate_marker( "direct3d" ) );
+#endif
+        renderer_names.emplace_back( "opengl", translate_marker( "opengl" ) );
+        renderer_names.emplace_back( "opengles2", translate_marker( "opengles2" ) );
+        renderer_names.emplace_back( "software", translate_marker( "software" ) );
+    }
+    return renderer_names;
+}
+
 void options_manager::init()
 {
     options.clear();
@@ -1220,9 +1244,9 @@ void options_manager::init()
         { { "no", translate_marker( "No" ) }, { "fullscreen", translate_marker( "Fullscreen" ) }, { "windowedbl", translate_marker( "Windowed borderless" ) } }, "no", COPT_CURSES_HIDE
         );
 
-    add( "SOFTWARE_RENDERING", "graphics", translate_marker( "Software rendering" ),
-        translate_marker( "Use software renderer instead of graphics card acceleration.  Requires restart." ),
-        false, COPT_CURSES_HIDE
+    add( "RENDERER", "graphics", translate_marker( "Renderer" ),
+        translate_marker( "Set which renderer to use.  Requires restart." ),
+        build_renderer_list(), "opengl", COPT_CURSES_HIDE
         );
 
     add( "FRAMEBUFFER_ACCEL", "graphics", translate_marker( "Software framebuffer acceleration" ),
