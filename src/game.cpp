@@ -4378,6 +4378,8 @@ void game::debug()
                 draw();
                 draw_counter++;
             }
+            DebugLog( D_INFO, DC_ALL ) << "Draw benchmark: Drew " << draw_counter << " times in " <<
+            difference / 1000.0 << " seconds. (" << 1000.0 * draw_counter / ( double )difference << " fps average)";
             add_msg( m_info, _( "Drew %d times in %.3f seconds. (%.3f fps average)" ), draw_counter,
                      difference / 1000.0, 1000.0 * draw_counter / ( double )difference );
         }
