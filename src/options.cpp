@@ -1231,7 +1231,7 @@ void options_manager::init()
         );
 
     add( "USE_COLOR_MODULATED_TEXTURES", "graphics", translate_marker( "Use color modulated textures" ),
-        translate_marker( "If true, tries to use color modulated textures to speed-up ASCII drawing.  Requires restart." ),
+        translate_marker( "If true, tries to use color modulated textures to speed-up ASCII drawing." ),
         false, COPT_CURSES_HIDE
         );
 
