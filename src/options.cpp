@@ -775,11 +775,11 @@ std::vector<std::pair<std::string, std::string>> options_manager::build_renderer
     std::vector<std::pair<std::string, std::string>> renderer_names;
 
     int numRenderDrivers = SDL_GetNumRenderDrivers();
-    DebugLog( D_INFO, DC_ALL ) << "Number of render drivers on your system is: " << numRenderDrivers;
+    DebugLog( D_INFO, DC_ALL ) << "Number of render drivers on your system: " << numRenderDrivers;
     for( int ii = 0; ii < numRenderDrivers; ii++ ){
         SDL_RendererInfo ri;
         SDL_GetRenderDriverInfo( ii, &ri );
-        DebugLog( D_INFO, DC_ALL ) << "Render driver:" << ii << ":" << ri.name;
+        DebugLog( D_INFO, DC_ALL ) << "Render driver: " << ii << "/" << ri.name;
         renderer_names.emplace_back( ri.name, translate_marker( ri.name ) );
     }
 
