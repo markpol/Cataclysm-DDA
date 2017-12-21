@@ -19,13 +19,12 @@
 
 #ifdef TILES
 #include "cata_tiles.h"
+#include <SDL.h>
 #endif // TILES
 
 #if (defined TILES || defined _WIN32 || defined WINDOWS)
 #include "cursesport.h"
 #endif
-
-#include <SDL.h>
 
 #include <stdlib.h>
 #include <string>
