@@ -3,6 +3,7 @@
 #include "action.h"
 #include "coordinate_conversions.h"
 #include "profession.h"
+#include "itype.h"
 #include "string_formatter.h"
 #include "bionics.h"
 #include "mapdata.h"
@@ -5857,12 +5858,11 @@ void player::suffer()
     if( item_radiation > 0 || map_radiation > 0 || rad_mut > 0 ) {
         bool has_helmet = false;
         const bool power_armored = is_wearing_power_armor(&has_helmet);
-        const bool rad_immune = (power_armored && has_helmet) || worn_with_flag("RAD_PROOF");
-        const bool rad_resist = rad_immune || power_armored || worn_with_flag("RAD_RESIST");
+        const bool rad_resist = is_rad_immune() || power_armored || worn_with_flag( "RAD_RESIST" );
 
         float rads;
-        if( rad_immune ) {
-            // Power armor protects completely from radiation
+        if( is_rad_immune() ) {
+            // Power armor and some high-tech gear protects completely from radiation
             rads = 0.0f;
         } else if( rad_resist ) {
             rads = map_radiation / 400.0f + item_radiation / 40.0f;
@@ -5871,7 +5871,7 @@ void player::suffer()
         }
 
         if( rad_mut > 0 ) {
-            const bool kept_in = rad_immune || (rad_resist && !one_in( 4 ));
+            const bool kept_in = is_rad_immune() || ( rad_resist && !one_in( 4 ) );
             if( kept_in ) {
                 // As if standing on a map tile with radiation level equal to rad_mut
                 rads += rad_mut / 100.0f;
@@ -11047,6 +11047,11 @@ m_size player::get_size() const
     return MS_MEDIUM;
 }
 
+int player::get_hp() const
+{
+    return get_hp( num_hp_parts );
+}
+
 int player::get_hp( hp_part bp ) const
 {
     if( bp < num_hp_parts ) {
@@ -11057,6 +11062,11 @@ int player::get_hp( hp_part bp ) const
         hp_total += hp_cur[i];
     }
     return hp_total;
+}
+
+int player::get_hp_max() const
+{
+    return get_hp_max( num_hp_parts );
 }
 
 int player::get_hp_max( hp_part bp ) const
@@ -11669,4 +11679,10 @@ std::set<tripoint> player::get_path_avoid() const
     // @todo Add known traps in a way that doesn't destroy performance
 
     return ret;
+}
+
+bool player::is_rad_immune() const
+{
+    bool has_helmet = false;
+    return ( is_wearing_power_armor( &has_helmet ) && has_helmet ) || worn_with_flag( "RAD_PROOF" );
 }
