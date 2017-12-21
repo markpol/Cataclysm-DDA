@@ -432,6 +432,7 @@ bool WinCreate()
             SDL_GetRenderDriverInfo( ii, &ri );
             if( riname == ri.name ){
                 rendertouse = ii;
+                DebugLog( D_INFO, DC_ALL ) << "Active renderer: " << rendertouse << "/" << ri.name;
                 break;
             }
         }
