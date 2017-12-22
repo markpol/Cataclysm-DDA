@@ -1989,7 +1989,7 @@ bool cata_tiles::draw_terrain_below( const tripoint &p, lit_level /*ll*/, int &/
     if( tile_iso ) {
         belowRect.y += tile_height / 8;
     }
-    printErrorIf(  handle_draw_rect( belowRect, tercol.r, tercol.g, tercol.b ) != 0, "handle_draw_rect failed" );
+    printErrorIf( handle_draw_rect( belowRect, tercol.r, tercol.g, tercol.b ) != 0, "handle_draw_rect failed" );
 
     return true;
 }
@@ -2856,8 +2856,8 @@ inline void cata_tiles::handle_draw_rect( SDL_Rect &rect, int r, int g, int b )
     if( get_option<bool>( "USE_COLOR_MODULATED_TEXTURES" ) && alt_rect_tex_enabled ){
         draw_alt_rect( rect, r, g, b );
     } else {
-        SDL_SetRenderDrawColor( renderer, r, g, b, 255 );
-        SDL_RenderFillRect( renderer, &rect );
+        printErrorIf( SDL_SetRenderDrawColor( renderer, r, g, b, 255 ) != 0, "SDL_SetRenderDrawColor failed" );
+        printErrorIf( SDL_RenderFillRect( renderer, &rect ) != 0, "SDL_RenderFillRect failed" );
     }
 }
 

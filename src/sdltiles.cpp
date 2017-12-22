@@ -285,14 +285,14 @@ void generate_alt_rect_texture()
 
 void draw_alt_rect( SDL_Rect &rect, unsigned char color )
 {
-    SDL_SetTextureColorMod( alt_rect_tex.get(), windowsPalette[color].r, windowsPalette[color].g, windowsPalette[color].b );
-    SDL_RenderCopy( renderer.get(), alt_rect_tex.get(), NULL, &rect );
+    printErrorIf( SDL_SetTextureColorMod( alt_rect_tex.get(), windowsPalette[color].r, windowsPalette[color].g, windowsPalette[color].b ) != 0, "SDL_SetTextureColorMod failed");
+    printErrorIf( SDL_RenderCopy( renderer.get(), alt_rect_tex.get(), NULL, &rect ) != 0, "SDL_RenderCopy failed" );
 }
 
 void draw_alt_rect( SDL_Rect &rect, int r, int g, int b )
 {
-    SDL_SetTextureColorMod( alt_rect_tex.get(), r, g, b );
-    SDL_RenderCopy( renderer.get(), alt_rect_tex.get(), NULL, &rect );
+    printErrorIf( SDL_SetTextureColorMod( alt_rect_tex.get(), r, g, b ) != 0, "SDL_SetTextureColorMod failed" );
+    printErrorIf( SDL_RenderCopy( renderer.get(), alt_rect_tex.get(), NULL, &rect ) != 0, "SDL_RenderCopy failed" );
 }
 
 void ClearScreen()
