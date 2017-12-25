@@ -4378,8 +4378,34 @@ void game::debug()
                 draw();
                 draw_counter++;
             }
-            DebugLog( D_INFO, DC_ALL ) << "Draw benchmark: Drew " << draw_counter << " times in " <<
-            difference / 1000.0 << " seconds (" << 1000.0 * draw_counter / ( double )difference << " fps average).";
+
+            DebugLog( D_INFO, DC_ALL ) << "Draw benchmark:\n" <<
+            "\nUSE_TILES=" << get_option<bool>( "USE_TILES" ) <<
+            "\nTILES=" << get_option<std::string>( "TILES" ) <<
+            "\nPIXEL_MINIMAP=" << get_option<bool>( "PIXEL_MINIMAP" ) <<
+            "\nFULLSCREEN=" << get_option<std::string>( "FULLSCREEN" ) <<
+            "\nRENDERER=" << get_option<std::string>( "RENDERER" ) <<
+            "\nFRAMEBUFFER_ACCEL=" << get_option<bool>( "FRAMEBUFFER_ACCEL" ) <<
+            "\nUSE_COLOR_MODULATED_TEXTURES=" << get_option<bool>( "USE_COLOR_MODULATED_TEXTURES" ) <<
+            "\nSCALING_MODE=" << get_option<std::string>( "SCALING_MODE" ) <<
+            "\ntileset_zoom=" << tileset_zoom <<
+            "\n\nDrew " << draw_counter << " times in " <<
+            difference / 1000.0 << " seconds (" << 1000.0 * draw_counter / ( double )difference << " fps average).\n";
+
+            DebugLog( D_INFO, DC_ALL ) << "Draw benchmark:\n" <<
+            "\n| USE_TILES | TILES | PIXEL_MINIMAP | FULLSCREEN | RENDERER | FRAMEBUFFER_ACCEL | USE_COLOR_MODULATED_TEXTURES | SCALING_MODE | ntileset_zoom | FPS |" <<
+            "\n|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|\n|" <<
+            get_option<bool>( "USE_TILES" ) << " | " <<
+            get_option<std::string>( "TILES" ) << " | " <<
+            get_option<bool>( "PIXEL_MINIMAP" ) << " | " <<
+            get_option<std::string>( "FULLSCREEN" ) << " | " <<
+            get_option<std::string>( "RENDERER" ) << " | " <<
+            get_option<bool>( "FRAMEBUFFER_ACCEL" ) << " | " <<
+            get_option<bool>( "USE_COLOR_MODULATED_TEXTURES" ) << " | " <<
+            get_option<std::string>( "SCALING_MODE" ) << " | " <<
+            tileset_zoom << " | " <<
+            1000.0 * draw_counter / ( double )difference << " |\n";
+
             add_msg( m_info, _( "Drew %d times in %.3f seconds. (%.3f fps average)" ), draw_counter,
                      difference / 1000.0, 1000.0 * draw_counter / ( double )difference );
         }
