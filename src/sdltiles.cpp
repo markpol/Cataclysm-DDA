@@ -65,6 +65,14 @@ extern bool tile_iso;
 SDL_Texture_Ptr alt_rect_tex = NULL;
 bool alt_rect_tex_enabled = false;
 
+void printErrorIf( const bool condition, const std::string message )
+{
+    if( !condition ) {
+        return;
+    }
+    dbg( D_ERROR ) << message << ": " << SDL_GetError();
+}
+
 #ifdef SDL_SOUND
 /** The music we're currently playing. */
 Mix_Music *current_music = NULL;
@@ -267,7 +275,7 @@ void generate_alt_rect_texture()
       SDL_FillRect( alt_surf.get(), NULL, SDL_MapRGB( alt_surf->format, 255, 255, 255 ) );
       alt_rect_tex.reset( SDL_CreateTextureFromSurface( renderer.get(), alt_surf.get() ) );
       alt_surf.reset();
-      
+
       // test to make sure color modulation is supported by renderer
       if( SDL_SetTextureColorMod( alt_rect_tex.get(), 0, 0, 0 ) ){
           alt_rect_tex_enabled = false;
