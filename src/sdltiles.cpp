@@ -270,12 +270,19 @@ void generate_alt_rect_texture()
     static const Uint32 amask = 0xff000000;
 #endif
 
-    try {
       SDL_Surface_Ptr alt_surf( SDL_CreateRGBSurface( 0, 1, 1, 32, rmask, gmask, bmask, amask ) );
-      SDL_FillRect( alt_surf.get(), NULL, SDL_MapRGB( alt_surf->format, 255, 255, 255 ) );
-      alt_rect_tex.reset( SDL_CreateTextureFromSurface( renderer.get(), alt_surf.get() ) );
-      alt_surf.reset();
-
+      if( !surface ) {
+          alt_rect_tex_enabled = false;
+          alt_rect_tex.reset();
+          dbg( D_ERROR ) << "CreateRGBSurface failed: " << SDL_GetError();
+          return;
+      }
+      if( SDL_FillRect( alt_surf.get(), NULL, SDL_MapRGB( alt_surf->format, 255, 255, 255 ) ) ){
+          alt_rect_tex.reset( SDL_CreateTextureFromSurface( renderer.get(), alt_surf.get() ) );
+          alt_surf.reset();
+      } else {
+          dbg( D_ERROR ) << "SDL_FillRect failed: " << SDL_GetError();
+      }
       // test to make sure color modulation is supported by renderer
       if( SDL_SetTextureColorMod( alt_rect_tex.get(), 0, 0, 0 ) ){
           alt_rect_tex_enabled = false;
@@ -284,11 +291,7 @@ void generate_alt_rect_texture()
       } else {
           alt_rect_tex_enabled = true;
       }
-    } catch( const std::exception &err ) {
-        alt_rect_tex_enabled = false;
-        alt_rect_tex.reset();
-        dbg( D_ERROR ) << "generate_alt_rect_texture is failed: " << err.what();
-    }
+
 }
 
 void draw_alt_rect( SDL_Rect &rect, unsigned char color )
