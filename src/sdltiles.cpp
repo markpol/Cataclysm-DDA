@@ -438,22 +438,22 @@ bool WinCreate()
     if( !get_option<std::string>( "RENDERER" ).empty() ) {
         riname = get_option<std::string>( "RENDERER" );
     }
+
+    int numRenderDrivers = SDL_GetNumRenderDrivers();
+    int rendertouse = -1;
+    for( int ii = 0; ii < numRenderDrivers; ii++ ){
+        SDL_RendererInfo ri;
+        SDL_GetRenderDriverInfo( ii, &ri );
+        if( riname == ri.name ){
+            rendertouse = ii;
+            DebugLog( D_INFO, DC_ALL ) << "Active renderer: " << rendertouse << "/" << ri.name;
+            break;
+        }
+    }
     bool software_renderer = riname == "software";
 
     if( !software_renderer ) {
         dbg( D_INFO ) << "Attempting to initialize accelerated SDL renderer.";
-
-        int numRenderDrivers = SDL_GetNumRenderDrivers();
-        int rendertouse = -1;
-        for( int ii = 0; ii < numRenderDrivers; ii++ ){
-            SDL_RendererInfo ri;
-            SDL_GetRenderDriverInfo( ii, &ri );
-            if( riname == ri.name ){
-                rendertouse = ii;
-                DebugLog( D_INFO, DC_ALL ) << "Active renderer: " << rendertouse << "/" << ri.name;
-                break;
-            }
-        }
 
         renderer.reset( SDL_CreateRenderer( ::window.get(), rendertouse, SDL_RENDERER_ACCELERATED |
                                             SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE ) );
