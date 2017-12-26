@@ -270,27 +270,32 @@ void generate_alt_rect_texture()
     static const Uint32 amask = 0xff000000;
 #endif
 
+      DebugLog( D_INFO, DC_ALL ) << "Trying generate_alt_rect_texture";
+
       SDL_Surface_Ptr alt_surf( SDL_CreateRGBSurface( 0, 1, 1, 32, rmask, gmask, bmask, amask ) );
-      if( !surface ) {
-          alt_rect_tex_enabled = false;
-          alt_rect_tex.reset();
-          dbg( D_ERROR ) << "CreateRGBSurface failed: " << SDL_GetError();
-          return;
-      }
-      if( SDL_FillRect( alt_surf.get(), NULL, SDL_MapRGB( alt_surf->format, 255, 255, 255 ) ) ){
-          alt_rect_tex.reset( SDL_CreateTextureFromSurface( renderer.get(), alt_surf.get() ) );
-          alt_surf.reset();
+      if( alt_surf ) {
+          if( !SDL_FillRect( alt_surf.get(), NULL, SDL_MapRGB( alt_surf->format, 255, 255, 255 ) ) ){
+              alt_rect_tex.reset( SDL_CreateTextureFromSurface( renderer.get(), alt_surf.get() ) );
+              alt_surf.reset();
+              // test to make sure color modulation is supported by renderer
+              if( !SDL_SetTextureColorMod( alt_rect_tex.get(), 0, 0, 0 ) ){
+                  alt_rect_tex_enabled = true;
+                  DebugLog( D_INFO, DC_ALL ) << "generate_alt_rect_texture is successful. alt_rect_tex_enabled is set to " << alt_rect_tex_enabled;
+                  return;
+              } else {
+                  DebugLog( D_ERROR, DC_ALL ) << "generate_alt_rect_texture color modulation test failed: " << SDL_GetError();
+              }
+          } else {
+              DebugLog( D_ERROR, DC_ALL ) << "SDL_FillRect failed: " << SDL_GetError();
+          }
       } else {
-          dbg( D_ERROR ) << "SDL_FillRect failed: " << SDL_GetError();
+          DebugLog( D_ERROR, DC_ALL ) << "CreateRGBSurface failed: " << SDL_GetError();
       }
-      // test to make sure color modulation is supported by renderer
-      if( SDL_SetTextureColorMod( alt_rect_tex.get(), 0, 0, 0 ) ){
-          alt_rect_tex_enabled = false;
-          alt_rect_tex.reset();
-          dbg( D_ERROR ) << "generate_alt_rect_texture color modulation test failed: " << SDL_GetError();
-      } else {
-          alt_rect_tex_enabled = true;
-      }
+
+      alt_rect_tex_enabled = false;
+      alt_rect_tex.reset();
+
+      DebugLog( D_WARNING, DC_ALL ) << "Failed generate_alt_rect_texture";
 
 }
 
