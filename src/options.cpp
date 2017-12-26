@@ -782,7 +782,7 @@ std::vector<std::pair<std::string, std::string>> options_manager::build_renderer
         SDL_RendererInfo ri;
         SDL_GetRenderDriverInfo( ii, &ri );
         DebugLog( D_INFO, DC_ALL ) << "Render driver: " << ii << "/" << ri.name;
-        renderer_names.emplace_back( ri.name, translate_marker( ri.name ) );
+        renderer_names.emplace_back( ri.name, ri.name );
     }
 #endif
 
