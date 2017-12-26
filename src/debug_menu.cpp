@@ -596,7 +596,7 @@ void draw_benchmark( const int max_difference )
     int draw_counter = 0;
     while( true ) {
         end_tick = std::chrono::steady_clock::now();
-        difference = std::chrono::duration_cast<std::chrono::milliseconds>(end_tick - start_tick).count();
+        difference = std::chrono::duration_cast<std::chrono::milliseconds>( end_tick - start_tick ).count();
         if( difference >= max_difference ) {
             break;
         }
