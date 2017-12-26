@@ -4027,8 +4027,9 @@ void game::debug()
                        _( "Show mutation category levels" ), // 29
                        _( "Overmap editor" ),         // 30
                        _( "Draw benchmark (5 seconds)" ),    // 31
-                       _( "Teleport - Adjacent overmap" ),   // 32
-                       _( "Quit to Main Menu" ),    // 33
+                       _( "Draw benchmark (60 seconds)" ),    // 32
+                       _( "Teleport - Adjacent overmap" ),   // 33
+                       _( "Quit to Main Menu" ),    // 34
                        _( "Cancel" ),
                        NULL );
     refresh_all();
@@ -4363,40 +4364,16 @@ void game::debug()
             overmap::draw_editor();
             break;
 
-        case 31: {
-            // call the draw procedure as many times as possible in 5 seconds
-            auto start_tick = std::chrono::steady_clock::now();
-            auto end_tick = std::chrono::steady_clock::now();
-            long difference = 0;
-            int draw_counter = 0;
-            while( true ) {
-                end_tick = std::chrono::steady_clock::now();
-                difference = std::chrono::duration_cast<std::chrono::milliseconds>(end_tick - start_tick).count();
-                if( difference >= 5000 ) {
-                    break;
-                }
-                draw();
-                draw_counter++;
-            }
-
-            DebugLog( D_INFO, DC_ALL ) << "Draw benchmark:\n" <<
-            "\n| USE_TILES |  RENDERER | FRAMEBUFFER_ACCEL | USE_COLOR_MODULATED_TEXTURES | FPS |" <<
-            "\n|:---:|:---:|:---:|:---:|:---:|\n| " <<
-            get_option<bool>( "USE_TILES" ) << " | " <<
-            get_option<std  ::string>( "RENDERER" ) << " | " <<
-            get_option<bool>( "FRAMEBUFFER_ACCEL" ) << " | " <<
-            get_option<bool>( "USE_COLOR_MODULATED_TEXTURES" ) << " | " <<
-            int( 1000.0 * draw_counter / ( double )difference ) << " |\n";
-
-            add_msg( m_info, _( "Drew %d times in %.3f seconds. (%.3f fps average)" ), draw_counter,
-                     difference / 1000.0, 1000.0 * draw_counter / ( double )difference );
-        }
-        break;
-
+        case 31:
+            debug_menu::draw_benchmark( 5000 );
+            break;
         case 32:
-            debug_menu::teleport_overmap();
+            debug_menu::draw_benchmark( 60000 );
             break;
         case 33:
+            debug_menu::teleport_overmap();
+            break;
+        case 34:
             if( query_yn( _( "Quit without saving? This may cause issues such as duplicated or missing items and vehicles!" ) ) ) {
                 u.moves = 0;
                 uquit = QUIT_NOSAVED;
