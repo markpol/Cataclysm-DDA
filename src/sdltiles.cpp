@@ -433,7 +433,7 @@ bool WinCreate()
 
     std::string riname = "opengl";
     if( !get_option<std::string>( "RENDERER" ).empty() ) {
-        std::string riname = get_option<std::string>( "RENDERER" );
+        riname = get_option<std::string>( "RENDERER" );
     }
     bool software_renderer = riname == "software";
 
