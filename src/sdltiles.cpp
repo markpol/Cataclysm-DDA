@@ -532,7 +532,10 @@ bool WinCreate()
 #endif
 
     //initialize the alternate rectangle texture for replacing SDL_RenderFillRect
-    generate_alt_rect_texture();
+    if( get_option<bool>( "USE_COLOR_MODULATED_TEXTURES" ) ){
+        DebugLog( D_INFO, DC_ALL ) << "Trying to run generate_alt_rect_texture() as USE_COLOR_MODULATED_TEXTURES is set to " << get_option<bool>( "USE_COLOR_MODULATED_TEXTURES" );
+        generate_alt_rect_texture();
+    }
 
     return true;
 }
