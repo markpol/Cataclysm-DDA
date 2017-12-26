@@ -565,14 +565,11 @@ void WinDestroy()
 inline void FillRectDIB( SDL_Rect &rect, unsigned char color )
 {
     if( alt_rect_tex_enabled ){
+        DebugLog( D_INFO, DC_ALL ) << "Using draw_alt_rect in FillRectDIB";
         draw_alt_rect( rect, color );
     } else {
-        if( SDL_SetRenderDrawColor( renderer.get(), windowsPalette[color].r, windowsPalette[color].g, windowsPalette[color].b, 255) != 0 ){
-            dbg( D_ERROR ) << "SDL_SetRenderDrawColor failed: " << SDL_GetError();
-        }
-        if( SDL_RenderFillRect( renderer.get(), &rect ) != 0 ){
-            dbg( D_ERROR ) << "SDL_RenderFillRect failed: " << SDL_GetError();
-        }
+        printErrorIf( SDL_SetRenderDrawColor( renderer.get(), windowsPalette[color].r, windowsPalette[color].g, windowsPalette[color].b, 255 ) != 0, "SDL_SetRenderDrawColor failed" );
+        printErrorIf( SDL_RenderFillRect( renderer.get(), &rect ) != 0, "SDL_RenderFillRect failed" );
     }
 }
 
