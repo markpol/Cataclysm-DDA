@@ -270,8 +270,6 @@ void generate_alt_rect_texture()
     static const Uint32 amask = 0xff000000;
 #endif
 
-      DebugLog( D_INFO, DC_ALL ) << "Trying generate_alt_rect_texture";
-
       SDL_Surface_Ptr alt_surf( SDL_CreateRGBSurface( 0, 1, 1, 32, rmask, gmask, bmask, amask ) );
       if( alt_surf ) {
           if( !SDL_FillRect( alt_surf.get(), NULL, SDL_MapRGB( alt_surf->format, 255, 255, 255 ) ) ){
@@ -280,10 +278,10 @@ void generate_alt_rect_texture()
               // test to make sure color modulation is supported by renderer
               if( !SDL_SetTextureColorMod( alt_rect_tex.get(), 0, 0, 0 ) ){
                   alt_rect_tex_enabled = true;
-                  DebugLog( D_INFO, DC_ALL ) << "generate_alt_rect_texture is successful. alt_rect_tex_enabled is set to " << alt_rect_tex_enabled;
+                  DebugLog( D_INFO, DC_ALL ) << "Function generate_alt_rect_texture() success.  Variable alt_rect_tex_enabled is set to " << alt_rect_tex_enabled;
                   return;
               } else {
-                  DebugLog( D_ERROR, DC_ALL ) << "generate_alt_rect_texture color modulation test failed: " << SDL_GetError();
+                  DebugLog( D_ERROR, DC_ALL ) << "Color modulation test failed: " << SDL_GetError();
               }
           } else {
               DebugLog( D_ERROR, DC_ALL ) << "SDL_FillRect failed: " << SDL_GetError();
@@ -295,7 +293,7 @@ void generate_alt_rect_texture()
       alt_rect_tex_enabled = false;
       alt_rect_tex.reset();
 
-      DebugLog( D_WARNING, DC_ALL ) << "Failed generate_alt_rect_texture";
+      DebugLog( D_WARNING, DC_ALL ) << "Function generate_alt_rect_texture() failed.  Variable alt_rect_tex_enabled is set to " << alt_rect_tex_enabled;
 
 }
 
@@ -536,9 +534,9 @@ bool WinCreate()
     Mix_GroupChannels( 15, 17, 4 );
 #endif
 
+    DebugLog( D_INFO, DC_ALL ) << "USE_COLOR_MODULATED_TEXTURES is set to " << get_option<bool>( "USE_COLOR_MODULATED_TEXTURES" );
     //initialize the alternate rectangle texture for replacing SDL_RenderFillRect
     if( get_option<bool>( "USE_COLOR_MODULATED_TEXTURES" ) ){
-        DebugLog( D_INFO, DC_ALL ) << "Trying to run generate_alt_rect_texture() as USE_COLOR_MODULATED_TEXTURES is set to " << get_option<bool>( "USE_COLOR_MODULATED_TEXTURES" );
         generate_alt_rect_texture();
     }
 
@@ -573,7 +571,6 @@ void WinDestroy()
 inline void FillRectDIB( SDL_Rect &rect, unsigned char color )
 {
     if( alt_rect_tex_enabled ){
-        DebugLog( D_INFO, DC_ALL ) << "Using draw_alt_rect in FillRectDIB";
         draw_alt_rect( rect, color );
     } else {
         printErrorIf( SDL_SetRenderDrawColor( renderer.get(), windowsPalette[color].r, windowsPalette[color].g, windowsPalette[color].b, 255 ) != 0, "SDL_SetRenderDrawColor failed" );
