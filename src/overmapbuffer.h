@@ -73,6 +73,8 @@ public:
     void create_custom_overmap( int const x, int const y, overmap_special_batch &specials );
 
     static void limit_coordinates( int& x, int& y );
+    static void limit_coordinates( point& p ) { return limit_coordinates( p.x, p.y ); }
+    static void limit_coordinates( tripoint& p ) { return limit_coordinates( p.x, p.y ); }
 
     /**
      * Uses global overmap terrain coordinates, creates the
