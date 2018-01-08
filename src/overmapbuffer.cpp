@@ -105,10 +105,10 @@ void overmapbuffer::create_custom_overmap( int x, int y,
 
 void overmapbuffer::limit_coordinates( int &x, int &y )
 {
-    if( get_option<int>( "WORLD_LIMIT_X" ) >= 0 ) {
+    if( get_option<int>( "WORLD_LIMIT_X" ) > 0 ) {
         x = x % get_option<int>( "WORLD_LIMIT_X" );
     }
-    if( get_option<int>( "WORLD_LIMIT_Y" ) >= 0 ) {
+    if( get_option<int>( "WORLD_LIMIT_Y" ) > 0 ) {
         y = y % get_option<int>( "WORLD_LIMIT_Y" );
     }
 }
