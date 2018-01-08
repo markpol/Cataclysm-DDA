@@ -72,6 +72,8 @@ public:
     void clear();
     void create_custom_overmap( int const x, int const y, overmap_special_batch &specials );
 
+    static void limit_coordinates( int& x, int& y );
+
     /**
      * Uses global overmap terrain coordinates, creates the
      * overmap if needed.
