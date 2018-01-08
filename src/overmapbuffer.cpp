@@ -39,8 +39,9 @@ int city_reference::get_distance_from_bounds() const
     return distance - omt_to_sm_copy( city->s );
 }
 
-std::string overmapbuffer::terrain_filename( int const x, int const y )
+std::string overmapbuffer::terrain_filename( int x, int y )
 {
+    limit_coordinates( x, y );
     std::ostringstream filename;
 
     filename << world_generator->active_world->world_path << "/";
@@ -49,8 +50,9 @@ std::string overmapbuffer::terrain_filename( int const x, int const y )
     return filename.str();
 }
 
-std::string overmapbuffer::player_filename( int const x, int const y )
+std::string overmapbuffer::player_filename( int x, int y )
 {
+    limit_coordinates( x, y );
     std::ostringstream filename;
 
     filename << world_generator->active_world->world_path << "/" << base64_encode(
@@ -59,8 +61,9 @@ std::string overmapbuffer::player_filename( int const x, int const y )
     return filename.str();
 }
 
-overmap &overmapbuffer::get( const int x, const int y )
+overmap &overmapbuffer::get( int x, int y )
 {
+    limit_coordinates( x, y );
     point const p { x, y };
 
     if( last_requested_overmap != nullptr && last_requested_overmap->pos() == p ) {
@@ -85,9 +88,10 @@ overmap &overmapbuffer::get( const int x, const int y )
     return *new_om;
 }
 
-void overmapbuffer::create_custom_overmap( int const x, int const y,
+void overmapbuffer::create_custom_overmap( int x, int y,
         overmap_special_batch &specials )
 {
+    limit_coordinates( x, y );
     overmap *new_om = new overmap( x, y );
     if( last_requested_overmap != nullptr ) {
         auto om_iter = overmaps.find( new_om->pos() );
@@ -229,6 +233,7 @@ void overmapbuffer::delete_note( int x, int y, int z )
 
 overmap *overmapbuffer::get_existing( int x, int y )
 {
+    limit_coordinates( x, y );
     point const p {x, y};
 
     if( last_requested_overmap && last_requested_overmap->pos() == p ) {
@@ -260,6 +265,7 @@ overmap *overmapbuffer::get_existing( int x, int y )
 
 bool overmapbuffer::has( int x, int y )
 {
+    limit_coordinates( x, y );
     return get_existing( x, y ) != nullptr;
 }
 
