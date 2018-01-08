@@ -1324,7 +1324,7 @@ void options_manager::init()
     mOptionsSort["world_default"]++;
 
     add( "LIMIT_WORLD_X", "world_default", translate_marker( "Limit size of world (X-axis)" ),
-        translate_marker( "A number determining maximum number of overmap cells in horizontal axis after which world is looped to origin  Set to non-zero to enable looping on this axis." ),
+        translate_marker( "A number determining maximum number of overmap cells in horizontal axis after which world is looped to origin.  Set to non-zero to enable looping on this axis." ),
         0, 1024 , 0
         );
 
