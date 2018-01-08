@@ -103,7 +103,7 @@ void overmapbuffer::create_custom_overmap( int x, int y,
     new_om->populate( specials );
 }
 
-void overmapbuffer::limit_coordinates(int & x, int & y)
+void overmapbuffer::limit_coordinates( int &x, int &y )
 {
     if( get_option<int>( "WORLD_LIMIT_X" ) > 0 ) {
         x = x % get_option<int>( "WORLD_LIMIT_X" );
