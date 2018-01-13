@@ -113,6 +113,26 @@ void overmapbuffer::limit_coordinates( int &x, int &y )
     }
 }
 
+void overmapbuffer::limit_coordinates( point &p )
+{
+    if( get_option<int>( "WORLD_LIMIT_X" ) > 0 ) {
+        p.x = p.x % get_option<int>( "WORLD_LIMIT_X" );
+    }
+    if( get_option<int>( "WORLD_LIMIT_Y" ) > 0 ) {
+        p.y = p.y % get_option<int>( "WORLD_LIMIT_Y" );
+    }
+}
+
+void overmapbuffer::limit_coordinates( tripoint &p )
+{
+    if( get_option<int>( "WORLD_LIMIT_X" ) > 0 ) {
+        p.x = p.x % get_option<int>( "WORLD_LIMIT_X" );
+    }
+    if( get_option<int>( "WORLD_LIMIT_Y" ) > 0 ) {
+        p.y = p.y % get_option<int>( "WORLD_LIMIT_Y" );
+    }
+}
+
 void overmapbuffer::fix_mongroups( overmap &new_overmap )
 {
     for( auto it = new_overmap.zg.begin(); it != new_overmap.zg.end(); ) {
