@@ -217,7 +217,13 @@ inline point ms_to_omt_remain( point &p )
 // overmap terrain to map segment.
 tripoint omt_to_seg_copy( const tripoint &p );
 void limit_coordinates( int &x, int &y );
-void limit_coordinates( point &p );
-void limit_coordinates( tripoint &p );
+inline void limit_coordinates( point &p )
+{
+    limit_coordinates( p.x, p.y );
+}
+inline void limit_coordinates( tripoint &p )
+{
+    limit_coordinates( p.x, p.y );
+}
 
 #endif

@@ -193,23 +193,3 @@ void limit_coordinates( int &x, int &y )
         y = y % get_option<int>( "WORLD_LIMIT_Y" );
     }
 }
-
-void limit_coordinates( point &p )
-{
-    if( get_option<int>( "WORLD_LIMIT_X" ) > 0 ) {
-        p.x = p.x % get_option<int>( "WORLD_LIMIT_X" );
-    }
-    if( get_option<int>( "WORLD_LIMIT_Y" ) > 0 ) {
-        p.y = p.y % get_option<int>( "WORLD_LIMIT_Y" );
-    }
-}
-
-void limit_coordinates( tripoint &p )
-{
-    if( get_option<int>( "WORLD_LIMIT_X" ) > 0 ) {
-        p.x = p.x % get_option<int>( "WORLD_LIMIT_X" );
-    }
-    if( get_option<int>( "WORLD_LIMIT_Y" ) > 0 ) {
-        p.y = p.y % get_option<int>( "WORLD_LIMIT_Y" );
-    }
-}
