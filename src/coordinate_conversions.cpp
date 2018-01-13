@@ -184,7 +184,7 @@ tripoint omt_to_seg_copy( const tripoint &p )
     return tripoint( divide( p.x, SEG_SIZE ), divide( p.y, SEG_SIZE ), p.z );
 }
 
-void limit_coordinates( int &x, int &y )
+void limit_and_loop_om_coordinates( int &x, int &y )
 {
     if( get_option<int>( "WORLD_LIMIT_X" ) > 0 ) {
         x = x % get_option<int>( "WORLD_LIMIT_X" );
