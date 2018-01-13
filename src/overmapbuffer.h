@@ -72,10 +72,6 @@ class overmapbuffer
         void clear();
         void create_custom_overmap( int x, int y, overmap_special_batch &specials );
 
-        static void limit_coordinates( int &x, int &y );
-        static void limit_coordinates( point &p );
-        static void limit_coordinates( tripoint &p );
-
         /**
          * Uses global overmap terrain coordinates, creates the
          * overmap if needed.

@@ -2,6 +2,8 @@
 
 #include "game_constants.h"
 
+#include "options.h"
+
 static int divide( int v, int m )
 {
     if( v >= 0 ) {
@@ -177,8 +179,37 @@ point ms_to_omt_remain( int &x, int &y )
     return point( divide( x, SEEX * 2, x ), divide( y, SEEY * 2, y ) );
 }
 
-
 tripoint omt_to_seg_copy( const tripoint &p )
 {
     return tripoint( divide( p.x, 32 ), divide( p.y, 32 ), p.z );
+}
+
+void limit_coordinates( int &x, int &y )
+{
+    if( get_option<int>( "WORLD_LIMIT_X" ) > 0 ) {
+        x = x % get_option<int>( "WORLD_LIMIT_X" );
+    }
+    if( get_option<int>( "WORLD_LIMIT_Y" ) > 0 ) {
+        y = y % get_option<int>( "WORLD_LIMIT_Y" );
+    }
+}
+
+void limit_coordinates( point &p )
+{
+    if( get_option<int>( "WORLD_LIMIT_X" ) > 0 ) {
+        p.x = p.x % get_option<int>( "WORLD_LIMIT_X" );
+    }
+    if( get_option<int>( "WORLD_LIMIT_Y" ) > 0 ) {
+        p.y = p.y % get_option<int>( "WORLD_LIMIT_Y" );
+    }
+}
+
+void limit_coordinates( tripoint &p )
+{
+    if( get_option<int>( "WORLD_LIMIT_X" ) > 0 ) {
+        p.x = p.x % get_option<int>( "WORLD_LIMIT_X" );
+    }
+    if( get_option<int>( "WORLD_LIMIT_Y" ) > 0 ) {
+        p.y = p.y % get_option<int>( "WORLD_LIMIT_Y" );
+    }
 }
