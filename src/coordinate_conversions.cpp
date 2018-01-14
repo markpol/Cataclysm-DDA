@@ -4,6 +4,26 @@
 
 #include "options.h"
 
+int x_max()
+{
+    return get_option<int>( "WORLD_LIMIT_X" );
+}
+
+int y_max()
+{
+    return get_option<int>( "WORLD_LIMIT_Y" );
+}
+
+static int limit_and_loop_value( int value, int value_max )
+{
+    if( value_max > 0 ) {
+        int limited_value = value % value_max;
+        return limited_value;
+    } else {
+        return value;
+    }
+}
+
 static int divide( int v, int m )
 {
     if( v >= 0 ) {
@@ -17,13 +37,6 @@ static int divide( int v, int m, int &r )
     const int result = divide( v, m );
     r = v - result * m;
     return result;
-}
-
-static void limit_and_loop_value( int &value, int value_max )
-{
-    if( value_max > 0 ) {
-        value = value % value_max;
-    }
 }
 
 point omt_to_om_copy( int x, int y )
@@ -208,6 +221,6 @@ tripoint omt_to_seg_copy( const tripoint &p )
 
 void limit_and_loop_om_coordinates( int &x, int &y )
 {
-    limit_and_loop_value( x, get_option<int>( "WORLD_LIMIT_X" ) );
-    limit_and_loop_value( y, get_option<int>( "WORLD_LIMIT_Y" ) );
+    x = limit_and_loop_value( x, x_max() );
+    y = limit_and_loop_value( y, y_max() );
 }
