@@ -1323,6 +1323,18 @@ void options_manager::init()
 
     mOptionsSort["world_default"]++;
 
+    add( "WORLD_LIMIT_X", "world_default", translate_marker( "Limit size of world (X-axis)" ),
+        translate_marker( "A number determining maximum number of overmap cells in horizontal axis after which world is looped to origin.  Set to non-zero to enable looping on this axis." ),
+        0, 1024 , 0
+        );
+
+    add( "WORLD_LIMIT_Y", "world_default", translate_marker( "Limit size of world (Y-axis)" ),
+        translate_marker( "A number determining maximum number of overmap cells in vertical axis after which world is looped to origin.  Set to non-zero to enable looping on this axis." ),
+        0, 1024, 0
+        );
+
+    mOptionsSort["world_default"]++;
+
     add( "CITY_SIZE", "world_default", translate_marker( "Size of cities" ),
         translate_marker( "A number determining how large cities are.  0 disables cities, roads and any scenario requiring a city start." ),
         0, 16, 4
