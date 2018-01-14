@@ -2,6 +2,8 @@
 
 #include "game_constants.h"
 
+#include "options.h"
+
 static int divide( int v, int m )
 {
     if( v >= 0 ) {
@@ -15,6 +17,16 @@ static int divide( int v, int m, int &r )
     const int result = divide( v, m );
     r = v - result * m;
     return result;
+}
+
+static int x_max_om()
+{
+    return get_option<int>( "WORLD_LIMIT_X" );
+}
+
+static int y_max_om()
+{
+    return get_option<int>( "WORLD_LIMIT_Y" );
 }
 
 point omt_to_om_copy( int x, int y )
