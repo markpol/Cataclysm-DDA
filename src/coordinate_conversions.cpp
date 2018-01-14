@@ -19,6 +19,16 @@ static int divide( int v, int m, int &r )
     return result;
 }
 
+static int limit_and_loop_value( int value, int value_max )
+{
+    if( value_max > 0 ) {
+        int limited_value = value % value_max;
+        return limited_value;
+    } else {
+        return value;
+    }
+}
+
 static int x_max_om()
 {
     return get_option<int>( "WORLD_LIMIT_X" );
@@ -193,4 +203,10 @@ point ms_to_omt_remain( int &x, int &y )
 tripoint omt_to_seg_copy( const tripoint &p )
 {
     return tripoint( divide( p.x, 32 ), divide( p.y, 32 ), p.z );
+}
+
+void limit_and_loop_coordinates_om( int &x, int &y )
+{
+    x = limit_and_loop_value( x, x_max_om() );
+    y = limit_and_loop_value( y, y_max_om() );
 }
