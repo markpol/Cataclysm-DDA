@@ -59,7 +59,10 @@ std::string overmapbuffer::player_filename(int const x, int const y)
 
 overmap &overmapbuffer::get( const int x, const int y )
 {
-    point const p { x, y };
+    int x_limited = x;
+    int y_limited = y;
+    limit_and_loop_coordinates_om( x_limited, y_limited );
+    point const p { x_limited, y_limited };
 
     if( last_requested_overmap != nullptr && last_requested_overmap->pos() == p ) {
         return *last_requested_overmap;
@@ -71,11 +74,11 @@ overmap &overmapbuffer::get( const int x, const int y )
     }
 
     // That constructor loads an existing overmap or creates a new one.
-    overmap *new_om = new overmap( x, y );
+    overmap *new_om = new overmap( x_limited, y_limited );
     overmaps[ p ] = std::unique_ptr<overmap>( new_om );
     new_om->populate();
     // Note: fix_mongroups might load other overmaps, so overmaps.back() is not
-    // necessarily the overmap at (x,y)
+    // necessarily the overmap at (x_limited,y_limited)
     fix_mongroups( *new_om );
     fix_npcs( *new_om );
 
@@ -85,7 +88,10 @@ overmap &overmapbuffer::get( const int x, const int y )
 
 void overmapbuffer::create_custom_overmap( int const x, int const y, overmap_special_batch &specials )
 {
-    overmap *new_om = new overmap( x, y );
+    int x_limited = x;
+    int y_limited = y;
+    limit_and_loop_coordinates_om( x_limited, y_limited );
+    overmap *new_om = new overmap( x_limited, y_limited );
     if( last_requested_overmap != nullptr ) {
         auto om_iter = overmaps.find( new_om->pos() );
         if( om_iter != overmaps.end() && om_iter->second.get() == last_requested_overmap ) {
@@ -216,6 +222,7 @@ void overmapbuffer::delete_note(int x, int y, int z)
 
 overmap *overmapbuffer::get_existing(int x, int y)
 {
+    limit_and_loop_coordinates_om( x, y );
     point const p {x, y};
 
     if( last_requested_overmap && last_requested_overmap->pos() == p ) {
@@ -247,6 +254,7 @@ overmap *overmapbuffer::get_existing(int x, int y)
 
 bool overmapbuffer::has( int x, int y )
 {
+    limit_and_loop_coordinates_om( x, y );
     return get_existing( x, y ) != nullptr;
 }
 
