@@ -39,6 +39,16 @@ static int y_max_om()
     return get_option<int>( "WORLD_LIMIT_Y" );
 }
 
+static int x_max_abs()
+{
+    return x_max_om() * OMAPX * SEEX * 2;
+}
+
+static int y_max_abs()
+{
+    return y_max_om() * OMAPY * SEEY * 2;
+}
+
 point omt_to_om_copy( int x, int y )
 {
     return point( divide( x, OMAPX ), divide( y, OMAPY ) );
@@ -209,4 +219,10 @@ void limit_and_loop_coordinates_om( int &x, int &y )
 {
     x = limit_and_loop_value( x, x_max_om() );
     y = limit_and_loop_value( y, y_max_om() );
+}
+
+void limit_and_loop_coordinates_abs( int &x, int &y )
+{
+    x = limit_and_loop_value( x, x_max_abs() );
+    y = limit_and_loop_value( y, y_max_abs() );
 }

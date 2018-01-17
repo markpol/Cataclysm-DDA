@@ -226,6 +226,15 @@ inline void limit_and_loop_coordinates_om( tripoint &p )
 {
     limit_and_loop_coordinates_om( p.x, p.y );
 }
-
+// limits and loops absoulte coordinates to make limited size world
+void limit_and_loop_coordinates_abs( int &x, int &y );
+inline void limit_and_loop_coordinates_abs( point &p )
+{
+    limit_and_loop_coordinates_abs( p.x, p.y );
+}
+inline void limit_and_loop_coordinates_abs( tripoint &p )
+{
+    limit_and_loop_coordinates_abs( p.x, p.y );
+}
 
 #endif
