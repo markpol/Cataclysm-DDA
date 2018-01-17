@@ -4,6 +4,8 @@
 
 #include "options.h"
 
+#include "debug.h"
+
 static int divide( int v, int m )
 {
     if( v >= 0 ) {
@@ -199,12 +201,26 @@ tripoint omt_to_seg_copy( const tripoint &p )
     return tripoint( divide( p.x, SEG_SIZE ), divide( p.y, SEG_SIZE ), p.z );
 }
 
+void limit_and_loop_om_coordinate( int &coordinate_value, int coordinate_limit )
+{
+    //int coordinate_value_before = coordinate_value;
+    if( coordinate_limit > 0 ) {
+        divide( coordinate_value, coordinate_limit, coordinate_value );
+        //if( coordinate_value_before != coordinate_value ) {
+        //    DebugLog( D_INFO, DC_ALL ) << "before: " << coordinate_value << " after: " << coordinate_value;
+        //}
+    }  
+}
+
 void limit_and_loop_om_coordinates( int &x, int &y )
 {
-    if( get_option<int>( "WORLD_LIMIT_X" ) > 0 ) {
-        x = x % get_option<int>( "WORLD_LIMIT_X" );
-    }
-    if( get_option<int>( "WORLD_LIMIT_Y" ) > 0 ) {
-        y = y % get_option<int>( "WORLD_LIMIT_Y" );
+    int x_prev = x;
+    int y_prev = y;
+    limit_and_loop_om_coordinate( x, get_option<int>( "WORLD_LIMIT_X" ) );
+    limit_and_loop_om_coordinate( y, get_option<int>( "WORLD_LIMIT_Y" ) );
+
+    if (x != x_prev || y != y_prev ) {
+        DebugLog( D_INFO, DC_ALL ) << "Looped: " << x_prev << "," << y_prev << " to " << x << "," << y;
     }
 }
+
