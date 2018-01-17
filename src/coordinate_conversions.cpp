@@ -63,13 +63,15 @@ void omt_to_om( int &x, int &y )
 {
     x = divide( x, OMAPX );
     y = divide( y, OMAPY );
+    limit_and_loop_coordinates_om( x, y );
 }
 
 point omt_to_om_remain( int &x, int &y )
 {
-    return point( divide( x, OMAPX, x ), divide( y, OMAPY, y ) );
+    point p = point( divide( x, OMAPX, x ), divide( y, OMAPY, y ) );
+    limit_and_loop_coordinates_om( p );
+    return p;
 }
-
 
 point sm_to_omt_copy( int x, int y )
 {
@@ -95,25 +97,31 @@ point sm_to_omt_remain( int &x, int &y )
 
 point sm_to_om_copy( int x, int y )
 {
-    return point( divide( x, 2 * OMAPX ), divide( y, 2 * OMAPY ) );
+    point p = point( divide( x, 2 * OMAPX ), divide( y, 2 * OMAPY ) );
+    limit_and_loop_coordinates_om( p );
+    return p;
 }
 
 tripoint sm_to_om_copy( const tripoint &p )
 {
-    return tripoint( divide( p.x, 2 * OMAPX ), divide( p.y, 2 * OMAPY ), p.z );
+    tripoint t = tripoint( divide( p.x, 2 * OMAPX ), divide( p.y, 2 * OMAPY ), p.z );
+    limit_and_loop_coordinates_om( t );
+    return t;
 }
 
 void sm_to_om( int &x, int &y )
 {
     x = divide( x, 2 * OMAPX );
     y = divide( y, 2 * OMAPY );
+    limit_and_loop_coordinates_om( x, y );
 }
 
 point sm_to_om_remain( int &x, int &y )
 {
-    return point( divide( x, 2 * OMAPX, x ), divide( y, 2 * OMAPY, y ) );
+    point p = point ( divide( x, 2 * OMAPX, x ), divide( y, 2 * OMAPY, y ) );
+    limit_and_loop_coordinates_om( p );
+    return p;
 }
-
 
 point omt_to_sm_copy( int x, int y )
 {
