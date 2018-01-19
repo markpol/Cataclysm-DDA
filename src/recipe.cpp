@@ -72,7 +72,14 @@ void recipe::load( JsonObject &jo, const std::string &src )
     if( abstract ) {
         ident_ = jo.get_string( "abstract" );
     } else {
-        ident_ = result = jo.get_string( "result" );
+        auto r = jo.get_string( "result" );
+        results_from_item_group = item_group::group_is_defined( r );
+        ident_ = r;
+        if( results_from_item_group ) {
+            result_group = r;
+        } else {
+            result = r;
+        }
     }
 
     assign( jo, "time", time, strict, 0 );
@@ -281,6 +288,9 @@ std::string recipe::get_consistency_error() const
 item recipe::create_result() const
 {
     item newit( result, calendar::turn, item::default_charges_tag{} );
+    if( results_from_item_group ) {
+        newit = item_group::item_from( result_group, calendar::turn );
+    }
     if( charges >= 0 ) {
         newit.charges = charges;
     }
