@@ -72,13 +72,14 @@ void recipe::load( JsonObject &jo, const std::string &src )
     if( abstract ) {
         ident_ = jo.get_string( "abstract" );
     } else {
-        auto r = jo.get_string( "result" );
-        results_from_item_group = item_group::group_is_defined( r );
-        ident_ = r;
-        if( results_from_item_group ) {
-            result_group = r;
-        } else {
-            result = r;
+        ident_ = result = jo.get_string( "result" );
+        if( jo.has_string( "result_group" ) ) {
+            auto r = jo.get_string( "result_group" );
+            results_from_item_group = item_group::group_is_defined( r );
+            if( results_from_item_group ) {
+                result_group = r;
+                result_label = jo.get_string( "result_label" );
+            }
         }
     }
 

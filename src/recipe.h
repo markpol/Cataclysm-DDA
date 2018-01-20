@@ -26,6 +26,10 @@ class recipe
 
         itype_id result = "null";
         Group_tag result_group = "null";
+        std::string result_label = "null";
+
+        /** Recipe result is taken from item group */
+        bool results_from_item_group = false;
 
         operator bool() const {
             return result != "null";
@@ -105,9 +109,6 @@ class recipe
 
         /** Can recipe be used for disassembly of @ref result via @ref disassembly_requirements */
         bool reversible = false;
-
-        /** Recipe result is taken from item group */
-        bool results_from_item_group = false;
 
         /** What does the item spawn contained in? Unset ("null") means default container. */
         itype_id container = "null";

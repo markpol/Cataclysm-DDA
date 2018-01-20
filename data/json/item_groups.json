@@ -8971,7 +8971,7 @@
     ]
   },{
     "type" : "item_group",
-    "id" : "chestwrap",
+    "id" : "group_recipe_chestwrap",
     "subtype": "distribution",
     "items":[
       ["chestwrap", 10],

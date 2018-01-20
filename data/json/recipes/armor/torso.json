@@ -97,7 +97,9 @@
     ]
   },
   {
-    "result": "recipe_chestwrap",
+    "result": "chestwrap",
+    "result_group": "group_recipe_chestwrap",
+    "result_label": "chestwrap or bionic toolset",
     "type": "recipe",
     "category": "CC_ARMOR",
     "subcategory": "CSC_ARMOR_TORSO",
