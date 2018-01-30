@@ -12,6 +12,7 @@
 #include "craft_command.h"
 #include "ret_val.h"
 #include "damage.h"
+#include "calendar.h"
 
 #include <unordered_set>
 #include <bitset>
@@ -36,6 +37,7 @@ enum game_message_type : int;
 class ma_technique;
 class martialart;
 class recipe;
+using recipe_id = string_id<recipe>;
 struct component;
 struct item_comp;
 struct tool_comp;
@@ -185,7 +187,7 @@ class player : public Character
         /** Outputs a serialized json string for saving */
         virtual std::string save_info() const;
 
-        int print_info(WINDOW *w, int vStart, int vLines, int column) const override;
+        int print_info( const catacurses::window &w, int vStart, int vLines, int column ) const override;
 
         // populate variables, inventory items, and misc from json object
         virtual void deserialize( JsonIn &jsin );
@@ -200,9 +202,9 @@ class player : public Character
         /** Provides the window and detailed morale data */
         void disp_morale();
         /** Print the player's stamina bar. **/
-        void print_stamina_bar( WINDOW *w ) const;
+        void print_stamina_bar( const catacurses::window &w ) const;
         /** Generates the sidebar and it's data in-game */
-        void disp_status(WINDOW *w, WINDOW *w2);
+        void disp_status( const catacurses::window &w, const catacurses::window &w2 );
 
         /** Resets stats, and applies effects in an idempotent manner */
         void reset_stats() override;
@@ -354,7 +356,6 @@ class player : public Character
         /** Returns true if the player or their vehicle has a watch */
         bool has_watch() const;
 
-        using Creature::sees;
         // see Creature::sees
         bool sees( const tripoint &c, bool is_player = false ) const override;
         // see Creature::sees
@@ -1243,12 +1244,12 @@ class player : public Character
         bool check_eligible_containers_for_crafting( const recipe &rec, int batch_size = 1 ) const;
         bool has_morale_to_craft() const;
         bool can_make( const recipe * r, int batch_size = 1 ); // have components?
-        bool making_would_work( const std::string & id_to_make, int batch_size );
+        bool making_would_work( const recipe_id &id_to_make, int batch_size );
         void craft();
         void recraft();
         void long_craft();
-        void make_craft( const std::string & id, int batch_size );
-        void make_all_craft( const std::string & id, int batch_size );
+        void make_craft( const recipe_id &id, int batch_size );
+        void make_all_craft( const recipe_id &id, int batch_size );
         std::list<item> consume_components_for_craft( const recipe *making, int batch_size );
         void complete_craft();
         /** Returns nearby NPCs ready and willing to help with crafting. */
@@ -1353,7 +1354,7 @@ class player : public Character
 
         std::map<std::string, int> mutation_category_level;
 
-        int next_climate_control_check;
+        time_point next_climate_control_check;
         bool last_climate_control_ret;
         std::string move_mode;
         int power_level, max_power_level;
@@ -1388,10 +1389,10 @@ class player : public Character
 
         std::vector <addiction> addictions;
 
-        void make_craft_with_command( const std::string &id_to_make, int batch_size, bool is_long = false );
+        void make_craft_with_command( const recipe_id &id_to_make, int batch_size, bool is_long = false );
         copyable_unique_ptr<craft_command> last_craft;
 
-        std::string lastrecipe;
+        recipe_id lastrecipe;
         int last_batch;
         itype_id lastconsumed;        //used in crafting.cpp and construction.cpp
 
@@ -1521,7 +1522,7 @@ class player : public Character
         void on_effect_int_change( const efftype_id &eid, int intensity, body_part bp = num_bp ) override;
 
         // formats and prints encumbrance info to specified window
-        void print_encumbrance( WINDOW * win, int line = -1, item *selected_limb = nullptr ) const;
+        void print_encumbrance( const catacurses::window &win, int line = -1, item *selected_limb = nullptr ) const;
 
         // Prints message(s) about current health
         void print_health() const;
@@ -1653,7 +1654,7 @@ class player : public Character
 
         inventory cached_crafting_inventory;
         int cached_moves;
-        int cached_turn;
+        time_point cached_time;
         tripoint cached_position;
 
         struct weighted_int_list<std::string> melee_miss_reasons;

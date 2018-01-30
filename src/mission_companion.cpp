@@ -387,7 +387,7 @@ bool talk_function::outpost_missions( npc &p, std::string id, std::string title 
         if (redraw) {
             werase(w_list);
             draw_border(w_list);
-            mvwprintz(w_list, 1, 1, c_white, "%s", title.c_str());
+            mvwprintz( w_list, 1, 1, c_white, title );
             for (size_t i = 0; i < keys.size(); i++) {
                 nc_color col = (i == sel ? h_white : c_white);
                 mvwprintz(w_list, i + 2, 1, col, "  %s", keys[i].c_str());
@@ -422,10 +422,6 @@ bool talk_function::outpost_missions( npc &p, std::string id, std::string title 
             break;
         }
     }
-    werase(w_list);
-    werase(w_info);
-    delwin(w_list);
-    delwin(w_info);
     g->refresh_all();
 
     if (cur_key == "Caravan Commune-Refugee Center"){
@@ -1328,7 +1324,7 @@ bool talk_function::forage_return( npc &p )
     if( skill > rng_float( -.5, 8 ) ) {
         std::string itemlist = "farming_seeds";
         if (one_in(2)){
-            switch (calendar::turn.get_season() ) {
+            switch( season_of_year( calendar::turn ) ) {
                 case SPRING:
                     itemlist = "forage_spring";
                     break;

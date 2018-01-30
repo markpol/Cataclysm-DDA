@@ -37,6 +37,7 @@
 #include "ui.h"
 #include "vehicle.h"
 #include "mtype.h"
+#include "ranged.h"
 #include "field.h"
 #include "fire.h"
 #include "weather.h"
@@ -117,12 +118,12 @@ static const itype *nullitem()
 
 const long item::INFINITE_CHARGES = std::numeric_limits<long>::max();
 
-item::item() : bday( 0 )
+item::item() : bday( calendar::time_of_cataclysm )
 {
     type = nullitem();
 }
 
-item::item( const itype *type, time_point turn, long qty ) : type( type ), bday( turn >= 0 ? turn : calendar::turn )
+item::item( const itype *type, time_point turn, long qty ) : type( type ), bday( turn )
 {
     corpse = typeId() == "corpse" ? &mtype_id::NULL_ID().obj() : nullptr;
     item_counter = type->countdown_interval;
@@ -190,7 +191,7 @@ item item::make_corpse( const mtype_id& mt, time_point turn, const std::string &
         debugmsg( "tried to make a corpse with an invalid mtype id" );
     }
 
-    item result( "corpse", turn >= 0 ? turn : calendar::turn );
+    item result( "corpse", turn );
     result.corpse = &mt.obj();
 
     result.active = result.corpse->has_flag( MF_REVIVES );
@@ -878,7 +879,7 @@ std::string item::info( bool showtext, std::vector<iteminfo> &info, int batch ) 
         }
 
         if( food_item->goes_bad() ) {
-            const std::string rot_time = calendar( food_item->type->comestible->spoils ).textify_period();
+            const std::string rot_time = to_string_clipped( time_duration::from_turns( food_item->type->comestible->spoils ) );
             info.emplace_back( "DESCRIPTION",
                                string_format( _( "* This food is <neutral>perishable</neutral>, and takes <info>%s</info> to rot from full freshness, at room temperature." ),
                                               rot_time.c_str() ) );
@@ -1386,7 +1387,7 @@ std::string item::info( bool showtext, std::vector<iteminfo> &info, int batch ) 
                 if( knows_it ) {
                     // In case the recipe is known, but has a different name in the book, use the
                     // real name to avoid confusing the player.
-                    const std::string name = nname( elem.recipe->result );
+                    const std::string name = elem.recipe->result_name();
                     recipe_list.push_back( "<bold>" + name + "</bold>" );
                 } else {
                     recipe_list.push_back( "<dark>" + elem.name + "</dark>" );
@@ -1481,7 +1482,7 @@ std::string item::info( bool showtext, std::vector<iteminfo> &info, int batch ) 
             insert_separation_line();
             info.push_back( iteminfo( "DESCRIPTION",
                 string_format( _( "Disassembling this item takes %s and might yield: %s." ),
-                               calendar::print_approx_duration( dis.time / 100 ).c_str(), components_list.c_str() ) ) );
+                               to_string_approx( time_duration::from_turns( dis.time ) ), components_list.c_str() ) ) );
         }
     }
 
@@ -1725,24 +1726,17 @@ std::string item::info( bool showtext, std::vector<iteminfo> &info, int batch ) 
 
         if( is_brewable() || ( !contents.empty() && contents.front().is_brewable() ) ) {
             const item &brewed = !is_brewable() ? contents.front() : *this;
-            int btime = brewed.brewing_time();
-            if( btime <= HOURS(48) )
+            const time_duration btime = brewed.brewing_time();
+            if( btime <= 2_days ) {
                 info.push_back( iteminfo( "DESCRIPTION",
                                           string_format( ngettext( "* Once set in a vat, this will ferment in around %d hour.",
-                                                  "* Once set in a vat, this will ferment in around %d hours.", btime / HOURS(1) ),
-                                                  btime / HOURS(1) ) ) );
-            else {
-                btime = 0.5 + btime / HOURS(48); //Round down to 12-hour intervals
-                if( btime % 2 == 1 ) {
-                    info.push_back( iteminfo( "DESCRIPTION",
-                                              string_format( _( "* Once set in a vat, this will ferment in around %d and a half days." ),
-                                                      btime / 2 ) ) );
-                } else {
-                    info.push_back( iteminfo( "DESCRIPTION",
-                                              string_format( ngettext( "* Once set in a vat, this will ferment in around %d day.",
-                                                      "* Once set in a vat, this will ferment in around %d days.", btime / 2 ),
-                                                      btime / 2 ) ) );
-                }
+                                                  "* Once set in a vat, this will ferment in around %d hours.", to_hours<int>( btime ) ),
+                                                  to_hours<int>( btime ) ) ) );
+            } else {
+                info.push_back( iteminfo( "DESCRIPTION",
+                                          string_format( ngettext( "* Once set in a vat, this will ferment in around %d day.",
+                                                  "* Once set in a vat, this will ferment in around %d days.", to_days<int>( btime ) ),
+                                                  to_days<int>( btime ) ) ) );
             }
 
             for( const auto &res : brewed.brewing_results() ) {
@@ -1783,7 +1777,7 @@ std::string item::info( bool showtext, std::vector<iteminfo> &info, int batch ) 
             if( time_to_do <= 0 ) {
                 info.push_back( iteminfo( "DESCRIPTION", _( "It's done and <info>can be activated</info>." ) ) );
             } else {
-                const auto time = calendar( time_to_do ).textify_period();
+                const auto time = to_string_clipped( time_duration::from_turns( time_to_do ) );
                 info.push_back( iteminfo( "DESCRIPTION", string_format( _( "It will be done in %s." ),
                                           time.c_str() ) ) );
             }
@@ -1810,7 +1804,7 @@ std::string item::info( bool showtext, std::vector<iteminfo> &info, int batch ) 
             for( const auto mod : is_gun() ? gunmods() : toolmods() ) {
                 if( mod->type->gunmod ) {
                     temp1.str( "" );
-                    if( mod->has_flag( "IRREMOVABLE" ) ) {
+                    if( mod->is_irremovable() ) {
                         temp1 << _( "Integrated mod: " );
                     } else {
                         temp1 << _( "Mod: " );
@@ -1849,9 +1843,9 @@ std::string item::info( bool showtext, std::vector<iteminfo> &info, int batch ) 
                 const std::string recipes = enumerate_as_string( known_recipes.begin(), known_recipes.end(),
                 [ &inv ]( const recipe *r ) {
                     if( r->requirements().can_make_with_inventory( inv ) ) {
-                        return nname( r->result );
+                        return r->result_name();
                     } else {
-                        return string_format( "<dark>%s</dark>", nname( r->result ).c_str() );
+                        return string_format( "<dark>%s</dark>", r->result_name() );
                     }
                 } );
                 if( !recipes.empty() ) {
@@ -2780,7 +2774,7 @@ int item::get_quality( const quality_id &id ) const
      * EXCEPTION: Items with quality BOIL only count as such if they are empty,
      * excluding items of their ammo type if they are tools.
      */
-    if ( id == quality_id( "BOIL" ) && !( contents.empty() || 
+    if ( id == quality_id( "BOIL" ) && !( contents.empty() ||
         ( is_tool() && std::all_of( contents.begin(), contents.end(),
         [this]( const item & itm ) {
             if ( !itm.is_ammo() ) {
@@ -3054,9 +3048,9 @@ int item::get_warmth() const
 }
 
 
-int item::brewing_time() const
+time_duration item::brewing_time() const
 {
-    return ( is_brewable() ? type->brewable->time : 0 ) * ( calendar::season_length() / 14.0 );
+    return is_brewable() ? type->brewable->time * calendar::season_from_default_ratio() : 0_turns;
 }
 
 const std::vector<itype_id> &item::brewing_results() const
@@ -3711,6 +3705,11 @@ bool item::is_toolmod() const
 bool item::is_faulty() const
 {
     return is_engine() ? !faults.empty() : false;
+}
+
+bool item::is_irremovable() const
+{
+    return has_flag( "IRREMOVABLE" );
 }
 
 std::set<fault_id> item::faults_potential() const
@@ -5170,10 +5169,10 @@ bool item::allow_crafting_component() const
     // fixes #18886 - turret installation may require items with irremovable mods
     if( is_gun() ) {
         return std::all_of( contents.begin(), contents.end(), [&]( const item &e ) {
-            return e.is_magazine() || ( e.is_gunmod() && e.has_flag( "IRREMOVABLE" ) );
+            return e.is_magazine() || ( e.is_gunmod() && e.is_irremovable() );
         } );
-
     }
+
     if( is_filthy() ) {
         return false;
     }
@@ -5879,18 +5878,18 @@ bool item::is_seed() const
     return type->seed.get() != nullptr;
 }
 
-int item::get_plant_epoch() const
+time_duration item::get_plant_epoch() const
 {
     if( !type->seed ) {
         return 0;
     }
-    // 91 days is the approximate length of a real world season
-    // Growing times have been based around 91 rather than the default of 14 to give
+    // Growing times have been based around real world season length rather than
+    // the default in-game season length to give
     // more accuracy for longer season lengths
-    // Note that it is converted based on the season_length option!
     // Also note that seed->grow is the time it takes from seeding to harvest, this is
     // divied by 3 to get the time it takes from one plant state to the next.
-    return DAYS( type->seed->grow * calendar::season_length() / ( 91 * 3 ) );
+    //@todo move this into the islot_seed
+    return type->seed->grow * calendar::season_ratio() / 3;
 }
 
 std::string item::get_plant_name() const

@@ -69,12 +69,12 @@ void realDebugmsg( const char *filename, const char *line, const char *funcname,
         return;
     }
 
-    if( stdscr == nullptr ) {
+    if( !catacurses::stdscr ) {
         std::cerr << text << std::endl;
         abort();
     }
 
-    fold_and_print( stdscr, 0, 0, getmaxx( stdscr ), c_light_red,
+    fold_and_print( catacurses::stdscr, 0, 0, getmaxx( catacurses::stdscr ), c_light_red,
                     "\n \n" // Looks nicer with some space
                     " DEBUG    : %s\n \n"
                     " FUNCTION : %s\n"
@@ -96,8 +96,8 @@ void realDebugmsg( const char *filename, const char *line, const char *funcname,
         }
     }
 
-    werase( stdscr );
-    refresh();
+    werase( catacurses::stdscr );
+    catacurses::refresh();
 }
 
 // Normal functions                                                 {{{1

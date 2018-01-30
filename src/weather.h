@@ -126,8 +126,6 @@ struct weather_sum {
     float sunlight = 0.0f;
 };
 
-const std::string season_name( int season );
-const std::string season_name_upper( int season );
 weather_datum const weather_data( weather_type const type );
 
 std::string weather_forecast( point const &abs_sm_pos );
@@ -147,8 +145,8 @@ int get_local_humidity( double humidity, weather_type weather, bool sheltered = 
 int get_local_windpower( double windpower, const oter_id &omter,
                          bool sheltered = false );
 
-weather_sum sum_conditions( const calendar &startturn,
-                            const calendar &endturn,
+weather_sum sum_conditions( const time_point &start,
+                            const time_point &end,
                             const tripoint &location );
 
 /**

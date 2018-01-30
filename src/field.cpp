@@ -130,7 +130,7 @@ const std::array<field_t, num_fields> fieldlist = { {
     {
         "fd_sludge",
         {translate_marker( "thin sludge trail" ), translate_marker( "sludge trail" ), translate_marker( "thick sludge trail" )}, '5', 2,
-        {def_c_light_gray,def_c_dark_gray,def_c_black}, {true, true, true}, {true, true, true}, HOURS( 6 ),
+        {def_c_light_gray,def_c_dark_gray,def_c_dark_gray}, {true, true, true}, {true, true, true}, HOURS( 6 ),
         {0,0,0},
         LIQUID,
         false
@@ -928,16 +928,25 @@ bool map::process_fields_in_submap( submap *const current_submap,
                                     destroy( p, false );
                                 }
 
-                            } else if( ter_furn_has_flag( ter, frn, TFLAG_FLAMMABLE_ASH ) ) {
+                            } else if( ter.has_flag( TFLAG_FLAMMABLE_ASH ) ) {
                                 // The fire feeds on the ground itself until max density.
                                 time_added += 5 - cur->getFieldDensity();
                                 smoke += 2;
                                 if( cur->getFieldDensity() > 1 &&
                                     one_in( 200 - cur->getFieldDensity() * 50 ) ) {
                                     ter_set( p, t_dirt );
+                                }
+
+                            } else if( frn.has_flag( TFLAG_FLAMMABLE_ASH ) ) {
+                                // The fire feeds on the ground itself until max density.
+                                time_added += 5 - cur->getFieldDensity();
+                                smoke += 2;
+                                if( cur->getFieldDensity() > 1 &&
+                                    one_in( 200 - cur->getFieldDensity() * 50 ) ) {
                                     furn_set( p, f_ash );
                                     add_item_or_charges( p, item( "ash" ) );
                                 }
+
                             } else if( ter.has_flag( TFLAG_NO_FLOOR ) && zlevels && p.z > -OVERMAP_DEPTH ) {
                                 // We're hanging in the air - let's fall down
                                 tripoint dst{p.x, p.y, p.z - 1};
@@ -1367,7 +1376,7 @@ bool map::process_fields_in_submap( submap *const current_submap,
                             mtype_id( "mon_flaming_eye" ), mtype_id( "mon_kreck" ), mtype_id( "mon_gracke" ),
                             mtype_id( "mon_blank" ),
                         } };
-                        if (cur->getFieldDensity() < 3 && calendar::once_every(HOURS(6)) && one_in(10)) {
+                        if( cur->getFieldDensity() < 3 && calendar::once_every( 6_hours ) && one_in( 10 ) ) {
                             cur->setFieldDensity(cur->getFieldDensity() + 1);
                         } else if (cur->getFieldDensity() == 3 && one_in(600)) { // Spawn nether creature!
                             g->summon_mon( random_entry( monids ), p);

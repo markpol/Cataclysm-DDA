@@ -319,8 +319,9 @@ inline void FillRectDIB(int x, int y, int width, int height, unsigned char color
         memset(&dcbits[x+j*WindowWidth],color,width);
 }
 
-void cata_cursesport::curses_drawwindow(WINDOW *win)
+void cata_cursesport::curses_drawwindow( const catacurses::window &w )
 {
+    WINDOW *const win = w.get<WINDOW>();
     int i,j,drawx,drawy;
     wchar_t tmp;
     RECT update = {win->x * fontwidth, -1,
@@ -543,7 +544,7 @@ input_event input_manager::get_input_event()
     // so although it's non-obvious, that refresh() call (and maybe InvalidateRect?) IS supposed to be there
     uint64_t Frequency;
     QueryPerformanceFrequency((PLARGE_INTEGER)&Frequency);
-    wrefresh( stdscr );
+    wrefresh( catacurses::stdscr );
     InvalidateRect(WindowHandle,NULL,true);
     lastchar = ERR;
     if (inputdelay < 0)

@@ -23,12 +23,12 @@ snake_game::snake_game()
 {
 }
 
-void snake_game::print_score(WINDOW *w_snake, int iScore)
+void snake_game::print_score( const catacurses::window &w_snake, int iScore )
 {
     mvwprintz(w_snake, 0, 5, c_white, string_format(_("Score: %d"), iScore).c_str());
 }
 
-void snake_game::print_header(WINDOW *w_snake, bool show_shortcut)
+void snake_game::print_header( const catacurses::window &w_snake, bool show_shortcut )
 {
     draw_border( w_snake, BORDER_COLOR, _( "S N A K E" ), c_white );
     if (show_shortcut) {
@@ -38,7 +38,7 @@ void snake_game::print_header(WINDOW *w_snake, bool show_shortcut)
     }
 }
 
-void snake_game::snake_over(WINDOW *w_snake, int iScore)
+void snake_game::snake_over( const catacurses::window &w_snake, int iScore )
 {
     werase(w_snake);
     print_header(w_snake, false);
@@ -94,7 +94,6 @@ int snake_game::start_game()
     int iOffsetY = (TERMY > FULL_SCREEN_HEIGHT) ? (TERMY - FULL_SCREEN_HEIGHT) / 2 : 0;
 
     catacurses::window w_snake = catacurses::newwin( FULL_SCREEN_HEIGHT, FULL_SCREEN_WIDTH, iOffsetY, iOffsetX );
-    WINDOW_PTR w_snakeptr( w_snake );
     print_header(w_snake);
 
     //Snake start position

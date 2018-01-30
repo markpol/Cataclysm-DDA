@@ -415,27 +415,27 @@ std::pair<std::string, nc_color> hp_description( int cur_hp, int max_hp )
     return std::make_pair( damage_info, col );
 }
 
-int monster::print_info(WINDOW* w, int vStart, int vLines, int column) const
+int monster::print_info( const catacurses::window &w, int vStart, int vLines, int column ) const
 {
     const int vEnd = vStart + vLines;
 
     mvwprintz(w, vStart, column, c_white, "%s ", name().c_str());
 
     const auto att = get_attitude();
-    wprintz( w, att.second, "%s", att.first.c_str() );
+    wprintz( w, att.second, att.first );
 
     std::string effects = get_effect_status();
     long long used_space = att.first.length() + name().length() + 3;
     trim_and_print( w, vStart++, used_space, getmaxx( w ) - used_space - 2,
-                    h_white, "%s", effects.c_str() );
+                    h_white, effects );
 
     const auto hp_desc = hp_description( hp, type->hp );
-    mvwprintz( w, vStart++, column, hp_desc.second, "%s", hp_desc.first.c_str() );
+    mvwprintz( w, vStart++, column, hp_desc.second, hp_desc.first );
 
     std::vector<std::string> lines = foldstring( type->get_description(), getmaxx(w) - 1 - column );
     int numlines = lines.size();
     for (int i = 0; i < numlines && vStart <= vEnd; i++) {
-        mvwprintz(w, vStart++, column, c_white, "%s", lines[i].c_str());
+        mvwprintz( w, vStart++, column, c_white, lines[i] );
     }
 
     return vStart;

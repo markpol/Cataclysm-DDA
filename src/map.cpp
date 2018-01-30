@@ -1364,7 +1364,7 @@ vehicle *map::displace_vehicle( tripoint &p, const tripoint &dp )
     veh->posy = dst_offset_y;
     veh->smz = p2.z;
     // Invalidate vehicle's point cache
-    veh->occupied_cache_turn = -1;
+    veh->occupied_cache_time = calendar::before_time_starts;
     if( src_submap != dst_submap ) {
         veh->set_submap_moved( int( p2.x / SEEX ), int( p2.y / SEEY ) );
         dst_submap->vehicles.push_back( veh );
@@ -3278,14 +3278,14 @@ void map::bash_ter_furn( const tripoint &p, bash_params &params )
     }
 
     // TODO: what if silent is true?
-    if( has_flag("ALARMED", p) && !g->event_queued(EVENT_WANTED) ) {
+    if( has_flag( "ALARMED", p ) && !g->events.queued( EVENT_WANTED ) ) {
         sounds::sound(p, 40, _("an alarm go off!"), false, "environment", "alarm");
         // Blame nearby player
         if( rl_dist( g->u.pos(), p ) <= 3 ) {
             g->u.add_memorial_log(pgettext("memorial_male", "Set off an alarm."),
                                   pgettext("memorial_female", "Set off an alarm."));
             const point abs = ms_to_sm_copy( getabs( p.x, p.y ) );
-            g->add_event(EVENT_WANTED, int(calendar::turn) + 300, 0, tripoint( abs.x, abs.y, p.z ) );
+            g->events.add( EVENT_WANTED, calendar::turn + 30_minutes, 0, tripoint( abs.x, abs.y, p.z ) );
         }
     }
 
@@ -3678,10 +3678,10 @@ void map::shoot( const tripoint &p, projectile &proj, const bool hit_items )
     float dam = initial_damage;
     const auto &ammo_effects = proj.proj_effects;
 
-    if( has_flag("ALARMED", p) && !g->event_queued(EVENT_WANTED) ) {
+    if( has_flag( "ALARMED", p ) && !g->events.queued( EVENT_WANTED ) ) {
         sounds::sound(p, 30, _("an alarm sound!"));
         const tripoint abs = ms_to_sm_copy( getabs( p ) );
-        g->add_event(EVENT_WANTED, int(calendar::turn) + 300, 0, abs );
+        g->events.add( EVENT_WANTED, calendar::turn + 30_minutes, 0, abs );
     }
 
     const bool inc = (ammo_effects.count("INCENDIARY") || ammo_effects.count("FLAME"));
@@ -3924,7 +3924,7 @@ bool map::hit_with_acid( const tripoint &p )
         if( one_in( 3 ) ) {
             ter_set( p, t_door_b );
         }
-    } else if( t == t_door_bar_c || t == t_door_bar_o || t == t_door_bar_locked || t == t_bars ) {
+    } else if( t == t_door_bar_c || t == t_door_bar_o || t == t_door_bar_locked || t == t_bars || t == t_reb_cage ) {
         ter_set( p, t_floor );
         add_msg( m_warning, _( "The metal bars melt!" ) );
     } else if( t == t_door_b ) {
@@ -4651,6 +4651,28 @@ static void process_vehicle_items( vehicle *cur_veh, int part )
             apply_in_fridge(n);
         }
     }
+
+    const bool washmachine_here = cur_veh->part_flag( part, VPFLAG_WASHING_MACHINE ) && cur_veh->is_part_on( part );
+    bool washing_machine_finished = false;
+    if( washmachine_here ) {
+        for( auto &n : cur_veh->get_items( part ) ) {
+            const time_duration washing_time = 90_minutes;
+            const time_duration time_left = washing_time - n.age();
+            static const std::string filthy( "FILTHY" );
+            if( time_left <= 0 ) {
+                n.item_tags.erase( filthy );
+                washing_machine_finished = true;
+                cur_veh->parts[part].enabled = false;
+            } else if( calendar::once_every( 15_minutes ) ) {
+                add_msg( _( "It should take %d minutes to finish washing items in the %s." ), to_minutes<int>( time_left ) + 1, cur_veh->name.c_str() );
+                break;
+            }
+        }
+        if( washing_machine_finished ) {
+            add_msg( _( "The washing machine in the %s has finished washing." ), cur_veh->name.c_str() );
+        }
+    }
+
     if( cur_veh->part_with_feature( part, VPFLAG_RECHARGE ) >= 0 && cur_veh->has_part( "RECHARGE", true ) ) {
         for( auto &n : cur_veh->get_items( part ) ) {
             static const std::string recharge_s( "RECHARGE" );
@@ -5298,7 +5320,7 @@ void map::disarm_trap( const tripoint &p )
     // Some traps are not actual traps. Skip the rolls, different message and give the option to grab it right away.
     if( tr.get_avoidance() ==  0 && tr.get_difficulty() == 0 ) {
         add_msg(_("You take down the %s."), tr.name().c_str());
-        tr.on_disarmed( p );
+        tr.on_disarmed( *this, p );
         return;
     }
 
@@ -5312,7 +5334,7 @@ void map::disarm_trap( const tripoint &p )
     }
     if (roll >= diff) {
         add_msg(_("You disarm the trap!"));
-        tr.on_disarmed( p );
+        tr.on_disarmed( *this, p );
         if(diff > 1.25 * tSkillLevel) { // failure might have set off trap
             g->u.practice( skill_traps, 1.5*(diff - tSkillLevel) );
         }
@@ -5747,7 +5769,7 @@ visibility_type map::get_visibility( const lit_level ll, const visibility_variab
     return VIS_HIDDEN;
 }
 
-bool map::apply_vision_effects( WINDOW *w, lit_level ll,
+bool map::apply_vision_effects( const catacurses::window &w, lit_level ll,
                                 const visibility_variables &cache ) const {
     int symbol = ' ';
     nc_color color = c_black;
@@ -5778,7 +5800,7 @@ bool map::apply_vision_effects( WINDOW *w, lit_level ll,
     return true;
 }
 
-void map::draw( WINDOW* w, const tripoint &center )
+void map::draw( const catacurses::window &w, const tripoint &center )
 {
     // We only need to draw anything if we're not in tiles mode.
     if( is_draw_tiles_mode() ) {
@@ -5855,13 +5877,13 @@ void map::draw( WINDOW* w, const tripoint &center )
     }
 }
 
-void map::drawsq( WINDOW* w, player &u, const tripoint &p,
+void map::drawsq( const catacurses::window &w, player &u, const tripoint &p,
                   const bool invert, const bool show_items ) const
 {
     drawsq( w, u, p, invert, show_items, u.pos() + u.view_offset, false, false, false );
 }
 
-void map::drawsq( WINDOW* w, player &u, const tripoint &p, const bool invert_arg,
+void map::drawsq( const catacurses::window &w, player &u, const tripoint &p, const bool invert_arg,
                   const bool show_items_arg, const tripoint &view_center,
                   const bool low_light, const bool bright_light, const bool inorder ) const
 {
@@ -5892,7 +5914,7 @@ bool map::need_draw_lower_floor( const tripoint &p )
     return !( !zlevels || p.z <= -OVERMAP_DEPTH || !ter( p ).obj().has_flag( TFLAG_NO_FLOOR ) );
 }
 
-bool map::draw_maptile( WINDOW* w, player &u, const tripoint &p, const maptile &curr_maptile,
+bool map::draw_maptile( const catacurses::window &w, player &u, const tripoint &p, const maptile &curr_maptile,
                         bool invert, bool show_items,
                         const tripoint &view_center,
                         const bool low_light, const bool bright_light, const bool inorder ) const
@@ -6043,7 +6065,7 @@ bool map::draw_maptile( WINDOW* w, player &u, const tripoint &p, const maptile &
         if( item_sym.empty() ) {
             wputch(w, tercol, sym);
         } else {
-            wprintz( w, tercol, "%s", item_sym.c_str() );
+            wprintz( w, tercol, item_sym );
         }
     } else {
         // Otherwise move the cursor before drawing.
@@ -6052,14 +6074,14 @@ bool map::draw_maptile( WINDOW* w, player &u, const tripoint &p, const maptile &
         if( item_sym.empty() ) {
             mvwputch(w, j, k, tercol, sym);
         } else {
-            mvwprintz( w, j, k, tercol, "%s", item_sym.c_str() );
+            mvwprintz( w, j, k, tercol, item_sym );
         }
     }
 
     return !zlevels || sym != ' ' || !item_sym.empty() || p.z <= -OVERMAP_DEPTH || !curr_ter.has_flag( TFLAG_NO_FLOOR );
 }
 
-void map::draw_from_above( WINDOW* w, player &u, const tripoint &p,
+void map::draw_from_above( const catacurses::window &w, player &u, const tripoint &p,
                            const maptile &curr_tile,
                            const bool invert,
                            const tripoint &view_center,
@@ -6599,31 +6621,17 @@ void map::loadn( const int gridx, const int gridy, const bool update_vehicles ) 
 
 // Optimized mapgen function that only works properly for very simple overmap types
 // Does not create or require a temporary map and does its own saving
-static void generate_uniform( const int x, const int y, const int z, const oter_id &terrain_type )
+static void generate_uniform( const int x, const int y, const int z, const ter_id &terrain_type )
 {
-    static const oter_id rock("empty_rock");
-    static const oter_id air("open_air");
-
     dbg( D_INFO ) << "generate_uniform x: " << x << "  y: " << y << "  abs_z: " << z
                   << "  terrain_type: " << terrain_type.id().str();
-
-    ter_id fill = t_null;
-    if( terrain_type == rock ) {
-        fill = t_rock;
-    } else if( terrain_type == air ) {
-        fill = t_open_air;
-    } else {
-        debugmsg( "map::generate_uniform called on non-uniform type: %s",
-                  terrain_type.id().c_str() );
-        return;
-    }
 
     constexpr size_t block_size = SEEX * SEEY;
     for( int xd = 0; xd <= 1; xd++ ) {
         for( int yd = 0; yd <= 1; yd++ ) {
             submap *sm = new submap();
             sm->is_uniform = true;
-            std::uninitialized_fill_n( &sm->ter[0][0], block_size, fill );
+            std::uninitialized_fill_n( &sm->ter[0][0], block_size, terrain_type );
             sm->turn_last_touched = int(calendar::turn);
             MAPBUFFER.add_submap( x + xd, y + yd, z, sm );
         }
@@ -6662,9 +6670,14 @@ void map::loadn( const int gridx, const int gridy, const int gridz, const bool u
         int overx = newmapx;
         int overy = newmapy;
         sm_to_omt( overx, overy );
-        oter_id terrain_type = overmap_buffer.ter( overx, overy, gridz );
-        if( terrain_type == rock || terrain_type == air ) {
-            generate_uniform( newmapx, newmapy, gridz, terrain_type );
+
+        const oter_id terrain_type = overmap_buffer.ter( overx, overy, gridz );
+
+        // @todo Replace with json mapgen functions.
+        if( terrain_type == air ) {
+            generate_uniform( newmapx, newmapy, gridz, t_open_air );
+        } else if( terrain_type == rock ) {
+            generate_uniform( newmapx, newmapy, gridz, t_rock );
         } else {
             tinymap tmp_map;
             tmp_map.generate( newmapx, newmapy, gridz, calendar::turn );
@@ -6812,8 +6825,7 @@ void map::grow_plant( const tripoint &p )
         furn_set( p, f_null );
         return;
     }
-    //@todo change get_plant_epoch to return time_duration
-    const time_duration plantEpoch = time_duration::from_turns( seed.get_plant_epoch() );
+    const time_duration plantEpoch = seed.get_plant_epoch();
 
     if( seed.age() >= plantEpoch ) {
         if( seed.age() < plantEpoch * 2 ) {
@@ -6836,8 +6848,8 @@ void map::restock_fruits( const tripoint &p, int time_since_last_actualize )
     }
     // Make it harvestable again if the last actualization was during a different season or year.
     const calendar last_touched = calendar::turn - time_since_last_actualize;
-    if( calendar::turn.get_season() != last_touched.get_season() ||
-        time_since_last_actualize >= DAYS( calendar::season_length() ) ) {
+    if( season_of_year( calendar::turn ) != season_of_year( last_touched ) ||
+        time_since_last_actualize >= to_turns<int>( calendar::season_length() ) ) {
         ter_set( p, ter.transforms_into );
     }
 }
@@ -6856,7 +6868,7 @@ void map::produce_sap( const tripoint &p, int time_since_last_actualize )
     static const int maple_sap_per_season = 56;
 
     // How many turns to produce 1 charge (250 ml) of sap?
-    const int turns_season = DAYS( calendar::season_length() );
+    const int turns_season = to_turns<int>( calendar::season_length() );
     const int producing_length = int( 0.75f * turns_season );
 
     const int turns_to_produce = producing_length / ( maple_sap_per_season * 4 );
@@ -6864,7 +6876,7 @@ void map::produce_sap( const tripoint &p, int time_since_last_actualize )
     // How long of this time_since_last_actualize have we been in the producing period (late winter, early spring)?
     int time_producing = 0;
 
-    if( time_since_last_actualize >= calendar::year_turns() ) {
+    if( time_since_last_actualize >= to_turns<int>( calendar::year_length() ) ) {
         time_producing = producing_length;
     } else {
         // We are only procuding sap on the intersection with the sap producing season.
@@ -6900,7 +6912,7 @@ void map::produce_sap( const tripoint &p, int time_since_last_actualize )
             if( last_actualize_tof < early_spring_end ) {
                 time_producing = early_spring_end - last_actualize_tof;
             } else {
-                time_producing = calendar::year_turns() - last_actualize_tof + early_spring_end;
+                time_producing = to_turns<int>( calendar::year_length() ) - last_actualize_tof + early_spring_end;
             }
         } else if ( !last_producing && current_producing ) {
             // We hit the start of late winter

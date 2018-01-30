@@ -144,20 +144,20 @@ static int msgtype_to_tilecolor( const game_message_type type, const bool bOldMs
 
     switch( type ) {
         case m_good:
-            return iBold + green;
+            return iBold + catacurses::green;
         case m_bad:
-            return iBold + red;
+            return iBold + catacurses::red;
         case m_mixed:
         case m_headshot:
-            return iBold + magenta;
+            return iBold + catacurses::magenta;
         case m_neutral:
-            return iBold + white;
+            return iBold + catacurses::white;
         case m_warning:
         case m_critical:
-            return iBold + yellow;
+            return iBold + catacurses::yellow;
         case m_info:
         case m_grazing:
-            return iBold + blue;
+            return iBold + catacurses::blue;
         default:
             break;
     }
@@ -427,6 +427,13 @@ void tileset_loader::load_tileset( std::string img_path )
 
     SDL_RendererInfo info;
     throwErrorIf( SDL_GetRendererInfo( renderer, &info ) != 0, "SDL_GetRendererInfo failed" );
+    // Software rendering stores textures as surfaces with run-length encoding, which makes extracting a part
+    // in the middle of the texture slow. Therefor this "simulates" that the renderer only supports one tile
+    // per texture. Each tile will go on its own texture object.
+    if( info.flags & SDL_RENDERER_SOFTWARE ) {
+        info.max_texture_width = sprite_width;
+        info.max_texture_height = sprite_height;
+    }
     // for debugging only: force a very small maximal texture size, as to trigger
     // splitting the tile atlas.
 #if 0
@@ -441,11 +448,15 @@ void tileset_loader::load_tileset( std::string img_path )
     if( info.max_texture_width == 0 ){
         info.max_texture_width = sprite_width * min_tile_xcount;
         DebugLog( D_INFO, DC_ALL ) << "SDL_RendererInfo max_texture_width was set to 0.  Changing it to " << info.max_texture_width;
+    } else {
+        throwErrorIf( info.max_texture_width < sprite_width, "Maximal texture width is smaller than tile width" );
     }
 
     if( info.max_texture_height == 0 ){
         info.max_texture_height = sprite_height * min_tile_ycount;
         DebugLog( D_INFO, DC_ALL ) << "SDL_RendererInfo max_texture_height was set to 0.  Changing it to " << info.max_texture_height;
+    } else {
+        throwErrorIf( info.max_texture_height < sprite_height, "Maximal texture height is smaller than tile height" );
     }
 
     // Number of tiles in each dimension that fits into a (maximal) SDL texture.
@@ -700,21 +711,21 @@ void tileset_loader::load_ascii_set( JsonObject &entry )
     int FG = -1;
     const std::string scolor = entry.get_string( "color", "DEFAULT" );
     if( scolor == "BLACK" ) {
-        FG = black;
+        FG = catacurses::black;
     } else if( scolor == "RED" ) {
-        FG = red;
+        FG = catacurses::red;
     } else if( scolor == "GREEN" ) {
-        FG = green;
+        FG = catacurses::green;
     } else if( scolor == "YELLOW" ) {
-        FG = yellow;
+        FG = catacurses::yellow;
     } else if( scolor == "BLUE" ) {
-        FG = blue;
+        FG = catacurses::blue;
     } else if( scolor == "MAGENTA" ) {
-        FG = magenta;
+        FG = catacurses::magenta;
     } else if( scolor == "CYAN" ) {
-        FG = cyan;
+        FG = catacurses::cyan;
     } else if( scolor == "WHITE" ) {
-        FG = white;
+        FG = catacurses::white;
     } else if( scolor == "DEFAULT" ) {
         FG = -1;
     } else {
@@ -1551,7 +1562,7 @@ bool cata_tiles::draw_from_id_string(std::string id, TILE_CATEGORY category,
     constexpr char season_suffix[4][suffix_len] = {
         "_season_spring", "_season_summer", "_season_autumn", "_season_winter"};
 
-    std::string seasonal_id = id + season_suffix[calendar::turn.get_season()];
+    std::string seasonal_id = id + season_suffix[season_of_year( calendar::turn )];
 
     const tile_type *tt = tileset_ptr->find_tile_type( seasonal_id );
     if( tt ) {

@@ -21,6 +21,7 @@
 #include "vehicle.h"
 #include "mtype.h"
 #include "iuse_actor.h"
+#include "trait_group.h"
 #include "json.h"
 
 const skill_id skill_mechanics( "mechanics" );
@@ -385,13 +386,13 @@ void npc::randomize( const npc_class_id &type )
     starting_clothes( *this, type, male );
     starting_inv( *this, type );
     has_new_items = true;
-    my_traits.clear();
-    my_mutations.clear();
 
-    for( const auto &pr : type->traits ) {
-        if( rng( 1, 100 ) <= pr.second ) {
-            set_mutation( pr.first );
-        }
+    my_mutations.clear();
+    my_traits.clear();
+
+    // Add fixed traits
+    for( const auto &tid : trait_group::traits_from( myclass->traits ) ) {
+        set_mutation( tid );
     }
 
     // Run mutation rounds
@@ -1470,7 +1471,7 @@ int npc::value( const item &it ) const
 
 int npc::value( const item &it, int market_price ) const
 {
-    if( it.is_dangerous() ) {
+    if( it.is_dangerous() || ( it.has_flag( "BOMB" ) && it.active ) ) {
         // Live grenade or something similar
         return -1000;
     }
@@ -1747,7 +1748,7 @@ nc_color npc::basic_symbol_color() const
     return c_pink;
 }
 
-int npc::print_info( WINDOW *w, int line, int vLines, int column ) const
+int npc::print_info( const catacurses::window &w, int line, int vLines, int column ) const
 {
     const int last_line = line + vLines;
     const unsigned int iWidth = getmaxx( w ) - 2;
@@ -2291,7 +2292,7 @@ void npc::process_turn()
 {
     player::process_turn();
 
-    if( is_following() && calendar::once_every( HOURS( 1 ) ) &&
+    if( is_following() && calendar::once_every( 1_hours ) &&
         get_hunger() < 200 && get_thirst() < 100 && op_of_u.trust < 5 ) {
         // Friends who are well fed will like you more
         // 24 checks per day, best case chance at trust 0 is 1 in 48 for +1 trust per 2 days

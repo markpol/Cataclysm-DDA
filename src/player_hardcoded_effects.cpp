@@ -638,13 +638,13 @@ void player::hardcoded_effects( effect &it )
                     }
                 } while( g->critter_at( dest ) );
                 if( tries < 10 ) {
-                    if( g->m.impassable( x, y ) ) {
-                        g->m.make_rubble( tripoint( x, y, posz() ), f_rubble_rock, true );
+                    if( g->m.impassable( dest ) ) {
+                        g->m.make_rubble( dest, f_rubble_rock, true );
                     }
                     MonsterGroupResult spawn_details = MonsterGroupManager::GetResultFromGroup(
                                                            mongroup_id( "GROUP_NETHER" ) );
                     g->summon_mon( spawn_details.name, dest );
-                    if( g->u.sees( x, y ) ) {
+                    if( g->u.sees( dest ) ) {
                         g->cancel_activity_query( _( "A monster appears nearby!" ) );
                         add_msg( m_warning, _( "A portal opens nearby, and a monster crawls through!" ) );
                     }
@@ -987,7 +987,7 @@ void player::hardcoded_effects( effect &it )
     } else if( id == effect_sleep ) {
         set_moves( 0 );
 #ifdef TILES
-        if( is_player() && calendar::once_every( MINUTES( 10 ) ) ) {
+        if( is_player() && calendar::once_every( 10_minutes ) ) {
             SDL_PumpEvents();
         }
 #endif // TILES
@@ -1009,7 +1009,7 @@ void player::hardcoded_effects( effect &it )
         }
 
         // TODO: Move this to update_needs when NPCs can mutate
-        if( calendar::once_every( MINUTES( 10 ) ) && has_trait( trait_id( "CHLOROMORPH" ) ) &&
+        if( calendar::once_every( 10_minutes ) && has_trait( trait_id( "CHLOROMORPH" ) ) &&
             g->is_in_sunlight( pos() ) ) {
             // Hunger and thirst fall before your Chloromorphic physiology!
             if( get_hunger() >= -30 ) {
@@ -1043,7 +1043,7 @@ void player::hardcoded_effects( effect &it )
                 // Select a dream
                 std::string dream = get_category_dream( highcat, strength );
                 if( !dream.empty() ) {
-                    add_msg_if_player( "%s", dream.c_str() );
+                    add_msg_if_player( dream );
                 }
                 // Mycus folks upgrade in their sleep.
                 if( has_trait( trait_id( "THRESH_MYCUS" ) ) ) {

@@ -822,7 +822,7 @@ void Character::i_rem_keep_contents( const int pos )
 bool Character::i_add_or_drop( item& it, int qty ) {
     bool retval = true;
     bool drop = it.made_of( LIQUID );
-    bool add = it.is_gun() || !it.has_flag( "IRREMOVABLE" );
+    bool add = it.is_gun() || !it.is_irremovable();
     inv.assign_empty_invlet( it , this );
     for( int i = 0; i < qty; ++i ) {
         drop |= !can_pickWeight( it, !get_option<bool>( "DANGEROUS_PICKUPS" ) ) || !can_pickVolume( it );
@@ -1275,7 +1275,7 @@ void Character::die(Creature* nkiller)
 {
     g->set_critter_died();
     set_killer( nkiller );
-    set_turn_died(int(calendar::turn));
+    set_time_died( calendar::turn );
     if( has_effect( effect_lightsnare ) ) {
         inv.add_item( item( "string_36", 0 ) );
         inv.add_item( item( "snare_trigger", 0 ) );
@@ -2035,10 +2035,7 @@ hp_part Character::body_window( const std::string &menu_header,
             break;
         }
     } while (ch < '1' || ch > '7');
-    werase(hp_window);
-    wrefresh(hp_window);
-    delwin(hp_window);
-    refresh();
+    catacurses::refresh();
 
     return healed_part;
 }
