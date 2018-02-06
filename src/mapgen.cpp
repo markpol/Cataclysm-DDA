@@ -2757,8 +2757,8 @@ ___DEEE|.R.|...,,...|sss\n",
             lw = SEEX * 2;
         }
         if (zlevel == 0) { // We're on ground level
-            for (int i = 0; i < SEEX * 2; i++) {
-                for (int j = 0; j < SEEY * 2; j++) {
+            for (int i = 0; i <= SUBMAP_MAX_X; i++) {
+                for (int j = 0; j <= SUBMAP_MAX_Y; j++) {
                     if (i <= 1 || i >= SUBMAP_MAX_X - 1 ||
                         (j > 1 && j < SUBMAP_MAX_Y - 1 && (i == SEEX - 2 || i == SEEX + 1))) {
                         ter_set(i, j, t_concrete_wall);
@@ -2803,8 +2803,8 @@ ___DEEE|.R.|...,,...|sss\n",
                        is_ot_type( "ice_lab_core", id );
             };
 
-            for (int i = 0; i < SEEX * 2; i++) {
-                for (int j = 0; j < SEEY * 2; j++) {
+            for (int i = 0; i <= SUBMAP_MAX_X; i++) {
+                for (int j = 0; j <= SUBMAP_MAX_Y; j++) {
                     ter_set(i, j, t_rock_floor);
                     if (((i < lw || i > SUBMAP_MAX_X - rw) && j > SEEY - 3 && j < SEEY + 2) ||
                         ((j < tw || j > SUBMAP_MAX_Y - bw) && i > SEEX - 3 && i < SEEX + 2)) {
@@ -3048,8 +3048,8 @@ ___DEEE|.R.|...,,...|sss\n",
                 }
             } else switch (rng(1, 4)) { // Pick a random lab layout
                 case 1: // Cross shaped
-                    for (int i = 0; i < SEEX * 2; i++) {
-                        for (int j = 0; j < SEEY * 2; j++) {
+                    for (int i = 0; i <= SUBMAP_MAX_X; i++) {
+                        for (int j = 0; j <= SUBMAP_MAX_Y; j++) {
                             if ((i < lw || i > SUBMAP_MAX_X - rw) ||
                                 ((j < SEEY - 1 || j > SEEY) && (i == SEEX - 2 || i == SEEX + 1))) {
                                 ter_set(i, j, t_concrete_wall);
@@ -3147,8 +3147,8 @@ ___DEEE|.R.|...,,...|sss\n",
                     break;
 
                 case 2: // tic-tac-toe # layout
-                    for (int i = 0; i < SEEX * 2; i++) {
-                        for (int j = 0; j < SEEY * 2; j++) {
+                    for (int i = 0; i <= SUBMAP_MAX_X; i++) {
+                        for (int j = 0; j <= SUBMAP_MAX_Y; j++) {
                             if (i < lw || i > SUBMAP_MAX_X - rw || i == SEEX - 4 || i == SEEX + 3) {
                                 ter_set(i, j, t_concrete_wall);
                             } else if (j < lw || j > SUBMAP_MAX_Y - bw || j == SEEY - 4 || j == SEEY + 3) {
@@ -3199,8 +3199,8 @@ ___DEEE|.R.|...,,...|sss\n",
                     break;
 
                 case 3: // Big room
-                    for (int i = 0; i < SEEX * 2; i++) {
-                        for (int j = 0; j < SEEY * 2; j++) {
+                    for (int i = 0; i <= SUBMAP_MAX_X; i++) {
+                        for (int j = 0; j <= SUBMAP_MAX_Y; j++) {
                             if (i < lw || i >= SUBMAP_MAX_X - rw) {
                                 ter_set(i, j, t_concrete_wall);
                             } else if (j < tw || j >= SUBMAP_MAX_Y - bw) {
@@ -3474,8 +3474,8 @@ ff.......|....|WWWWWWWW|\n\
                         tmpcomp->add_failure(COMPFAIL_DESTROY_DATA);
                     }
 
-                    for (int i = 0; i < SEEX * 2; i++) {
-                        for (int j = 0; j < SEEY * 2; j++) {
+                    for (int i = 0; i <= SUBMAP_MAX_X; i++) {
+                        for (int j = 0; j <= SUBMAP_MAX_Y; j++) {
                             if (i < lw || i >= SUBMAP_MAX_X + 1 -rw + 1) {
                                 ter_set(i, j, t_concrete_wall);
                             } else if (j < (tw - 1) || j >= SEEY * 2 - bw + 1) {
@@ -3515,8 +3515,8 @@ ff.......|....|WWWWWWWW|\n\
             lw = SEEX + 1;
         }
         if (tw != 0 || rw != 0 || bw != 0 || lw != 0) {
-            for (int i = 0; i < SEEX * 2; i++) {
-                for (int j = 0; j < SEEY * 2; j++) {
+            for (int i = 0; i <= SUBMAP_MAX_X; i++) {
+                for (int j = 0; j <= SUBMAP_MAX_Y; j++) {
                     if ((i < SUBMAP_MAX_X + 1 -lw && (!one_in(3) || (j > SEEY - 6 && j < SEEY + 5))) ||
                         (i > rw &&          (!one_in(3) || (j > SEEY - 6 && j < SEEY + 5))) ||
                         (j > tw &&          (!one_in(3) || (i > SEEX - 6 && i < SEEX + 5))) ||
@@ -3536,8 +3536,8 @@ ff.......|....|WWWWWWWW|\n\
         bw = (t_south == "slimepit" ? SEEY + 1 : 0);
         lw = (t_west  == "slimepit" ? SEEX     : 0);
         if (tw != 0 || rw != 0 || bw != 0 || lw != 0) {
-            for (int i = 0; i < SEEX * 2; i++) {
-                for (int j = 0; j < SEEY * 2; j++) {
+            for (int i = 0; i <= SUBMAP_MAX_X; i++) {
+                for (int j = 0; j <= SUBMAP_MAX_Y; j++) {
                     if (((j <= tw || i >= rw) && i >= j && (SUBMAP_MAX_X - i) <= j) ||
                         ((j >= bw || i <= lw) && i <= j && (SUBMAP_MAX_Y - j) <= i)   ) {
                         if (one_in(5)) {
@@ -3576,8 +3576,8 @@ ff.......|....|WWWWWWWW|\n\
         }
 
         // Start by setting up a large, empty room.
-        for (int i = 0; i < SEEX * 2; i++) {
-            for (int j = 0; j < SEEY * 2; j++) {
+        for (int i = 0; i <= SUBMAP_MAX_X; i++) {
+            for (int j = 0; j <= SUBMAP_MAX_Y; j++) {
                 if (i < lw || i > SUBMAP_MAX_X - rw) {
                     ter_set(i, j, t_concrete_wall);
                 } else if (j < tw || j > SUBMAP_MAX_Y - bw) {
@@ -3932,8 +3932,8 @@ ff.......|....|WWWWWWWW|\n\
             }
         }
         // Oh wait--let's also put radiation in any rubble
-        for (int i = 0; i < SEEX * 2; i++) {
-            for (int j = 0; j < SEEY * 2; j++) {
+        for (int i = 0; i <= SUBMAP_MAX_X; i++) {
+            for (int j = 0; j <= SUBMAP_MAX_Y; j++) {
                 int extra_radiation = (one_in(5) ? rng(1, 2) : 0);
                 adjust_radiation(i, j, extra_radiation);
                 if (furn(i, j) == f_rubble) {
@@ -3946,8 +3946,8 @@ ff.......|....|WWWWWWWW|\n\
     } else if (terrain_type == "silo") {
 
         if (zlevel == 0) { // We're on ground level
-            for (int i = 0; i < SEEX * 2; i++) {
-                for (int j = 0; j < SEEY * 2; j++) {
+            for (int i = 0; i <= SUBMAP_MAX_X; i++) {
+                for (int j = 0; j <= SUBMAP_MAX_Y; j++) {
                     if (trig_dist(i, j, SEEX, SEEY) <= 6) {
                         ter_set(i, j, t_metal_floor);
                     } else {
@@ -3988,8 +3988,8 @@ ff.......|....|WWWWWWWW|\n\
             ter_set(mw    , tw + 2, t_card_military);
 
         } else { // We are NOT above ground.
-            for (int i = 0; i < SEEX * 2; i++) {
-                for (int j = 0; j < SEEY * 2; j++) {
+            for (int i = 0; i <= SUBMAP_MAX_X; i++) {
+                for (int j = 0; j <= SUBMAP_MAX_Y; j++) {
                     if (trig_dist(i, j, SEEX, SEEY) > 7) {
                         ter_set(i, j, t_rock);
                     } else if (trig_dist(i, j, SEEX, SEEY) > 5) {
@@ -4010,8 +4010,8 @@ ff.......|....|WWWWWWWW|\n\
 
     } else if (terrain_type == "silo_finale") {
 
-        for (int i = 0; i < SEEX * 2; i++) {
-            for (int j = 0; j < SEEY * 2; j++) {
+        for (int i = 0; i <= SUBMAP_MAX_X; i++) {
+            for (int j = 0; j <= SUBMAP_MAX_Y; j++) {
                 if (i == 5) {
                     if (j > 4 && j < SEEY) {
                         ter_set(i, j, t_reinforced_glass);
@@ -4598,8 +4598,8 @@ ff.......|....|WWWWWWWW|\n\
             w_fac = 4;
         }
 
-        for (int i = 0; i < SEEX * 2; i++) {
-            for (int j = 0; j < SEEY * 2; j++) {
+        for (int i = 0; i <= SUBMAP_MAX_X; i++) {
+            for (int j = 0; j <= SUBMAP_MAX_Y; j++) {
                 if (i >= w_fac + rng(0, 2) && i <= SUBMAP_MAX_X - e_fac - rng(0, 2) &&
                     j >= n_fac + rng(0, 2) && j <= SUBMAP_MAX_Y - s_fac - rng(0, 2) &&
                     i + j >= 4 && (SUBMAP_MAX_X + 1 -i) + (SEEY * 2 - j) >= 6  ) {
@@ -4863,8 +4863,8 @@ ff.......|....|WWWWWWWW|\n\
     } else if (terrain_type == "mine_finale") {
 
         // Set up the basic chamber
-        for (int i = 0; i < SEEX * 2; i++) {
-            for (int j = 0; j < SEEY * 2; j++) {
+        for (int i = 0; i <= SUBMAP_MAX_X; i++) {
+            for (int j = 0; j <= SUBMAP_MAX_Y; j++) {
                 if (i > rng(1, 3) && i < SUBMAP_MAX_X + 1 -rng(2, 4) &&
                     j > rng(1, 3) && j < SEEY * 2 - rng(2, 4)   ) {
                     ter_set(i, j, t_rock_floor);
@@ -5890,7 +5890,7 @@ $$$$-|-|=HH-|-HHHH-|####\n",
             }
             break;
         case 3: // Clothing
-            for (int x = 2; x < SEEX * 2; x += 6) {
+            for (int x = 2; x <= SUBMAP_MAX_X; x += 6) {
                 for (int y = 3; y <= 9; y += 6) {
                     square_furn(this, f_rack, x, y, x + 1, y + 1);
                     if (one_in(2)) {
@@ -6456,8 +6456,8 @@ $$$$-|-|=HH-|-HHHH-|####\n",
 
     } else if (terrain_type == "spider_pit_under") {
 
-        for (int i = 0; i < SEEX * 2; i++) {
-            for (int j = 0; j < SEEY * 2; j++) {
+        for (int i = 0; i <= SUBMAP_MAX_X; i++) {
+            for (int j = 0; j <= SUBMAP_MAX_Y; j++) {
                 if ((i >= 3 && i <= SUBMAP_MAX_X - 3 && j >= 3 && j <= SUBMAP_MAX_Y - 3) ||
                     one_in(4)) {
                     ter_set(i, j, t_rock_floor);
@@ -6474,8 +6474,8 @@ $$$$-|-|=HH-|-HHHH-|####\n",
 
     } else if (terrain_type == "anthill") {
 
-        for (int i = 0; i < SEEX * 2; i++) {
-            for (int j = 0; j < SEEY * 2; j++) {
+        for (int i = 0; i <= SUBMAP_MAX_X; i++) {
+            for (int j = 0; j <= SUBMAP_MAX_Y; j++) {
                 if (i < 8 || j < 8 || i > SUBMAP_MAX_X - 8 || j > SUBMAP_MAX_Y - 8) {
                     ter_set(i, j, dat.groundcover());
                 } else if ((i == 11 || i == 12) && (j == 11 || j == 12)) {
@@ -6492,8 +6492,8 @@ $$$$-|-|=HH-|-HHHH-|####\n",
             nesw_fac[i] = (t_nesw[i] == "slimepit" || t_nesw[i] == "slimepit_down" ? 1 : 0);
         }
 
-        for (int i = 0; i < SEEX * 2; i++) {
-            for (int j = 0; j < SEEY * 2; j++) {
+        for (int i = 0; i <= SUBMAP_MAX_X; i++) {
+            for (int j = 0; j <= SUBMAP_MAX_Y; j++) {
                 if (!one_in(10) && (j < n_fac * SEEX        || i < w_fac * SEEX ||
                                     j > SEEY * 2 - s_fac * SEEY || i > SUBMAP_MAX_X + 1 -e_fac * SEEX)) {
                     ter_set(i, j, (!one_in(10) ? t_slime : t_rock_floor));
@@ -6702,13 +6702,13 @@ $$$$-|-|=HH-|-HHHH-|####\n",
         if (is_ot_type("sewer", t_east) &&
             !connects_to(terrain_type, 1)) {
             if (connects_to(t_east, 3)) {
-                for (int i = SEEX; i < SEEX * 2; i++) {
+                for (int i = SEEX; i <= SUBMAP_MAX_X; i++) {
                     for (int j = SEEY - 2; j < SEEY + 2; j++) {
                         ter_set(i, j, t_sewage);
                     }
                 }
             } else {
-                for (int i = SUBMAP_MAX_X - 2; i < SEEX * 2; i++) {
+                for (int i = SUBMAP_MAX_X - 2; i <= SUBMAP_MAX_X; i++) {
                     ter_set(i, SEEY, t_rock_floor);
                     ter_set(i, SEEY - 1, t_rock_floor);
                 }
@@ -6720,12 +6720,12 @@ $$$$-|-|=HH-|-HHHH-|####\n",
             !connects_to(terrain_type, 2)) {
             if (connects_to(t_south, 0)) {
                 for (int i = SEEX - 2; i < SEEX + 2; i++) {
-                    for (int j = SEEY; j < SEEY * 2; j++) {
+                    for (int j = SEEY; j <= SUBMAP_MAX_Y; j++) {
                         ter_set(i, j, t_sewage);
                     }
                 }
             } else {
-                for (int j = SUBMAP_MAX_Y - 2; j < SEEY * 2; j++) {
+                for (int j = SUBMAP_MAX_Y - 2; j <= SUBMAP_MAX_Y; j++) {
                     ter_set(SEEX, j, t_rock_floor);
                     ter_set(SEEX - 1, j, t_rock_floor);
                 }
@@ -6765,7 +6765,7 @@ $$$$-|-|=HH-|-HHHH-|####\n",
         }
         if (is_ot_type("subway", t_east) &&
             !connects_to(terrain_type, 1)) {
-            for (int i = SEEX + 3; i < SEEX * 2; i++) {
+            for (int i = SEEX + 3; i <= SUBMAP_MAX_X; i++) {
                 ter_set(i, SEEY, t_rock_floor);
                 ter_set(i, SEEY - 1, t_rock_floor);
             }
@@ -6774,7 +6774,7 @@ $$$$-|-|=HH-|-HHHH-|####\n",
         }
         if (is_ot_type("subway", t_south) &&
             !connects_to(terrain_type, 2)) {
-            for (int j = SEEY + 3; j < SEEY * 2; j++) {
+            for (int j = SEEY + 3; j <= SUBMAP_MAX_Y; j++) {
                 ter_set(SEEX, j, t_rock_floor);
                 ter_set(SEEX - 1, j, t_rock_floor);
             }
@@ -6811,7 +6811,7 @@ $$$$-|-|=HH-|-HHHH-|####\n",
                 rotate( 4 - ( dir - 4 ) );
                 // draw a small triangle of sidewalk in the northeast corner
                 for( int y = 0; y < 4; y++ ) {
-                    for( int x = SUBMAP_MAX_X - 3; x < SEEX * 2; x++ ) {
+                    for( int x = SUBMAP_MAX_X - 3; x <= SUBMAP_MAX_X; x++ ) {
                         if( x - y > SUBMAP_MAX_X - 3 ) {
                             //TODO more discriminating conditions
                             if( ter( x, y ) == t_grass ||
@@ -7303,8 +7303,8 @@ void map::rotate(int turns)
     int temperature[MAPSIZE * MAPSIZE];
 
     //Rotate terrain first
-    for (int old_x = 0; old_x < SEEX * 2; old_x++) {
-        for (int old_y = 0; old_y < SEEY * 2; old_y++) {
+    for (int old_x = 0; old_x <= SUBMAP_MAX_X; old_x++) {
+        for (int old_y = 0; old_y <= SUBMAP_MAX_Y; old_y++) {
             int new_x = old_x;
             int new_y = old_y;
             switch(turns) {
@@ -7448,8 +7448,8 @@ void map::rotate(int turns)
         }
     }
 
-    for (int i = 0; i < SEEX * 2; i++) {
-        for (int j = 0; j < SEEY * 2; j++) {
+    for (int i = 0; i <= SUBMAP_MAX_X; i++) {
+        for (int j = 0; j <= SUBMAP_MAX_Y; j++) {
             int lx, ly;
             const auto sm = get_submap_at( i, j, lx, ly );
             sm->is_uniform = false;
@@ -8763,8 +8763,8 @@ void mx_null(map &, const tripoint &)
 void mx_helicopter(map &m, const tripoint &abs_sub)
 {
     int cx = rng(4, SUBMAP_MAX_X - 4), cy = rng(4, SUBMAP_MAX_Y - 4);
-    for (int x = 0; x < SEEX * 2; x++) {
-        for (int y = 0; y < SEEY * 2; y++) {
+    for (int x = 0; x <= SUBMAP_MAX_X; x++) {
+        for (int y = 0; y <= SUBMAP_MAX_Y; y++) {
             if (x >= cx - 4 && x <= cx + 4 && y >= cy - 4 && y <= cy + 4) {
                 if (!one_in(5)) {
                     m.make_rubble( tripoint( x,  y, abs_sub.z ), f_wreckage, true);
@@ -9127,8 +9127,8 @@ void mx_portal(map &m, const tripoint &abs_sub)
 void mx_minefield(map &m, const tripoint &abs_sub)
 {
     int num_mines = rng(6, 20);
-    for (int x = 0; x < SEEX * 2; x++) {
-        for (int y = 0; y < SEEY * 2; y++) {
+    for (int x = 0; x <= SUBMAP_MAX_X; x++) {
+        for (int y = 0; y <= SUBMAP_MAX_Y; y++) {
             if (one_in(3)) {
                 m.ter_set(x, y, t_dirt);
             }

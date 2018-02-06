@@ -13470,8 +13470,8 @@ void game::nuke( const tripoint &p )
     tripoint dest( 0, 0, p.z );
     int &i = dest.x;
     int &j = dest.y;
-    for( i = 0; i < SEEX * 2; i++ ) {
-        for( j = 0; j < SEEY * 2; j++ ) {
+    for( i = 0; i <= SUBMAP_MAX_X; i++ ) {
+        for( j = 0; j <= SUBMAP_MAX_Y; j++ ) {
             if (!one_in(10)) {
                 tmpmap.make_rubble( dest, f_rubble_rock, true, t_dirt, true);
             }

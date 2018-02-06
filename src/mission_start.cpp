@@ -451,8 +451,8 @@ void mission_start::place_npc_software( mission *miss )
     oter_id oter = overmap_buffer.ter( place.x, place.y, place.z );
     if( is_ot_type( "house", oter ) || is_ot_type( "s_pharm", oter ) || oter == "" ) {
         std::vector<tripoint> valid;
-        for( int x = 0; x < SEEX * 2; x++ ) {
-            for( int y = 0; y < SEEY * 2; y++ ) {
+        for( int x = 0; x <= SUBMAP_MAX_X; x++ ) {
+            for( int y = 0; y <= SUBMAP_MAX_Y; y++ ) {
                 if( compmap.ter( x, y ) == t_floor && compmap.furn( x, y ) == f_null ) {
                     bool okay = false;
                     int wall = 0;
@@ -498,8 +498,8 @@ void mission_start::place_priest_diary( mission *miss )
     compmap.load( place.x * 2, place.y * 2, place.z, false );
 
     std::vector<tripoint> valid;
-    for( int x = 0; x < SEEX * 2; x++ ) {
-        for( int y = 0; y < SEEY * 2; y++ ) {
+    for( int x = 0; x <= SUBMAP_MAX_X; x++ ) {
+        for( int y = 0; y <= SUBMAP_MAX_Y; y++ ) {
             if( compmap.furn( x, y ) == f_bed || compmap.furn( x, y ) == f_dresser ||
                 compmap.furn( x, y ) == f_indoor_plant || compmap.furn( x, y ) == f_cupboard ) {
                 valid.push_back( tripoint( x, y, place.z ) );
@@ -532,8 +532,8 @@ void mission_start::place_deposit_box( mission *miss )
     tinymap compmap;
     compmap.load( site.x * 2, site.y * 2, site.z, false );
     std::vector<tripoint> valid;
-    for( int x = 0; x < SEEX * 2; x++ ) {
-        for( int y = 0; y < SEEY * 2; y++ ) {
+    for( int x = 0; x <= SUBMAP_MAX_X; x++ ) {
+        for( int y = 0; y <= SUBMAP_MAX_Y; y++ ) {
             if( compmap.ter( x, y ) == t_floor ) {
                 bool okay = false;
                 for( int x2 = x - 1; x2 <= x + 1 && !okay; x2++ ) {
