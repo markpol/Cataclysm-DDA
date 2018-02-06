@@ -2783,7 +2783,7 @@ ___DEEE|.R.|...,,...|sss\n",
             science_room(this, 2       , 2, SEEX - 3    , SUBMAP_MAX_Y - 2, zlevel, 1);
             science_room(this, SEEX + 2, 2, SUBMAP_MAX_X - 2, SUBMAP_MAX_Y - 2, zlevel, 3);
 
-            place_spawns( GROUP_TURRET_ONLY, 1, SEEX, 5, SEEY, 5, density );
+            place_spawns( GROUP_TURRET_ONLY, 10, SEEX, 5, SEEY, 5, density ); //@todo: spawn single
 
             if (is_ot_type("road", t_east)) {
                 rotate(1);
@@ -3887,24 +3887,24 @@ ff.......|....|WWWWWWWW|\n\
         }
 
         // Place turrets by (possible) entrances
-        place_spawns( GROUP_TURRET_RIFLE_ONLY, 1, 1, SEEY - 1, 1, SEEY - 1, density );
-        place_spawns( GROUP_TURRET_RIFLE_ONLY, 1, 1, SEEY, 1, SEEY, density );
-        place_spawns( GROUP_TURRET_RIFLE_ONLY, 1, SUBMAP_MAX_X - 1, SEEY - 1, SUBMAP_MAX_X - 1, SEEY - 1, density );
-        place_spawns( GROUP_TURRET_RIFLE_ONLY, 1, SUBMAP_MAX_X - 1, SEEY, SUBMAP_MAX_X - 1, SEEY, density );
-        place_spawns( GROUP_TURRET_RIFLE_ONLY, 1, SEEX - 1, 1, SEEX - 1, 1, density );
-        place_spawns( GROUP_TURRET_RIFLE_ONLY, 1, SEEX, 1, SEEX, 1, density );
-        place_spawns( GROUP_TURRET_RIFLE_ONLY, 1, SEEX - 1, SUBMAP_MAX_Y - 1, SEEX - 1, SUBMAP_MAX_Y - 1, density );
-        place_spawns( GROUP_TURRET_RIFLE_ONLY, 1, SEEX, SUBMAP_MAX_Y - 1, SEEX, SUBMAP_MAX_Y - 1, density );
+        place_spawns( GROUP_TURRET_RIFLE_ONLY, 10, 1, SEEY - 1, 1, SEEY - 1, density ); //@todo: spawn single
+        place_spawns( GROUP_TURRET_RIFLE_ONLY, 10, 1, SEEY, 1, SEEY, density ); //@todo: spawn single
+        place_spawns( GROUP_TURRET_RIFLE_ONLY, 10, SUBMAP_MAX_X - 1, SEEY - 1, SUBMAP_MAX_X - 1, SEEY - 1, density ); //@todo: spawn single
+        place_spawns( GROUP_TURRET_RIFLE_ONLY, 10, SUBMAP_MAX_X - 1, SEEY, SUBMAP_MAX_X - 1, SEEY, density ); //@todo: spawn single
+        place_spawns( GROUP_TURRET_RIFLE_ONLY, 10, SEEX - 1, 1, SEEX - 1, 1, density ); //@todo: spawn single
+        place_spawns( GROUP_TURRET_RIFLE_ONLY, 10, SEEX, 1, SEEX, 1, density ); //@todo: spawn single
+        place_spawns( GROUP_TURRET_RIFLE_ONLY, 10, SEEX - 1, SUBMAP_MAX_Y - 1, SEEX - 1, SUBMAP_MAX_Y - 1, density ); //@todo: spawn single
+        place_spawns( GROUP_TURRET_RIFLE_ONLY, 10, SEEX, SUBMAP_MAX_Y - 1, SEEX, SUBMAP_MAX_Y - 1, density ); //@todo: spawn single
 
         // Place searchlights
         if (one_in(3)) {
             if( const auto p = random_point( points_in_rectangle( { 3, 3, abs_sub.z }, { 20, 20, abs_sub.z } ), [this]( const tripoint &n ) { return passable( n ); } ) ) {
                 ter_set( *p, t_plut_generator );
 
-                place_spawns( GROUP_TURRET_SEARCHLIGHT_ONLY, 1, 1, 1, 1, 1, density );
-                place_spawns( GROUP_TURRET_SEARCHLIGHT_ONLY, 1, SUBMAP_MAX_X - 1, 1, SUBMAP_MAX_X - 1, 1, density );
-                place_spawns( GROUP_TURRET_SEARCHLIGHT_ONLY, 1, 1, SUBMAP_MAX_Y - 1, 1, SUBMAP_MAX_Y - 1, density );
-                place_spawns( GROUP_TURRET_SEARCHLIGHT_ONLY, 1, SUBMAP_MAX_X - 1, SUBMAP_MAX_Y - 1, SUBMAP_MAX_X - 1, SUBMAP_MAX_Y - 1, density );
+                place_spawns( GROUP_TURRET_SEARCHLIGHT_ONLY, 10, 1, 1, 1, 1, density ); //@todo: spawn single
+                place_spawns( GROUP_TURRET_SEARCHLIGHT_ONLY, 10, SUBMAP_MAX_X - 1, 1, SUBMAP_MAX_X - 1, 1, density ); //@todo: spawn single
+                place_spawns( GROUP_TURRET_SEARCHLIGHT_ONLY, 10, 1, SUBMAP_MAX_Y - 1, 1, SUBMAP_MAX_Y - 1, density ); //@todo: spawn single
+                place_spawns( GROUP_TURRET_SEARCHLIGHT_ONLY, 10, SUBMAP_MAX_X - 1, SUBMAP_MAX_Y - 1, SUBMAP_MAX_X - 1, SUBMAP_MAX_Y - 1, density ); //@todo: spawn single
             }
         }
 
@@ -7596,7 +7596,7 @@ void science_room(map *m, int x1, int y1, int x2, int y2, int z, int rotate)
             tmpcomp->add_failure(COMPFAIL_SHUTDOWN);
             tmpcomp->add_failure(COMPFAIL_ALARM);
             tmpcomp->add_failure(COMPFAIL_DAMAGE);
-            m->place_spawns( GROUP_TURRET_ONLY, 1, int((x1 + x2) / 2), desk, int((x1 + x2) / 2), desk, density );
+            m->place_spawns( GROUP_TURRET_ONLY, 10, int((x1 + x2) / 2), desk, int((x1 + x2) / 2), desk, density ); //@todo: spawn single
         } else {
             int desk = x1 + rng(int(height / 2) - int(height / 4), int(height / 2) + 1);
             for (int y = y1 + int(width / 4); y < y2 - int(width / 4); y++) {
@@ -7609,7 +7609,7 @@ void science_room(map *m, int x1, int y1, int x2, int y2, int z, int rotate)
             tmpcomp->add_failure(COMPFAIL_SHUTDOWN);
             tmpcomp->add_failure(COMPFAIL_ALARM);
             tmpcomp->add_failure(COMPFAIL_DAMAGE);
-            m->place_spawns( GROUP_TURRET_ONLY, 1, desk, int((y1 + y2) / 2), desk, int((y1 + y2) / 2), density );
+            m->place_spawns( GROUP_TURRET_ONLY, 10, desk, int((y1 + y2) / 2), desk, int((y1 + y2) / 2), density ); //@todo: spawn single
         }
         break;
     case room_chemistry:
@@ -8915,8 +8915,8 @@ void mx_roadblock(map &m, const tripoint &abs_sub)
             m.place_spawns( GROUP_ROBOT_TANKBOT_ONLY, 1, 0, 0, SEEX, SEEY, density );
         } else {  // Vehicle & turrets
             m.add_vehicle( vgroup_id( "military_vehicles" ), {12, SUBMAP_MAX_Y - 4}, 0);
-            m.place_spawns( GROUP_TURRET_BMG_ONLY, 1, SEEX, SEEY, SEEX, SEEY, density );
-            m.place_spawns( GROUP_TURRET_RIFLE_ONLY, 1, SEEX - 3, SEEY - 3, SEEX, SEEY, density );
+            m.place_spawns( GROUP_TURRET_BMG_ONLY, 10, SEEX, SEEY, SEEX, SEEY, density ); //@todo: spawn single
+            m.place_spawns( GROUP_TURRET_RIFLE_ONLY, 10, SEEX - 3, SEEY - 3, SEEX, SEEY, density ); //@todo: spawn single
         }
 
         int num_bodies = dice(2, 5);
@@ -8937,8 +8937,8 @@ void mx_roadblock(map &m, const tripoint &abs_sub)
         line_furn(&m, f_barricade_road, 1, 13, 1, 19);
         m.add_vehicle( vproto_id( "policecar" ), 8, 5, 20);
         m.add_vehicle( vproto_id( "policecar" ), 16, SUBMAP_MAX_Y - 4, 145);
-        m.place_spawns( GROUP_TURRET_ONLY, 1, 1, SEEY, 1, SEEY, density );
-        m.place_spawns( GROUP_TURRET_ONLY, 1, SUBMAP_MAX_X, SEEY, SUBMAP_MAX_X, SEEY, density );
+        m.place_spawns( GROUP_TURRET_ONLY, 10, 1, SEEY, 1, SEEY, density ); //@todo: spawn single
+        m.place_spawns( GROUP_TURRET_ONLY, 10, SUBMAP_MAX_X, SEEY, SUBMAP_MAX_X, SEEY, density ); //@todo: spawn single
 
         int num_bodies = dice(1, 6);
         for (int i = 0; i < num_bodies; i++) {
