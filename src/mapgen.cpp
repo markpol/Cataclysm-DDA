@@ -4534,7 +4534,7 @@ ff.......|....|WWWWWWWW|\n\
         int tries = 0;
         bool build_shaft = true;
         do {
-            int x1 = rng(1, SUBMAP_MAX_X0), y1 = rng(1, SUBMAP_MAX_Y0);
+            int x1 = rng(1, SUBMAP_MAX_X - 9), y1 = rng(1, SUBMAP_MAX_Y - 9);
             int x2 = x1 + rng(4, 9),        y2 = y1 + rng(4, 9);
             if (build_shaft) {
                 build_mine_room(this, room_mine_shaft, x1, y1, x2, y2, dat);
