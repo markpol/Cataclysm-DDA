@@ -635,7 +635,7 @@ void mapgen_hive(map *m, oter_id, mapgendata dat, int turn, float)
     const bool is_center = dat.t_nesw[0] == "hive" && dat.t_nesw[1] == "hive" &&
                            dat.t_nesw[2] == "hive" && dat.t_nesw[3] == "hive";
     for (int j = 5; j < SEEY * 2 - 5; j += 6) {
-        for (int i = (j == 5 || j == 17 ? 3 : 6); i < SEEX * 2 - 5; i += 6) {
+        for (int i = (j == 5 || j == 17 ? 3 : 6); i < SUBMAP_MAX_X - 4; i += 6) {
             if (!one_in(8)) {
                 // Caps are always there
                 m->ter_set(i    , j - 5, t_wax);
@@ -796,7 +796,7 @@ void mapgen_spider_pit(map *m, oter_id, mapgendata dat, int turn, float)
     m->place_items("forest", 60, 0, 0, SUBMAP_MAX_X, SUBMAP_MAX_Y, true, turn);
     // Next, place webs and sinkholes
     for (int i = 0; i < 4; i++) {
-        int x = rng(3, SEEX * 2 - 4), y = rng(3, SEEY * 2 - 4);
+        int x = rng(3, SUBMAP_MAX_X - 3), y = rng(3, SEEY * 2 - 4);
         if (i == 0)
             m->ter_set(x, y, t_slope_down);
         else {
@@ -1088,7 +1088,7 @@ void mapgen_road( map *m, oter_id terrain_type, mapgendata dat, int turn, float 
                 if( sidewalks_neswx[ ( dir + 1 ) % 4 ] ||  // has_sidewalk east?
                     sidewalks_neswx[   dir + 4       ] ||  // has_sidewalk northeast?
                     sidewalks_neswx[   dir           ] ) { // has_sidewalk north?
-                    int x1 = SEEX * 2 - 5, y1 = 0, x2 = SUBMAP_MAX_X, y2 = SEEY - 1 + dead_end_extension;
+                    int x1 = SUBMAP_MAX_X - 4, y1 = 0, x2 = SUBMAP_MAX_X, y2 = SEEY - 1 + dead_end_extension;
                     coord_rotate_cw( x1, y1, dir );
                     coord_rotate_cw( x2, y2, dir );
                     square( m, t_sidewalk, x1, y1, x2, y2 );
@@ -1154,7 +1154,7 @@ void mapgen_road( map *m, oter_id terrain_type, mapgendata dat, int turn, float 
                 square( m, t_pavement, 0, SEEY - 10, SUBMAP_MAX_X, SEEY - 1 );
                 square( m, t_sidewalk, 0, SEEY - 2 , SUBMAP_MAX_X, SUBMAP_MAX_Y );
                 if( one_in( 3 ) ) {
-                    line( m, t_tree_young, 1, SEEY, SEEX * 2 - 2, SEEY );
+                    line( m, t_tree_young, 1, SEEY, SUBMAP_MAX_X - 1, SEEY );
                 }
                 if( one_in( 3 ) ) {
                     line_furn( m, f_bench, 2, SEEY + 2, 5, SEEY + 2 );
@@ -1203,7 +1203,7 @@ void mapgen_road( map *m, oter_id terrain_type, mapgendata dat, int turn, float 
 
     // add a manhole if appropriate
     if( terrain_type == "road_nesw_manhole" ) {
-        m->ter_set( rng( 6, SEEX * 2 - 6 ), rng( 6, SEEY * 2 - 6 ), t_manhole_cover );
+        m->ter_set( rng( 6, SUBMAP_MAX_X - 5 ), rng( 6, SEEY * 2 - 6 ), t_manhole_cover );
     }
 
     // finally, unrotate the map
@@ -1606,11 +1606,11 @@ void mapgen_bridge(map *m, oter_id terrain_type, mapgendata dat, int turn, float
         for (int j = 0; j < SEEY * 2; j++) {
             if (i < 2) {
                 m->ter_set(i, j, river_west ? t_water_dp : grass_or_dirt());
-            } else if (i >= SEEX * 2 - 2) {
+            } else if (i >= SUBMAP_MAX_X - 1) {
                 m->ter_set(i, j, river_east ? t_water_dp : grass_or_dirt());
-            } else if (i == 2 || i == SEEX * 2 - 3) {
+            } else if (i == 2 || i == SUBMAP_MAX_X - 2) {
                 m->ter_set(i, j, t_guardrail_bg_dp);
-            } else if (i == 3 || i == SEEX * 2 - 4) {
+            } else if (i == 3 || i == SUBMAP_MAX_X - 3) {
                 m->ter_set(i, j, t_sidewalk_bg_dp);
             } else {
                 if ((i == SEEX - 1 || i == SEEX) && j % 4 != 0) {
@@ -1633,9 +1633,9 @@ void mapgen_highway(map *m, oter_id terrain_type, mapgendata dat, int turn, floa
 {
     for (int i = 0; i < SEEX * 2; i++) {
         for (int j = 0; j < SEEY * 2; j++) {
-            if (i < 3 || i >= SEEX * 2 - 3) {
+            if (i < 3 || i >= SUBMAP_MAX_X - 2) {
                 m->ter_set(i, j, dat.groundcover());
-            } else if (i == 3 || i == SEEX * 2 - 4) {
+            } else if (i == 3 || i == SUBMAP_MAX_X - 3) {
                 m->ter_set(i, j, t_railing_v);
             } else {
                 if ((i == SEEX - 1 || i == SEEX) && j % 4 != 0) {
@@ -1763,10 +1763,10 @@ void mapgen_parking_lot(map *m, oter_id, mapgendata dat, int turn, float)
     for (int i = 0; i < SEEX * 2; i++) {
         for (int j = 0; j < SEEY * 2; j++) {
             if ((j == 5 || j == 9 || j == 13 || j == 17 || j == 21) &&
-                 ((i > 1 && i < 8) || (i > 14 && i < SEEX * 2 - 2)))
+                 ((i > 1 && i < 8) || (i > 14 && i < SUBMAP_MAX_X - 1)))
                 m->ter_set(i, j, t_pavement_y);
             else if ((j < 2 && i > 7 && i < 17) || (j >= 2 && j < SEEY * 2 - 2 && i > 1 &&
-                      i < SEEX * 2 - 2))
+                      i < SUBMAP_MAX_X - 1))
                 m->ter_set(i, j, t_pavement);
             else
                 m->ter_set(i, j, dat.groundcover());
@@ -1793,7 +1793,7 @@ void mapgen_gas_station(map *m, oter_id terrain_type, mapgendata dat, int, float
         middle_w = bottom_w - 5;
     }
     int left_w = rng(0, 3);
-    int right_w = SEEX * 2 - rng(1, 4);
+    int right_w = SUBMAP_MAX_X + 1 -rng(1, 4);
     int center_w = rng(left_w + 4, right_w - 5);
     int pump_count = rng(3, 6);
     for (int i = 0; i < SEEX * 2; i++) {
@@ -2253,9 +2253,9 @@ void mapgen_generic_house(map *m, oter_id terrain_type, mapgendata dat, int turn
     int y = 0;
     lw = rng(0, 4);  // West external wall
     mw = lw + rng(7, 10);  // Middle wall between bedroom & kitchen/bath
-    rw = SEEX * 2 - rng(1, 5); // East external wall
+    rw = SUBMAP_MAX_X + 1 -rng(1, 5); // East external wall
     tw = rng(1, 6);  // North external wall
-    bw = SEEX * 2 - rng(2, 5); // South external wall
+    bw = SUBMAP_MAX_X + 1 -rng(2, 5); // South external wall
     cw = tw + rng(4, 7);  // Middle wall between living room & kitchen/bed
     actual_house_height = bw - rng(4,
                                    6); //reserving some space for backyard. Actual south external wall.
@@ -2420,7 +2420,7 @@ void mapgen_generic_house(map *m, oter_id terrain_type, mapgendata dat, int turn
     case 2: // Old-style; simple;
         //Modified by Jovan in 28 Aug 2013
         //Long narrow living room in front, big kitchen and HUGE bedroom
-        bw = SEEX * 2 - 2;
+        bw = SUBMAP_MAX_X - 1;
         cw = tw + rng(3, 6);
         mw = rng(lw + 7, rw - 4);
         //int actual_house_height=bw-rng(4,6);
@@ -2689,7 +2689,7 @@ void mapgen_generic_house(map *m, oter_id terrain_type, mapgendata dat, int turn
         }
         int num_pods = rng(8, 12);
         for (int i = 0; i < num_pods; i++) {
-            int podx = rng(1, SEEX * 2 - 2), pody = rng(1, SEEY * 2 - 2);
+            int podx = rng(1, SUBMAP_MAX_X - 1), pody = rng(1, SEEY * 2 - 2);
             int nonx = 0, nony = 0;
             while (nonx == 0 && nony == 0) {
                 nonx = rng(-1, 1);
@@ -2757,7 +2757,7 @@ void mapgen_pharm(map *m, oter_id terrain_type, mapgendata dat, int, float densi
         bw = SEEY * 2 - rng(1, 5);
         mw = bw - rng(3, 4); // Top of the storage room
         lw = rng(0, 4);
-        rw = SEEX * 2 - rng(1, 5);
+        rw = SUBMAP_MAX_X + 1 -rng(1, 5);
         cw = rng(13, rw - 5); // Left side of the storage room
         for (int i = 0; i < SEEX * 2; i++) {
             for (int j = 0; j < SEEY * 2; j++) {
@@ -3027,11 +3027,11 @@ void mapgen_basement_junk(map *m, oter_id terrain_type, mapgendata dat, int turn
         }
     }
 
-    m->place_items( "bedroom", 60, 1, 1, SEEX * 2 - 2, SEEY * 2 - 2, false, 0 );
-    m->place_items( "home_hw", 80, 1, 1, SEEX * 2 - 2, SEEY * 2 - 2, false, 0 );
-    m->place_items( "homeguns", 10, 1, 1, SEEX * 2 - 2, SEEY * 2 - 2, false, 0 );
+    m->place_items( "bedroom", 60, 1, 1, SUBMAP_MAX_X - 1, SEEY * 2 - 2, false, 0 );
+    m->place_items( "home_hw", 80, 1, 1, SUBMAP_MAX_X - 1, SEEY * 2 - 2, false, 0 );
+    m->place_items( "homeguns", 10, 1, 1, SUBMAP_MAX_X - 1, SEEY * 2 - 2, false, 0 );
     // Chance of zombies in the basement
-    m->place_spawns( mongroup_id( "GROUP_ZOMBIE" ), 2, 1, 1, SEEX * 2 - 2, SEEY * 2 - 2, density );
+    m->place_spawns( mongroup_id( "GROUP_ZOMBIE" ), 2, 1, 1, SUBMAP_MAX_X - 1, SEEY * 2 - 2, density );
 }
 
 void mapgen_basement_spiders(map *m, oter_id terrain_type, mapgendata dat, int turn, float density)
@@ -3190,7 +3190,7 @@ void mapgen_pawn(map *m, oter_id terrain_type, mapgendata dat, int, float)
         int tw = rng(0, 10);
         int bw = SEEY * 2 - rng(1, 2) - rng(0, 1) * rng(0, 1);
         int lw = rng(0, 4);
-        int rw = SEEX * 2 - rng(1, 5);
+        int rw = SUBMAP_MAX_X + 1 -rng(1, 5);
         if (tw >= 6) { // Big enough for its own parking lot
             square(m, t_pavement, 0, 0, SUBMAP_MAX_X, tw - 1);
             for (int i = rng(0, 1); i < SEEX * 2; i += 4) {
@@ -3291,7 +3291,7 @@ void mapgen_mil_surplus(map *m, oter_id terrain_type, mapgendata dat, int, float
         // Init to plain grass/dirt
         dat.fill_groundcover();
         int lw = rng(0, 2);
-        int rw = SEEX * 2 - rng(1, 3);
+        int rw = SUBMAP_MAX_X + 1 -rng(1, 3);
         int tw = rng(0, 4);
         int bw = SEEY * 2 - rng(3, 8);
         square(m, t_floor, lw, tw, rw, bw);
@@ -3341,7 +3341,7 @@ void mapgen_cave(map *m, oter_id, mapgendata dat, int turn, float density)
             // We're underground! // FIXME; y u no use z-level
             for (int i = 0; i < SEEX * 2; i++) {
                 for (int j = 0; j < SEEY * 2; j++) {
-                    bool floorHere = (rng(0, 6) < i || SEEX * 2 - rng(1, 7) > i ||
+                    bool floorHere = (rng(0, 6) < i || SUBMAP_MAX_X + 1 -rng(1, 7) > i ||
                                       rng(0, 6) < j || SEEY * 2 - rng(1, 7) > j );
                     if (floorHere) {
                         m->ter_set(i, j, t_rock_floor);
@@ -3477,7 +3477,7 @@ void mapgen_cave_rat(map *m, oter_id, mapgendata dat, int, float)
             } while (cavey > 2);
             // Now draw some extra passages!
             do {
-                int tox = (one_in(2) ? 2 : SEEX * 2 - 3), toy = rng(2, SEEY * 2 - 3);
+                int tox = (one_in(2) ? 2 : SUBMAP_MAX_X - 2), toy = rng(2, SEEY * 2 - 3);
                 std::vector<point> path = line_to(centerx, SEEY - 1, tox, toy, 0);
                 for (auto &i : path) {
                     for (int cx = i.x - 1; cx <= i.x + 1; cx++) {
@@ -3498,8 +3498,8 @@ void mapgen_cave_rat(map *m, oter_id, mapgendata dat, int, float)
                 }
             } while (one_in(2));
             // Finally, draw the stairs up and down.
-            m->ter_set(SEEX - 1, SEEX * 2 - 2, t_slope_up);
-            m->ter_set(SEEX    , SEEX * 2 - 2, t_slope_up);
+            m->ter_set(SEEX - 1, SUBMAP_MAX_X - 1, t_slope_up);
+            m->ter_set(SEEX    , SUBMAP_MAX_X - 1, t_slope_up);
             m->ter_set(stairsx, stairsy, t_slope_down);
         }
 }
@@ -3530,7 +3530,7 @@ void mapgen_cavern(map *m, oter_id, mapgendata dat, int, float)
 
     int rn = rng(0, 2) * rng(0, 3) + rng(0, 1); // Number of pillars
     for (int n = 0; n < rn; n++) {
-        int px = rng(5, SEEX * 2 - 6);
+        int px = rng(5, SUBMAP_MAX_X - 5);
         int py = rng(5, SEEY * 2 - 6);
         for (int i = px - 1; i <= px + 1; i++) {
             for (int j = py - 1; j <= py + 1; j++) {
@@ -3664,10 +3664,10 @@ void mapgen_rift(map *m, oter_id, mapgendata dat, int, float)
     for (int i = 0; i < SEEX * 2; i++) {
         for (int j = 0; j < SEEY * 2; j++) {
             if ((dat.n_fac < 0 && j < dat.n_fac * -1) || (dat.s_fac < 0 && j >= SEEY * 2 - dat.s_fac) ||
-                (dat.w_fac < 0 && i < dat.w_fac * -1) || (dat.e_fac < 0 && i >= SEEX * 2 - dat.e_fac)  ) {
+                (dat.w_fac < 0 && i < dat.w_fac * -1) || (dat.e_fac < 0 && i >= SUBMAP_MAX_X + 1 -dat.e_fac)  ) {
                 m->ter_set(i, j, t_rock_floor);
             } else if (j < dat.n_fac || j >= SEEY * 2 - dat.s_fac ||
-                       i < dat.w_fac || i >= SEEX * 2 - dat.e_fac   ) {
+                       i < dat.w_fac || i >= SUBMAP_MAX_X + 1 -dat.e_fac   ) {
                 m->ter_set(i, j, t_rock);
             } else {
                 m->ter_set(i, j, t_lava);
@@ -3692,8 +3692,8 @@ void mapgen_hellmouth(map *m, oter_id, mapgendata dat, int, float)
 
     for (int i = 0; i < SEEX * 2; i++) {
         for (int j = 0; j < SEEY * 2; j++) {
-            if (j < dat.n_fac || j >= SEEY * 2 - dat.s_fac || i < dat.w_fac || i >= SEEX * 2 - dat.e_fac ||
-                (i >= 6 && i < SEEX * 2 - 6 && j >= 6 && j < SEEY * 2 - 6)) {
+            if (j < dat.n_fac || j >= SEEY * 2 - dat.s_fac || i < dat.w_fac || i >= SUBMAP_MAX_X + 1 -dat.e_fac ||
+                (i >= 6 && i < SUBMAP_MAX_X - 5 && j >= 6 && j < SEEY * 2 - 6)) {
                 m->ter_set(i, j, t_rock_floor);
             } else {
                 m->ter_set(i, j, t_lava);
@@ -3729,9 +3729,9 @@ void mapgen_hellmouth(map *m, oter_id, mapgendata dat, int, float)
                 m->ter_set(SUBMAP_MAX_X - i, SUBMAP_MAX_Y - i, t_lava);
                 if (i < 10) {
                     m->ter_set(i + 1, i, t_lava);
-                    m->ter_set(SEEX * 2 - i, i, t_lava);
+                    m->ter_set(SUBMAP_MAX_X + 1 -i, i, t_lava);
                     m->ter_set(i + 1, SUBMAP_MAX_Y - i, t_lava);
-                    m->ter_set(SEEX * 2 - i, SUBMAP_MAX_Y - i, t_lava);
+                    m->ter_set(SUBMAP_MAX_X + 1 -i, SUBMAP_MAX_Y - i, t_lava);
 
                     m->ter_set(i, i + 1, t_lava);
                     m->ter_set(SUBMAP_MAX_X - i, i + 1, t_lava);
@@ -3740,9 +3740,9 @@ void mapgen_hellmouth(map *m, oter_id, mapgendata dat, int, float)
                 }
                 if (i < 9) {
                     m->ter_set(i + 2, i, t_rock);
-                    m->ter_set(SEEX * 2 - i + 1, i, t_rock);
+                    m->ter_set(SUBMAP_MAX_X + 1 -i + 1, i, t_rock);
                     m->ter_set(i + 2, SUBMAP_MAX_Y - i, t_rock);
-                    m->ter_set(SEEX * 2 - i + 1, SUBMAP_MAX_Y - i, t_rock);
+                    m->ter_set(SUBMAP_MAX_X + 1 -i + 1, SUBMAP_MAX_Y - i, t_rock);
 
                     m->ter_set(i, i + 2, t_rock);
                     m->ter_set(SUBMAP_MAX_X - i, i + 2, t_rock);
@@ -3801,8 +3801,8 @@ void mapgen_ants_curved(map *m, oter_id terrain_type, mapgendata dat, int, float
         m->ter_set(i, 1, t_rock_floor);
         m->ter_set(i, 2, t_rock_floor);
         m->ter_set(SUBMAP_MAX_X, i, t_rock_floor);
-        m->ter_set(SEEX * 2 - 2, i, t_rock_floor);
-        m->ter_set(SEEX * 2 - 3, i, t_rock_floor);
+        m->ter_set(SUBMAP_MAX_X - 1, i, t_rock_floor);
+        m->ter_set(SUBMAP_MAX_X - 2, i, t_rock_floor);
     }
     do {
         for (int i = x - 2; i <= x + 3; i++) {
@@ -3877,7 +3877,7 @@ void mapgen_ants_four_way(map *m, oter_id, mapgendata dat, int, float)
             }
         }
         y += rng(-1, 1);
-        while (abs(SEEY - y) > SEEX * 2 - i - 1) {
+        while (abs(SEEY - y) > SUBMAP_MAX_X + 1 -i - 1) {
             if (y < SEEY) {
                 y++;
             }
@@ -3901,7 +3901,7 @@ void mapgen_ants_straight(map *m, oter_id terrain_type, mapgendata dat, int, flo
             }
         }
         x += rng(-1, 1);
-        while (abs(SEEX - x) > SEEX * 2 - j - 1) {
+        while (abs(SEEX - x) > SUBMAP_MAX_X + 1 -j - 1) {
             if (x < SEEX) {
                 x++;
             }
@@ -3985,7 +3985,7 @@ void mapgen_ants_generic(map *m, oter_id terrain_type, mapgendata dat, int, floa
     for (int n = 0; n < rn; n++) {
         int cw = rng(1, 8);
         do {
-            x = rng(1 + cw, SEEX * 2 - 2 - cw);
+            x = rng(1 + cw, SUBMAP_MAX_X - 1 - cw);
             y = rng(1 + cw, SEEY * 2 - 2 - cw);
         } while (m->ter(x, y) == t_rock);
         for (int i = x - cw; i <= x + cw; i++) {
@@ -4087,7 +4087,7 @@ void mapgen_tutorial(map *m, oter_id terrain_type, mapgendata dat, int turn, flo
         }
     }
     m->furn_set(7, SEEY * 2 - 4, f_rack);
-    m->place_gas_pump(SEEX * 2 - 2, SEEY * 2 - 4, rng(500, 1000));
+    m->place_gas_pump(SUBMAP_MAX_X - 1, SEEY * 2 - 4, rng(500, 1000));
     if( dat.zlevel < 0 ) {
         m->ter_set(SEEX - 2, SEEY + 2, t_stairs_up);
         m->ter_set(2, 2, t_water_sh);
@@ -4103,12 +4103,12 @@ void mapgen_tutorial(map *m, oter_id terrain_type, mapgendata dat, int turn, flo
         m->spawn_item(           7, SEEY * 2 - 4, "9mmP");
         m->spawn_item(           7, SEEY * 2 - 4, "uzi");
         m->spawn_item(           7, SEEY * 2 - 4, "uzimag");
-        m->spawn_item(SEEX * 2 - 2, SEEY + 5, "bubblewrap");
-        m->spawn_item(SEEX * 2 - 2, SEEY + 6, "grenade");
-        m->spawn_item(SEEX * 2 - 3, SEEY + 6, "flashlight");
-        m->spawn_item(SEEX * 2 - 2, SEEY + 7, "cig");
-        m->spawn_item(SEEX * 2 - 2, SEEY + 7, "codeine");
-        m->spawn_item(SEEX * 2 - 3, SEEY + 7, "water");
+        m->spawn_item(SUBMAP_MAX_X - 1, SEEY + 5, "bubblewrap");
+        m->spawn_item(SUBMAP_MAX_X - 1, SEEY + 6, "grenade");
+        m->spawn_item(SUBMAP_MAX_X - 2, SEEY + 6, "flashlight");
+        m->spawn_item(SUBMAP_MAX_X - 1, SEEY + 7, "cig");
+        m->spawn_item(SUBMAP_MAX_X - 1, SEEY + 7, "codeine");
+        m->spawn_item(SUBMAP_MAX_X - 2, SEEY + 7, "water");
         m->ter_set(SEEX - 2, SEEY + 2, t_stairs_down);
     }
 }
