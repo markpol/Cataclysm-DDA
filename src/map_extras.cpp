@@ -74,12 +74,12 @@ void mx_military( map &m, const tripoint & )
         return m.passable( n );
         } ) ) {
             if( one_in( 10 ) ) {
-                m.add_spawn( mon_zombie_soldier, 1, p->x, p->y );
+                m.add_spawn( "mon_zombie_soldier", 1, p->x, p->y );
             } else if( one_in( 25 ) ) {
                 if( one_in( 2 ) ) {
-                    m.add_spawn( mon_zombie_bio_op, 1, p->x, p->y );
+                    m.add_spawn( "mon_zombie_bio_op", 1, p->x, p->y );
                 } else {
-                    m.add_spawn( mon_zombie_grenadier, 1, p->x, p->y );
+                    m.add_spawn( "mon_zombie_grenadier", 1, p->x, p->y );
                 }
             } else {
                 m.place_items( "map_extra_military", 100, *p, *p, true, 0 );
@@ -110,19 +110,19 @@ void mx_science( map &m, const tripoint & )
         return m.passable( n );
         } ) ) {
             if( one_in( 10 ) ) {
-                m.add_spawn( mon_zombie_scientist, 1, p->x, p->y );
+                m.add_spawn( "mon_zombie_scientist", 1, p->x, p->y );
             } else {
                 m.place_items( "map_extra_science", 100, *p, *p, true, 0 );
             }
         }
     }
-    static const std::array<mtype_id, 4> spawncreatures = { {
-            mon_gelatin, mon_mi_go, mon_kreck, mon_gracke,
+    static const std::array<std::string, 4> spawncreatures = { {
+            "mon_gelatin", "mon_mi_go", "mon_kreck", "mon_gracke"
         }
     };
     int num_monsters = rng( 0, 3 );
     for( int i = 0; i < num_monsters; i++ ) {
-        const mtype_id &type = random_entry( spawncreatures );
+        const std::string &type = random_entry( spawncreatures );
         int mx = rng( 1, SEEX * 2 - 2 ), my = rng( 1, SEEY * 2 - 2 );
         m.add_spawn( type, 1, mx, my );
     }
@@ -140,7 +140,7 @@ void mx_collegekids( map &m, const tripoint & )
         return m.passable( n );
         } ) ) {
             if( one_in( 10 ) ) {
-                m.add_spawn( mon_zombie_tough, 1, p->x, p->y );
+                m.add_spawn( "mon_zombie_tough", 1, p->x, p->y );
             } else {
                 if( type < 6 ) { // kids going to a cabin in the woods
                     m.place_items( "map_extra_college_camping", 100, *p, *p, true, 0 );
@@ -152,13 +152,13 @@ void mx_collegekids( map &m, const tripoint & )
             }
         }
     }
-    static const std::array<mtype_id, 4> spawncreatures = { {
-            mon_gelatin, mon_mi_go, mon_kreck, mon_gracke,
+    static const std::array<std::string, 4> spawncreatures = { {
+            "mon_gelatin", "mon_mi_go", "mon_kreck", "mon_gracke"
         }
     };
     int num_monsters = rng( 0, 3 );
     for( int i = 0; i < num_monsters; i++ ) {
-        const mtype_id &type = random_entry( spawncreatures );
+        const std::string &type = random_entry( spawncreatures );
         int mx = rng( 1, SEEX * 2 - 2 ), my = rng( 1, SEEY * 2 - 2 );
         m.add_spawn( type, 1, mx, my );
     }
@@ -187,15 +187,15 @@ void mx_roadblock( map &m, const tripoint &abs_sub )
         line( &m, t_fence_barbed, 1, 13, 1, 19 );
         if( one_in( 3 ) ) { // Chicken delivery
             m.add_vehicle( vproto_id( "military_vehicles" ), 12, SEEY * 2 - 5, 0, 70, -1 );
-            m.add_spawn( mon_chickenbot, 1, 12, 12 );
+            m.add_spawn( "mon_chickenbot", 1, 12, 12 );
         } else if( one_in( 2 ) ) { // TAAANK
             // The truck's wrecked...with fuel.  Explosive barrel?
             m.add_vehicle( vproto_id( "military_cargo_truck" ), 12, SEEY * 2 - 5, 0, 70, -1 );
-            m.add_spawn( mon_tankbot, 1, 12, 12 );
+            m.add_spawn( "mon_tankbot", 1, 12, 12 );
         } else {  // Vehicle & turrets
             m.add_vehicle( vproto_id( "military_vehicles" ), 12, SEEY * 2 - 5, 0, 70, -1 );
-            m.add_spawn( mon_turret_bmg, 1, 12, 12 );
-            m.add_spawn( mon_turret_rifle, 1, 9, 12 );
+            m.add_spawn( "mon_turret_bmg", 1, 12, 12 );
+            m.add_spawn( "mon_turret_rifle", 1, 9, 12 );
         }
 
         int num_bodies = dice( 2, 5 );
@@ -218,8 +218,8 @@ void mx_roadblock( map &m, const tripoint &abs_sub )
         line_furn( &m, f_barricade_road, 1, 13, 1, 19 );
         m.add_vehicle( vproto_id( "policecar" ), 8, 5, 20 );
         m.add_vehicle( vproto_id( "policecar" ), 16, SEEY * 2 - 5, 145 );
-        m.add_spawn( mon_turret, 1, 1, 12 );
-        m.add_spawn( mon_turret, 1, SEEX * 2 - 1, 12 );
+        m.add_spawn( "mon_turret", 1, 1, 12 );
+        m.add_spawn( "mon_turret", 1, SEEX * 2 - 1, 12 );
 
         int num_bodies = dice( 1, 6 );
         for( int i = 0; i < num_bodies; i++ ) {
@@ -293,7 +293,7 @@ void mx_drugdeal( map &m, const tripoint &abs_sub )
 
         if( tries < 10 ) { // We found a valid spot!
             if( one_in( 10 ) ) {
-                m.add_spawn( mon_zombie_spitter, 1, x, y );
+                m.add_spawn( "mon_zombie_spitter", 1, x, y );
             } else {
                 m.place_items( "map_extra_drugdeal", 100, x, y, x, y, true, 0 );
                 int splatter_range = rng( 1, 3 );
@@ -331,7 +331,7 @@ void mx_drugdeal( map &m, const tripoint &abs_sub )
 
         if( tries < 10 ) { // We found a valid spot!
             if( one_in( 20 ) ) {
-                m.add_spawn( mon_zombie_smoker, 1, x, y );
+                m.add_spawn( "mon_zombie_smoker", 1, x, y );
             } else {
                 m.place_items( "map_extra_drugdeal", 100, x, y, x, y, true, 0 );
                 int splatter_range = rng( 1, 3 );
@@ -350,13 +350,13 @@ void mx_drugdeal( map &m, const tripoint &abs_sub )
             }
         }
     }
-    static const std::array<mtype_id, 4> spawncreatures = { {
-            mon_gelatin, mon_mi_go, mon_kreck, mon_gracke,
+    static const std::array<std::string, 4> spawncreatures = { {
+            "mon_gelatin", "mon_mi_go", "mon_kreck", "mon_gracke"
         }
     };
     int num_monsters = rng( 0, 3 );
     for( int i = 0; i < num_monsters; i++ ) {
-        const mtype_id &type = random_entry( spawncreatures );
+        const std::string &type = random_entry( spawncreatures );
         int mx = rng( 1, SEEX * 2 - 2 ), my = rng( 1, SEEY * 2 - 2 );
         m.add_spawn( type, 1, mx, my );
     }
@@ -406,8 +406,8 @@ void mx_supplydrop( map &m, const tripoint &/*abs_sub*/ )
 
 void mx_portal( map &m, const tripoint &abs_sub )
 {
-    static const std::array<mtype_id, 5> spawncreatures = { {
-            mon_gelatin, mon_flaming_eye, mon_kreck, mon_gracke, mon_blank,
+    static const std::array<std::string, 5> spawncreatures = { {
+            "mon_gelatin", "mon_flaming_eye", "mon_kreck", "mon_gracke", "mon_blank"
         }
     };
     int x = rng( 1, SEEX * 2 - 2 ), y = rng( 1, SEEY * 2 - 2 );
@@ -419,7 +419,7 @@ void mx_portal( map &m, const tripoint &abs_sub )
     mtrap_set( &m, x, y, tr_portal );
     int num_monsters = rng( 0, 4 );
     for( int i = 0; i < num_monsters; i++ ) {
-        const mtype_id &type = random_entry( spawncreatures );
+        const std::string &type = random_entry( spawncreatures );
         int mx = rng( 1, SEEX * 2 - 2 ), my = rng( 1, SEEY * 2 - 2 );
         m.make_rubble( tripoint( mx,  my, abs_sub.z ), f_rubble_rock, true );
         m.add_spawn( type, 1, mx, my );
@@ -490,8 +490,8 @@ void mx_fumarole( map &m, const tripoint & )
 
 void mx_portal_in( map &m, const tripoint &abs_sub )
 {
-    static const std::array<mtype_id, 5> monids = { {
-            mon_gelatin, mon_flaming_eye, mon_kreck, mon_gracke, mon_blank,
+    static const std::array<std::string, 5> monids = { {
+            "mon_gelatin", "mon_flaming_eye", "mon_kreck", "mon_gracke", "mon_blank"
         }
     };
     int x = rng( 5, SEEX * 2 - 6 ), y = rng( 5, SEEY * 2 - 6 );

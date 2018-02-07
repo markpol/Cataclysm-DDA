@@ -23,6 +23,8 @@
 #include "npc.h"
 #include "npc_class.h"
 
+const mtype_id mon_zombie( "mon_zombie ");
+
 const efftype_id effect_infection( "infection" );
 
 /* These functions are responsible for making changes to the game at the moment
@@ -193,7 +195,7 @@ void mission_start::place_dog( mission *miss )
 
     tinymap doghouse;
     doghouse.load( house.x * 2, house.y * 2, house.z, false );
-    doghouse.add_spawn( mon_dog, 1, SEEX, SEEY, true, -1, miss->uid );
+    doghouse.add_spawn( "mon_dog", 1, SEEX, SEEY, true, -1, miss->uid );
     doghouse.save();
 }
 
@@ -206,7 +208,7 @@ void mission_start::place_zombie_mom( mission *miss )
 
     tinymap zomhouse;
     zomhouse.load( house.x * 2, house.y * 2, house.z, false );
-    zomhouse.add_spawn( mon_zombie, 1, SEEX, SEEY, false, -1, miss->uid,
+    zomhouse.add_spawn( "mon_zombie", 1, SEEX, SEEY, false, -1, miss->uid,
                         Name::get( nameIsFemaleName | nameIsGivenName ) );
     zomhouse.save();
 }
@@ -218,7 +220,7 @@ void mission_start::place_zombie_bay( mission *miss )
     tripoint site = target_om_ter_random( "evac_center_9", 1, miss, false, EVAC_CENTER_SIZE );
     tinymap bay;
     bay.load( site.x * 2, site.y * 2, site.z, false );
-    bay.add_spawn( mon_zombie_electric, 1, SEEX, SEEY, false, -1, miss->uid, _( "Sean McLaughlin" ) );
+    bay.add_spawn( "mon_zombie_electric", 1, SEEX, SEEY, false, -1, miss->uid, _( "Sean McLaughlin" ) );
     bay.save();
 }
 
@@ -308,8 +310,8 @@ void mission_start::place_grabber( mission *miss )
     tripoint site = target_om_ter_random( "field", 5, miss, false, 50 );
     tinymap there;
     there.load( site.x * 2, site.y * 2, site.z, false );
-    there.add_spawn( mon_graboid, 1, SEEX + rng( -3, 3 ), SEEY + rng( -3, 3 ) );
-    there.add_spawn( mon_graboid, 1, SEEX, SEEY, false, -1, miss->uid, _( "Little Guy" ) );
+    there.add_spawn( "mon_graboid", 1, SEEX + rng( -3, 3 ), SEEY + rng( -3, 3 ) );
+    there.add_spawn( "mon_graboid", 1, SEEX, SEEY, false, -1, miss->uid, _( "Little Guy" ) );
     there.save();
 }
 
@@ -339,7 +341,7 @@ void mission_start::place_jabberwock( mission *miss )
     tripoint site = target_om_ter( "forest_thick", 6, miss, false );
     tinymap grove;
     grove.load( site.x * 2, site.y * 2, site.z, false );
-    grove.add_spawn( mon_jabberwock, 1, SEEX, SEEY, false, -1, miss->uid, "NONE" );
+    grove.add_spawn( "mon_jabberwock", 1, SEEX, SEEY, false, -1, miss->uid, "NONE" );
     grove.save();
 }
 
@@ -347,7 +349,7 @@ void mission_start::kill_100_z( mission *miss )
 {
     npc *p = g->find_npc( miss->npc_id );
     p->attitude = NPCATT_FOLLOW;//npc joins you
-    miss->monster_type = mon_zombie.str(); // TODO: change monster_type to be mtype_id (better: species!)
+    miss->monster_type = "mon_zombie"; // TODO: change monster_type to be mtype_id (better: species!)
     int killed = 0;
     killed += g->kill_count( "mon_zombie" );
     miss->monster_kill_goal = 100 + killed; //your kill score must increase by 100
@@ -356,9 +358,9 @@ void mission_start::kill_100_z( mission *miss )
 void mission_start::kill_20_nightmares( mission *miss )
 {
     target_om_ter( "necropolis_c_44", 3, miss, false );
-    miss->monster_type = mon_charred_nightmare.str();
+    miss->monster_type = "mon_charred_nightmare";
     int killed = 0;
-    killed += g->kill_count( mon_charred_nightmare );
+    killed += g->kill_count( "mon_charred_nightmare" );
     miss->monster_kill_goal = 20 + killed; //your kill score must increase by 100
 }
 
@@ -382,20 +384,20 @@ void mission_start::kill_horde_master( mission *miss )
     overmap_buffer.reveal( site, 6 );
     tinymap tile;
     tile.load( site.x * 2, site.y * 2, site.z, false );
-    tile.add_spawn( mon_zombie_master, 1, SEEX, SEEY, false, -1, miss->uid, _( "Demonic Soul" ) );
-    tile.add_spawn( mon_zombie_brute, 3, SEEX, SEEY );
-    tile.add_spawn( mon_zombie_dog, 3, SEEX, SEEY );
+    tile.add_spawn( "mon_zombie_master", 1, SEEX, SEEY, false, -1, miss->uid, _( "Demonic Soul" ) );
+    tile.add_spawn( "mon_zombie_brute", 3, SEEX, SEEY );
+    tile.add_spawn( "mon_zombie_dog", 3, SEEX, SEEY );
 
     if( overmap::inbounds( SEEX, SEEY, 0, 1 ) ) {
         for( int x = SEEX - 1; x <= SEEX + 1; x++ ) {
             for( int y = SEEY - 1; y <= SEEY + 1; y++ ) {
-                tile.add_spawn( mon_zombie, rng( 3, 10 ), x, y );
+                tile.add_spawn( "mon_zombie", rng( 3, 10 ), x, y );
             }
-            tile.add_spawn( mon_zombie_dog, rng( 0, 2 ), SEEX, SEEY );
+            tile.add_spawn( "mon_zombie_dog", rng( 0, 2 ), SEEX, SEEY );
         }
     }
-    tile.add_spawn( mon_zombie_necro, 2, SEEX, SEEY );
-    tile.add_spawn( mon_zombie_hulk, 1, SEEX, SEEY );
+    tile.add_spawn( "mon_zombie_necro", 2, SEEX, SEEY );
+    tile.add_spawn( "mon_zombie_hulk", 1, SEEX, SEEY );
     tile.save();
 }
 

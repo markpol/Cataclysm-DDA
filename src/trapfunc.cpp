@@ -14,6 +14,8 @@
 #include "mapdata.h"
 #include "mtype.h"
 
+const mtype_id mon_blob( "mon_blob" );
+
 const species_id ROBOT( "ROBOT" );
 
 const skill_id skill_throw( "throw" );

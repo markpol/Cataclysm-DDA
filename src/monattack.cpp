@@ -47,6 +47,25 @@
 #include <limits>  // std::numeric_limits
 #define SKIPLINE(stream) stream.ignore(std::numeric_limits<std::streamsize>::max(), '\n')
 
+const mtype_id mon_ant( "mon_ant" );
+const mtype_id mon_ant_larva( "mon_ant_larva" );
+const mtype_id mon_ant_soldier( "mon_ant_soldier" );
+const mtype_id mon_blob( "mon_blob" );
+const mtype_id mon_blob_brain( "mon_blob_brain" );
+const mtype_id mon_blob_large( "mon_blob_large" );
+const mtype_id mon_blob_small( "mon_blob_small" );
+const mtype_id mon_breather_hub( "mon_breather_hub" );
+const mtype_id mon_creeper_hub( "mon_creeper_hub" );
+const mtype_id mon_creeper_vine( "mon_creeper_vine" );
+const mtype_id mon_dermatik( "mon_dermatik" );
+const mtype_id mon_fungaloid( "mon_fungaloid" );
+const mtype_id mon_fungaloid_young( "mon_fungaloid_young" );
+const mtype_id mon_headless_dog_thing( "mon_headless_dog_thing" );
+const mtype_id mon_triffid( "mon_triffid" );
+const mtype_id mon_turret_searchlight( "mon_turret_searchlight" );
+const mtype_id mon_zombie_dancer( "mon_zombie_dancer" );
+const mtype_id mon_zombie_jackson( "mon_zombie_jackson" );
+
 const skill_id skill_melee( "melee" );
 const skill_id skill_gun( "gun" );
 const skill_id skill_unarmed( "unarmed" );
