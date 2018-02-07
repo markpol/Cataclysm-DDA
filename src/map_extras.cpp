@@ -87,13 +87,13 @@ void mx_military( map &m, const tripoint & )
         }
 
     }
-    static const std::array<std::string, 4> netherspawns = { {
+    static const std::array<std::string, 4> monsters = { {
             "mon_gelatin", "mon_mi_go", "mon_kreck", "mon_gracke",
         }
     };
     int num_monsters = rng( 0, 3 );
     for( int i = 0; i < num_monsters; i++ ) {
-        const std::string &type = random_entry( netherspawns );
+        const std::string &type = random_entry( monsters );
         int mx = rng( 1, SEEX * 2 - 2 ), my = rng( 1, SEEY * 2 - 2 );
         m.add_spawn( type, 1, mx, my );
     }
@@ -116,13 +116,13 @@ void mx_science( map &m, const tripoint & )
             }
         }
     }
-    static const std::array<std::string, 4> spawncreatures = { {
+    static const std::array<std::string, 4> monsters = { {
             "mon_gelatin", "mon_mi_go", "mon_kreck", "mon_gracke"
         }
     };
     int num_monsters = rng( 0, 3 );
     for( int i = 0; i < num_monsters; i++ ) {
-        const std::string &type = random_entry( spawncreatures );
+        const std::string &type = random_entry( monsters );
         int mx = rng( 1, SEEX * 2 - 2 ), my = rng( 1, SEEY * 2 - 2 );
         m.add_spawn( type, 1, mx, my );
     }
@@ -152,13 +152,13 @@ void mx_collegekids( map &m, const tripoint & )
             }
         }
     }
-    static const std::array<std::string, 4> spawncreatures = { {
+    static const std::array<std::string, 4> monsters = { {
             "mon_gelatin", "mon_mi_go", "mon_kreck", "mon_gracke"
         }
     };
     int num_monsters = rng( 0, 3 );
     for( int i = 0; i < num_monsters; i++ ) {
-        const std::string &type = random_entry( spawncreatures );
+        const std::string &type = random_entry( monsters );
         int mx = rng( 1, SEEX * 2 - 2 ), my = rng( 1, SEEY * 2 - 2 );
         m.add_spawn( type, 1, mx, my );
     }
@@ -350,13 +350,13 @@ void mx_drugdeal( map &m, const tripoint &abs_sub )
             }
         }
     }
-    static const std::array<std::string, 4> spawncreatures = { {
+    static const std::array<std::string, 4> monsters = { {
             "mon_gelatin", "mon_mi_go", "mon_kreck", "mon_gracke"
         }
     };
     int num_monsters = rng( 0, 3 );
     for( int i = 0; i < num_monsters; i++ ) {
-        const std::string &type = random_entry( spawncreatures );
+        const std::string &type = random_entry( monsters );
         int mx = rng( 1, SEEX * 2 - 2 ), my = rng( 1, SEEY * 2 - 2 );
         m.add_spawn( type, 1, mx, my );
     }
@@ -406,7 +406,7 @@ void mx_supplydrop( map &m, const tripoint &/*abs_sub*/ )
 
 void mx_portal( map &m, const tripoint &abs_sub )
 {
-    static const std::array<std::string, 5> spawncreatures = { {
+    static const std::array<std::string, 5> monsters = { {
             "mon_gelatin", "mon_flaming_eye", "mon_kreck", "mon_gracke", "mon_blank"
         }
     };
@@ -419,7 +419,7 @@ void mx_portal( map &m, const tripoint &abs_sub )
     mtrap_set( &m, x, y, tr_portal );
     int num_monsters = rng( 0, 4 );
     for( int i = 0; i < num_monsters; i++ ) {
-        const std::string &type = random_entry( spawncreatures );
+        const std::string &type = random_entry( monsters );
         int mx = rng( 1, SEEX * 2 - 2 ), my = rng( 1, SEEY * 2 - 2 );
         m.make_rubble( tripoint( mx,  my, abs_sub.z ), f_rubble_rock, true );
         m.add_spawn( type, 1, mx, my );
@@ -490,7 +490,7 @@ void mx_fumarole( map &m, const tripoint & )
 
 void mx_portal_in( map &m, const tripoint &abs_sub )
 {
-    static const std::array<std::string, 5> monids = { {
+    static const std::array<std::string, 5> monsters = { {
             "mon_gelatin", "mon_flaming_eye", "mon_kreck", "mon_gracke", "mon_blank"
         }
     };
@@ -502,7 +502,7 @@ void mx_portal_in( map &m, const tripoint &abs_sub )
             if( rng( 1, 9 ) >= trig_dist( x, y, i, j ) ) {
                 fe.marlossify( tripoint( i, j, abs_sub.z ) );
                 if( one_in( 15 ) ) {
-                    m.add_spawn( random_entry( monids ), 1, i, j );
+                    m.add_spawn( random_entry( monsters ), 1, i, j );
                 }
             }
         }
