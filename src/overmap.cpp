@@ -1962,7 +1962,7 @@ static bool get_weather_glyph( tripoint const &pos, nc_color &ter_color, long &t
     }
     auto iter = weather_cache.find( pos );
     if( iter == weather_cache.end() ) {
-        auto const abs_ms_pos =  tripoint( pos.x * SEEX * 2, pos.y * SEEY * 2, pos.z );
+        auto const abs_ms_pos =  tripoint( pos.x * SM_WIDTH, pos.y * SM_HEIGHT, pos.z );
         const auto &wgen = overmap_buffer.get_settings( pos.x, pos.y, pos.z ).weather;
         auto const weather = wgen.get_weather_conditions( abs_ms_pos, calendar::turn, g->get_seed() );
         iter = weather_cache.insert( std::make_pair( pos, weather ) ).first;

@@ -1274,8 +1274,8 @@ void cata_tiles::init_minimap( int destx, int desty, int width, int height )
     minimap_prep = true;
     minimap_min.x = 0;
     minimap_min.y = 0;
-    minimap_max.x = MAPSIZE * SEEX;
-    minimap_max.y = MAPSIZE * SEEY;
+    minimap_max.x = MAPLIMIT_X;
+    minimap_max.y = MAPLIMIT_Y;
     minimap_tiles_range.x = ( MAPSIZE - 2 ) * SEEX;
     minimap_tiles_range.y = ( MAPSIZE - 2 ) * SEEY;
     minimap_tile_size.x = std::max( width / minimap_tiles_range.x, 1 );
@@ -1349,8 +1349,8 @@ void cata_tiles::draw_minimap( int destx, int desty, const tripoint &center, int
 
     const int brightness = get_option<int>( "PIXEL_MINIMAP_BRIGHTNESS" );
     //check all of exposed submaps (MAPSIZE*MAPSIZE submaps) and apply new color changes to the cache
-    for( int y = 0; y < MAPSIZE * SEEY; y++ ) {
-        for( int x = 0; x < MAPSIZE * SEEX; x++ ) {
+    for( int y = 0; y < MAPLIMIT_Y; y++ ) {
+        for( int x = 0; x < MAPLIMIT_X; x++ ) {
             tripoint p( x, y, center.z );
 
             lit_level lighting = ch.visibility_cache[p.x][p.y];

@@ -27,16 +27,16 @@ enum astar_state {
 // Turns two indexed to a 2D array into an index to equivalent 1D array
 constexpr int flat_index( const int x, const int y )
 {
-    return ( x * MAPSIZE * SEEY ) + y;
+    return ( x * MAPLIMIT_Y ) + y;
 };
 
 // Flattened 2D array representing a single z-level worth of pathfinding data
 struct path_data_layer {
     // State is accessed way more often than all other values here
-    std::array< astar_state, SEEX *MAPSIZE *SEEY *MAPSIZE > state;
-    std::array< int, SEEX *MAPSIZE *SEEY *MAPSIZE > score;
-    std::array< int, SEEX *MAPSIZE *SEEY *MAPSIZE > gscore;
-    std::array< tripoint, SEEX *MAPSIZE *SEEY *MAPSIZE > parent;
+    std::array< astar_state, MAPLIMIT_X*MAPLIMIT_Y > state;
+    std::array< int, MAPLIMIT_X*MAPLIMIT_Y > score;
+    std::array< int, MAPLIMIT_X*MAPLIMIT_Y > gscore;
+    std::array< tripoint, MAPLIMIT_X*MAPLIMIT_Y > parent;
 
     void init( const int minx, const int miny, const int maxx, const int maxy ) {
         for( int x = minx; x <= maxx; x++ ) {
@@ -118,8 +118,8 @@ tripoint vertical_move_destination( const map &m, const tripoint &t )
         return tripoint_min;
     }
 
-    constexpr int omtileszx = SEEX * 2;
-    constexpr int omtileszy = SEEY * 2;
+    constexpr int omtileszx = SM_WIDTH;
+    constexpr int omtileszy = SM_HEIGHT;
     real_coords rc( m.getabs( t.x, t.y ) );
     point omtile_align_start(
         m.getlocal( rc.begin_om_pos() )

@@ -16,9 +16,9 @@
 #include <cstring>
 
 #define INBOUNDS(x, y) \
-    (x >= 0 && x < SEEX * MAPSIZE && y >= 0 && y < SEEY * MAPSIZE)
-#define LIGHTMAP_CACHE_X SEEX * MAPSIZE
-#define LIGHTMAP_CACHE_Y SEEY * MAPSIZE
+    (x >= 0 && x < MAPLIMIT_X && y >= 0 && y < MAPLIMIT_Y)
+#define LIGHTMAP_CACHE_X MAPLIMIT_X
+#define LIGHTMAP_CACHE_Y MAPLIMIT_Y
 
 const efftype_id effect_onfire( "onfire" );
 const efftype_id effect_haslight( "haslight" );
@@ -57,7 +57,7 @@ void map::build_transparency_cache( const int zlev )
 
     // Default to just barely not transparent.
     std::uninitialized_fill_n(
-        &transparency_cache[0][0], MAPSIZE*SEEX * MAPSIZE*SEEY, static_cast<float>( LIGHT_TRANSPARENCY_OPEN_AIR ) );
+        &transparency_cache[0][0], MAPLIMIT_X*MAPLIMIT_Y, static_cast<float>( LIGHT_TRANSPARENCY_OPEN_AIR ) );
 
     float sight_penalty = weather_data(g->weather).sight_penalty;
 
@@ -476,9 +476,9 @@ template<int xx, int xy, int xz, int yx, int yy, int yz, int zz,
          float(*calc)(const float &, const float &, const int &),
          bool(*check)(const float &, const float &)>
 void cast_zlight(
-    const std::array<float (*)[MAPSIZE*SEEX][MAPSIZE*SEEY], OVERMAP_LAYERS> &output_caches,
-    const std::array<const float (*)[MAPSIZE*SEEX][MAPSIZE*SEEY], OVERMAP_LAYERS> &input_arrays,
-    const std::array<const bool (*)[MAPSIZE*SEEX][MAPSIZE*SEEY], OVERMAP_LAYERS> &floor_caches,
+    const std::array<float (*)[MAPLIMIT_X][MAPLIMIT_Y], OVERMAP_LAYERS> &output_caches,
+    const std::array<const float (*)[MAPLIMIT_X][MAPLIMIT_Y], OVERMAP_LAYERS> &input_arrays,
+    const std::array<const bool (*)[MAPLIMIT_X][MAPLIMIT_Y], OVERMAP_LAYERS> &floor_caches,
     const tripoint &offset, const int offset_distance,
     const float numerator, const int row,
     float start_major, const float end_major,
@@ -529,8 +529,8 @@ void cast_zlight(
                 float leading_edge_minor = (delta.x + 0.5f) / (delta.y - 0.5f);
 
                 if( !(current.x >= 0 && current.y >= 0 &&
-                      current.x < SEEX * MAPSIZE &&
-                      current.y < SEEY * MAPSIZE) || start_minor > leading_edge_minor ) {
+                      current.x < MAPLIMIT_X &&
+                      current.y < MAPLIMIT_Y) || start_minor > leading_edge_minor ) {
                     continue;
                 } else if( end_minor < trailing_edge_minor ) {
                     break;
@@ -671,12 +671,12 @@ void cast_zlight(
 void map::build_seen_cache( const tripoint &origin, const int target_z )
 {
     auto &map_cache = get_cache( target_z );
-    float (&transparency_cache)[MAPSIZE*SEEX][MAPSIZE*SEEY] = map_cache.transparency_cache;
-    float (&seen_cache)[MAPSIZE*SEEX][MAPSIZE*SEEY] = map_cache.seen_cache;
+    float (&transparency_cache)[MAPLIMIT_X][MAPLIMIT_Y] = map_cache.transparency_cache;
+    float (&seen_cache)[MAPLIMIT_X][MAPLIMIT_Y] = map_cache.seen_cache;
 
     constexpr float light_transparency_solid = LIGHT_TRANSPARENCY_SOLID;
     std::uninitialized_fill_n(
-        &seen_cache[0][0], MAPSIZE*SEEX * MAPSIZE*SEEY, light_transparency_solid );
+        &seen_cache[0][0], MAPSIZE*MAPLIMIT_X*SEEY, light_transparency_solid );
 
     if( !fov_3d ) {
         seen_cache[origin.x][origin.y] = LIGHT_TRANSPARENCY_CLEAR;
@@ -706,9 +706,9 @@ void map::build_seen_cache( const tripoint &origin, const int target_z )
         }
 
         // Cache the caches (pointers to them)
-        std::array<const float (*)[MAPSIZE*SEEX][MAPSIZE*SEEY], OVERMAP_LAYERS> transparency_caches;
-        std::array<float (*)[MAPSIZE*SEEX][MAPSIZE*SEEY], OVERMAP_LAYERS> seen_caches;
-        std::array<const bool (*)[MAPSIZE*SEEX][MAPSIZE*SEEY], OVERMAP_LAYERS> floor_caches;
+        std::array<const float (*)[MAPLIMIT_X][MAPLIMIT_Y], OVERMAP_LAYERS> transparency_caches;
+        std::array<float (*)[MAPLIMIT_X][MAPLIMIT_Y], OVERMAP_LAYERS> seen_caches;
+        std::array<const bool (*)[MAPLIMIT_X][MAPLIMIT_Y], OVERMAP_LAYERS> floor_caches;
         for( int z = -OVERMAP_DEPTH; z <= OVERMAP_HEIGHT; z++ ) {
             auto &cur_cache = get_cache( z );
             transparency_caches[z + OVERMAP_DEPTH] = &cur_cache.transparency_cache;
@@ -836,8 +836,8 @@ void map::build_seen_cache( const tripoint &origin, const int target_z )
 
 template<int xx, int xy, int yx, int yy, float(*calc)(const float &, const float &, const int &),
          bool(*check)(const float &, const float &)>
-void castLight( float (&output_cache)[MAPSIZE*SEEX][MAPSIZE*SEEY],
-                const float (&input_array)[MAPSIZE*SEEX][MAPSIZE*SEEY],
+void castLight( float (&output_cache)[MAPLIMIT_X][MAPLIMIT_Y],
+                const float (&input_array)[MAPLIMIT_X][MAPLIMIT_Y],
                 const int offsetX, const int offsetY, const int offsetDistance, const float numerator,
                 const int row, float start, const float end, double cumulative_transparency )
 {
@@ -861,8 +861,8 @@ void castLight( float (&output_cache)[MAPSIZE*SEEX][MAPSIZE*SEEY],
             float trailingEdge = (delta.x - 0.5f) / (delta.y + 0.5f);
             float leadingEdge = (delta.x + 0.5f) / (delta.y - 0.5f);
 
-            if( !(currentX >= 0 && currentY >= 0 && currentX < SEEX * MAPSIZE &&
-                  currentY < SEEY * MAPSIZE) || start < leadingEdge ) {
+            if( !(currentX >= 0 && currentY >= 0 && currentX < MAPLIMIT_X &&
+                  currentY < MAPLIMIT_Y) || start < leadingEdge ) {
                 continue;
             } else if( end > trailingEdge ) {
                 break;
@@ -924,10 +924,10 @@ static bool light_check( const float &transparency, const float &intensity ) {
 void map::apply_light_source( const tripoint &p, float luminance )
 {
     auto &cache = get_cache( p.z );
-    float (&lm)[MAPSIZE*SEEX][MAPSIZE*SEEY] = cache.lm;
-    float (&sm)[MAPSIZE*SEEX][MAPSIZE*SEEY] = cache.sm;
-    float (&transparency_cache)[MAPSIZE*SEEX][MAPSIZE*SEEY] = cache.transparency_cache;
-    float (&light_source_buffer)[MAPSIZE*SEEX][MAPSIZE*SEEY] = cache.light_source_buffer;
+    float (&lm)[MAPLIMIT_X][MAPLIMIT_Y] = cache.lm;
+    float (&sm)[MAPLIMIT_X][MAPLIMIT_Y] = cache.sm;
+    float (&transparency_cache)[MAPLIMIT_X][MAPLIMIT_Y] = cache.transparency_cache;
+    float (&light_source_buffer)[MAPLIMIT_X][MAPLIMIT_Y] = cache.light_source_buffer;
 
     const int x = p.x;
     const int y = p.y;
@@ -995,8 +995,8 @@ void map::apply_directional_light( const tripoint &p, int direction, float lumin
     const int y = p.y;
 
     auto &cache = get_cache( p.z );
-    float (&lm)[MAPSIZE*SEEX][MAPSIZE*SEEY] = cache.lm;
-    float (&transparency_cache)[MAPSIZE*SEEX][MAPSIZE*SEEY] = cache.transparency_cache;
+    float (&lm)[MAPLIMIT_X][MAPLIMIT_Y] = cache.lm;
+    float (&transparency_cache)[MAPLIMIT_X][MAPLIMIT_Y] = cache.transparency_cache;
 
     if( direction == 90 ) {
         castLight<1, 0, 0, -1, light_calc, light_check>( lm, transparency_cache, x, y, 0, luminance );

@@ -2405,9 +2405,9 @@ ssssssssssssssssssssssss\n",
                                            f_null,  f_indoor_plant, f_null,  f_null,   f_null,   f_table, f_null,   f_null,        f_null,
                                            f_null,   f_toilet, f_null,  f_fridge, f_bookcase, f_chair, f_counter, f_desk,  f_locker));
         if (density > 1) {
-            place_spawns( GROUP_ZOMBIE, 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
+            place_spawns( GROUP_ZOMBIE, 2, 0, 0, SM_WIDTH - 1, SM_HEIGHT - 1, density);
         } else {
-            add_spawn(mon_zombie, rng(0, 5), SEEX * 2 - 1, SEEY * 2 - 1);
+            add_spawn(mon_zombie, rng(0, 5), SM_WIDTH - 1, SM_HEIGHT - 1);
         }
         if (t_north == "office_tower_b" && t_west == "office_tower_b") {
             rotate(3);
@@ -2466,9 +2466,9 @@ sss|........|.R.|EEED___\n",
                                                f_indoor_plant, f_null,  f_null,   f_null,   f_table, f_null,   f_null,        f_null,
                                                f_null,   f_toilet, f_null,  f_fridge, f_bookcase, f_chair, f_counter, f_desk,  f_locker));
             if (density > 1) {
-                place_spawns( GROUP_ZOMBIE, 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
+                place_spawns( GROUP_ZOMBIE, 2, 0, 0, SM_WIDTH - 1, SM_HEIGHT - 1, density);
             } else {
-                add_spawn(mon_zombie, rng(0, 5), SEEX * 2 - 1, SEEY * 2 - 1);
+                add_spawn(mon_zombie, rng(0, 5), SM_WIDTH - 1, SM_HEIGHT - 1);
             }
             if (t_west == "office_tower_b_entrance") {
                 rotate(1);
@@ -2567,9 +2567,9 @@ ssssssssssssssssssssssss\n",
                                                f_null,  f_indoor_plant, f_null,  f_null,   f_null,   f_table, f_null,   f_null,        f_null,
                                                f_null,   f_toilet, f_sink,  f_fridge, f_bookcase, f_chair, f_counter, f_desk,  f_locker, f_null));
             if (density > 1) {
-                place_spawns( GROUP_ZOMBIE, 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
+                place_spawns( GROUP_ZOMBIE, 2, 0, 0, SM_WIDTH - 1, SM_HEIGHT - 1, density);
             } else {
-                add_spawn(mon_zombie, rng(0, 5), SEEX * 2 - 1, SEEY * 2 - 1);
+                add_spawn(mon_zombie, rng(0, 5), SM_WIDTH - 1, SM_HEIGHT - 1);
             }
             if (t_north == "office_tower_b_entrance") {
                 rotate(1);
@@ -2660,9 +2660,9 @@ ___DEEE|.R.|...,,...|sss\n",
                                                f_indoor_plant, f_null,  f_null,   f_null,   f_table, f_null,   f_null,        f_null,
                                                f_null,   f_toilet, f_null,  f_fridge, f_bookcase, f_chair, f_counter, f_desk,  f_locker));
             if (density > 1) {
-                place_spawns( GROUP_ZOMBIE, 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
+                place_spawns( GROUP_ZOMBIE, 2, 0, 0, SM_WIDTH - 1, SM_HEIGHT - 1, density);
             } else {
-                add_spawn(mon_zombie, rng(0, 5), SEEX * 2 - 1, SEEY * 2 - 1);
+                add_spawn(mon_zombie, rng(0, 5), SM_WIDTH - 1, SM_HEIGHT - 1);
             }
             if (t_west == "office_tower_b" && t_north == "office_tower_b") {
                 rotate(1);
@@ -2745,24 +2745,24 @@ ___DEEE|.R.|...,,...|sss\n",
         bw = 0;
         lw = 0;
         if (is_ot_type("sewer", t_north) && connects_to(t_north, 2)) {
-            tw = SEEY * 2;
+            tw = SM_HEIGHT;
         }
         if (is_ot_type("sewer", t_east) && connects_to(t_east, 3)) {
-            rw = SEEX * 2;
+            rw = SM_WIDTH;
         }
         if (is_ot_type("sewer", t_south) && connects_to(t_south, 0)) {
-            bw = SEEY * 2;
+            bw = SM_HEIGHT;
         }
         if (is_ot_type("sewer", t_west) && connects_to(t_west, 1)) {
-            lw = SEEX * 2;
+            lw = SM_WIDTH;
         }
         if (zlevel == 0) { // We're on ground level
-            for (int i = 0; i < SEEX * 2; i++) {
-                for (int j = 0; j < SEEY * 2; j++) {
-                    if (i <= 1 || i >= SEEX * 2 - 2 ||
-                        (j > 1 && j < SEEY * 2 - 2 && (i == SEEX - 2 || i == SEEX + 1))) {
+            for (int i = 0; i < SM_WIDTH; i++) {
+                for (int j = 0; j < SM_HEIGHT; j++) {
+                    if (i <= 1 || i >= SM_WIDTH - 2 ||
+                        (j > 1 && j < SM_HEIGHT - 2 && (i == SEEX - 2 || i == SEEX + 1))) {
                         ter_set(i, j, t_concrete_wall);
-                    } else if (j <= 1 || j >= SEEY * 2 - 2) {
+                    } else if (j <= 1 || j >= SM_HEIGHT - 2) {
                         ter_set(i, j, t_concrete_wall);
                     } else {
                         ter_set(i, j, t_floor);
@@ -2778,10 +2778,10 @@ ___DEEE|.R.|...,,...|sss\n",
             ter_set(SEEX + 1, SEEY    , t_door_metal_c);
             ter_set(SEEX - 2, SEEY - 1, t_door_metal_c);
             ter_set(SEEX + 1, SEEY - 1, t_door_metal_c);
-            ter_set(SEEX - 1, SEEY * 2 - 3, t_stairs_down);
-            ter_set(SEEX    , SEEY * 2 - 3, t_stairs_down);
-            science_room(this, 2       , 2, SEEX - 3    , SEEY * 2 - 3, zlevel, 1);
-            science_room(this, SEEX + 2, 2, SEEX * 2 - 3, SEEY * 2 - 3, zlevel, 3);
+            ter_set(SEEX - 1, SM_HEIGHT - 3, t_stairs_down);
+            ter_set(SEEX    , SM_HEIGHT - 3, t_stairs_down);
+            science_room(this, 2       , 2, SEEX - 3    , SM_HEIGHT - 3, zlevel, 1);
+            science_room(this, SEEX + 2, 2, SM_WIDTH - 3, SM_HEIGHT - 3, zlevel, 3);
 
             place_spawns( GROUP_TURRET_ONLY, 1, SEEX, 5, SEEY, 5, 1 );
 
@@ -2803,14 +2803,14 @@ ___DEEE|.R.|...,,...|sss\n",
                        is_ot_type( "ice_lab_core", id );
             };
 
-            for (int i = 0; i < SEEX * 2; i++) {
-                for (int j = 0; j < SEEY * 2; j++) {
+            for (int i = 0; i < SM_WIDTH; i++) {
+                for (int j = 0; j < SM_HEIGHT; j++) {
                     ter_set(i, j, t_rock_floor);
-                    if (((i < lw || i > SEEX * 2 - 1 - rw) && j > SEEY - 3 && j < SEEY + 2) ||
-                        ((j < tw || j > SEEY * 2 - 1 - bw) && i > SEEX - 3 && i < SEEX + 2)) {
+                    if (((i < lw || i > SM_WIDTH - 1 - rw) && j > SEEY - 3 && j < SEEY + 2) ||
+                        ((j < tw || j > SM_HEIGHT - 1 - bw) && i > SEEX - 3 && i < SEEX + 2)) {
                         ter_set(i, j, t_sewage);
                     }
-                    if( ( i == 0 && is_lab( t_east ) ) || i == SEEX * 2 - 1 ) {
+                    if( ( i == 0 && is_lab( t_east ) ) || i == SM_WIDTH - 1 ) {
                         if (ter(i, j) == t_sewage) {
                             ter_set(i, j, t_bars);
                         } else if (j == SEEY - 1 || j == SEEY) {
@@ -2818,7 +2818,7 @@ ___DEEE|.R.|...,,...|sss\n",
                         } else {
                             ter_set(i, j, t_concrete_wall);
                         }
-                    } else if( ( j == 0 && is_lab( t_north ) ) || j == SEEY * 2 - 1 ) {
+                    } else if( ( j == 0 && is_lab( t_north ) ) || j == SM_HEIGHT - 1 ) {
                         if (ter(i, j) == t_sewage) {
                             ter_set(i, j, t_bars);
                         } else if (i == SEEX - 1 || i == SEEX) {
@@ -3032,7 +3032,7 @@ ___DEEE|.R.|...,,...|sss\n",
                     rotate(1);
                 }
                 const auto predicate = [this]( const tripoint &p ) { return ter( p ) == t_rock_floor || has_furn( p ); };
-                const auto range = points_in_rectangle( { lw, tw, abs_sub.z }, { SEEX * 2 - 1 - rw, SEEY * 2 - 1 - bw, abs_sub.z } );
+                const auto range = points_in_rectangle( { lw, tw, abs_sub.z }, { SM_WIDTH - 1 - rw, SM_HEIGHT - 1 - bw, abs_sub.z } );
                 if (t_above == "lab_stairs" || t_above == "ice_lab_stairs") {
                     if( const auto p = random_point( range, predicate ) ) {
                         remove_trap( *p );
@@ -3048,12 +3048,12 @@ ___DEEE|.R.|...,,...|sss\n",
                 }
             } else switch (rng(1, 4)) { // Pick a random lab layout
                 case 1: // Cross shaped
-                    for (int i = 0; i < SEEX * 2; i++) {
-                        for (int j = 0; j < SEEY * 2; j++) {
-                            if ((i < lw || i > SEEX * 2 - 1 - rw) ||
+                    for (int i = 0; i < SM_WIDTH; i++) {
+                        for (int j = 0; j < SM_HEIGHT; j++) {
+                            if ((i < lw || i > SM_WIDTH - 1 - rw) ||
                                 ((j < SEEY - 1 || j > SEEY) && (i == SEEX - 2 || i == SEEX + 1))) {
                                 ter_set(i, j, t_concrete_wall);
-                            } else if ((j < tw || j > SEEY * 2 - 1 - bw) ||
+                            } else if ((j < tw || j > SM_HEIGHT - 1 - bw) ||
                                        ((i < SEEX - 1 || i > SEEX) && (j == SEEY - 2 || j == SEEY + 1))) {
                                 ter_set(i, j, t_concrete_wall);
                             } else {
@@ -3075,36 +3075,36 @@ ___DEEE|.R.|...,,...|sss\n",
                     // Top right
                     if (one_in(2)) {
                         ter_set(SEEX + 1, int(SEEY / 2), t_door_metal_c);
-                        science_room(this, SEEX + 2, tw, SEEX * 2 - 1 - rw, SEEY - 3, zlevel, 3);
+                        science_room(this, SEEX + 2, tw, SM_WIDTH - 1 - rw, SEEY - 3, zlevel, 3);
                     } else {
                         ter_set(SEEX + int(SEEX / 2), SEEY - 2, t_door_metal_c);
-                        science_room(this, SEEX + 2, tw, SEEX * 2 - 1 - rw, SEEY - 3, zlevel, 2);
+                        science_room(this, SEEX + 2, tw, SM_WIDTH - 1 - rw, SEEY - 3, zlevel, 2);
                     }
                     // Bottom left
                     if (one_in(2)) {
                         ter_set(int(SEEX / 2), SEEY + 1, t_door_metal_c);
-                        science_room(this, lw, SEEY + 2, SEEX - 3, SEEY * 2 - 1 - bw, zlevel, 0);
+                        science_room(this, lw, SEEY + 2, SEEX - 3, SM_HEIGHT - 1 - bw, zlevel, 0);
                     } else {
                         ter_set(SEEX - 2, SEEY + int(SEEY / 2), t_door_metal_c);
-                        science_room(this, lw, SEEY + 2, SEEX - 3, SEEY * 2 - 1 - bw, zlevel, 1);
+                        science_room(this, lw, SEEY + 2, SEEX - 3, SM_HEIGHT - 1 - bw, zlevel, 1);
                     }
                     // Bottom right
                     if (one_in(2)) {
                         ter_set(SEEX + int(SEEX / 2), SEEY + 1, t_door_metal_c);
-                        science_room(this, SEEX + 2, SEEY + 2, SEEX * 2 - 1 - rw, SEEY * 2 - 1 - bw,
+                        science_room(this, SEEX + 2, SEEY + 2, SM_WIDTH - 1 - rw, SM_HEIGHT - 1 - bw,
                                      zlevel, 0);
                     } else {
                         ter_set(SEEX + 1, SEEY + int(SEEY / 2), t_door_metal_c);
-                        science_room(this, SEEX + 2, SEEY + 2, SEEX * 2 - 1 - rw, SEEY * 2 - 1 - bw,
+                        science_room(this, SEEX + 2, SEEY + 2, SM_WIDTH - 1 - rw, SM_HEIGHT - 1 - bw,
                                      zlevel, 3);
                     }
                     if (rw == 1) {
-                        ter_set(SEEX * 2 - 1, SEEY - 1, t_door_metal_c);
-                        ter_set(SEEX * 2 - 1, SEEY    , t_door_metal_c);
+                        ter_set(SM_WIDTH - 1, SEEY - 1, t_door_metal_c);
+                        ter_set(SM_WIDTH - 1, SEEY    , t_door_metal_c);
                     }
                     if (bw == 1) {
-                        ter_set(SEEX - 1, SEEY * 2 - 1, t_door_metal_c);
-                        ter_set(SEEX    , SEEY * 2 - 1, t_door_metal_c);
+                        ter_set(SEEX - 1, SM_HEIGHT - 1, t_door_metal_c);
+                        ter_set(SEEX    , SM_HEIGHT - 1, t_door_metal_c);
                     }
                     if (terrain_type == "lab_stairs" || terrain_type == "ice_lab_stairs") { // Stairs going down
                         std::vector<point> stair_points;
@@ -3115,16 +3115,16 @@ ___DEEE|.R.|...,,...|sss\n",
                             stair_points.push_back(point(SEEX    , 2));
                         }
                         if (rw != 1) {
-                            stair_points.push_back(point(SEEX * 2 - 3, SEEY - 1));
-                            stair_points.push_back(point(SEEX * 2 - 3, SEEY - 1));
-                            stair_points.push_back(point(SEEX * 2 - 3, SEEY    ));
-                            stair_points.push_back(point(SEEX * 2 - 3, SEEY    ));
+                            stair_points.push_back(point(SM_WIDTH - 3, SEEY - 1));
+                            stair_points.push_back(point(SM_WIDTH - 3, SEEY - 1));
+                            stair_points.push_back(point(SM_WIDTH - 3, SEEY    ));
+                            stair_points.push_back(point(SM_WIDTH - 3, SEEY    ));
                         }
                         if (bw != 1) {
-                            stair_points.push_back(point(SEEX - 1, SEEY * 2 - 3));
-                            stair_points.push_back(point(SEEX - 1, SEEY * 2 - 3));
-                            stair_points.push_back(point(SEEX    , SEEY * 2 - 3));
-                            stair_points.push_back(point(SEEX    , SEEY * 2 - 3));
+                            stair_points.push_back(point(SEEX - 1, SM_HEIGHT - 3));
+                            stair_points.push_back(point(SEEX - 1, SM_HEIGHT - 3));
+                            stair_points.push_back(point(SEEX    , SM_HEIGHT - 3));
+                            stair_points.push_back(point(SEEX    , SM_HEIGHT - 3));
                         }
                         if (lw != 0) {
                             stair_points.push_back(point(2, SEEY - 1));
@@ -3147,11 +3147,11 @@ ___DEEE|.R.|...,,...|sss\n",
                     break;
 
                 case 2: // tic-tac-toe # layout
-                    for (int i = 0; i < SEEX * 2; i++) {
-                        for (int j = 0; j < SEEY * 2; j++) {
-                            if (i < lw || i > SEEX * 2 - 1 - rw || i == SEEX - 4 || i == SEEX + 3) {
+                    for (int i = 0; i < SM_WIDTH; i++) {
+                        for (int j = 0; j < SM_HEIGHT; j++) {
+                            if (i < lw || i > SM_WIDTH - 1 - rw || i == SEEX - 4 || i == SEEX + 3) {
                                 ter_set(i, j, t_concrete_wall);
-                            } else if (j < lw || j > SEEY * 2 - 1 - bw || j == SEEY - 4 || j == SEEY + 3) {
+                            } else if (j < lw || j > SM_HEIGHT - 1 - bw || j == SEEY - 4 || j == SEEY + 3) {
                                 ter_set(i, j, t_concrete_wall);
                             } else {
                                 ter_set(i, j, t_rock_floor);
@@ -3178,20 +3178,20 @@ ___DEEE|.R.|...,,...|sss\n",
                     ter_set(SEEX + 3, SEEY + int(SEEY / 2), t_door_metal_c);
                     science_room(this, lw, tw, SEEX - 5, SEEY - 5, zlevel, rng(1, 2));
                     science_room(this, SEEX - 3, tw, SEEX + 2, SEEY - 5, zlevel, 2);
-                    science_room(this, SEEX + 4, tw, SEEX * 2 - 1 - rw, SEEY - 5, zlevel, rng(2, 3));
+                    science_room(this, SEEX + 4, tw, SM_WIDTH - 1 - rw, SEEY - 5, zlevel, rng(2, 3));
                     science_room(this, lw, SEEY - 3, SEEX - 5, SEEY + 2, zlevel, 1);
-                    science_room(this, SEEX + 4, SEEY - 3, SEEX * 2 - 1 - rw, SEEY + 2, zlevel, 3);
-                    science_room(this, lw, SEEY + 4, SEEX - 5, SEEY * 2 - 1 - bw, zlevel, rng(0, 1));
-                    science_room(this, SEEX - 3, SEEY + 4, SEEX + 2, SEEY * 2 - 1 - bw, zlevel, 0);
-                    science_room(this, SEEX + 4, SEEX + 4, SEEX * 2 - 1 - rw, SEEY * 2 - 1 - bw,
+                    science_room(this, SEEX + 4, SEEY - 3, SM_WIDTH - 1 - rw, SEEY + 2, zlevel, 3);
+                    science_room(this, lw, SEEY + 4, SEEX - 5, SM_HEIGHT - 1 - bw, zlevel, rng(0, 1));
+                    science_room(this, SEEX - 3, SEEY + 4, SEEX + 2, SM_HEIGHT - 1 - bw, zlevel, 0);
+                    science_room(this, SEEX + 4, SEEX + 4, SM_WIDTH - 1 - rw, SM_HEIGHT - 1 - bw,
                                  zlevel, 3 * rng(0, 1));
                     if (rw == 1) {
-                        ter_set(SEEX * 2 - 1, SEEY - 1, t_door_metal_c);
-                        ter_set(SEEX * 2 - 1, SEEY    , t_door_metal_c);
+                        ter_set(SM_WIDTH - 1, SEEY - 1, t_door_metal_c);
+                        ter_set(SM_WIDTH - 1, SEEY    , t_door_metal_c);
                     }
                     if (bw == 1) {
-                        ter_set(SEEX - 1, SEEY * 2 - 1, t_door_metal_c);
-                        ter_set(SEEX    , SEEY * 2 - 1, t_door_metal_c);
+                        ter_set(SEEX - 1, SM_HEIGHT - 1, t_door_metal_c);
+                        ter_set(SEEX    , SM_HEIGHT - 1, t_door_metal_c);
                     }
                     if (terrain_type == "lab_stairs" || terrain_type == "ice_lab_stairs") {
                         ter_set(SEEX - 3 + 5 * rng(0, 1), SEEY - 3 + 5 * rng(0, 1), t_stairs_down);
@@ -3199,34 +3199,34 @@ ___DEEE|.R.|...,,...|sss\n",
                     break;
 
                 case 3: // Big room
-                    for (int i = 0; i < SEEX * 2; i++) {
-                        for (int j = 0; j < SEEY * 2; j++) {
-                            if (i < lw || i >= SEEX * 2 - 1 - rw) {
+                    for (int i = 0; i < SM_WIDTH; i++) {
+                        for (int j = 0; j < SM_HEIGHT; j++) {
+                            if (i < lw || i >= SM_WIDTH - 1 - rw) {
                                 ter_set(i, j, t_concrete_wall);
-                            } else if (j < tw || j >= SEEY * 2 - 1 - bw) {
+                            } else if (j < tw || j >= SM_HEIGHT - 1 - bw) {
                                 ter_set(i, j, t_concrete_wall);
                             } else {
                                 ter_set(i, j, t_rock_floor);
                             }
                         }
                     }
-                    science_room(this, lw, tw, SEEX * 2 - 1 - rw, SEEY * 2 - 1 - bw,
+                    science_room(this, lw, tw, SM_WIDTH - 1 - rw, SM_HEIGHT - 1 - bw,
                                  zlevel, rng(0, 3));
                     if (t_above == "lab_stairs" || t_above == "ice_lab_stairs") {
-                        if( const auto p = random_point( points_in_rectangle( { lw, tw, abs_sub.z }, { SEEX * 2 - 1 - rw, SEEY * 2 - 1 - bw, abs_sub.z } ), [this]( const tripoint &n ) { return ter( n ) == t_rock_floor; } ) ) {
+                        if( const auto p = random_point( points_in_rectangle( { lw, tw, abs_sub.z }, { SM_WIDTH - 1 - rw, SM_HEIGHT - 1 - bw, abs_sub.z } ), [this]( const tripoint &n ) { return ter( n ) == t_rock_floor; } ) ) {
                             ter_set( *p, t_stairs_up );
                         }
                     }
                     if (rw == 1) {
-                        ter_set(SEEX * 2 - 1, SEEY - 1, t_door_metal_c);
-                        ter_set(SEEX * 2 - 1, SEEY    , t_door_metal_c);
+                        ter_set(SM_WIDTH - 1, SEEY - 1, t_door_metal_c);
+                        ter_set(SM_WIDTH - 1, SEEY    , t_door_metal_c);
                     }
                     if (bw == 1) {
-                        ter_set(SEEX - 1, SEEY * 2 - 1, t_door_metal_c);
-                        ter_set(SEEX    , SEEY * 2 - 1, t_door_metal_c);
+                        ter_set(SEEX - 1, SM_HEIGHT - 1, t_door_metal_c);
+                        ter_set(SEEX    , SM_HEIGHT - 1, t_door_metal_c);
                     }
                     if (terrain_type == "lab_stairs" || terrain_type == "ice_lab_stairs") {
-                        if( const auto p = random_point( points_in_rectangle( { lw, tw, abs_sub.z }, { SEEX * 2 - 1 - rw, SEEY * 2 - 1 - bw, abs_sub.z } ), [this]( const tripoint &n ) { return ter( n ) == t_rock_floor; } ) ) {
+                        if( const auto p = random_point( points_in_rectangle( { lw, tw, abs_sub.z }, { SM_WIDTH - 1 - rw, SM_HEIGHT - 1 - bw, abs_sub.z } ), [this]( const tripoint &n ) { return ter( n ) == t_rock_floor; } ) ) {
                             ter_set( *p, t_stairs_down );
                         }
                     }
@@ -3474,22 +3474,22 @@ ff.......|....|WWWWWWWW|\n\
                         tmpcomp->add_failure(COMPFAIL_DESTROY_DATA);
                     }
 
-                    for (int i = 0; i < SEEX * 2; i++) {
-                        for (int j = 0; j < SEEY * 2; j++) {
-                            if (i < lw || i >= SEEX * 2 - rw + 1) {
+                    for (int i = 0; i < SM_WIDTH; i++) {
+                        for (int j = 0; j < SM_HEIGHT; j++) {
+                            if (i < lw || i >= SM_WIDTH - rw + 1) {
                                 ter_set(i, j, t_concrete_wall);
-                            } else if (j < (tw - 1) || j >= SEEY * 2 - bw + 1) {
+                            } else if (j < (tw - 1) || j >= SM_HEIGHT - bw + 1) {
                                 ter_set(i, j, t_concrete_wall);
                             }
                         }
                     }
                     if (t_above == "lab_stairs" || t_above == "ice_lab_stairs") {
-                        if( const auto p = random_point( points_in_rectangle( { lw, tw, abs_sub.z }, { SEEX * 2 - 1 - rw, SEEY * 2 - 1 - bw, abs_sub.z } ), [this]( const tripoint &n ) { return ter( n ) == t_rock_floor; } ) ) {
+                        if( const auto p = random_point( points_in_rectangle( { lw, tw, abs_sub.z }, { SM_WIDTH - 1 - rw, SM_HEIGHT - 1 - bw, abs_sub.z } ), [this]( const tripoint &n ) { return ter( n ) == t_rock_floor; } ) ) {
                             ter_set( *p, t_stairs_up );
                         }
                     }
                     if (terrain_type == "lab_stairs" || terrain_type == "ice_lab_stairs") {
-                        if( const auto p = random_point( points_in_rectangle( { lw, tw, abs_sub.z }, { SEEX * 2 - 1 - rw, SEEY * 2 - 1 - bw, abs_sub.z } ), [this]( const tripoint &n ) { return ter( n ) == t_rock_floor; } ) ) {
+                        if( const auto p = random_point( points_in_rectangle( { lw, tw, abs_sub.z }, { SM_WIDTH - 1 - rw, SM_HEIGHT - 1 - bw, abs_sub.z } ), [this]( const tripoint &n ) { return ter( n ) == t_rock_floor; } ) ) {
                             ter_set( *p, t_stairs_down );
                         }
                     }
@@ -3515,12 +3515,12 @@ ff.......|....|WWWWWWWW|\n\
             lw = SEEX + 1;
         }
         if (tw != 0 || rw != 0 || bw != 0 || lw != 0) {
-            for (int i = 0; i < SEEX * 2; i++) {
-                for (int j = 0; j < SEEY * 2; j++) {
-                    if ((i < SEEX * 2 - lw && (!one_in(3) || (j > SEEY - 6 && j < SEEY + 5))) ||
+            for (int i = 0; i < SM_WIDTH; i++) {
+                for (int j = 0; j < SM_HEIGHT; j++) {
+                    if ((i < SM_WIDTH - lw && (!one_in(3) || (j > SEEY - 6 && j < SEEY + 5))) ||
                         (i > rw &&          (!one_in(3) || (j > SEEY - 6 && j < SEEY + 5))) ||
                         (j > tw &&          (!one_in(3) || (i > SEEX - 6 && i < SEEX + 5))) ||
-                        (j < SEEY * 2 - bw && (!one_in(3) || (i > SEEX - 6 && i < SEEX + 5)))) {
+                        (j < SM_HEIGHT - bw && (!one_in(3) || (i > SEEX - 6 && i < SEEX + 5)))) {
                         ter_set(i, j, t_rock_floor);
                         if (one_in(5)) {
                             make_rubble( tripoint( i, j, abs_sub.z ), f_rubble_rock, true, t_rock_floor);
@@ -3536,10 +3536,10 @@ ff.......|....|WWWWWWWW|\n\
         bw = (t_south == "slimepit" ? SEEY + 1 : 0);
         lw = (t_west  == "slimepit" ? SEEX     : 0);
         if (tw != 0 || rw != 0 || bw != 0 || lw != 0) {
-            for (int i = 0; i < SEEX * 2; i++) {
-                for (int j = 0; j < SEEY * 2; j++) {
-                    if (((j <= tw || i >= rw) && i >= j && (SEEX * 2 - 1 - i) <= j) ||
-                        ((j >= bw || i <= lw) && i <= j && (SEEY * 2 - 1 - j) <= i)   ) {
+            for (int i = 0; i < SM_WIDTH; i++) {
+                for (int j = 0; j < SM_HEIGHT; j++) {
+                    if (((j <= tw || i >= rw) && i >= j && (SM_WIDTH - 1 - i) <= j) ||
+                        ((j >= bw || i <= lw) && i <= j && (SM_HEIGHT - 1 - j) <= i)   ) {
                         if (one_in(5)) {
                             make_rubble( tripoint( i,  j, abs_sub.z ), f_rubble_rock, true, t_slime);
                         } else if (!one_in(5)) {
@@ -3576,11 +3576,11 @@ ff.......|....|WWWWWWWW|\n\
         }
 
         // Start by setting up a large, empty room.
-        for (int i = 0; i < SEEX * 2; i++) {
-            for (int j = 0; j < SEEY * 2; j++) {
-                if (i < lw || i > SEEX * 2 - 1 - rw) {
+        for (int i = 0; i < SM_WIDTH; i++) {
+            for (int j = 0; j < SM_HEIGHT; j++) {
+                if (i < lw || i > SM_WIDTH - 1 - rw) {
                     ter_set(i, j, t_concrete_wall);
-                } else if (j < tw || j > SEEY * 2 - 1 - bw) {
+                } else if (j < tw || j > SM_HEIGHT - 1 - bw) {
                     ter_set(i, j, t_concrete_wall);
                 } else {
                     ter_set(i, j, t_floor);
@@ -3588,12 +3588,12 @@ ff.......|....|WWWWWWWW|\n\
             }
         }
         if (rw == 1) {
-            ter_set(SEEX * 2 - 1, SEEY - 1, t_door_metal_c);
-            ter_set(SEEX * 2 - 1, SEEY    , t_door_metal_c);
+            ter_set(SM_WIDTH - 1, SEEY - 1, t_door_metal_c);
+            ter_set(SM_WIDTH - 1, SEEY    , t_door_metal_c);
         }
         if (bw == 1) {
-            ter_set(SEEX - 1, SEEY * 2 - 1, t_door_metal_c);
-            ter_set(SEEX    , SEEY * 2 - 1, t_door_metal_c);
+            ter_set(SEEX - 1, SM_HEIGHT - 1, t_door_metal_c);
+            ter_set(SEEX    , SM_HEIGHT - 1, t_door_metal_c);
         }
 
         int loot_variant; //only used for weapons testing variant.
@@ -3603,9 +3603,9 @@ ff.......|....|WWWWWWWW|\n\
         case 1:
             loot_variant = rng(1, 100); //The variants have a 67/22/7/4 split.
             place_spawns( GROUP_ROBOT_SECUBOT, 1, 6, 6, 6, 6, 1 );
-            place_spawns( GROUP_ROBOT_SECUBOT, 1, SEEX * 2 - 7, 6, SEEX * 2 - 7, 6, 1 );
-            place_spawns( GROUP_ROBOT_SECUBOT, 1, 6, SEEY * 2 - 7, 6, SEEY * 2 - 7, 1 );
-            place_spawns( GROUP_ROBOT_SECUBOT, 1, SEEX * 2 - 7, SEEY * 2 - 7, SEEX * 2 - 7, SEEY * 2 - 7, 1 );
+            place_spawns( GROUP_ROBOT_SECUBOT, 1, SM_WIDTH - 7, 6, SM_WIDTH - 7, 6, 1 );
+            place_spawns( GROUP_ROBOT_SECUBOT, 1, 6, SM_HEIGHT - 7, 6, SM_HEIGHT - 7, 1 );
+            place_spawns( GROUP_ROBOT_SECUBOT, 1, SM_WIDTH - 7, SM_HEIGHT - 7, SM_WIDTH - 7, SM_HEIGHT - 7, 1 );
             spawn_item( SEEX - 4, SEEY - 2, "id_science" );
             if(loot_variant <= 96) {
                 mtrap_set( this, SEEX - 3, SEEY - 3, tr_dissector);
@@ -3715,9 +3715,9 @@ ff.......|....|WWWWWWWW|\n\
         // Bionics
         case 3: {
             place_spawns( GROUP_ROBOT_SECUBOT, 1, 6, 6, 6, 6, 1 );
-            place_spawns( GROUP_ROBOT_SECUBOT, 1, SEEX * 2 - 7, 6, SEEX * 2 - 7, 6, 1 );
-            place_spawns( GROUP_ROBOT_SECUBOT, 1, 6, SEEY * 2 - 7, 6, SEEY * 2 - 7, 1 );
-            place_spawns( GROUP_ROBOT_SECUBOT, 1, SEEX * 2 - 7, SEEY * 2 - 7, SEEX * 2 - 7, SEEY * 2 - 7, 1 );
+            place_spawns( GROUP_ROBOT_SECUBOT, 1, SM_WIDTH - 7, 6, SM_WIDTH - 7, 6, 1 );
+            place_spawns( GROUP_ROBOT_SECUBOT, 1, 6, SM_HEIGHT - 7, 6, SM_HEIGHT - 7, 1 );
+            place_spawns( GROUP_ROBOT_SECUBOT, 1, SM_WIDTH - 7, SM_HEIGHT - 7, SM_WIDTH - 7, SM_HEIGHT - 7, 1 );
             mtrap_set( this, SEEX - 2, SEEY - 2, tr_dissector);
             mtrap_set( this, SEEX + 1, SEEY - 2, tr_dissector);
             mtrap_set( this, SEEX - 2, SEEY + 1, tr_dissector);
@@ -3744,9 +3744,9 @@ ff.......|....|WWWWWWWW|\n\
         // CVD Forge
         case 4:
             place_spawns( GROUP_ROBOT_SECUBOT, 1, 6, 6, 6, 6, 1 );
-            place_spawns( GROUP_ROBOT_SECUBOT, 1, SEEX * 2 - 7, 6, SEEX * 2 - 7, 6, 1 );
-            place_spawns( GROUP_ROBOT_SECUBOT, 1, 6, SEEY * 2 - 7, 6, SEEY * 2 - 7, 1 );
-            place_spawns( GROUP_ROBOT_SECUBOT, 1, SEEX * 2 - 7, SEEY * 2 - 7, SEEX * 2 - 7, SEEY * 2 - 7, 1 );
+            place_spawns( GROUP_ROBOT_SECUBOT, 1, SM_WIDTH - 7, 6, SM_WIDTH - 7, 6, 1 );
+            place_spawns( GROUP_ROBOT_SECUBOT, 1, 6, SM_HEIGHT - 7, 6, SM_HEIGHT - 7, 1 );
+            place_spawns( GROUP_ROBOT_SECUBOT, 1, SM_WIDTH - 7, SM_HEIGHT - 7, SM_WIDTH - 7, SM_HEIGHT - 7, 1 );
             line(this, t_cvdbody, SEEX - 2, SEEY - 2, SEEX - 2, SEEY + 1);
             line(this, t_cvdbody, SEEX - 1, SEEY - 2, SEEX - 1, SEEY + 1);
             line(this, t_cvdbody, SEEX    , SEEY - 1, SEEX    , SEEY + 1);
@@ -3760,14 +3760,14 @@ ff.......|....|WWWWWWWW|\n\
 
         dat.fill_groundcover();
 
-        line(this, t_chainfence_h,            0,            0, SEEX * 2 - 1,            0);
+        line(this, t_chainfence_h,            0,            0, SM_WIDTH - 1,            0);
         line(this, t_chaingate_l,            11,            0,           12,            0);
-        line(this, t_chainfence_h,            0, SEEY * 2 - 1, SEEX * 2 - 1, SEEY * 2 - 1);
-        line(this, t_chaingate_l,            11, SEEY * 2 - 1,           12, SEEY * 2 - 1);
-        line(this, t_chainfence_v,            0,            0,            0, SEEX * 2 - 1);
+        line(this, t_chainfence_h,            0, SM_HEIGHT - 1, SM_WIDTH - 1, SM_HEIGHT - 1);
+        line(this, t_chaingate_l,            11, SM_HEIGHT - 1,           12, SM_HEIGHT - 1);
+        line(this, t_chainfence_v,            0,            0,            0, SM_WIDTH - 1);
         line(this, t_chaingate_l,             0,           11,            0,           12);
-        line(this, t_chainfence_v, SEEX * 2 - 1,            0, SEEX * 2 - 1, SEEY * 2 - 1);
-        line(this, t_chaingate_l,  SEEX * 2 - 1,           11, SEEX * 2 - 1,           12);
+        line(this, t_chainfence_v, SM_WIDTH - 1,            0, SM_WIDTH - 1, SM_HEIGHT - 1);
+        line(this, t_chaingate_l,  SM_WIDTH - 1,           11, SM_WIDTH - 1,           12);
         // Place some random buildings
 
         bool okay = true;
@@ -3889,12 +3889,12 @@ ff.......|....|WWWWWWWW|\n\
         // Place turrets by (possible) entrances
         place_spawns( GROUP_TURRET_RIFLE_ONLY, 1, 1, SEEY - 1, 1, SEEY - 1, 1 );
         place_spawns( GROUP_TURRET_RIFLE_ONLY, 1, 1, SEEY, 1, SEEY, 1 );
-        place_spawns( GROUP_TURRET_RIFLE_ONLY, 1, SEEX * 2 - 2, SEEY - 1, SEEX * 2 - 2, SEEY - 1, 1 );
-        place_spawns( GROUP_TURRET_RIFLE_ONLY, 1, SEEX * 2 - 2, SEEY, SEEX * 2 - 2, SEEY, 1 );
+        place_spawns( GROUP_TURRET_RIFLE_ONLY, 1, SM_WIDTH - 2, SEEY - 1, SM_WIDTH - 2, SEEY - 1, 1 );
+        place_spawns( GROUP_TURRET_RIFLE_ONLY, 1, SM_WIDTH - 2, SEEY, SM_WIDTH - 2, SEEY, 1 );
         place_spawns( GROUP_TURRET_RIFLE_ONLY, 1, SEEX - 1, 1, SEEX - 1, 1, 1 );
         place_spawns( GROUP_TURRET_RIFLE_ONLY, 1, SEEX, 1, SEEX, 1, 1 );
-        place_spawns( GROUP_TURRET_RIFLE_ONLY, 1, SEEX - 1, SEEY * 2 - 2, SEEX - 1, SEEY * 2 - 2, 1 );
-        place_spawns( GROUP_TURRET_RIFLE_ONLY, 1, SEEX, SEEY * 2 - 2, SEEX, SEEY * 2 - 2, 1 );
+        place_spawns( GROUP_TURRET_RIFLE_ONLY, 1, SEEX - 1, SM_HEIGHT - 2, SEEX - 1, SM_HEIGHT - 2, 1 );
+        place_spawns( GROUP_TURRET_RIFLE_ONLY, 1, SEEX, SM_HEIGHT - 2, SEEX, SM_HEIGHT - 2, 1 );
 
         // Place searchlights
         if (one_in(3)) {
@@ -3902,9 +3902,9 @@ ff.......|....|WWWWWWWW|\n\
                 ter_set( *p, t_plut_generator );
 
                 place_spawns( GROUP_TURRET_SEARCHLIGHT_ONLY, 1, 1, 1, 1, 1, 1 );
-                place_spawns( GROUP_TURRET_SEARCHLIGHT_ONLY, 1, SEEX * 2 - 2, 1, SEEX * 2 - 2, 1, 1 );
-                place_spawns( GROUP_TURRET_SEARCHLIGHT_ONLY, 1, 1, SEEY * 2 - 2, 1, SEEY * 2 - 2, 1 );
-                place_spawns( GROUP_TURRET_SEARCHLIGHT_ONLY, 1, SEEX * 2 - 2, SEEY * 2 - 2, SEEX * 2 - 2, SEEY * 2 - 2, 1 );
+                place_spawns( GROUP_TURRET_SEARCHLIGHT_ONLY, 1, SM_WIDTH - 2, 1, SM_WIDTH - 2, 1, 1 );
+                place_spawns( GROUP_TURRET_SEARCHLIGHT_ONLY, 1, 1, SM_HEIGHT - 2, 1, SM_HEIGHT - 2, 1 );
+                place_spawns( GROUP_TURRET_SEARCHLIGHT_ONLY, 1, SM_WIDTH - 2, SM_HEIGHT - 2, SM_WIDTH - 2, SM_HEIGHT - 2, 1 );
             }
         }
 
@@ -3932,8 +3932,8 @@ ff.......|....|WWWWWWWW|\n\
             }
         }
         // Oh wait--let's also put radiation in any rubble
-        for (int i = 0; i < SEEX * 2; i++) {
-            for (int j = 0; j < SEEY * 2; j++) {
+        for (int i = 0; i < SM_WIDTH; i++) {
+            for (int j = 0; j < SM_HEIGHT; j++) {
                 int extra_radiation = (one_in(5) ? rng(1, 2) : 0);
                 adjust_radiation(i, j, extra_radiation);
                 if (furn(i, j) == f_rubble) {
@@ -3946,8 +3946,8 @@ ff.......|....|WWWWWWWW|\n\
     } else if (terrain_type == "silo") {
 
         if (zlevel == 0) { // We're on ground level
-            for (int i = 0; i < SEEX * 2; i++) {
-                for (int j = 0; j < SEEY * 2; j++) {
+            for (int i = 0; i < SM_WIDTH; i++) {
+                for (int j = 0; j < SM_HEIGHT; j++) {
                     if (trig_dist(i, j, SEEX, SEEY) <= 6) {
                         ter_set(i, j, t_metal_floor);
                     } else {
@@ -3964,17 +3964,17 @@ ff.......|....|WWWWWWWW|\n\
             case 2:
                 lw = 3;
                 mw = 5;
-                tw = SEEY * 2 - 4;
+                tw = SM_HEIGHT - 4;
                 break;
             case 3:
-                lw = SEEX * 2 - 7;
+                lw = SM_WIDTH - 7;
                 mw = lw;
                 tw = 3;
                 break;
             case 4:
-                lw = SEEX * 2 - 7;
+                lw = SM_WIDTH - 7;
                 mw = lw;
-                tw = SEEY * 2 - 4;
+                tw = SM_HEIGHT - 4;
                 break;
             }
             for (int i = lw; i <= lw + 2; i++) {
@@ -3988,8 +3988,8 @@ ff.......|....|WWWWWWWW|\n\
             ter_set(mw    , tw + 2, t_card_military);
 
         } else { // We are NOT above ground.
-            for (int i = 0; i < SEEX * 2; i++) {
-                for (int j = 0; j < SEEY * 2; j++) {
+            for (int i = 0; i < SM_WIDTH; i++) {
+                for (int j = 0; j < SM_HEIGHT; j++) {
                     if (trig_dist(i, j, SEEX, SEEY) > 7) {
                         ter_set(i, j, t_rock);
                     } else if (trig_dist(i, j, SEEX, SEEY) > 5) {
@@ -4010,12 +4010,12 @@ ff.......|....|WWWWWWWW|\n\
 
     } else if (terrain_type == "silo_finale") {
 
-        for (int i = 0; i < SEEX * 2; i++) {
-            for (int j = 0; j < SEEY * 2; j++) {
+        for (int i = 0; i < SM_WIDTH; i++) {
+            for (int j = 0; j < SM_HEIGHT; j++) {
                 if (i == 5) {
                     if (j > 4 && j < SEEY) {
                         ter_set(i, j, t_reinforced_glass);
-                    } else if (j == SEEY * 2 - 4) {
+                    } else if (j == SM_HEIGHT - 4) {
                         ter_set(i, j, t_door_metal_c);
                     } else {
                         ter_set(i, j, t_rock);
@@ -4043,15 +4043,15 @@ ff.......|....|WWWWWWWW|\n\
             ter_set(SEEX + 1, SEEY + 1, t_pedestal_temple);
         } else { // Underground!  Shit's about to get interesting!
             // Start with all rock floor
-            square(this, t_rock_floor, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1);
+            square(this, t_rock_floor, 0, 0, SM_WIDTH - 1, SM_HEIGHT - 1);
             // We always start at the south and go north.
             // We use (y / 2 + z) % 4 to guarantee that rooms don't repeat.
             switch (1 + abs(abs_sub.y / 2 + zlevel + 4) % 4) {// TODO: More varieties!
 
             case 1: // Flame bursts
-                square(this, t_rock, 0, 0, SEEX - 1, SEEY * 2 - 1);
-                square(this, t_rock, SEEX + 2, 0, SEEX * 2 - 1, SEEY * 2 - 1);
-                for (int i = 2; i < SEEY * 2 - 4; i++) {
+                square(this, t_rock, 0, 0, SEEX - 1, SM_HEIGHT - 1);
+                square(this, t_rock, SEEX + 2, 0, SM_WIDTH - 1, SM_HEIGHT - 1);
+                for (int i = 2; i < SM_HEIGHT - 4; i++) {
                     add_field({SEEX    , i, abs_sub.z}, fd_fire_vent, rng(1, 3), 0 );
                     add_field({SEEX + 1, i, abs_sub.z}, fd_fire_vent, rng(1, 3), 0 );
                 }
@@ -4061,21 +4061,21 @@ ff.......|....|WWWWWWWW|\n\
                 square(this, t_water_dp, 4, 4, 5, 5);
                 place_spawns( GROUP_SEWER, 1, 4, 4, 4, 4, 1 );
 
-                square(this, t_water_dp, SEEX * 2 - 5, 4, SEEX * 2 - 4, 6);
-                place_spawns( GROUP_SEWER, 1, SEEX * 2 - 5, 4, SEEX * 2 - 5, 4, 1 );
+                square(this, t_water_dp, SM_WIDTH - 5, 4, SM_WIDTH - 4, 6);
+                place_spawns( GROUP_SEWER, 1, SM_WIDTH - 5, 4, SM_WIDTH - 5, 4, 1 );
 
-                square(this, t_water_dp, 4, SEEY * 2 - 5, 6, SEEY * 2 - 4);
+                square(this, t_water_dp, 4, SM_HEIGHT - 5, 6, SM_HEIGHT - 4);
 
-                square(this, t_water_dp, SEEX * 2 - 5, SEEY * 2 - 5, SEEX * 2 - 4,
-                       SEEY * 2 - 4);
+                square(this, t_water_dp, SM_WIDTH - 5, SM_HEIGHT - 5, SM_WIDTH - 4,
+                       SM_HEIGHT - 4);
 
-                square(this, t_rock, 0, SEEY * 2 - 2, SEEX - 1, SEEY * 2 - 1);
-                square(this, t_rock, SEEX + 2, SEEY * 2 - 2, SEEX * 2 - 1, SEEY * 2 - 1);
+                square(this, t_rock, 0, SM_HEIGHT - 2, SEEX - 1, SM_HEIGHT - 1);
+                square(this, t_rock, SEEX + 2, SM_HEIGHT - 2, SM_WIDTH - 1, SM_HEIGHT - 1);
                 line(this, t_grate, SEEX, 1, SEEX + 1, 1); // To drain the water
-                mtrap_set( this, SEEX, SEEY * 2 - 2, tr_temple_flood);
-                mtrap_set( this, SEEX + 1, SEEY * 2 - 2, tr_temple_flood);
-                for (int y = 2; y < SEEY * 2 - 2; y++) {
-                    for (int x = 2; x < SEEX * 2 - 2; x++) {
+                mtrap_set( this, SEEX, SM_HEIGHT - 2, tr_temple_flood);
+                mtrap_set( this, SEEX + 1, SM_HEIGHT - 2, tr_temple_flood);
+                for (int y = 2; y < SM_HEIGHT - 2; y++) {
+                    for (int x = 2; x < SM_WIDTH - 2; x++) {
                         if (ter(x, y) == t_rock_floor && one_in(4)) {
                             mtrap_set( this, x, y, tr_temple_flood);
                         }
@@ -4085,7 +4085,7 @@ ff.......|....|WWWWWWWW|\n\
 
             case 3: { // Flipping walls puzzle
                 line(this, t_rock, 0, 0, SEEX - 1, 0);
-                line(this, t_rock, SEEX + 2, 0, SEEX * 2 - 1, 0);
+                line(this, t_rock, SEEX + 2, 0, SM_WIDTH - 1, 0);
                 line(this, t_rock, SEEX - 1, 1, SEEX - 1, 6);
                 line(this, t_bars, SEEX + 2, 1, SEEX + 2, 6);
                 ter_set(14, 1, t_switch_rg);
@@ -4171,17 +4171,17 @@ ff.......|....|WWWWWWWW|\n\
 
             case 4: { // Toggling walls maze
                 square(this, t_rock,        0,            0, SEEX     - 1,            1);
-                square(this, t_rock,        0, SEEY * 2 - 2, SEEX     - 1, SEEY * 2 - 1);
-                square(this, t_rock,        0,            2, SEEX     - 4, SEEY * 2 - 3);
-                square(this, t_rock, SEEX + 2,            0, SEEX * 2 - 1,            1);
-                square(this, t_rock, SEEX + 2, SEEY * 2 - 2, SEEX * 2 - 1, SEEY * 2 - 1);
-                square(this, t_rock, SEEX + 5,            2, SEEX * 2 - 1, SEEY * 2 - 3);
+                square(this, t_rock,        0, SM_HEIGHT - 2, SEEX     - 1, SM_HEIGHT - 1);
+                square(this, t_rock,        0,            2, SEEX     - 4, SM_HEIGHT - 3);
+                square(this, t_rock, SEEX + 2,            0, SM_WIDTH - 1,            1);
+                square(this, t_rock, SEEX + 2, SM_HEIGHT - 2, SM_WIDTH - 1, SM_HEIGHT - 1);
+                square(this, t_rock, SEEX + 5,            2, SM_WIDTH - 1, SM_HEIGHT - 3);
                 int x = rng(SEEX - 1, SEEX + 2), y = 2;
                 std::vector<point> path; // Path, from end to start
-                while (x < SEEX - 1 || x > SEEX + 2 || y < SEEY * 2 - 2) {
+                while (x < SEEX - 1 || x > SEEX + 2 || y < SM_HEIGHT - 2) {
                     path.push_back( point(x, y) );
                     ter_set(x, y, ter_id( rng(t_floor_red, t_floor_blue) ));
-                    if (y == SEEY * 2 - 2) {
+                    if (y == SM_HEIGHT - 2) {
                         if (x < SEEX - 1) {
                             x++;
                         } else if (x > SEEX + 2) {
@@ -4227,7 +4227,7 @@ ff.......|....|WWWWWWWW|\n\
                 }
                 // Finally, fill in the rest with random tiles, and place toggle traps
                 for (int i = SEEX - 3; i <= SEEX + 4; i++) {
-                    for (int j = 2; j <= SEEY * 2 - 2; j++) {
+                    for (int j = 2; j <= SM_HEIGHT - 2; j++) {
                         mtrap_set( this, i, j, tr_temple_toggle);
                         if (ter(i, j) == t_rock_floor) {
                             ter_set(i, j, ter_id( rng(t_rock_red, t_floor_blue) ));
@@ -4243,7 +4243,7 @@ ff.......|....|WWWWWWWW|\n\
             }
             // Stairs at the south if t_above has stairs down.
             if (t_above == "temple_stairs") {
-                line(this, t_stairs_up, SEEX, SEEY * 2 - 1, SEEX + 1, SEEY * 2 - 1);
+                line(this, t_stairs_up, SEEX, SM_HEIGHT - 1, SEEX + 1, SM_HEIGHT - 1);
             }
 
         } // Done with underground-only stuff
@@ -4253,8 +4253,8 @@ ff.......|....|WWWWWWWW|\n\
 
         fill_background(this, t_rock);
         square(this, t_rock_floor, SEEX - 1, 1, SEEX + 2, 4);
-        square(this, t_rock_floor, SEEX, 5, SEEX + 1, SEEY * 2 - 1);
-        line(this, t_stairs_up, SEEX, SEEY * 2 - 1, SEEX + 1, SEEY * 2 - 1);
+        square(this, t_rock_floor, SEEX, 5, SEEX + 1, SM_HEIGHT - 1);
+        line(this, t_stairs_up, SEEX, SM_HEIGHT - 1, SEEX + 1, SM_HEIGHT - 1);
         spawn_artifact( tripoint( rng(SEEX, SEEX + 1), rng(2, 3), abs_sub.z ) );
         spawn_artifact( tripoint( rng(SEEX, SEEX + 1), rng(2, 3), abs_sub.z ) );
         return;
@@ -4534,7 +4534,7 @@ ff.......|....|WWWWWWWW|\n\
         int tries = 0;
         bool build_shaft = true;
         do {
-            int x1 = rng(1, SEEX * 2 - 10), y1 = rng(1, SEEY * 2 - 10);
+            int x1 = rng(1, SM_WIDTH - 10), y1 = rng(1, SM_HEIGHT - 10);
             int x2 = x1 + rng(4, 9),        y2 = y1 + rng(4, 9);
             if (build_shaft) {
                 build_mine_room(this, room_mine_shaft, x1, y1, x2, y2, dat);
@@ -4555,10 +4555,10 @@ ff.......|....|WWWWWWWW|\n\
                 }
             }
         } while (tries < 5);
-        int ladderx = rng(0, SEEX * 2 - 1), laddery = rng(0, SEEY * 2 - 1);
+        int ladderx = rng(0, SM_WIDTH - 1), laddery = rng(0, SM_HEIGHT - 1);
         while( !dat.is_groundcover( ter(ladderx, laddery) ) ) {
-            ladderx = rng(0, SEEX * 2 - 1);
-            laddery = rng(0, SEEY * 2 - 1);
+            ladderx = rng(0, SM_WIDTH - 1);
+            laddery = rng(0, SM_HEIGHT - 1);
         }
         ter_set(ladderx, laddery, t_manhole_cover);
 
@@ -4598,11 +4598,11 @@ ff.......|....|WWWWWWWW|\n\
             w_fac = 4;
         }
 
-        for (int i = 0; i < SEEX * 2; i++) {
-            for (int j = 0; j < SEEY * 2; j++) {
-                if (i >= w_fac + rng(0, 2) && i <= SEEX * 2 - 1 - e_fac - rng(0, 2) &&
-                    j >= n_fac + rng(0, 2) && j <= SEEY * 2 - 1 - s_fac - rng(0, 2) &&
-                    i + j >= 4 && (SEEX * 2 - i) + (SEEY * 2 - j) >= 6  ) {
+        for (int i = 0; i < SM_WIDTH; i++) {
+            for (int j = 0; j < SM_HEIGHT; j++) {
+                if (i >= w_fac + rng(0, 2) && i <= SM_WIDTH - 1 - e_fac - rng(0, 2) &&
+                    j >= n_fac + rng(0, 2) && j <= SM_HEIGHT - 1 - s_fac - rng(0, 2) &&
+                    i + j >= 4 && (SM_WIDTH - i) + (SM_HEIGHT - j) >= 6  ) {
                     ter_set(i, j, t_rock_floor);
                 } else {
                     ter_set(i, j, t_rock);
@@ -4642,7 +4642,7 @@ ff.......|....|WWWWWWWW|\n\
 
             case 2: { // Lava
                 int x1 = rng(6, SEEX),                y1 = rng(6, SEEY),
-                    x2 = rng(SEEX + 1, SEEX * 2 - 7), y2 = rng(SEEY + 1, SEEY * 2 - 7);
+                    x2 = rng(SEEX + 1, SM_WIDTH - 7), y2 = rng(SEEY + 1, SM_HEIGHT - 7);
                 int num = rng(2, 4);
                 for (int i = 0; i < num; i++) {
                     int lx1 = x1 + rng(-1, 1), lx2 = x2 + rng(-1, 1),
@@ -4700,16 +4700,16 @@ ff.......|....|WWWWWWWW|\n\
                         point p;
                         switch( random_entry( sides ) ) {
                         case NORTH:
-                            p = point(rng(1, SEEX * 2 - 2), rng(1, 5)           );
+                            p = point(rng(1, SM_WIDTH - 2), rng(1, 5)           );
                             break;
                         case EAST:
-                            p = point(SEEX * 2 - rng(2, 6), rng(1, SEEY * 2 - 2));
+                            p = point(SM_WIDTH - rng(2, 6), rng(1, SM_HEIGHT - 2));
                             break;
                         case SOUTH:
-                            p = point(rng(1, SEEX * 2 - 2), SEEY * 2 - rng(2, 6));
+                            p = point(rng(1, SM_WIDTH - 2), SM_HEIGHT - rng(2, 6));
                             break;
                         case WEST:
-                            p = point(rng(1, 5)           , rng(1, SEEY * 2 - 2));
+                            p = point(rng(1, 5)           , rng(1, SM_HEIGHT - 2));
                             break;
                         default:
                             break;
@@ -4783,12 +4783,12 @@ ff.......|....|WWWWWWWW|\n\
                     line(this, t_slope_down, SEEX - 2, 6, SEEX + 1, 6);
                     break;
                 case EAST:
-                    square(this, t_rock_floor, SEEX + 1, SEEY - 3, SEEX * 2 - 7, SEEY + 2);
-                    line(this, t_slope_down, SEEX * 2 - 7, SEEY - 2, SEEX * 2 - 7, SEEY + 1);
+                    square(this, t_rock_floor, SEEX + 1, SEEY - 3, SM_WIDTH - 7, SEEY + 2);
+                    line(this, t_slope_down, SM_WIDTH - 7, SEEY - 2, SM_WIDTH - 7, SEEY + 1);
                     break;
                 case SOUTH:
-                    square(this, t_rock_floor, SEEX - 3, SEEY + 1, SEEX + 2, SEEY * 2 - 7);
-                    line(this, t_slope_down, SEEX - 2, SEEY * 2 - 7, SEEX + 1, SEEY * 2 - 7);
+                    square(this, t_rock_floor, SEEX - 3, SEEY + 1, SEEX + 2, SM_HEIGHT - 7);
+                    line(this, t_slope_down, SEEX - 2, SM_HEIGHT - 7, SEEX + 1, SM_HEIGHT - 7);
                     break;
                 case WEST:
                     square(this, t_rock_floor, 6, SEEY - 3, SEEX, SEEY + 2);
@@ -4805,10 +4805,10 @@ ff.......|....|WWWWWWWW|\n\
             if (n_fac == 6 && ter(SEEX, 6) != t_slope_down) {
                 open.push_back(NORTH);
             }
-            if (e_fac == 6 && ter(SEEX * 2 - 7, SEEY) != t_slope_down) {
+            if (e_fac == 6 && ter(SM_WIDTH - 7, SEEY) != t_slope_down) {
                 open.push_back(EAST);
             }
-            if (s_fac == 6 && ter(SEEX, SEEY * 2 - 7) != t_slope_down) {
+            if (s_fac == 6 && ter(SEEX, SM_HEIGHT - 7) != t_slope_down) {
                 open.push_back(SOUTH);
             }
             if (w_fac == 6 && ter(6, SEEY) != t_slope_down) {
@@ -4845,10 +4845,10 @@ ff.......|....|WWWWWWWW|\n\
                     line(this, t_slope_up, SEEX - 2, 6, SEEX + 1, 6);
                     break;
                 case EAST:
-                    line(this, t_slope_up, SEEX * 2 - 7, SEEY - 2, SEEX * 2 - 7, SEEY + 1);
+                    line(this, t_slope_up, SM_WIDTH - 7, SEEY - 2, SM_WIDTH - 7, SEEY + 1);
                     break;
                 case SOUTH:
-                    line(this, t_slope_up, SEEX - 2, SEEY * 2 - 7, SEEX + 1, SEEY * 2 - 7);
+                    line(this, t_slope_up, SEEX - 2, SM_HEIGHT - 7, SEEX + 1, SM_HEIGHT - 7);
                     break;
                 case WEST:
                     line(this, t_slope_up, 6, SEEY - 2, 6, SEEY + 1);
@@ -4863,10 +4863,10 @@ ff.......|....|WWWWWWWW|\n\
     } else if (terrain_type == "mine_finale") {
 
         // Set up the basic chamber
-        for (int i = 0; i < SEEX * 2; i++) {
-            for (int j = 0; j < SEEY * 2; j++) {
-                if (i > rng(1, 3) && i < SEEX * 2 - rng(2, 4) &&
-                    j > rng(1, 3) && j < SEEY * 2 - rng(2, 4)   ) {
+        for (int i = 0; i < SM_WIDTH; i++) {
+            for (int j = 0; j < SM_HEIGHT; j++) {
+                if (i > rng(1, 3) && i < SM_WIDTH - rng(2, 4) &&
+                    j > rng(1, 3) && j < SM_HEIGHT - rng(2, 4)   ) {
                     ter_set(i, j, t_rock_floor);
                 } else {
                     ter_set(i, j, t_rock);
@@ -4882,13 +4882,13 @@ ff.......|....|WWWWWWWW|\n\
         }
 
         if (t_east  == "mine") {
-            square(this, t_rock_floor, SEEX * 2 - 4, SEEY, SEEX * 2 - 1, SEEY + 1);
+            square(this, t_rock_floor, SM_WIDTH - 4, SEEY, SM_WIDTH - 1, SEEY + 1);
         } else {
             face.push_back(EAST);
         }
 
         if (t_south == "mine") {
-            square(this, t_rock_floor, SEEX, SEEY * 2 - 4, SEEX + 1, SEEY * 2 - 1);
+            square(this, t_rock_floor, SEEX, SM_HEIGHT - 4, SEEX + 1, SM_HEIGHT - 1);
         } else {
             face.push_back(SOUTH);
         }
@@ -4917,7 +4917,7 @@ ff.......|....|WWWWWWWW|\n\
         case 2: { // The Thing dog
             int num_bodies = rng(4, 8);
             for (int i = 0; i < num_bodies; i++) {
-                int x = rng(4, SEEX * 2 - 5), y = rng(4, SEEY * 2 - 5);
+                int x = rng(4, SM_WIDTH - 5), y = rng(4, SM_HEIGHT - 5);
                 add_item( x, y, item::make_corpse() );
                 place_items("mine_equipment", 60, x, y, x, y, false, 0);
             }
@@ -4948,20 +4948,20 @@ ff.......|....|WWWWWWWW|\n\
             // Construct the fault on the appropriate face
             switch( random_entry( face ) ) {
             case NORTH:
-                square(this, t_rock, 0, 0, SEEX * 2 - 1, 4);
-                line(this, t_fault, 4, 4, SEEX * 2 - 5, 4);
+                square(this, t_rock, 0, 0, SM_WIDTH - 1, 4);
+                line(this, t_fault, 4, 4, SM_WIDTH - 5, 4);
                 break;
             case EAST:
-                square(this, t_rock, SEEX * 2 - 5, 0, SEEY * 2 - 1, SEEX * 2 - 1);
-                line(this, t_fault, SEEX * 2 - 5, 4, SEEX * 2 - 5, SEEY * 2 - 5);
+                square(this, t_rock, SM_WIDTH - 5, 0, SM_HEIGHT - 1, SM_WIDTH - 1);
+                line(this, t_fault, SM_WIDTH - 5, 4, SM_WIDTH - 5, SM_HEIGHT - 5);
                 break;
             case SOUTH:
-                square(this, t_rock, 0, SEEY * 2 - 5, SEEX * 2 - 1, SEEY * 2 - 1);
-                line(this, t_fault, 4, SEEY * 2 - 5, SEEX * 2 - 5, SEEY * 2 - 5);
+                square(this, t_rock, 0, SM_HEIGHT - 5, SM_WIDTH - 1, SM_HEIGHT - 1);
+                line(this, t_fault, 4, SM_HEIGHT - 5, SM_WIDTH - 5, SM_HEIGHT - 5);
                 break;
             case WEST:
-                square(this, t_rock, 0, 0, 4, SEEY * 2 - 1);
-                line(this, t_fault, 4, 4, 4, SEEY * 2 - 5);
+                square(this, t_rock, 0, 0, 4, SM_HEIGHT - 1);
+                line(this, t_fault, 4, 4, 4, SM_HEIGHT - 5);
                 break;
             default:
                 break;
@@ -5098,7 +5098,7 @@ ff.......|....|WWWWWWWW|\n\
 
         fill_background(this, t_dirt);
         for (int n = 0; n < 6; n++) {
-            int poolx = rng(4, SEEX * 2 - 5), pooly = rng(4, SEEY * 2 - 5);
+            int poolx = rng(4, SM_WIDTH - 5), pooly = rng(4, SM_HEIGHT - 5);
             for (int i = poolx - 3; i <= poolx + 3; i++) {
                 for (int j = pooly - 3; j <= pooly + 3; j++) {
                     if (rng(2, 5) > rl_dist(poolx, pooly, i, j)) {
@@ -5108,7 +5108,7 @@ ff.......|....|WWWWWWWW|\n\
                 }
             }
         }
-        int buildx = rng(6, SEEX * 2 - 7), buildy = rng(6, SEEY * 2 - 7);
+        int buildx = rng(6, SM_WIDTH - 7), buildy = rng(6, SM_HEIGHT - 7);
         square(this, t_floor, buildx - 3, buildy - 3, buildx + 3, buildy + 3);
         line(this, t_wall, buildx - 4, buildy - 4, buildx + 4, buildy - 4);
         line(this, t_wall, buildx - 4, buildy + 4, buildx + 4, buildy + 4);
@@ -5790,7 +5790,7 @@ $$$$-|-|=HH-|-HHHH-|####\n",
 
         fill_background(this, t_floor);
         // Construct facing north; below, we'll rotate to face road
-        line(this, t_wall_glass, 0, 0, SEEX * 2 - 1, 0);
+        line(this, t_wall_glass, 0, 0, SM_WIDTH - 1, 0);
         ter_set(SEEX, 0, t_door_glass_c);
         ter_set(SEEX + 1, 0, t_door_glass_c);
         //Vending
@@ -5841,13 +5841,13 @@ $$$$-|-|=HH-|-HHHH-|####\n",
 
     } else if (terrain_type == "megastore") {
 
-        square(this, t_floor, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1);
+        square(this, t_floor, 0, 0, SM_WIDTH - 1, SM_HEIGHT - 1);
 
         // Randomly pick contents
         switch (rng(1, 5)) {
         case 1: { // Groceries
             bool fridge = false;
-            for (int x = rng(2, 3); x < SEEX * 2 - 1; x += 3) {
+            for (int x = rng(2, 3); x < SM_WIDTH - 1; x += 3) {
                 for (int y = 2; y <= SEEY; y += SEEY - 2) {
                     if (one_in(3)) {
                         fridge = !fridge;
@@ -5877,20 +5877,20 @@ $$$$-|-|=HH-|-HHHH-|####\n",
         break;
         case 2: // Hardware
             for (int x = 2; x <= 22; x += 4) {
-                line_furn(this, f_rack, x, 4, x, SEEY * 2 - 5);
+                line_furn(this, f_rack, x, 4, x, SM_HEIGHT - 5);
                 if (one_in(3)) {
-                    place_items( "tools_carpentry", 70, x, 4, x, SEEY * 2 - 5, false, 0 );
+                    place_items( "tools_carpentry", 70, x, 4, x, SM_HEIGHT - 5, false, 0 );
                 } else if (one_in(2)) {
-                    place_items( "tools_construction", 70, x, 4, x, SEEY * 2 - 5, false, 0 );
+                    place_items( "tools_construction", 70, x, 4, x, SM_HEIGHT - 5, false, 0 );
                 } else if (one_in(3)) {
-                    place_items("hardware", 70, x, 4, x, SEEY * 2 - 5, false, 0);
+                    place_items("hardware", 70, x, 4, x, SM_HEIGHT - 5, false, 0);
                 } else {
-                    place_items("mischw",   70, x, 4, x, SEEY * 2 - 5, false, 0);
+                    place_items("mischw",   70, x, 4, x, SM_HEIGHT - 5, false, 0);
                 }
             }
             break;
         case 3: // Clothing
-            for (int x = 2; x < SEEX * 2; x += 6) {
+            for (int x = 2; x < SM_WIDTH; x += 6) {
                 for (int y = 3; y <= 9; y += 6) {
                     square_furn(this, f_rack, x, y, x + 1, y + 1);
                     if (one_in(2)) {
@@ -5904,21 +5904,21 @@ $$$$-|-|=HH-|-HHHH-|####\n",
                     }
                 }
             }
-            for (int y = 13; y <= SEEY * 2 - 2; y += 3) {
-                line_furn(this, f_rack, 2, y, SEEX * 2 - 3, y);
+            for (int y = 13; y <= SM_HEIGHT - 2; y += 3) {
+                line_furn(this, f_rack, 2, y, SM_WIDTH - 3, y);
                 if (one_in(3)) {
-                    place_items("shirts",     75, 2, y, SEEX * 2 - 3, y, false, 0);
+                    place_items("shirts",     75, 2, y, SM_WIDTH - 3, y, false, 0);
                 } else if (one_in(2)) {
-                    place_items("shoes",      75, 2, y, SEEX * 2 - 3, y, false, 0);
+                    place_items("shoes",      75, 2, y, SM_WIDTH - 3, y, false, 0);
                 } else if (one_in(2)) {
-                    place_items("bags",       75, 2, y, SEEX * 2 - 3, y, false, 0);
+                    place_items("bags",       75, 2, y, SM_WIDTH - 3, y, false, 0);
                 } else {
-                    place_items("allclothes", 75, 2, y, SEEX * 2 - 3, y, false, 0);
+                    place_items("allclothes", 75, 2, y, SM_WIDTH - 3, y, false, 0);
                 }
             }
             break;
         case 4: // Cleaning and soft drugs and novels and junk
-            for (int x = rng(2, 3); x < SEEX * 2 - 1; x += 3) {
+            for (int x = rng(2, 3); x < SM_WIDTH - 1; x += 3) {
                 for (int y = 2; y <= SEEY; y += SEEY - 2) {
                     line_furn(this, f_rack, x, y, x, y + SEEY - 4);
                     if (one_in(3)) {
@@ -5932,7 +5932,7 @@ $$$$-|-|=HH-|-HHHH-|####\n",
             }
             break;
         case 5: // Sporting goods
-            for (int x = rng(2, 3); x < SEEX * 2 - 1; x += 3) {
+            for (int x = rng(2, 3); x < SM_WIDTH - 1; x += 3) {
                 for (int y = 2; y <= SEEY; y += SEEY - 2) {
                     line_furn(this, f_rack, x, y, x, y + SEEY - 4);
                     if (one_in(2)) {
@@ -5949,7 +5949,7 @@ $$$$-|-|=HH-|-HHHH-|####\n",
 
         // Add some spawns
         for (int i = 0; i < 15; i++) {
-            int x = rng(0, SEEX * 2 - 1), y = rng(0, SEEY * 2 - 1);
+            int x = rng(0, SM_WIDTH - 1), y = rng(0, SM_HEIGHT - 1);
             if (ter(x, y) == t_floor) {
                 add_spawn(mon_zombie, 1, x, y);
             }
@@ -5958,16 +5958,16 @@ $$$$-|-|=HH-|-HHHH-|####\n",
         rotate(rng(0, 3));
         // ... then place walls as needed.
         if (t_north != "megastore_entrance" && t_north != "megastore") {
-            line(this, t_wall, 0, 0, SEEX * 2 - 1, 0);
+            line(this, t_wall, 0, 0, SM_WIDTH - 1, 0);
         }
         if (t_east != "megastore_entrance" && t_east != "megastore") {
-            line(this, t_wall, SEEX * 2 - 1, 0, SEEX * 2 - 1, SEEY * 2 - 1);
+            line(this, t_wall, SM_WIDTH - 1, 0, SM_WIDTH - 1, SM_HEIGHT - 1);
         }
         if (t_south != "megastore_entrance" && t_south != "megastore") {
-            line(this, t_wall, 0, SEEY * 2 - 1, SEEX * 2 - 1, SEEY * 2 - 1);
+            line(this, t_wall, 0, SM_HEIGHT - 1, SM_WIDTH - 1, SM_HEIGHT - 1);
         }
         if (t_west != "megastore_entrance" && t_west != "megastore") {
-            line(this, t_wall, 0, 0, 0, SEEY * 2 - 1);
+            line(this, t_wall, 0, 0, 0, SM_HEIGHT - 1);
         }
 
 
@@ -5975,21 +5975,21 @@ $$$$-|-|=HH-|-HHHH-|####\n",
         dat.fill_groundcover();
 
         // Front wall
-        line(this, t_wall,  0, 10,  SEEX * 2 - 1, 10);
+        line(this, t_wall,  0, 10,  SM_WIDTH - 1, 10);
         line(this, t_door_locked, SEEX - 1, 10, SEEX, 10);
         int winx1 = rng(2, 4);
         int winx2 = rng(4, 6);
         line(this, t_window, winx1, 10, winx2, 10);
-        line(this, t_window, SEEX * 2 - 1 - winx1, 10, SEEX * 2 - 1 - winx2, 10);
+        line(this, t_window, SM_WIDTH - 1 - winx1, 10, SM_WIDTH - 1 - winx2, 10);
         winx1 = rng(7, 10);
         winx2 = rng(10, 11);
         line(this, t_window, winx1, 10, winx2, 10);
-        line(this, t_window, SEEX * 2 - 1 - winx1, 10, SEEX * 2 - 1 - winx2, 10);
+        line(this, t_window, SM_WIDTH - 1 - winx1, 10, SM_WIDTH - 1 - winx2, 10);
         line(this, t_door_c, SEEX - 1, 10, SEEX, 10);
 
-        build_mansion_room(this, room_mansion_courtyard, 0, 0, SEEX * 2 - 1, 9, dat);
-        square(this, t_floor, 0, 11, SEEX * 2 - 1, SEEY * 2 - 1);
-        build_mansion_room(this, room_mansion_entry, 0, 11, SEEX * 2 - 1, SEEY * 2 - 1, dat);
+        build_mansion_room(this, room_mansion_courtyard, 0, 0, SM_WIDTH - 1, 9, dat);
+        square(this, t_floor, 0, 11, SM_WIDTH - 1, SM_HEIGHT - 1);
+        build_mansion_room(this, room_mansion_entry, 0, 11, SM_WIDTH - 1, SM_HEIGHT - 1, dat);
         // Rotate to face the road
         if (is_ot_type("road", t_east) || is_ot_type("bridge", t_east) ||
             ((t_east != "mansion") && (t_north == "mansion") && (t_south == "mansion"))) {
@@ -6009,66 +6009,66 @@ $$$$-|-|=HH-|-HHHH-|####\n",
         }
         // Left wall
         if( t_west == "mansion_entrance" || t_west == "mansion" ) {
-            line(this, t_wall,  0,  0,  0, SEEY * 2 - 2);
+            line(this, t_wall,  0,  0,  0, SM_HEIGHT - 2);
             line(this, t_door_c,  0, SEEY - 1, 0, SEEY);
         }
         // Bottom wall
         if( t_south == "mansion_entrance" || t_south == "mansion" ) {
-            line(this, t_wall,  0, SEEY * 2 - 1, SEEX * 2 - 1, SEEY * 2 - 1);
-            line(this, t_door_c, SEEX - 1, SEEY * 2 - 1, SEEX, SEEY * 2 - 1);
+            line(this, t_wall,  0, SM_HEIGHT - 1, SM_WIDTH - 1, SM_HEIGHT - 1);
+            line(this, t_door_c, SEEX - 1, SM_HEIGHT - 1, SEEX, SM_HEIGHT - 1);
         }
 
     } else if (terrain_type == "mansion") {
 
         // Start with floors all over
-        square(this, t_floor, 1, 0, SEEX * 2 - 1, SEEY * 2 - 2);
+        square(this, t_floor, 1, 0, SM_WIDTH - 1, SM_HEIGHT - 2);
         // We always have a left and bottom wall
-        line(this, t_wall, 0, 0, 0, SEEY * 2 - 2);
-        line(this, t_wall, 0, SEEY * 2 - 1, SEEX * 2 - 1, SEEY * 2 - 1);
+        line(this, t_wall, 0, 0, 0, SM_HEIGHT - 2);
+        line(this, t_wall, 0, SM_HEIGHT - 1, SM_WIDTH - 1, SM_HEIGHT - 1);
         // tw and rw are the boundaries of the rooms inside...
         tw = 0;
-        rw = SEEX * 2 - 1;
+        rw = SM_WIDTH - 1;
         // ...if we need outside walls, adjust tw & rw and build them
         // We build windows below.
         if (t_north != "mansion_entrance" && t_north != "mansion") {
             tw = 1;
-            line(this, t_wall, 0, 0, SEEX * 2 - 1, 0);
+            line(this, t_wall, 0, 0, SM_WIDTH - 1, 0);
         }
         if (t_east != "mansion_entrance" && t_east != "mansion") {
-            rw = SEEX * 2 - 2;
-            line(this, t_wall, SEEX * 2 - 1, 0, SEEX * 2 - 1, SEEY * 2 - 1);
+            rw = SM_WIDTH - 2;
+            line(this, t_wall, SM_WIDTH - 1, 0, SM_WIDTH - 1, SM_HEIGHT - 1);
         }
         // Now pick a random layout
         switch (rng(1, 10)) {
 
         case 1: // Just one. big. room.
-            mansion_room(this, 1, tw, rw, SEEY * 2 - 2, dat);
+            mansion_room(this, 1, tw, rw, SM_HEIGHT - 2, dat);
             if (t_west == "mansion_entrance" || t_west == "mansion") {
                 line(this, t_door_c, 0, SEEY - 1, 0, SEEY);
             }
             if (t_south == "mansion_entrance" || t_south == "mansion") {
-                line(this, t_door_c, SEEX - 1, SEEY * 2 - 1, SEEX, SEEY * 2 - 1);
+                line(this, t_door_c, SEEX - 1, SM_HEIGHT - 1, SEEX, SM_HEIGHT - 1);
             }
             break;
 
         case 2: // Wide hallway, two rooms.
         case 3:
             if (one_in(2)) { // vertical hallway
-                line(this, t_wall,  9,  tw,  9, SEEY * 2 - 2);
-                line(this, t_wall, 14,  tw, 14, SEEY * 2 - 2);
-                line(this, t_floor, SEEX - 1, SEEY * 2 - 1, SEEX, SEEY * 2 - 1);
+                line(this, t_wall,  9,  tw,  9, SM_HEIGHT - 2);
+                line(this, t_wall, 14,  tw, 14, SM_HEIGHT - 2);
+                line(this, t_floor, SEEX - 1, SM_HEIGHT - 1, SEEX, SM_HEIGHT - 1);
                 line(this, t_door_c, 0, SEEY - 1, 0, SEEY);
-                mansion_room(this, 1, tw, 8, SEEY * 2 - 2, dat);
-                mansion_room(this, 15, tw, rw, SEEY * 2 - 2, dat);
-                ter_set( 9, rng(tw + 2, SEEX * 2 - 4), t_door_c);
-                ter_set(14, rng(tw + 2, SEEX * 2 - 4), t_door_c);
+                mansion_room(this, 1, tw, 8, SM_HEIGHT - 2, dat);
+                mansion_room(this, 15, tw, rw, SM_HEIGHT - 2, dat);
+                ter_set( 9, rng(tw + 2, SM_WIDTH - 4), t_door_c);
+                ter_set(14, rng(tw + 2, SM_WIDTH - 4), t_door_c);
             } else { // horizontal hallway
                 line(this, t_wall, 1,  9, rw,  9);
                 line(this, t_wall, 1, 14, rw, 14);
-                line(this, t_door_c, SEEX - 1, SEEY * 2 - 1, SEEX, SEEY * 2 - 1);
+                line(this, t_door_c, SEEX - 1, SM_HEIGHT - 1, SEEX, SM_HEIGHT - 1);
                 line(this, t_floor, 0, SEEY - 1, 0, SEEY);
                 mansion_room(this, 1, tw, rw, 8, dat);
-                mansion_room(this, 1, 15, rw, SEEY * 2 - 2, dat);
+                mansion_room(this, 1, 15, rw, SM_HEIGHT - 2, dat);
                 ter_set(rng(3, rw - 2),  9, t_door_c);
                 ter_set(rng(3, rw - 2), 14, t_door_c);
             }
@@ -6076,7 +6076,7 @@ $$$$-|-|=HH-|-HHHH-|####\n",
                 line(this, t_door_c, 0, SEEY - 1, 0, SEEY);
             }
             if (t_south == "mansion_entrance" || t_south == "mansion") {
-                line(this, t_floor, SEEX - 1, SEEY * 2 - 1, SEEX, SEEY * 2 - 1);
+                line(this, t_floor, SEEX - 1, SM_HEIGHT - 1, SEEX, SM_HEIGHT - 1);
             }
             break;
 
@@ -6087,8 +6087,8 @@ $$$$-|-|=HH-|-HHHH-|####\n",
         case 8:
             line(this, t_wall, 10, tw, 10,  9);
             line(this, t_wall, 13, tw, 13,  9);
-            line(this, t_wall, 10, 14, 10, SEEY * 2 - 2);
-            line(this, t_wall, 13, 14, 13, SEEY * 2 - 2);
+            line(this, t_wall, 10, 14, 10, SM_HEIGHT - 2);
+            line(this, t_wall, 13, 14, 13, SM_HEIGHT - 2);
             line(this, t_wall,  1, 10, 10, 10);
             line(this, t_wall,  1, 13, 10, 13);
             line(this, t_wall, 13, 10, rw, 10);
@@ -6107,26 +6107,26 @@ $$$$-|-|=HH-|-HHHH-|####\n",
             }
 
             if (one_in(2)) {
-                ter_set(10, rng(15, SEEY * 2 - 3), t_door_c);
+                ter_set(10, rng(15, SM_HEIGHT - 3), t_door_c);
             } else {
                 ter_set(rng(2, 8), 13, t_door_c);
             }
 
             if (one_in(2)) {
-                ter_set(13, rng(15, SEEY * 2 - 3), t_door_c);
+                ter_set(13, rng(15, SM_HEIGHT - 3), t_door_c);
             } else {
                 ter_set(rng(15, rw - 1), 13, t_door_c);
             }
 
             mansion_room(this,  1, tw,  9,  9, dat);
             mansion_room(this, 14, tw, rw,  9, dat);
-            mansion_room(this,  1, 14,  9, SEEY * 2 - 2, dat);
-            mansion_room(this, 14, 14, rw, SEEY * 2 - 2, dat);
+            mansion_room(this,  1, 14,  9, SM_HEIGHT - 2, dat);
+            mansion_room(this, 14, 14, rw, SM_HEIGHT - 2, dat);
             if (t_west == "mansion_entrance" || t_west == "mansion") {
                 line(this, t_floor, 0, SEEY - 1, 0, SEEY);
             }
             if (t_south == "mansion_entrance" || t_south == "mansion") {
-                line(this, t_floor, SEEX - 1, SEEY * 2 - 1, SEEX, SEEY * 2 - 1);
+                line(this, t_floor, SEEX - 1, SM_HEIGHT - 1, SEEX, SM_HEIGHT - 1);
             }
             break;
 
@@ -6138,9 +6138,9 @@ $$$$-|-|=HH-|-HHHH-|####\n",
             y = rng(13, 18);
             line(this, t_wall,  1, mw, cw, mw);
             ter_set( rng(x + 1, cw - 1), mw, t_door_c);
-            line(this, t_wall, cw, mw + 1, cw, SEEY * 2 - 2);
-            ter_set(cw, rng(y + 2, SEEY * 2 - 3) , t_door_c);
-            mansion_room(this, 1, mw + 1, cw - 1, SEEY * 2 - 2, dat);
+            line(this, t_wall, cw, mw + 1, cw, SM_HEIGHT - 2);
+            ter_set(cw, rng(y + 2, SM_HEIGHT - 3) , t_door_c);
+            mansion_room(this, 1, mw + 1, cw - 1, SM_HEIGHT - 2, dat);
             // And a couple small rooms in the UL LR corners
             line(this, t_wall, x, tw, x, mw - 1);
             mansion_room(this, 1, tw, x - 1, mw - 1, dat);
@@ -6150,18 +6150,18 @@ $$$$-|-|=HH-|-HHHH-|####\n",
                 ter_set(x, rng(tw + 2, mw - 2), t_door_c);
             }
             line(this, t_wall, cw + 1, y, rw, y);
-            mansion_room(this, cw + 1, y + 1, rw, SEEY * 2 - 2, dat);
+            mansion_room(this, cw + 1, y + 1, rw, SM_HEIGHT - 2, dat);
             if (one_in(2)) {
                 ter_set(rng(cw + 2, rw - 1), y, t_door_c);
             } else {
-                ter_set(cw, rng(y + 2, SEEY * 2 - 3), t_door_c);
+                ter_set(cw, rng(y + 2, SM_HEIGHT - 3), t_door_c);
             }
 
             if (t_west == "mansion_entrance" || t_west == "mansion") {
                 line(this, t_floor, 0, SEEY - 1, 0, SEEY);
             }
             if (t_south == "mansion_entrance" || t_south == "mansion") {
-                line(this, t_floor, SEEX - 1, SEEY * 2 - 1, SEEX, SEEY * 2 - 1);
+                line(this, t_floor, SEEX - 1, SM_HEIGHT - 1, SEEX, SM_HEIGHT - 1);
             }
             break;
         } // switch (rng(1, 4))
@@ -6170,13 +6170,13 @@ $$$$-|-|=HH-|-HHHH-|####\n",
         if (t_west != "mansion_entrance" && t_west != "mansion") {
             int consecutive = 0;
             for (int i = 1; i < SEEY; i++) {
-                if (passable(1, i) && passable(1, SEEY * 2 - 1 - i)) {
+                if (passable(1, i) && passable(1, SM_HEIGHT - 1 - i)) {
                     if (consecutive == 3) {
                         consecutive = 0;    // No really long windows
                     } else {
                         consecutive++;
                         ter_set(0, i, t_window);
-                        ter_set(0, SEEY * 2 - 1 - i, t_window);
+                        ter_set(0, SM_HEIGHT - 1 - i, t_window);
                     }
                 } else {
                     consecutive = 0;
@@ -6186,14 +6186,14 @@ $$$$-|-|=HH-|-HHHH-|####\n",
         if (t_south != "mansion_entrance" && t_south != "mansion") {
             int consecutive = 0;
             for (int i = 1; i < SEEX; i++) {
-                if (passable(i, SEEY * 2 - 2) &&
-                    passable(SEEX * 2 - 1 - i, SEEY * 2 - 2)) {
+                if (passable(i, SM_HEIGHT - 2) &&
+                    passable(SM_WIDTH - 1 - i, SM_HEIGHT - 2)) {
                     if (consecutive == 3) {
                         consecutive = 0;    // No really long windows
                     } else {
                         consecutive++;
-                        ter_set(i, SEEY * 2 - 1, t_window);
-                        ter_set(SEEX * 2 - 1 - i, SEEY * 2 - 1, t_window);
+                        ter_set(i, SM_HEIGHT - 1, t_window);
+                        ter_set(SM_WIDTH - 1 - i, SM_HEIGHT - 1, t_window);
                     }
                 } else {
                     consecutive = 0;
@@ -6203,14 +6203,14 @@ $$$$-|-|=HH-|-HHHH-|####\n",
         if (t_east != "mansion_entrance" && t_east != "mansion") {
             int consecutive = 0;
             for (int i = 1; i < SEEY; i++) {
-                if (passable(SEEX * 2 - 2, i) &&
-                    passable(SEEX * 2 - 2, SEEY * 2 - 1 - i)) {
+                if (passable(SM_WIDTH - 2, i) &&
+                    passable(SM_WIDTH - 2, SM_HEIGHT - 1 - i)) {
                     if (consecutive == 3) {
                         consecutive = 0;    // No really long windows
                     } else {
                         consecutive++;
-                        ter_set(SEEX * 2 - 1, i, t_window);
-                        ter_set(SEEX * 2 - 1, SEEY * 2 - 1 - i, t_window);
+                        ter_set(SM_WIDTH - 1, i, t_window);
+                        ter_set(SM_WIDTH - 1, SM_HEIGHT - 1 - i, t_window);
                     }
                 } else {
                     consecutive = 0;
@@ -6221,13 +6221,13 @@ $$$$-|-|=HH-|-HHHH-|####\n",
         if (t_north != "mansion_entrance" && t_north != "mansion") {
             int consecutive = 0;
             for (int i = 1; i < SEEX; i++) {
-                if (passable(i, 1) && passable(SEEX * 2 - 1 - i, 1)) {
+                if (passable(i, 1) && passable(SM_WIDTH - 1 - i, 1)) {
                     if (consecutive == 3) {
                         consecutive = 0;    // No really long windows
                     } else {
                         consecutive++;
                         ter_set(i, 0, t_window);
-                        ter_set(SEEX * 2 - 1 - i, 0, t_window);
+                        ter_set(SM_WIDTH - 1 - i, 0, t_window);
                     }
                 } else {
                     consecutive = 0;
@@ -6456,9 +6456,9 @@ $$$$-|-|=HH-|-HHHH-|####\n",
 
     } else if (terrain_type == "spider_pit_under") {
 
-        for (int i = 0; i < SEEX * 2; i++) {
-            for (int j = 0; j < SEEY * 2; j++) {
-                if ((i >= 3 && i <= SEEX * 2 - 4 && j >= 3 && j <= SEEY * 2 - 4) ||
+        for (int i = 0; i < SM_WIDTH; i++) {
+            for (int j = 0; j < SM_HEIGHT; j++) {
+                if ((i >= 3 && i <= SM_WIDTH - 4 && j >= 3 && j <= SM_HEIGHT - 4) ||
                     one_in(4)) {
                     ter_set(i, j, t_rock_floor);
                     if (!one_in(3)) {
@@ -6469,14 +6469,14 @@ $$$$-|-|=HH-|-HHHH-|####\n",
                 }
             }
         }
-        ter_set(rng(3, SEEX * 2 - 4), rng(3, SEEY * 2 - 4), t_slope_up);
-        place_items("spider", 85, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, false, 0);
+        ter_set(rng(3, SM_WIDTH - 4), rng(3, SM_HEIGHT - 4), t_slope_up);
+        place_items("spider", 85, 0, 0, SM_WIDTH - 1, SM_HEIGHT - 1, false, 0);
 
     } else if (terrain_type == "anthill") {
 
-        for (int i = 0; i < SEEX * 2; i++) {
-            for (int j = 0; j < SEEY * 2; j++) {
-                if (i < 8 || j < 8 || i > SEEX * 2 - 9 || j > SEEY * 2 - 9) {
+        for (int i = 0; i < SM_WIDTH; i++) {
+            for (int j = 0; j < SM_HEIGHT; j++) {
+                if (i < 8 || j < 8 || i > SM_WIDTH - 9 || j > SM_HEIGHT - 9) {
                     ter_set(i, j, dat.groundcover());
                 } else if ((i == 11 || i == 12) && (j == 11 || j == 12)) {
                     ter_set(i, j, t_slope_down);
@@ -6492,10 +6492,10 @@ $$$$-|-|=HH-|-HHHH-|####\n",
             nesw_fac[i] = (t_nesw[i] == "slimepit" || t_nesw[i] == "slimepit_down" ? 1 : 0);
         }
 
-        for (int i = 0; i < SEEX * 2; i++) {
-            for (int j = 0; j < SEEY * 2; j++) {
+        for (int i = 0; i < SM_WIDTH; i++) {
+            for (int j = 0; j < SM_HEIGHT; j++) {
                 if (!one_in(10) && (j < n_fac * SEEX        || i < w_fac * SEEX ||
-                                    j > SEEY * 2 - s_fac * SEEY || i > SEEX * 2 - e_fac * SEEX)) {
+                                    j > SM_HEIGHT - s_fac * SEEY || i > SM_WIDTH - e_fac * SEEX)) {
                     ter_set(i, j, (!one_in(10) ? t_slime : t_rock_floor));
                 } else if (rng(0, SEEX) > abs(i - SEEX) && rng(0, SEEY) > abs(j - SEEY)) {
                     ter_set(i, j, t_slime);
@@ -6508,7 +6508,7 @@ $$$$-|-|=HH-|-HHHH-|####\n",
         }
 
         if (terrain_type == "slimepit_down") {
-            ter_set(rng(3, SEEX * 2 - 4), rng(3, SEEY * 2 - 4), t_slope_down);
+            ter_set(rng(3, SM_WIDTH - 4), rng(3, SM_HEIGHT - 4), t_slope_down);
         }
 
         if (t_above == "slimepit_down") {
@@ -6517,18 +6517,18 @@ $$$$-|-|=HH-|-HHHH-|####\n",
                 ter_set(rng(0, 2), rng(0, 2), t_slope_up);
                 break;
             case 2:
-                ter_set(rng(0, 2), SEEY * 2 - rng(1, 3), t_slope_up);
+                ter_set(rng(0, 2), SM_HEIGHT - rng(1, 3), t_slope_up);
                 break;
             case 3:
-                ter_set(SEEX * 2 - rng(1, 3), rng(0, 2), t_slope_up);
+                ter_set(SM_WIDTH - rng(1, 3), rng(0, 2), t_slope_up);
                 break;
             case 4:
-                ter_set(SEEX * 2 - rng(1, 3), SEEY * 2 - rng(1, 3), t_slope_up);
+                ter_set(SM_WIDTH - rng(1, 3), SM_HEIGHT - rng(1, 3), t_slope_up);
             }
         }
 
         place_spawns( GROUP_GOO, 1, 0, 0, SEEX, SEEY, 8 );
-        place_items("sewer", 40, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, true, 0);
+        place_items("sewer", 40, 0, 0, SM_WIDTH - 1, SM_HEIGHT - 1, true, 0);
 
     } else if (terrain_type == "triffid_roots") {
 
@@ -6702,35 +6702,35 @@ $$$$-|-|=HH-|-HHHH-|####\n",
         if (is_ot_type("sewer", t_east) &&
             !connects_to(terrain_type, 1)) {
             if (connects_to(t_east, 3)) {
-                for (int i = SEEX; i < SEEX * 2; i++) {
+                for (int i = SEEX; i < SM_WIDTH; i++) {
                     for (int j = SEEY - 2; j < SEEY + 2; j++) {
                         ter_set(i, j, t_sewage);
                     }
                 }
             } else {
-                for (int i = SEEX * 2 - 3; i < SEEX * 2; i++) {
+                for (int i = SM_WIDTH - 3; i < SM_WIDTH; i++) {
                     ter_set(i, SEEY, t_rock_floor);
                     ter_set(i, SEEY - 1, t_rock_floor);
                 }
-                ter_set(SEEX * 2 - 4, SEEY, t_door_metal_c);
-                ter_set(SEEX * 2 - 4, SEEY - 1, t_door_metal_c);
+                ter_set(SM_WIDTH - 4, SEEY, t_door_metal_c);
+                ter_set(SM_WIDTH - 4, SEEY - 1, t_door_metal_c);
             }
         }
         if (is_ot_type("sewer", t_south) &&
             !connects_to(terrain_type, 2)) {
             if (connects_to(t_south, 0)) {
                 for (int i = SEEX - 2; i < SEEX + 2; i++) {
-                    for (int j = SEEY; j < SEEY * 2; j++) {
+                    for (int j = SEEY; j < SM_HEIGHT; j++) {
                         ter_set(i, j, t_sewage);
                     }
                 }
             } else {
-                for (int j = SEEY * 2 - 3; j < SEEY * 2; j++) {
+                for (int j = SM_HEIGHT - 3; j < SM_HEIGHT; j++) {
                     ter_set(SEEX, j, t_rock_floor);
                     ter_set(SEEX - 1, j, t_rock_floor);
                 }
-                ter_set(SEEX, SEEY * 2 - 4, t_door_metal_c);
-                ter_set(SEEX - 1, SEEY * 2 - 4, t_door_metal_c);
+                ter_set(SEEX, SM_HEIGHT - 4, t_door_metal_c);
+                ter_set(SEEX - 1, SM_HEIGHT - 4, t_door_metal_c);
             }
         }
         if (is_ot_type("sewer", t_west) &&
@@ -6765,7 +6765,7 @@ $$$$-|-|=HH-|-HHHH-|####\n",
         }
         if (is_ot_type("subway", t_east) &&
             !connects_to(terrain_type, 1)) {
-            for (int i = SEEX + 3; i < SEEX * 2; i++) {
+            for (int i = SEEX + 3; i < SM_WIDTH; i++) {
                 ter_set(i, SEEY, t_rock_floor);
                 ter_set(i, SEEY - 1, t_rock_floor);
             }
@@ -6774,7 +6774,7 @@ $$$$-|-|=HH-|-HHHH-|####\n",
         }
         if (is_ot_type("subway", t_south) &&
             !connects_to(terrain_type, 2)) {
-            for (int j = SEEY + 3; j < SEEY * 2; j++) {
+            for (int j = SEEY + 3; j < SM_HEIGHT; j++) {
                 ter_set(SEEX, j, t_rock_floor);
                 ter_set(SEEX - 1, j, t_rock_floor);
             }
@@ -6811,8 +6811,8 @@ $$$$-|-|=HH-|-HHHH-|####\n",
                 rotate( 4 - ( dir - 4 ) );
                 // draw a small triangle of sidewalk in the northeast corner
                 for( int y = 0; y < 4; y++ ) {
-                    for( int x = SEEX * 2 - 4; x < SEEX * 2; x++ ) {
-                        if( x - y > SEEX * 2 - 4 ) {
+                    for( int x = SM_WIDTH - 4; x < SM_WIDTH; x++ ) {
+                        if( x - y > SM_WIDTH - 4 ) {
                             //TODO more discriminating conditions
                             if( ter( x, y ) == t_grass ||
                                 ter( x, y ) == t_dirt ||
@@ -7274,27 +7274,27 @@ void map::rotate(int turns)
         switch( turns ) {
             case 3:
                 new_x = old_y;
-                new_y = SEEX * 2 - 1 - old_x;
+                new_y = SM_WIDTH - 1 - old_x;
                 break;
             case 2:
-                new_x = SEEX * 2 - 1 - old_x;
-                new_y = SEEY * 2 - 1 - old_y;
+                new_x = SM_WIDTH - 1 - old_x;
+                new_y = SM_HEIGHT - 1 - old_y;
                 break;
             case 1:
-                new_x = SEEY * 2 - 1 - old_y;
+                new_x = SM_HEIGHT - 1 - old_y;
                 new_y = old_x;
                 break;
         }
         np.spawn_at_precise( { abs_sub.x, abs_sub.y }, { new_x, new_y, abs_sub.z } );
         overmap_buffer.insert_npc( npc_ptr );
     }
-    ter_id rotated [SEEX * 2][SEEY * 2];
-    furn_id furnrot [SEEX * 2][SEEY * 2];
-    trap_id traprot [SEEX * 2][SEEY * 2];
-    std::vector<item> itrot[SEEX * 2][SEEY * 2];
-    std::map<std::string, std::string> cosmetics_rot[SEEX * 2][SEEY * 2];
-    field fldrot [SEEX * 2][SEEY * 2];
-    int radrot [SEEX * 2][SEEY * 2];
+    ter_id rotated [SM_WIDTH][SM_HEIGHT];
+    furn_id furnrot [SM_WIDTH][SM_HEIGHT];
+    trap_id traprot [SM_WIDTH][SM_HEIGHT];
+    std::vector<item> itrot[SM_WIDTH][SM_HEIGHT];
+    std::map<std::string, std::string> cosmetics_rot[SM_WIDTH][SM_HEIGHT];
+    field fldrot [SM_WIDTH][SM_HEIGHT];
+    int radrot [SM_WIDTH][SM_HEIGHT];
 
     std::vector<spawn_point> sprot[MAPSIZE * MAPSIZE];
     std::vector<vehicle*> vehrot[MAPSIZE * MAPSIZE];
@@ -7303,21 +7303,21 @@ void map::rotate(int turns)
     int temperature[MAPSIZE * MAPSIZE];
 
     //Rotate terrain first
-    for (int old_x = 0; old_x < SEEX * 2; old_x++) {
-        for (int old_y = 0; old_y < SEEY * 2; old_y++) {
+    for (int old_x = 0; old_x < SM_WIDTH; old_x++) {
+        for (int old_y = 0; old_y < SM_HEIGHT; old_y++) {
             int new_x = old_x;
             int new_y = old_y;
             switch(turns) {
             case 1:
                 new_x = old_y;
-                new_y = SEEX * 2 - 1 - old_x;
+                new_y = SM_WIDTH - 1 - old_x;
                 break;
             case 2:
-                new_x = SEEX * 2 - 1 - old_x;
-                new_y = SEEY * 2 - 1 - old_y;
+                new_x = SM_WIDTH - 1 - old_x;
+                new_y = SM_HEIGHT - 1 - old_y;
                 break;
             case 3:
-                new_x = SEEY * 2 - 1 - old_y;
+                new_x = SM_HEIGHT - 1 - old_y;
                 new_y = old_x;
                 break;
             }
@@ -7448,8 +7448,8 @@ void map::rotate(int turns)
         }
     }
 
-    for (int i = 0; i < SEEX * 2; i++) {
-        for (int j = 0; j < SEEY * 2; j++) {
+    for (int i = 0; i < SM_WIDTH; i++) {
+        for (int j = 0; j < SM_HEIGHT; j++) {
             int lx, ly;
             const auto sm = get_submap_at( i, j, lx, ly );
             sm->is_uniform = false;
@@ -7934,8 +7934,8 @@ void set_science_room(map *m, int x1, int y1, bool faces_right, int turn)
     }
 
     if (!faces_right) { // Flip it.
-        ter_id rotated[SEEX * 2][SEEY * 2];
-        std::vector<item> itrot[SEEX * 2][SEEY * 2];
+        ter_id rotated[SM_WIDTH][SM_HEIGHT];
+        std::vector<item> itrot[SM_WIDTH][SM_HEIGHT];
         for (int i = x1; i <= x2; i++) {
             for (int j = y1; j <= y2; j++) {
                 rotated[i][j] = m->ter(i, j);
@@ -7962,26 +7962,26 @@ void silo_rooms(map *m)
     do {
         int x, y, height, width;
         if (one_in(2)) { // True = top/bottom, False = left/right
-            x = rng(0, SEEX * 2 - 6);
+            x = rng(0, SM_WIDTH - 6);
             y = rng(0, 4);
             if (one_in(2)) {
-                y = SEEY * 2 - 2 - y;    // Bottom of the screen, not the top
+                y = SM_HEIGHT - 2 - y;    // Bottom of the screen, not the top
             }
             width  = rng(2, 5);
             height = 2;
-            if (x + width >= SEEX * 2 - 1) {
-                width = SEEX * 2 - 2 - x;    // Make sure our room isn't too wide
+            if (x + width >= SM_WIDTH - 1) {
+                width = SM_WIDTH - 2 - x;    // Make sure our room isn't too wide
             }
         } else {
             x = rng(0, 4);
-            y = rng(0, SEEY * 2 - 6);
+            y = rng(0, SM_HEIGHT - 6);
             if (one_in(2)) {
-                x = SEEX * 2 - 3 - x;    // Right side of the screen, not the left
+                x = SM_WIDTH - 3 - x;    // Right side of the screen, not the left
             }
             width  = 2;
             height = rng(2, 5);
-            if (y + height >= SEEY * 2 - 1) {
-                height = SEEY * 2 - 2 - y;    // Make sure our room isn't too tall
+            if (y + height >= SM_HEIGHT - 1) {
+                height = SM_HEIGHT - 2 - y;    // Make sure our room isn't too tall
             }
         }
         if (!rooms.empty() && // We need at least one room!
@@ -8311,7 +8311,7 @@ void build_mansion_room(map *m, room_type type, int x1, int y1, int x2, int y2, 
     x: %d - %d, dx: %d cx: %d/%d", x1, x2, dx, cx_low, cx_hi,
                                    y1, y2, dy, cy_low, cy_hi);
     */
-    bool walled_south = (y2 >= SEEY * 2 - 2);
+    bool walled_south = (y2 >= SM_HEIGHT - 2);
 
     switch (type) {
 
@@ -8762,9 +8762,9 @@ void mx_null(map &, const tripoint &)
 
 void mx_helicopter(map &m, const tripoint &abs_sub)
 {
-    int cx = rng(4, SEEX * 2 - 5), cy = rng(4, SEEY * 2 - 5);
-    for (int x = 0; x < SEEX * 2; x++) {
-        for (int y = 0; y < SEEY * 2; y++) {
+    int cx = rng(4, SM_WIDTH - 5), cy = rng(4, SM_HEIGHT - 5);
+    for (int x = 0; x < SM_WIDTH; x++) {
+        for (int y = 0; y < SM_HEIGHT; y++) {
             if (x >= cx - 4 && x <= cx + 4 && y >= cy - 4 && y <= cy + 4) {
                 if (!one_in(5)) {
                     m.make_rubble( tripoint( x,  y, abs_sub.z ), f_wreckage, true);
@@ -8779,7 +8779,7 @@ void mx_helicopter(map &m, const tripoint &abs_sub)
 
     m.spawn_item(rng(5, 18), rng(5, 18), "black_box");
     m.place_items("helicopter", 90, cx - 4, cy - 4, cx + 4, cy + 4, true, 0);
-    m.place_items("helicopter", 20, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, true, 0);
+    m.place_items("helicopter", 20, 0, 0, SM_WIDTH - 1, SM_HEIGHT - 1, true, 0);
     items_location extra_items = "helicopter";
     switch (rng(1, 4)) {
     case 1:
@@ -8795,7 +8795,7 @@ void mx_helicopter(map &m, const tripoint &abs_sub)
         extra_items = "bionics";
         break;
     }
-    m.place_spawns( GROUP_MAYBE_MIL, 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, 0.1f);//0.1 = 1-5
+    m.place_spawns( GROUP_MAYBE_MIL, 2, 0, 0, SM_WIDTH - 1, SM_HEIGHT - 1, 0.1f);//0.1 = 1-5
     m.place_items(extra_items, 70, cx - 4, cy - 4, cx + 4, cy + 4, true, 0, 100, 20);
 }
 
@@ -8820,12 +8820,12 @@ void mx_military(map &m, const tripoint &)
     }
     int num_monsters = rng(0, 3);
     for (int i = 0; i < num_monsters; i++) {
-        int mx = rng(1, SEEX * 2 - 2), my = rng(1, SEEY * 2 - 2);
+        int mx = rng(1, SM_WIDTH - 2), my = rng(1, SM_HEIGHT - 2);
         m.place_spawns( GROUP_NETHER_PORTAL_EASY, 1, mx, my, mx, my, 1 );
     }
-    m.place_spawns( GROUP_MAYBE_MIL, 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1,
+    m.place_spawns( GROUP_MAYBE_MIL, 2, 0, 0, SM_WIDTH - 1, SM_HEIGHT - 1,
                  0.1f);//0.1 = 1-5
-    m.place_items("rare", 25, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, true, 0);
+    m.place_items("rare", 25, 0, 0, SM_WIDTH - 1, SM_HEIGHT - 1, true, 0);
 }
 
 void mx_science(map &m, const tripoint &)
@@ -8842,10 +8842,10 @@ void mx_science(map &m, const tripoint &)
     }
     int num_monsters = rng(0, 3);
     for (int i = 0; i < num_monsters; i++) {
-        int mx = rng(1, SEEX * 2 - 2), my = rng(1, SEEY * 2 - 2);
+        int mx = rng(1, SM_WIDTH - 2), my = rng(1, SM_HEIGHT - 2);
         m.place_spawns( GROUP_NETHER_PORTAL_EASY, 1, mx, my, mx, my, 1 );
     }
-    m.place_items("rare", 45, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, true, 0);
+    m.place_items("rare", 45, 0, 0, SM_WIDTH - 1, SM_HEIGHT - 1, true, 0);
 }
 
 void mx_collegekids(map &m, const tripoint &)
@@ -8873,7 +8873,7 @@ void mx_collegekids(map &m, const tripoint &)
     }
     int num_monsters = rng(0, 3);
     for (int i = 0; i < num_monsters; i++) {
-        int mx = rng(1, SEEX * 2 - 2), my = rng(1, SEEY * 2 - 2);
+        int mx = rng(1, SM_WIDTH - 2), my = rng(1, SM_HEIGHT - 2);
         m.place_spawns( GROUP_NETHER_PORTAL_EASY, 1, mx, my, mx, my, 1 );
     }
 }
@@ -8895,19 +8895,19 @@ void mx_roadblock(map &m, const tripoint &abs_sub)
         mil = true;
     }
     if (mil) { //Military doesn't joke around with their barricades!
-        line(&m, t_fence_barbed, SEEX * 2 - 1, 4, SEEX * 2 - 1, 10);
-        line(&m, t_fence_barbed, SEEX * 2 - 3, 13, SEEX * 2 - 3, 19);
+        line(&m, t_fence_barbed, SM_WIDTH - 1, 4, SM_WIDTH - 1, 10);
+        line(&m, t_fence_barbed, SM_WIDTH - 3, 13, SM_WIDTH - 3, 19);
         line(&m, t_fence_barbed, 3, 4, 3, 10);
         line(&m, t_fence_barbed, 1, 13, 1, 19);
         if (one_in(3)) {  // Chicken delivery
-            m.add_vehicle( vgroup_id( "military_vehicles" ), {12, SEEY * 2 - 5}, 0);
+            m.add_vehicle( vgroup_id( "military_vehicles" ), {12, SM_HEIGHT - 5}, 0);
             m.place_spawns( GROUP_ROBOT_CHICKENBOT_ONLY, 1, 0, 0, SEEX, SEEY, 1 );
         } else if (one_in(2)) {  // TAAANK
             // The truck's wrecked...with fuel.  Explosive barrel?
-            m.add_vehicle( vproto_id( "military_cargo_truck" ), 12, SEEY * 2 - 5, 0, 70, -1);
+            m.add_vehicle( vproto_id( "military_cargo_truck" ), 12, SM_HEIGHT - 5, 0, 70, -1);
             m.place_spawns( GROUP_ROBOT_TANKBOT_ONLY, 1, 0, 0, SEEX, SEEY, 1 );
         } else {  // Vehicle & turrets
-            m.add_vehicle( vgroup_id( "military_vehicles" ), {12, SEEY * 2 - 5}, 0);
+            m.add_vehicle( vgroup_id( "military_vehicles" ), {12, SM_HEIGHT - 5}, 0);
             m.place_spawns( GROUP_TURRET_BMG_ONLY, 1, SEEX, SEEY, SEEX, SEEY, 1 );
             m.place_spawns( GROUP_TURRET_RIFLE_ONLY, 1, SEEX - 3, SEEY - 3, SEEX, SEEY, 1 );
         }
@@ -8924,14 +8924,14 @@ void mx_roadblock(map &m, const tripoint &abs_sub)
             }
         }
     } else { // Police roadblock
-        line_furn(&m, f_barricade_road, SEEX * 2 - 1, 4, SEEX * 2 - 1, 10);
-        line_furn(&m, f_barricade_road, SEEX * 2 - 3, 13, SEEX * 2 - 3, 19);
+        line_furn(&m, f_barricade_road, SM_WIDTH - 1, 4, SM_WIDTH - 1, 10);
+        line_furn(&m, f_barricade_road, SM_WIDTH - 3, 13, SM_WIDTH - 3, 19);
         line_furn(&m, f_barricade_road, 3, 4, 3, 10);
         line_furn(&m, f_barricade_road, 1, 13, 1, 19);
         m.add_vehicle( vproto_id( "policecar" ), 8, 5, 20);
-        m.add_vehicle( vproto_id( "policecar" ), 16, SEEY * 2 - 5, 145);
+        m.add_vehicle( vproto_id( "policecar" ), 16, SM_HEIGHT - 5, 145);
         m.place_spawns( GROUP_TURRET_ONLY, 1, 1, SEEY, 1, SEEY, 1 );
-        m.place_spawns( GROUP_TURRET_ONLY, 1, SEEX * 2 - 1, SEEY, SEEX * 2 - 1, SEEY, 1 );
+        m.place_spawns( GROUP_TURRET_ONLY, 1, SM_WIDTH - 1, SEEY, SM_WIDTH - 1, SEEY, 1 );
 
         int num_bodies = dice(1, 6);
         for (int i = 0; i < num_bodies; i++) {
@@ -8988,13 +8988,13 @@ void mx_drugdeal(map &m, const tripoint &abs_sub)
         int x, y, x_offset, y_offset, tries = 0;
         do { // Loop until we find a valid spot to dump a body, or we give up
             if (north_south) {
-                x = rng(0, SEEX * 2 - 1);
+                x = rng(0, SM_WIDTH - 1);
                 y = rng(0, SEEY - 4);
                 x_offset = 0;
                 y_offset = -1;
             } else {
                 x = rng(0, SEEX - 4);
-                y = rng(0, SEEY * 2 - 1);
+                y = rng(0, SM_HEIGHT - 1);
                 x_offset = -1;
                 y_offset = 0;
             }
@@ -9026,13 +9026,13 @@ void mx_drugdeal(map &m, const tripoint &abs_sub)
         int x, y, x_offset, y_offset, tries = 0;
         do { // Loop until we find a valid spot to dump a body, or we give up
             if (north_south) {
-                x = rng(0, SEEX * 2 - 1);
-                y = rng(SEEY + 3, SEEY * 2 - 1);
+                x = rng(0, SM_WIDTH - 1);
+                y = rng(SEEY + 3, SM_HEIGHT - 1);
                 x_offset = 0;
                 y_offset = 1;
             } else {
-                x = rng(SEEX + 3, SEEX * 2 - 1);
-                y = rng(0, SEEY * 2 - 1);
+                x = rng(SEEX + 3, SM_WIDTH - 1);
+                y = rng(0, SM_HEIGHT - 1);
                 x_offset = 1;
                 y_offset = 0;
             }
@@ -9062,7 +9062,7 @@ void mx_drugdeal(map &m, const tripoint &abs_sub)
     }
     int num_monsters = rng(0, 3);
     for (int i = 0; i < num_monsters; i++) {
-        int mx = rng(1, SEEX * 2 - 2), my = rng(1, SEEY * 2 - 2);
+        int mx = rng(1, SM_WIDTH - 2), my = rng(1, SM_HEIGHT - 2);
         m.place_spawns( GROUP_NETHER_PORTAL_EASY, 1, mx, my, mx, my, 1 );
     }
 }
@@ -9109,7 +9109,7 @@ void mx_supplydrop( map &m, const tripoint &/*abs_sub*/ )
 
 void mx_portal(map &m, const tripoint &abs_sub)
 {
-    int x = rng(1, SEEX * 2 - 2), y = rng(1, SEEY * 2 - 2);
+    int x = rng(1, SM_WIDTH - 2), y = rng(1, SM_HEIGHT - 2);
     for (int i = x - 1; i <= x + 1; i++) {
         for (int j = y - 1; j <= y + 1; j++) {
             m.make_rubble( tripoint( i,  j, abs_sub.z ), f_rubble_rock, true);
@@ -9118,7 +9118,7 @@ void mx_portal(map &m, const tripoint &abs_sub)
     mtrap_set(&m, x, y, tr_portal);
     int num_monsters = rng(0, 4);
     for (int i = 0; i < num_monsters; i++) {
-        int mx = rng(1, SEEX * 2 - 2), my = rng(1, SEEY * 2 - 2);
+        int mx = rng(1, SM_WIDTH - 2), my = rng(1, SM_HEIGHT - 2);
         m.make_rubble( tripoint( mx,  my, abs_sub.z ), f_rubble_rock, true);
         m.place_spawns( GROUP_NETHER_PORTAL, 1, mx, my, mx, my, 1 );
     }
@@ -9127,8 +9127,8 @@ void mx_portal(map &m, const tripoint &abs_sub)
 void mx_minefield(map &m, const tripoint &abs_sub)
 {
     int num_mines = rng(6, 20);
-    for (int x = 0; x < SEEX * 2; x++) {
-        for (int y = 0; y < SEEY * 2; y++) {
+    for (int x = 0; x < SM_WIDTH; x++) {
+        for (int y = 0; y < SM_HEIGHT; y++) {
             if (one_in(3)) {
                 m.ter_set(x, y, t_dirt);
             }
@@ -9136,7 +9136,7 @@ void mx_minefield(map &m, const tripoint &abs_sub)
     }
     for (int i = 0; i < num_mines; i++) {
         // No mines at the extreme edges: safe to walk on a sign tile
-        int x = rng(1, SEEX * 2 - 2), y = rng(1, SEEY * 2 - 2);
+        int x = rng(1, SM_WIDTH - 2), y = rng(1, SM_HEIGHT - 2);
         if (!m.has_flag("DIGGABLE", x, y) || one_in(8)) {
             m.ter_set(x, y, t_dirtmound);
         }
@@ -9144,8 +9144,8 @@ void mx_minefield(map &m, const tripoint &abs_sub)
     }
     int x1 = 0;
     int y1 = 0;
-    int x2 = (SEEX * 2 - 1);
-    int y2 = (SEEY * 2 - 1);
+    int x2 = (SM_WIDTH - 1);
+    int y2 = (SM_HEIGHT - 1);
     m.furn_set( x1, y1, furn_str_id( "f_sign" ) );
     m.set_signage( tripoint( x1,  y1, abs_sub.z ), _("DANGER! MINEFIELD!"));
     m.furn_set( x1, y2, furn_str_id( "f_sign" ) );
@@ -9160,7 +9160,7 @@ void mx_crater(map &m, const tripoint &abs_sub)
 {
     int size = rng(2, 6);
     int size_squared = size * size;
-    int x = rng(size, SEEX * 2 - 1 - size), y = rng(size, SEEY * 2 - 1 - size);
+    int x = rng(size, SM_WIDTH - 1 - size), y = rng(size, SM_HEIGHT - 1 - size);
     for (int i = x - size; i <= x + size; i++) {
         for (int j = y - size; j <= y + size; j++) {
             //If we're using circular distances, make circular craters
@@ -9176,7 +9176,7 @@ void mx_crater(map &m, const tripoint &abs_sub)
 void mx_fumarole(map &m, const tripoint &)
 {
     int x1 = rng(0,    SEEX     - 1), y1 = rng(0,    SEEY     - 1),
-        x2 = rng(SEEX, SEEX * 2 - 1), y2 = rng(SEEY, SEEY * 2 - 1);
+        x2 = rng(SEEX, SM_WIDTH - 1), y2 = rng(SEEY, SM_HEIGHT - 1);
     std::vector<point> fumarole = line_to(x1, y1, x2, y2, 0);
     for (auto &i : fumarole) {
         m.ter_set(i.x, i.y, t_lava);
@@ -9188,7 +9188,7 @@ void mx_fumarole(map &m, const tripoint &)
 
 void mx_portal_in(map &m, const tripoint &abs_sub)
 {
-    int x = rng(5, SEEX * 2 - 6), y = rng(5, SEEY * 2 - 6);
+    int x = rng(5, SM_WIDTH - 6), y = rng(5, SM_HEIGHT - 6);
     m.add_field({x, y, abs_sub.z}, fd_fatigue, 3, 0);
     fungal_effects fe( *g, m );
     for (int i = x - 5; i <= x + 5; i++) {
@@ -9205,7 +9205,7 @@ void mx_portal_in(map &m, const tripoint &abs_sub)
 
 void mx_anomaly(map &m, const tripoint &abs_sub)
 {
-    tripoint center( rng(6, SEEX * 2 - 7), rng(6, SEEY * 2 - 7), abs_sub.z );
+    tripoint center( rng(6, SM_WIDTH - 7), rng(6, SM_HEIGHT - 7), abs_sub.z );
     artifact_natural_property prop =
         artifact_natural_property(rng(ARTPROP_NULL + 1, ARTPROP_MAX - 1));
     m.create_anomaly( center, prop );

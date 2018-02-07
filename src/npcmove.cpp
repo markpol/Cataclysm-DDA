@@ -2775,8 +2775,8 @@ void npc::look_for_player( player &sought )
         path.clear();
     }
     std::vector<point> possibilities;
-    for (int x = 1; x < SEEX * MAPSIZE; x += 11) { // 1, 12, 23, 34
-        for (int y = 1; y < SEEY * MAPSIZE; y += 11) {
+    for (int x = 1; x < MAPLIMIT_X; x += 11) { // 1, 12, 23, 34
+        for (int y = 1; y < MAPLIMIT_Y; y += 11) {
             if( sees( x, y ) ) {
                 possibilities.push_back(point(x, y));
             }
@@ -2797,8 +2797,8 @@ void npc::look_for_player( player &sought )
 
 bool npc::saw_player_recently() const
 {
-    return ( last_player_seen_pos.x >= 0 && last_player_seen_pos.x < SEEX * MAPSIZE &&
-             last_player_seen_pos.y >= 0 && last_player_seen_pos.y < SEEY * MAPSIZE &&
+    return ( last_player_seen_pos.x >= 0 && last_player_seen_pos.x < MAPLIMIT_X &&
+             last_player_seen_pos.y >= 0 && last_player_seen_pos.y < MAPLIMIT_Y &&
              last_seen_player_turn > 0 );
 }
 

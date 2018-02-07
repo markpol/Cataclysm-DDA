@@ -236,7 +236,7 @@ void start_location::prepare_map( const tripoint &omtstart ) const
  */
 int rate_location( map &m, const tripoint &p, const bool must_be_inside,
                    const int bash_str, const int attempt,
-                   int ( &checked )[MAPSIZE * SEEX][MAPSIZE * SEEY] )
+                   int ( &checked )[MAPLIMIT_X][MAPLIMIT_Y] )
 {
     if( ( must_be_inside && m.is_outside( p ) ) ||
         m.impassable( p ) ||
@@ -246,7 +246,7 @@ int rate_location( map &m, const tripoint &p, const bool must_be_inside,
 
     // Vector that will be used as a stack
     std::vector<tripoint> st;
-    st.reserve( MAPSIZE * SEEX * MAPSIZE * SEEY );
+    st.reserve( MAPLIMIT_X * MAPLIMIT_Y );
     st.push_back( p );
 
     // If not checked yet and either can be moved into, can be bashed down or opened,
@@ -271,8 +271,8 @@ int rate_location( map &m, const tripoint &p, const bool must_be_inside,
         st.pop_back();
 
         checked[cur.x][cur.y] = attempt;
-        if( cur.x == 0 || cur.x == SEEX * MAPSIZE - 1 ||
-            cur.y == 0 || cur.y == SEEY * MAPSIZE - 1 ||
+        if( cur.x == 0 || cur.x == MAPLIMIT_X - 1 ||
+            cur.y == 0 || cur.y == MAPLIMIT_Y - 1 ||
             m.has_flag( "GOES_UP", cur ) ) {
             return INT_MAX;
         }
@@ -310,8 +310,8 @@ void start_location::place_player( player &u ) const
     int best_rate = 0;
     // In which attempt did this area get checked?
     // We can overwrite earlier attempts, but not start in them
-    int checked[SEEX * MAPSIZE][SEEY * MAPSIZE];
-    std::fill_n( &checked[0][0], SEEX * MAPSIZE * SEEY * MAPSIZE, 0 );
+    int checked[MAPLIMIT_X][MAPLIMIT_Y];
+    std::fill_n( &checked[0][0], MAPLIMIT_X * MAPLIMIT_Y, 0 );
 
     bool found_good_spot = false;
     // Try some random points at start
@@ -330,8 +330,8 @@ void start_location::place_player( player &u ) const
     };
 
     while( !found_good_spot && tries < 100 ) {
-        tripoint rand_point( ( SEEX * int( MAPSIZE / 2 ) ) + rng( 0, SEEX * 2 ),
-                             ( SEEY * int( MAPSIZE / 2 ) ) + rng( 0, SEEY * 2 ),
+        tripoint rand_point( ( SEEX * int( MAPSIZE / 2 ) ) + rng( 0, SM_WIDTH ),
+                             ( SEEY * int( MAPSIZE / 2 ) ) + rng( 0, SM_HEIGHT ),
                              u.posz() );
         check_spot( rand_point );
     }
@@ -341,8 +341,8 @@ void start_location::place_player( player &u ) const
         tripoint tmp = u.pos();
         int &x = tmp.x;
         int &y = tmp.y;
-        for( x = 0; x < SEEX * MAPSIZE; x++ ) {
-            for( y = 0; y < SEEY * MAPSIZE; y++ ) {
+        for( x = 0; x < MAPLIMIT_X; x++ ) {
+            for( y = 0; y < MAPLIMIT_Y; y++ ) {
                 check_spot( tmp );
             }
         }
@@ -431,7 +431,7 @@ static void add_monsters( const tripoint &omtstart, const mongroup_id &type, flo
     m.load( spawn_location.x, spawn_location.y, spawn_location.z, false );
     // map::place_spawns internally multiplies density by rng(10, 50)
     float density = expected_points / ( ( 10 + 50 ) / 2 );
-    m.place_spawns( type, 1, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density );
+    m.place_spawns( type, 1, 0, 0, SM_WIDTH - 1, SM_HEIGHT - 1, density );
     m.save();
 }
 

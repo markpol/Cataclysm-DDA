@@ -24,8 +24,8 @@ template<int xx, int xy, int yx, int yy,
          float( *calc )( const float &, const float &, const int & ),
          bool( *check )( const float &, const float & )>
 void castLight(
-    float ( &output_cache )[MAPSIZE * SEEX][MAPSIZE * SEEY],
-    const float ( &input_array )[MAPSIZE * SEEX][MAPSIZE * SEEY],
+    float ( &output_cache )[MAPLIMIT_X][MAPLIMIT_Y],
+    const float ( &input_array )[MAPLIMIT_X][MAPLIMIT_Y],
     const int offsetX, const int offsetY, const int offsetDistance,
     const float numerator = 1.0, const int row = 1,
     float start = 1.0f, const float end = 0.0f,
@@ -36,9 +36,9 @@ template<int xx, int xy, int xz, int yx, int yy, int yz, int zz,
          float( *calc )( const float &, const float &, const int & ),
          bool( *check )( const float &, const float & )>
 void cast_zlight(
-    const std::array<float ( * )[MAPSIZE *SEEX][MAPSIZE *SEEY], OVERMAP_LAYERS> &output_caches,
-    const std::array<const float ( * )[MAPSIZE *SEEX][MAPSIZE *SEEY], OVERMAP_LAYERS> &input_arrays,
-    const std::array<const bool ( * )[MAPSIZE *SEEX][MAPSIZE *SEEY], OVERMAP_LAYERS> &floor_caches,
+    const std::array<float ( * )[MAPLIMIT_X][MAPLIMIT_Y], OVERMAP_LAYERS> &output_caches,
+    const std::array<const float ( * )[MAPLIMIT_X][MAPLIMIT_Y], OVERMAP_LAYERS> &input_arrays,
+    const std::array<const bool ( * )[MAPLIMIT_X][MAPLIMIT_Y], OVERMAP_LAYERS> &floor_caches,
     const tripoint &offset, const int offset_distance,
     const float numerator = 1.0f, const int row = 1,
     float start_major = 0.0f, const float end_major = 1.0f,

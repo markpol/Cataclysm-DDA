@@ -5181,11 +5181,11 @@ std::list<std::pair<tripoint, item *> > map::get_rc_items( int x, int y, int z )
     tripoint pos;
     (void)z;
     pos.z = abs_sub.z;
-    for( pos.x = 0; pos.x < SEEX * MAPSIZE; pos.x++ ) {
+    for( pos.x = 0; pos.x < MAPLIMIT_X; pos.x++ ) {
         if( x != -1 && x != pos.x ) {
             continue;
         }
-        for( pos.y = 0; pos.y < SEEY * MAPSIZE; pos.y++ ) {
+        for( pos.y = 0; pos.y < MAPLIMIT_Y; pos.y++ ) {
             if( y != -1 && y != pos.y ) {
                 continue;
             }
@@ -5671,8 +5671,8 @@ void map::update_visibility_cache( const int zlev ) {
     p.z = zlev;
     int &x = p.x;
     int &y = p.y;
-    for( x = 0; x < MAPSIZE * SEEX; x++ ) {
-        for( y = 0; y < MAPSIZE * SEEY; y++ ) {
+    for( x = 0; x < MAPLIMIT_X; x++ ) {
+        for( y = 0; y < MAPLIMIT_Y; y++ ) {
             lit_level ll = apparent_light_at( p, visibility_variables_cache );
             visibility_cache[x][y] = ll;
             sm_squares_seen[ x / SEEX ][ y / SEEY ] += (ll == LL_BRIGHT || ll == LL_LIT);
@@ -5827,7 +5827,7 @@ void map::draw( const catacurses::window &w, const tripoint &center )
 
         wmove( w, y - center.y + getmaxy(w) / 2, 0 );
 
-        if( y < 0 || y >= MAPSIZE * SEEY ) {
+        if( y < 0 || y >= MAPLIMIT_Y ) {
             for( int x = 0; x < getmaxx(w); x++ ) {
                 wputch( w, c_black, ' ' );
             }
@@ -5843,7 +5843,7 @@ void map::draw( const catacurses::window &w, const tripoint &center )
         int lx;
         int ly;
         const int maxxrender = center.x - getmaxx(w) / 2 + getmaxx(w);
-        const int maxx = std::min( MAPSIZE * SEEX, maxxrender );
+        const int maxx = std::min( MAPLIMIT_X, maxxrender );
         while( x < maxx ) {
             submap *cur_submap = get_submap_at( p, lx, ly );
             submap *sm_below = p.z > -OVERMAP_DEPTH ?
@@ -7461,15 +7461,15 @@ void map::build_outside_cache( const int zlev )
 
     // Make a bigger cache to avoid bounds checking
     // We will later copy it to our regular cache
-    const size_t padded_w = ( MAPSIZE * SEEX ) + 2;
-    const size_t padded_h = ( MAPSIZE * SEEY ) + 2;
+    const size_t padded_w =  MAPLIMIT_X + 2;
+    const size_t padded_h = ( MAPLIMIT_Y) + 2;
     bool padded_cache[padded_w][padded_h];
 
     auto &outside_cache = ch.outside_cache;
     if( zlev < 0 )
     {
         std::uninitialized_fill_n(
-            &outside_cache[0][0], ( MAPSIZE * SEEX ) * ( MAPSIZE * SEEY ), false );
+            &outside_cache[0][0],  MAPLIMIT_X *  MAPLIMIT_Y, false );
         return;
     }
 
@@ -7517,7 +7517,7 @@ void map::build_floor_cache( const int zlev )
 
     auto &floor_cache = ch.floor_cache;
     std::uninitialized_fill_n(
-            &floor_cache[0][0], ( MAPSIZE * SEEX ) * ( MAPSIZE * SEEY ), true );
+            &floor_cache[0][0],  MAPLIMIT_X *  MAPLIMIT_Y, true );
 
     for( int smx = 0; smx < my_MAPSIZE; ++smx ) {
         for( int smy = 0; smy < my_MAPSIZE; ++smy ) {
@@ -8019,8 +8019,8 @@ template<typename Functor>
     }
 }
 
-void map::scent_blockers( std::array<std::array<bool, SEEX * MAPSIZE>, SEEY * MAPSIZE> &blocks_scent,
-                          std::array<std::array<bool, SEEX * MAPSIZE>, SEEY * MAPSIZE> &reduces_scent,
+void map::scent_blockers( std::array<std::array<bool, MAPLIMIT_X>, MAPLIMIT_Y> &blocks_scent,
+                          std::array<std::array<bool, MAPLIMIT_X>, MAPLIMIT_Y> &reduces_scent,
                           const int minx, const int miny, const int maxx, const int maxy )
 {
     auto reduce = TFLAG_REDUCE_SCENT;
@@ -8084,7 +8084,7 @@ tripoint_range map::points_in_rectangle( const tripoint &from, const tripoint &t
     const int miny = std::max( 0, std::min( from.y, to.y ) );
     const int minz = std::max( -OVERMAP_DEPTH, std::min( from.z, to.z ) );
     const int maxx = std::min( SEEX * my_MAPSIZE - 1, std::max( from.x, to.x ) );
-    const int maxy = std::min( SEEX * my_MAPSIZE - 1, std::max( from.y, to.y ) );
+    const int maxy = std::min( SEEY * my_MAPSIZE - 1, std::max( from.y, to.y ) );
     const int maxz = std::min( OVERMAP_HEIGHT, std::max( from.z, to.z ) );
     return tripoint_range( tripoint( minx, miny, minz ), tripoint( maxx, maxy, maxz ) );
 }
@@ -8095,7 +8095,7 @@ tripoint_range map::points_in_radius( const tripoint &center, size_t radius, siz
     const int miny = std::max<int>( 0, center.y - radius );
     const int minz = std::max<int>( -OVERMAP_DEPTH, center.z - radiusz );
     const int maxx = std::min<int>( SEEX * my_MAPSIZE - 1, center.x + radius );
-    const int maxy = std::min<int>( SEEX * my_MAPSIZE - 1, center.y + radius );
+    const int maxy = std::min<int>( SEEY * my_MAPSIZE - 1, center.y + radius );
     const int maxz = std::min<int>( OVERMAP_HEIGHT, center.z + radiusz );
     return tripoint_range( tripoint( minx, miny, minz ), tripoint( maxx, maxy, maxz ) );
 }
@@ -8122,7 +8122,7 @@ const level_cache &map::access_cache( int zlev ) const
 
 level_cache::level_cache()
 {
-    const int map_dimensions = SEEX * MAPSIZE * SEEY * MAPSIZE;
+    const int map_dimensions = MAPLIMIT_X * MAPLIMIT_Y;
     transparency_cache_dirty = true;
     outside_cache_dirty = true;
     floor_cache_dirty = false;
@@ -8178,7 +8178,7 @@ void map::update_pathfinding_cache( int zlev ) const
         return;
     }
 
-    std::uninitialized_fill_n( &cache.special[0][0], MAPSIZE*SEEX * MAPSIZE*SEEY, PF_NORMAL );
+    std::uninitialized_fill_n( &cache.special[0][0], MAPSIZE*MAPLIMIT_X*SEEY, PF_NORMAL );
 
     for( int smx = 0; smx < my_MAPSIZE; ++smx ) {
         for( int smy = 0; smy < my_MAPSIZE; ++smy ) {

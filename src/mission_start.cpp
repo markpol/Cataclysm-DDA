@@ -451,8 +451,8 @@ void mission_start::place_npc_software( mission *miss )
     oter_id oter = overmap_buffer.ter( place.x, place.y, place.z );
     if( is_ot_type( "house", oter ) || is_ot_type( "s_pharm", oter ) || oter == "" ) {
         std::vector<tripoint> valid;
-        for( int x = 0; x < SEEX * 2; x++ ) {
-            for( int y = 0; y < SEEY * 2; y++ ) {
+        for( int x = 0; x < SM_WIDTH; x++ ) {
+            for( int y = 0; y < SM_HEIGHT; y++ ) {
                 if( compmap.ter( x, y ) == t_floor && compmap.furn( x, y ) == f_null ) {
                     bool okay = false;
                     int wall = 0;
@@ -468,17 +468,17 @@ void mission_start::place_npc_software( mission *miss )
                         }
                     }
                     if( wall == 5 ) {
-                        if( compmap.is_last_ter_wall( true, x, y, SEEX * 2, SEEY * 2, NORTH ) &&
-                            compmap.is_last_ter_wall( true, x, y, SEEX * 2, SEEY * 2, SOUTH ) &&
-                            compmap.is_last_ter_wall( true, x, y, SEEX * 2, SEEY * 2, WEST ) &&
-                            compmap.is_last_ter_wall( true, x, y, SEEX * 2, SEEY * 2, EAST ) ) {
+                        if( compmap.is_last_ter_wall( true, x, y, SM_WIDTH, SM_HEIGHT, NORTH ) &&
+                            compmap.is_last_ter_wall( true, x, y, SM_WIDTH, SM_HEIGHT, SOUTH ) &&
+                            compmap.is_last_ter_wall( true, x, y, SM_WIDTH, SM_HEIGHT, WEST ) &&
+                            compmap.is_last_ter_wall( true, x, y, SM_WIDTH, SM_HEIGHT, EAST ) ) {
                             valid.push_back( tripoint( x, y, place.z ) );
                         }
                     }
                 }
             }
         }
-        const tripoint fallback( rng( 6, SEEX * 2 - 7 ), rng( 6, SEEY * 2 - 7 ), place.z );
+        const tripoint fallback( rng( 6, SM_WIDTH - 7 ), rng( 6, SM_HEIGHT - 7 ), place.z );
         comppoint = random_entry( valid, fallback );
     }
 
@@ -498,15 +498,15 @@ void mission_start::place_priest_diary( mission *miss )
     compmap.load( place.x * 2, place.y * 2, place.z, false );
 
     std::vector<tripoint> valid;
-    for( int x = 0; x < SEEX * 2; x++ ) {
-        for( int y = 0; y < SEEY * 2; y++ ) {
+    for( int x = 0; x < SM_WIDTH; x++ ) {
+        for( int y = 0; y < SM_HEIGHT; y++ ) {
             if( compmap.furn( x, y ) == f_bed || compmap.furn( x, y ) == f_dresser ||
                 compmap.furn( x, y ) == f_indoor_plant || compmap.furn( x, y ) == f_cupboard ) {
                 valid.push_back( tripoint( x, y, place.z ) );
             }
         }
     }
-    const tripoint fallback( rng( 6, SEEX * 2 - 7 ), rng( 6, SEEY * 2 - 7 ), place.z );
+    const tripoint fallback( rng( 6, SM_WIDTH - 7 ), rng( 6, SM_HEIGHT - 7 ), place.z );
     const tripoint comppoint = random_entry( valid, fallback );
     compmap.spawn_item( comppoint, "priest_diary" );
     compmap.save();
@@ -532,8 +532,8 @@ void mission_start::place_deposit_box( mission *miss )
     tinymap compmap;
     compmap.load( site.x * 2, site.y * 2, site.z, false );
     std::vector<tripoint> valid;
-    for( int x = 0; x < SEEX * 2; x++ ) {
-        for( int y = 0; y < SEEY * 2; y++ ) {
+    for( int x = 0; x < SM_WIDTH; x++ ) {
+        for( int y = 0; y < SM_HEIGHT; y++ ) {
             if( compmap.ter( x, y ) == t_floor ) {
                 bool okay = false;
                 for( int x2 = x - 1; x2 <= x + 1 && !okay; x2++ ) {
@@ -547,7 +547,7 @@ void mission_start::place_deposit_box( mission *miss )
             }
         }
     }
-    const tripoint fallback( rng( 6, SEEX * 2 - 7 ), rng( 6, SEEY * 2 - 7 ), site.z );
+    const tripoint fallback( rng( 6, SM_WIDTH - 7 ), rng( 6, SM_HEIGHT - 7 ), site.z );
     const tripoint comppoint = random_entry( valid, fallback );
     compmap.spawn_item( comppoint, "safe_box" );
     compmap.save();

@@ -48,8 +48,8 @@ void event::actualize()
 
             g->u.add_memorial_log( pgettext("memorial_male", "Became wanted by the police!"),
                                     pgettext("memorial_female", "Became wanted by the police!"));
-            int robx = (u_pos.x > map_point.x ? 0 - SEEX * 2 : SEEX * 4);
-            int roby = (u_pos.y > map_point.y ? 0 - SEEY * 2 : SEEY * 4);
+            int robx = (u_pos.x > map_point.x ? 0 - SM_WIDTH : SM_WIDTH * 2);
+            int roby = (u_pos.y > map_point.y ? 0 - SM_HEIGHT : SM_HEIGHT * 2);
             g->summon_mon(robot_type, tripoint(robx, roby, g->u.posz()));
         }
     } break;
@@ -65,8 +65,8 @@ void event::actualize()
             int tries = 0;
             tripoint monp = g->u.pos();
             do {
-                monp.x = rng(0, SEEX * MAPSIZE);
-                monp.y = rng(0, SEEY * MAPSIZE);
+                monp.x = rng(0, MAPLIMIT_X);
+                monp.y = rng(0, MAPLIMIT_Y);
                 tries++;
             } while (tries < 10 && !g->is_empty(monp) &&
                     rl_dist(g->u.pos(), monp) <= 2);
@@ -94,8 +94,8 @@ void event::actualize()
         int num_horrors = rng(3, 5);
         int faultx = -1, faulty = -1;
         bool horizontal = false;
-        for (int x = 0; x < SEEX * MAPSIZE && faultx == -1; x++) {
-            for (int y = 0; y < SEEY * MAPSIZE && faulty == -1; y++) {
+        for (int x = 0; x < MAPLIMIT_X && faultx == -1; x++) {
+            for (int y = 0; y < MAPLIMIT_Y && faulty == -1; y++) {
                 if (g->m.ter(x, y) == t_fault) {
                     faultx = x;
                     faulty = y;
@@ -134,8 +134,8 @@ void event::actualize()
   case EVENT_ROOTS_DIE:
    g->u.add_memorial_log(pgettext("memorial_male", "Destroyed a triffid grove."),
                          pgettext("memorial_female", "Destroyed a triffid grove."));
-   for (int x = 0; x < SEEX * MAPSIZE; x++) {
-    for (int y = 0; y < SEEY * MAPSIZE; y++) {
+   for (int x = 0; x < MAPLIMIT_X; x++) {
+    for (int y = 0; y < MAPLIMIT_Y; y++) {
      if (g->m.ter(x, y) == t_root_wall && one_in(3))
       g->m.ter_set(x, y, t_underbrush);
     }
@@ -146,8 +146,8 @@ void event::actualize()
    g->u.add_memorial_log(pgettext("memorial_male", "Opened a strange temple."),
                          pgettext("memorial_female", "Opened a strange temple."));
    bool saw_grate = false;
-   for (int x = 0; x < SEEX * MAPSIZE; x++) {
-    for (int y = 0; y < SEEY * MAPSIZE; y++) {
+   for (int x = 0; x < MAPLIMIT_X; x++) {
+    for (int y = 0; y < MAPLIMIT_Y; y++) {
      if (g->m.ter(x, y) == t_grate) {
       g->m.ter_set(x, y, t_stairs_down);
       if (!saw_grate && g->u.sees(tripoint(x, y,g->get_levz())))
@@ -162,13 +162,13 @@ void event::actualize()
   case EVENT_TEMPLE_FLOOD: {
    bool flooded = false;
 
-   ter_id flood_buf[SEEX*MAPSIZE][SEEY*MAPSIZE];
-   for (int x = 0; x < SEEX * MAPSIZE; x++) {
-    for (int y = 0; y < SEEY * MAPSIZE; y++)
+   ter_id flood_buf[MAPLIMIT_X][MAPLIMIT_Y];
+   for (int x = 0; x < MAPLIMIT_X; x++) {
+    for (int y = 0; y < MAPLIMIT_Y; y++)
      flood_buf[x][y] = g->m.ter(x, y);
    }
-   for (int x = 0; x < SEEX * MAPSIZE; x++) {
-    for (int y = 0; y < SEEY * MAPSIZE; y++) {
+   for (int x = 0; x < MAPLIMIT_X; x++) {
+    for (int y = 0; y < MAPLIMIT_Y; y++) {
      if (g->m.ter(x, y) == t_water_sh) {
       bool deepen = false;
       for (int wx = x - 1;  wx <= x + 1 && !deepen; wx++) {
@@ -212,8 +212,8 @@ void event::actualize()
     }
    }
 // flood_buf is filled with correct tiles; now copy them back to g->m
-   for (int x = 0; x < SEEX * MAPSIZE; x++) {
-    for (int y = 0; y < SEEY * MAPSIZE; y++)
+   for (int x = 0; x < MAPLIMIT_X; x++) {
+    for (int y = 0; y < MAPLIMIT_Y; y++)
        g->m.ter_set(x, y, flood_buf[x][y]);
    }
    g->events.add( EVENT_TEMPLE_FLOOD, calendar::turn + rng( 2_turns, 3_turns ) );

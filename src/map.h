@@ -154,19 +154,19 @@ struct level_cache {
     bool outside_cache_dirty;
     bool floor_cache_dirty;
 
-    float lm[MAPSIZE * SEEX][MAPSIZE * SEEY];
-    float sm[MAPSIZE * SEEX][MAPSIZE * SEEY];
+    float lm[MAPLIMIT_X][MAPLIMIT_Y];
+    float sm[MAPLIMIT_X][MAPLIMIT_Y];
     // To prevent redundant ray casting into neighbors: precalculate bulk light source positions.
     // This is only valid for the duration of generate_lightmap
-    float light_source_buffer[MAPSIZE * SEEX][MAPSIZE * SEEY];
-    bool outside_cache[MAPSIZE * SEEX][MAPSIZE * SEEY];
-    bool floor_cache[MAPSIZE * SEEX][MAPSIZE * SEEY];
-    float transparency_cache[MAPSIZE * SEEX][MAPSIZE * SEEY];
-    float seen_cache[MAPSIZE * SEEX][MAPSIZE * SEEY];
-    lit_level visibility_cache[MAPSIZE * SEEX][MAPSIZE * SEEY];
+    float light_source_buffer[MAPLIMIT_X][MAPLIMIT_Y];
+    bool outside_cache[MAPLIMIT_X][MAPLIMIT_Y];
+    bool floor_cache[MAPLIMIT_X][MAPLIMIT_Y];
+    float transparency_cache[MAPLIMIT_X][MAPLIMIT_Y];
+    float seen_cache[MAPLIMIT_X][MAPLIMIT_Y];
+    lit_level visibility_cache[MAPLIMIT_X][MAPLIMIT_Y];
 
     bool veh_in_active_range;
-    bool veh_exists_at[SEEX * MAPSIZE][SEEY * MAPSIZE];
+    bool veh_exists_at[MAPLIMIT_X][MAPLIMIT_Y];
     std::map< tripoint, std::pair<vehicle *, int> > veh_cached_parts;
     std::set<vehicle *> vehicle_list;
 };
@@ -1079,8 +1079,8 @@ class map
          * Build the map of scent-resistant tiles.
          * Should be way faster than if done in `game.cpp` using public map functions.
          */
-        void scent_blockers( std::array<std::array<bool, SEEX *MAPSIZE>, SEEY *MAPSIZE> &blocks_scent,
-                             std::array<std::array<bool, SEEX *MAPSIZE>, SEEY *MAPSIZE> &reduces_scent,
+        void scent_blockers( std::array<std::array<bool, MAPLIMIT_X>, MAPLIMIT_Y> &blocks_scent,
+                             std::array<std::array<bool, MAPLIMIT_X>, MAPLIMIT_Y> &reduces_scent,
                              int minx, int miny, int maxx, int maxy );
 
         // Computers
@@ -1448,7 +1448,7 @@ class map
         // Handle just cardinal directions and 45 deg angles.
         void apply_directional_light( const tripoint &p, int direction, float luminance );
         void apply_light_arc( const tripoint &p, int angle, float luminance, int wideangle = 30 );
-        void apply_light_ray( bool lit[MAPSIZE * SEEX][MAPSIZE * SEEY],
+        void apply_light_ray( bool lit[MAPLIMIT_X][MAPLIMIT_Y],
                               const tripoint &s, const tripoint &e, float luminance );
         void add_light_from_items( const tripoint &p, std::list<item>::iterator begin,
                                    std::list<item>::iterator end );

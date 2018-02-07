@@ -2230,8 +2230,8 @@ input_context game::get_player_input(std::string &action)
         if( tile_iso && use_tiles ) {
             iStartX = 0;
             iStartY = 0;
-            iEndX = MAPSIZE * SEEX;
-            iEndY = MAPSIZE * SEEY;
+            iEndX = MAPLIMIT_X;
+            iEndY = MAPLIMIT_Y;
             offset_x = 0;
             offset_y = 0;
         }
@@ -5544,7 +5544,7 @@ int game::mon_info( const catacurses::window &w )
     tripoint view = u.pos() + u.view_offset;
     new_seen_mon.clear();
 
-    for( auto &c : u.get_visible_creatures( SEEX * MAPSIZE ) ) {
+    for( auto &c : u.get_visible_creatures MAPLIMIT_X ) {
         const auto m = dynamic_cast<monster*>( c );
         const auto p = dynamic_cast<npc*>( c );
         const auto dir_to_mon = direction_from( view.x, view.y, c->posx(), c->posy() );
@@ -5946,10 +5946,10 @@ void game::monmove()
     // If so, despawn them. This is not the same as dying, they will be stored for later and the
     // monster::die function is not called.
     for( monster &critter : all_monsters() ) {
-        if( critter.posx() < 0 - ( SEEX * MAPSIZE ) / 6 ||
-            critter.posy() < 0 - ( SEEY * MAPSIZE ) / 6 ||
-            critter.posx() > ( SEEX * MAPSIZE * 7 ) / 6 ||
-            critter.posy() > ( SEEY * MAPSIZE * 7 ) / 6 ) {
+        if( critter.posx() < 0 -  MAPLIMIT_X / 6 ||
+            critter.posy() < 0 -  MAPLIMIT_Y / 6 ||
+            critter.posx() > ( MAPLIMIT_X * 7 ) / 6 ||
+            critter.posy() > ( MAPLIMIT_Y * 7 ) / 6 ) {
             despawn_monster( critter );
         }
     }
@@ -8612,14 +8612,14 @@ tripoint game::look_around( catacurses::window w_info, const tripoint &start_poi
             //Keep cursor inside the reality bubble
             if (lx < 0) {
                 lx = 0;
-            } else if (lx > MAPSIZE * SEEX) {
-                lx = MAPSIZE * SEEX;
+            } else if (lx > MAPLIMIT_X) {
+                lx = MAPLIMIT_X;
             }
 
             if (ly < 0) {
                 ly = 0;
-            } else if (ly > MAPSIZE * SEEY) {
-                ly = MAPSIZE * SEEY;
+            } else if (ly > MAPLIMIT_Y) {
+                ly = MAPLIMIT_Y;
             }
 
             draw_ter( lp, true );
@@ -11284,7 +11284,7 @@ bool game::plmove(int dx, int dy, int dz)
         int curdist = INT_MAX;
         int newdist = INT_MAX;
         const tripoint minp = tripoint( 0, 0, u.posz() );
-        const tripoint maxp = tripoint( SEEX * MAPSIZE, SEEY * MAPSIZE, u.posz() );
+        const tripoint maxp = tripoint( MAPLIMIT_X, MAPLIMIT_Y, u.posz() );
         for( const tripoint &pt : m.points_in_rectangle( minp, maxp ) ) {
             if( m.ter( pt ) == t_fault ) {
                 int dist = rl_dist( pt, u.pos() );
@@ -12727,7 +12727,7 @@ void game::vertical_move(int movez, bool force)
 
 tripoint game::find_or_make_stairs( map &mp, const int z_after, bool &rope_ladder )
 {
-    const int omtilesz = SEEX * 2;
+    const int omtilesz = SM_WIDTH;
     real_coords rc( m.getabs(u.posx(), u.posy()) );
     tripoint omtile_align_start( m.getlocal(rc.begin_om_pos()), z_after );
     tripoint omtile_align_end( omtile_align_start.x + omtilesz - 1, omtile_align_start.y + omtilesz - 1, omtile_align_start.z );
@@ -12953,7 +12953,7 @@ void game::update_map(int &x, int &y)
     // Shift NPCs
     for( auto it = active_npc.begin(); it != active_npc.end(); ) {
         (*it)->shift(shiftx, shifty);
-        if( (*it)->posx() < 0 - SEEX * 2 || (*it)->posy() < 0 - SEEX * 2 ||
+        if( (*it)->posx() < 0 - SM_WIDTH || (*it)->posy() < 0 - SM_WIDTH ||
             (*it)->posx() > SEEX * (MAPSIZE + 2) || (*it)->posy() > SEEY * (MAPSIZE + 2) ) {
             //Remove the npc from the active list. It remains in the overmap list.
             (*it)->on_unload();
@@ -13050,8 +13050,8 @@ void game::update_stair_monsters()
         coming_to_stairs.clear();
     }
 
-    for (int x = 0; x < SEEX * MAPSIZE; x++) {
-        for (int y = 0; y < SEEY * MAPSIZE; y++) {
+    for (int x = 0; x < MAPLIMIT_X; x++) {
+        for (int y = 0; y < MAPLIMIT_Y; y++) {
             tripoint dest( x, y, u.posz() );
             if( ( from_below && m.has_flag( "GOES_DOWN", dest ) ) ||
                 ( !from_below && m.has_flag( "GOES_UP", dest ) ) ) {
@@ -13096,10 +13096,10 @@ void game::update_stair_monsters()
         const tripoint dest{mposx, mposy, g->get_levz()};
 
         // We might be not be visible.
-        if( (critter.posx() < 0 - (SEEX * MAPSIZE) / 6 ||
-             critter.posy() < 0 - (SEEY * MAPSIZE) / 6 ||
-             critter.posx() > (SEEX * MAPSIZE * 7) / 6 ||
-             critter.posy() > (SEEY * MAPSIZE * 7) / 6) ) {
+        if( (critter.posx() < 0 - (MAPLIMIT_X) / 6 ||
+             critter.posy() < 0 - (MAPLIMIT_Y) / 6 ||
+             critter.posx() > (MAPLIMIT_X * 7) / 6 ||
+             critter.posy() > (MAPLIMIT_Y * 7) / 6) ) {
             continue;
         }
 
@@ -13413,8 +13413,8 @@ void game::teleport(player *p, bool add_teleglow)
         p->add_effect( effect_teleglow, 300);
     }
     do {
-        new_pos.x = p->posx() + rng(0, SEEX * 2) - SEEX;
-        new_pos.y = p->posy() + rng(0, SEEY * 2) - SEEY;
+        new_pos.x = p->posx() + rng(0, SM_WIDTH) - SEEX;
+        new_pos.y = p->posy() + rng(0, SM_HEIGHT) - SEEY;
         tries++;
     } while ( tries < 15 && m.impassable( new_pos ) );
     bool can_see = ( is_u || u.sees( new_pos ) );
@@ -13470,8 +13470,8 @@ void game::nuke( const tripoint &p )
     tripoint dest( 0, 0, p.z );
     int &i = dest.x;
     int &j = dest.y;
-    for( i = 0; i < SEEX * 2; i++ ) {
-        for( j = 0; j < SEEY * 2; j++ ) {
+    for( i = 0; i < SM_WIDTH; i++ ) {
+        for( j = 0; j < SM_HEIGHT; j++ ) {
             if (!one_in(10)) {
                 tmpmap.make_rubble( dest, f_rubble_rock, true, t_dirt, true);
             }
