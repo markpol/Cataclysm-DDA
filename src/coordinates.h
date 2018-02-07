@@ -24,12 +24,12 @@ struct real_coords {
 
     point abs_pos;     // 1 per tile, starting from tile 0,0 of submap 0,0 of overmap 0,0
     point abs_sub;     // submap: SEEX tiles.
-    point abs_om;      // overmap: 360 submaps.
+    point abs_om;      // overmap: (OMAPX * SM_IN_OMT)  submaps.
 
-    point sub_pos;     // coordinate (0..SEEX-1) in submap / abs_pos constrained to % SEEX.
+    point sub_pos;     // coordinate ( 0..SEEX - 1 ) in submap / abs_pos constrained to % SEEX.
 
     point om_pos;      // overmap tile: (SM_IN_OMT * SM_IN_OMT) submaps.
-    point om_sub;      // submap (0..360-1) in overmap / abs_sub constrained to % 360. equivalent to g->levx
+    point om_sub;      // submap ( 0..(OMAPX * SM_IN_OMT) - 1 ) in overmap / abs_sub constrained to % (OMAPX * SM_IN_OMT). equivalent to g->levx
 
     real_coords() {
     }

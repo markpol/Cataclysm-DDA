@@ -46,20 +46,20 @@
 #define SEEX 12
 #define SEEY SEEX
 
-// Width of submap
-#define SM_WIDTH = SEEX * SM_IN_OMT
-// Height of submap
-#define SM_HEIGHT = SEEY * SM_IN_OMT
+// Width and height of submap
+#define SM_WIDTH ( SEEX * SM_IN_OMT )
+#define SM_HEIGHT ( SEEY * SM_IN_OMT )
 
-// Map limit
-#define MAPLIMIT ( SEEX * MAPSIZE )
+// Map limits
+#define MAPLIMIT_X ( SEEX * MAPSIZE )
+#define MAPLIMIT_Y ( SEEY * MAPSIZE )
 
 #define MAX_VIEW_DISTANCE ( SEEX * int( MAPSIZE / 2 ) )
 
 // Size of the overmap. This is the number of overmap terrain tiles per dimension in one overmap,
 // it's just like SEEX/SEEY for submaps.
 #define OMAPX 180
-#define OMAPY 180
+#define OMAPY OMAPX
 
 // Items on the map with at most this distance to the player are considered available for crafting,
 // see inventory::form_from_map
