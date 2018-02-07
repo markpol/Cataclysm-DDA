@@ -334,7 +334,7 @@ void mapgen_crater(map *m, oter_id, mapgendata dat, int, float)
     for (int i = 0; i < SEEX * 2; i++) {
        for (int j = 0; j < SEEY * 2; j++) {
            if (rng(0, dat.w_fac) <= i && rng(0, dat.e_fac) <= SEEX * 2 - 1 - i &&
-               rng(0, dat.n_fac) <= j && rng(0, dat.s_fac) <= SEEX * 2 - 1 - j ) {
+               rng(0, dat.n_fac) <= j && rng(0, dat.s_fac) <= SEEY * 2 - 1 - j ) {
                m->ter_set(i, j, t_dirt);
                m->make_rubble( tripoint( i,  j, m->get_abs_sub().z ), f_rubble_rock, true);
                m->set_radiation(i, j, rng(0, 4) * rng(0, 2));
@@ -1206,7 +1206,7 @@ void mapgen_road( map *m, oter_id terrain_type, mapgendata dat, int turn, float 
 
     // spawn some monsters
     if( neighbor_sidewalks ) {
-        m->place_spawns( mongroup_id( "GROUP_ZOMBIE" ), 2, 0, 0, SEEX * 2 - 1, SEEX * 2 - 1, density );
+        m->place_spawns( mongroup_id( "GROUP_ZOMBIE" ), 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density );
         // 1 per 10 overmaps
         if( one_in( 10000 ) ) {
             m->add_spawn( mon_zombie_jackson, 1, SEEX, SEEY );
@@ -1215,12 +1215,12 @@ void mapgen_road( map *m, oter_id terrain_type, mapgendata dat, int turn, float 
 
     // add some items
     bool plaza = ( plaza_dir > -1 );
-    m->place_items( plaza ? "trash" : "road", 5, 0, 0, SEEX * 2 - 1, SEEX * 2 - 1, plaza,
+    m->place_items( plaza ? "trash" : "road", 5, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, plaza,
                     plaza ? 0 : turn );
 
     // add a manhole if appropriate
     if( terrain_type == "road_nesw_manhole" ) {
-        m->ter_set( rng( 6, SEEX * 2 - 6 ), rng( 6, SEEX * 2 - 6 ), t_manhole_cover );
+        m->ter_set( rng( 6, SEEX * 2 - 6 ), rng( 6, SEEY * 2 - 6 ), t_manhole_cover );
     }
 
     // finally, unrotate the map
@@ -1643,7 +1643,7 @@ void mapgen_bridge(map *m, oter_id terrain_type, mapgendata dat, int turn, float
     VehicleSpawn::apply(vspawn_id("default_bridge"), *m, "bridge");
 
     m->rotate( static_cast<int>( terrain_type->get_dir() ) );
-    m->place_items("road", 5, 0, 0, SEEX * 2 - 1, SEEX * 2 - 1, false, turn);
+    m->place_items("road", 5, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, false, turn);
 }
 
 void mapgen_highway(map *m, oter_id terrain_type, mapgendata dat, int turn, float)
@@ -1670,7 +1670,7 @@ void mapgen_highway(map *m, oter_id terrain_type, mapgendata dat, int turn, floa
     if (terrain_type == "hiway_ew") {
         m->rotate(1);
     }
-    m->place_items("road", 8, 0, 0, SEEX * 2 - 1, SEEX * 2 - 1, false, turn);
+    m->place_items("road", 8, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, false, turn);
 }
 
 void mapgen_river_center(map *m, oter_id, mapgendata dat, int, float)
@@ -1814,7 +1814,7 @@ void mapgen_gas_station(map *m, oter_id terrain_type, mapgendata dat, int, float
     int center_w = rng(left_w + 4, right_w - 5);
     int pump_count = rng(3, 6);
     for (int i = 0; i < SEEX * 2; i++) {
-        for (int j = 0; j < SEEX * 2; j++) {
+        for (int j = 0; j < SEEY * 2; j++) {
             if (j < top_w && (top_w - j) % 5 == 0 && i > left_w && i < right_w &&
                  (i - (1 + left_w)) % pump_count == 0) {
                 m->place_gas_pump(i, j, rng(1000, 10000));
@@ -1912,7 +1912,7 @@ void mapgen_gas_station(map *m, oter_id terrain_type, mapgendata dat, int, float
     if (terrain_type == "s_gas_west") {
         m->rotate(3);
     }
-    m->place_spawns( mongroup_id( "GROUP_ZOMBIE" ), 2, 0, 0, SEEX * 2 - 1, SEEX * 2 - 1, density);
+    m->place_spawns( mongroup_id( "GROUP_ZOMBIE" ), 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
 }
 ////////////////////
 
@@ -2755,7 +2755,7 @@ void mapgen_generic_house(map *m, oter_id terrain_type, mapgendata dat, int turn
         m->place_items("rare", 60, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, false, turn);
 
     } else { // Just boring old zombies
-        m->place_spawns( mongroup_id( "GROUP_ZOMBIE" ), 2, 0, 0, SEEX * 2 - 1, SEEX * 2 - 1, density);
+        m->place_spawns( mongroup_id( "GROUP_ZOMBIE" ), 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
     }
 
     m->rotate( static_cast<int>( terrain_type->get_dir() ) );
@@ -2923,7 +2923,7 @@ void mapgen_s_sports(map *m, oter_id terrain_type, mapgendata dat, int, float de
             m->place_items("allsporting", 92, lw + 1, cw + 1, rw - 1, bw - 1, false, 0);
         }
         autorotate(false);
-        m->place_spawns( mongroup_id( "GROUP_ZOMBIE" ), 2, 0, 0, SEEX * 2 - 1, SEEX * 2 - 1, density);
+        m->place_spawns( mongroup_id( "GROUP_ZOMBIE" ), 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
 }
 
 ///////////////////////////////////////////////////////////
@@ -3194,7 +3194,7 @@ void mapgen_police(map *m, oter_id terrain_type, mapgendata dat, int, float dens
         }
         autorotate_down();
 
-        m->place_spawns( mongroup_id( "GROUP_POLICE" ), 2, 0, 0, SEEX * 2 - 1, SEEX * 2 - 1, density);
+        m->place_spawns( mongroup_id( "GROUP_POLICE" ), 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
 
 
 }

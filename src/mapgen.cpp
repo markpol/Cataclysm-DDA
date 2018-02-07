@@ -2415,9 +2415,9 @@ ssssssssssssssssssssssss\n",
                                            f_null,  f_indoor_plant, f_null,  f_null,   f_null,   f_table, f_null,   f_null,        f_null,
                                            f_null,   f_toilet, f_null,  f_fridge, f_bookcase, f_chair, f_counter, f_desk,  f_locker));
         if (density > 1) {
-            place_spawns( GROUP_ZOMBIE, 2, 0, 0, SEEX * 2 - 1, SEEX * 2 - 1, density);
+            place_spawns( GROUP_ZOMBIE, 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
         } else {
-            add_spawn(mon_zombie, rng(0, 5), SEEX * 2 - 1, SEEX * 2 - 1);
+            add_spawn(mon_zombie, rng(0, 5), SEEX * 2 - 1, SEEY * 2 - 1);
         }
         if (t_north == "office_tower_b" && t_west == "office_tower_b") {
             rotate(3);
@@ -2476,9 +2476,9 @@ sss|........|.R.|EEED___\n",
                                                f_indoor_plant, f_null,  f_null,   f_null,   f_table, f_null,   f_null,        f_null,
                                                f_null,   f_toilet, f_null,  f_fridge, f_bookcase, f_chair, f_counter, f_desk,  f_locker));
             if (density > 1) {
-                place_spawns( GROUP_ZOMBIE, 2, 0, 0, SEEX * 2 - 1, SEEX * 2 - 1, density);
+                place_spawns( GROUP_ZOMBIE, 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
             } else {
-                add_spawn(mon_zombie, rng(0, 5), SEEX * 2 - 1, SEEX * 2 - 1);
+                add_spawn(mon_zombie, rng(0, 5), SEEX * 2 - 1, SEEY * 2 - 1);
             }
             if (t_west == "office_tower_b_entrance") {
                 rotate(1);
@@ -2577,9 +2577,9 @@ ssssssssssssssssssssssss\n",
                                                f_null,  f_indoor_plant, f_null,  f_null,   f_null,   f_table, f_null,   f_null,        f_null,
                                                f_null,   f_toilet, f_sink,  f_fridge, f_bookcase, f_chair, f_counter, f_desk,  f_locker, f_null));
             if (density > 1) {
-                place_spawns( GROUP_ZOMBIE, 2, 0, 0, SEEX * 2 - 1, SEEX * 2 - 1, density);
+                place_spawns( GROUP_ZOMBIE, 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
             } else {
-                add_spawn(mon_zombie, rng(0, 5), SEEX * 2 - 1, SEEX * 2 - 1);
+                add_spawn(mon_zombie, rng(0, 5), SEEX * 2 - 1, SEEY * 2 - 1);
             }
             if (t_north == "office_tower_b_entrance") {
                 rotate(1);
@@ -2670,9 +2670,9 @@ ___DEEE|.R.|...,,...|sss\n",
                                                f_indoor_plant, f_null,  f_null,   f_null,   f_table, f_null,   f_null,        f_null,
                                                f_null,   f_toilet, f_null,  f_fridge, f_bookcase, f_chair, f_counter, f_desk,  f_locker));
             if (density > 1) {
-                place_spawns( GROUP_ZOMBIE, 2, 0, 0, SEEX * 2 - 1, SEEX * 2 - 1, density);
+                place_spawns( GROUP_ZOMBIE, 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
             } else {
-                add_spawn(mon_zombie, rng(0, 5), SEEX * 2 - 1, SEEX * 2 - 1);
+                add_spawn(mon_zombie, rng(0, 5), SEEX * 2 - 1, SEEY * 2 - 1);
             }
             if (t_west == "office_tower_b" && t_north == "office_tower_b") {
                 rotate(1);
@@ -3193,7 +3193,7 @@ ___DEEE|.R.|...,,...|sss\n",
                     science_room(this, SEEX + 4, SEEY - 3, SEEX * 2 - 1 - rw, SEEY + 2, zlevel, 3);
                     science_room(this, lw, SEEY + 4, SEEX - 5, SEEY * 2 - 1 - bw, zlevel, rng(0, 1));
                     science_room(this, SEEX - 3, SEEY + 4, SEEX + 2, SEEY * 2 - 1 - bw, zlevel, 0);
-                    science_room(this, SEEX + 4, SEEX + 4, SEEX * 2 - 1 - rw, SEEY * 2 - 1 - bw,
+                    science_room(this, SEEX + 4, SEEY + 4, SEEX * 2 - 1 - rw, SEEY * 2 - 1 - bw,
                                  zlevel, 3 * rng(0, 1));
                     if (rw == 1) {
                         ter_set(SEEX * 2 - 1, SEEY - 1, t_door_metal_c);
@@ -3791,7 +3791,7 @@ ff.......|....|WWWWWWWW|\n\
         line(this, t_chaingate_l,            11,            0,           12,            0);
         line(this, t_chainfence_h,            0, SEEY * 2 - 1, SEEX * 2 - 1, SEEY * 2 - 1);
         line(this, t_chaingate_l,            11, SEEY * 2 - 1,           12, SEEY * 2 - 1);
-        line(this, t_chainfence_v,            0,            0,            0, SEEX * 2 - 1);
+        line(this, t_chainfence_v,            0,            0,            0, SEEY * 2 - 1);
         line(this, t_chaingate_l,             0,           11,            0,           12);
         line(this, t_chainfence_v, SEEX * 2 - 1,            0, SEEX * 2 - 1, SEEY * 2 - 1);
         line(this, t_chaingate_l,  SEEX * 2 - 1,           11, SEEX * 2 - 1,           12);
@@ -4065,7 +4065,7 @@ ff.......|....|WWWWWWWW|\n\
         if (zlevel == 0) { // Ground floor
             // TODO: More varieties?
             fill_background(this, t_dirt);
-            square(this, t_grate, SEEX - 1, SEEY - 1, SEEX, SEEX);
+            square(this, t_grate, SEEX - 1, SEEY - 1, SEEX, SEEY);
             ter_set(SEEX + 1, SEEY + 1, t_pedestal_temple);
         } else { // Underground!  Shit's about to get interesting!
             // Start with all rock floor
@@ -4943,11 +4943,11 @@ ff.......|....|WWWWWWWW|\n\
         case 2: { // The Thing dog
             int num_bodies = rng(4, 8);
             for (int i = 0; i < num_bodies; i++) {
-                int x = rng(4, SEEX * 2 - 5), y = rng(4, SEEX * 2 - 5);
+                int x = rng(4, SEEX * 2 - 5), y = rng(4, SEEY * 2 - 5);
                 add_item( x, y, item::make_corpse() );
                 place_items("mine_equipment", 60, x, y, x, y, false, 0);
             }
-            add_spawn(mon_dog_thing, 1, rng(SEEX, SEEX + 1), rng(SEEX, SEEX + 1), true);
+            add_spawn(mon_dog_thing, 1, rng(SEEX, SEEX + 1), rng(SEEY, SEEY + 1), true);
             spawn_artifact( tripoint( rng(SEEX, SEEX + 1), rng(SEEY, SEEY + 1), abs_sub.z ) );
         }
         break;
@@ -4978,7 +4978,7 @@ ff.......|....|WWWWWWWW|\n\
                 line(this, t_fault, 4, 4, SEEX * 2 - 5, 4);
                 break;
             case EAST:
-                square(this, t_rock, SEEX * 2 - 5, 0, SEEY * 2 - 1, SEEX * 2 - 1);
+                square(this, t_rock, SEEX * 2 - 5, 0, SEEX * 2 - 1, SEEY * 2 - 1);
                 line(this, t_fault, SEEX * 2 - 5, 4, SEEX * 2 - 5, SEEY * 2 - 5);
                 break;
             case SOUTH:
@@ -6062,7 +6062,7 @@ $$$$-|-|=HH-|-HHHH-|####\n",
         }
         if (t_east != "mansion_entrance" && t_east != "mansion") {
             rw = SEEX * 2 - 2;
-            line(this, t_wall, SEEX * 2 - 1, 0, SEEX * 2 - 1, SEEX * 2 - 1);
+            line(this, t_wall, SEEX * 2 - 1, 0, SEEX * 2 - 1, SEEY * 2 - 1);
         }
         // Now pick a random layout
         switch (rng(1, 10)) {
@@ -8864,7 +8864,7 @@ void mx_military(map &m, const tripoint &)
         int mx = rng(1, SEEX * 2 - 2), my = rng(1, SEEY * 2 - 2);
         m.add_spawn(type, 1, mx, my);
     }
-    m.place_spawns( GROUP_MAYBE_MIL, 2, 0, 0, SEEX * 2 - 1, SEEX * 2 - 1,
+    m.place_spawns( GROUP_MAYBE_MIL, 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1,
                  0.1f);//0.1 = 1-5
     m.place_items("rare", 25, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, true, 0);
 }

@@ -975,7 +975,7 @@ void overmapbuffer::spawn_monster(const int x, const int y, const int z)
         // we only need the part that tells where on the submap to put it.
         point ms( modulo( this_monster.posx(), SEEX ), modulo( this_monster.posy(), SEEY ) );
         assert( ms.x >= 0 && ms.x < SEEX );
-        assert( ms.y >= 0 && ms.y < SEEX );
+        assert( ms.y >= 0 && ms.y < SEEY );
         ms.x += x * SEEX;
         ms.y += y * SEEY;
         // The monster position must be local to the main map when added via game::add_zombie

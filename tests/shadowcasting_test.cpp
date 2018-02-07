@@ -185,7 +185,7 @@ void shadowcasting_runoff(int iterations, bool test_bresenham = false ) {
     bool passed = true;
     map m;
     for( int x = 0; passed && x < MAPSIZE*SEEX; ++x ) {
-        for( int y = 0; y < MAPSIZE*SEEX; ++y ) {
+        for( int y = 0; y < MAPSIZE*SEEY; ++y ) {
             // Check that both agree on the outcome, but not necessarily the same values.
             if( (seen_squares_control[x][y] > LIGHT_TRANSPARENCY_SOLID) !=
                 (seen_squares_experiment[x][y] > LIGHT_TRANSPARENCY_SOLID) ) {
@@ -203,7 +203,7 @@ void shadowcasting_runoff(int iterations, bool test_bresenham = false ) {
 
     if( !passed ) {
         for( int x = 0; x < MAPSIZE*SEEX; ++x ) {
-            for( int y = 0; y < MAPSIZE*SEEX; ++y ) {
+            for( int y = 0; y < MAPSIZE*SEEY; ++y ) {
                 char output = ' ';
                 bool shadowcasting_disagrees =
                     (seen_squares_control[x][y] > LIGHT_TRANSPARENCY_SOLID) !=
@@ -252,7 +252,7 @@ void shadowcasting_runoff(int iterations, bool test_bresenham = false ) {
                 printf("%c", output);
             }
             printf("    ");
-            for( int y = 0; y < MAPSIZE*SEEX; ++y ) {
+            for( int y = 0; y < MAPSIZE*SEEY; ++y ) {
                 char output = ' ';
                 if( transparency_cache[x][y] == LIGHT_TRANSPARENCY_SOLID ) {
                     output = '#';
