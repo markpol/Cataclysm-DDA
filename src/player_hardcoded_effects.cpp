@@ -22,6 +22,8 @@
 
 const mtype_id mon_dermatik_larva( "mon_dermatik_larva" );
 
+const mongroup_id GROUP_NETHER( "GROUP_NETHER" );
+
 const efftype_id effect_adrenaline( "adrenaline" );
 const efftype_id effect_alarm_clock( "alarm_clock" );
 const efftype_id effect_asthma( "asthma" );
@@ -556,8 +558,7 @@ void player::hardcoded_effects( effect &it )
                 if( g->m.impassable( dest ) ) {
                     g->m.make_rubble( dest, f_rubble_rock, true );
                 }
-                MonsterGroupResult spawn_details = MonsterGroupManager::GetResultFromGroup(
-                                                       mongroup_id( "GROUP_NETHER" ) );
+                MonsterGroupResult spawn_details = MonsterGroupManager::GetResultFromGroup( GROUP_NETHER );
                 g->summon_mon( spawn_details.name, dest );
                 if( g->u.sees( dest ) ) {
                     g->cancel_activity_query( _( "A monster appears nearby!" ) );
@@ -642,8 +643,7 @@ void player::hardcoded_effects( effect &it )
                     if( g->m.impassable( dest ) ) {
                         g->m.make_rubble( dest, f_rubble_rock, true );
                     }
-                    MonsterGroupResult spawn_details = MonsterGroupManager::GetResultFromGroup(
-                                                           mongroup_id( "GROUP_NETHER" ) );
+                    MonsterGroupResult spawn_details = MonsterGroupManager::GetResultFromGroup( GROUP_NETHER );
                     g->summon_mon( spawn_details.name, dest );
                     if( g->u.sees( dest ) ) {
                         g->cancel_activity_query( _( "A monster appears nearby!" ) );

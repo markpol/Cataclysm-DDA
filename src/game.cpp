@@ -142,6 +142,9 @@ bool test_mode = false;
 
 const mtype_id mon_manhack( "mon_manhack" );
 
+const mongroup_id GROUP_NETHER( "GROUP_NETHER" );
+const mongroup_id GROUP_ZOMBIE( "GROUP_ZOMBIE" );
+
 const skill_id skill_melee( "melee" );
 const skill_id skill_dodge( "dodge" );
 const skill_id skill_driving( "driving" );
@@ -869,7 +872,7 @@ bool game::start_game(std::string worldname)
         get_option<bool>( "BLACK_ROAD" ) || g->scen->has_flag("SUR_START");
     // Surrounded start ones
     if( spawn_near ) {
-        start_loc.surround_with_monsters( omtstart, mongroup_id( "GROUP_ZOMBIE" ), 70 );
+        start_loc.surround_with_monsters( omtstart, GROUP_ZOMBIE, 70 );
     }
 
     m.spawn_monsters( !spawn_near ); // Static monsters
@@ -6392,7 +6395,7 @@ void game::resonance_cascade( const tripoint &p )
             case 13:
             case 14:
             case 15:
-                spawn_details = MonsterGroupManager::GetResultFromGroup( mongroup_id( "GROUP_NETHER" ) );
+                spawn_details = MonsterGroupManager::GetResultFromGroup( GROUP_NETHER );
                 invader = monster( spawn_details.name, dest );
                 add_zombie(invader);
                 break;

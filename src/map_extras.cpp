@@ -21,7 +21,7 @@
 
 namespace MapExtras
 {
-static const mongroup_id GROUP_MAYBE_MIL( "GROUP_MAYBE_MIL" );
+const mongroup_id GROUP_MAYBE_MIL( "GROUP_MAYBE_MIL" );
 
 const mtype_id mon_blank( "mon_blank" );
 const mtype_id mon_chickenbot( "mon_chickenbot" );

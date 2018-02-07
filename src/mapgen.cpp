@@ -93,6 +93,10 @@ const mtype_id mon_zombie_scientist( "mon_zombie_scientist" );
 const mtype_id mon_zombie_shrieker( "mon_zombie_shrieker" );
 const mtype_id mon_zombie_soldier( "mon_zombie_soldier" );
 
+const mongroup_id GROUP_DOMESTIC( "GROUP_DOMESTIC" );
+const mongroup_id GROUP_PUBLICWORKERS( "GROUP_PUBLICWORKERS" );
+const mongroup_id GROUP_ZOMBIE( "GROUP_ZOMBIE" );
+
 bool connects_to(oter_id there, int dir_from_here);
 void science_room(map *m, int x1, int y1, int x2, int y2, int z, int rotate);
 void set_science_room(map *m, int x1, int y1, bool faces_right, int turn);
@@ -2020,9 +2024,6 @@ void map::draw_map(const oter_id terrain_type, const oter_id t_north, const oter
                    const oter_id t_above, const int turn, const float density,
                    const int zlevel, const regional_settings * rsettings)
 {
-    static const mongroup_id GROUP_ZOMBIE( "GROUP_ZOMBIE" );
-    static const mongroup_id GROUP_PUBLICWORKERS( "GROUP_PUBLICWORKERS" );
-    static const mongroup_id GROUP_DOMESTIC( "GROUP_DOMESTIC" );
     // Big old switch statement with a case for each overmap terrain type.
     // Many of these can be copied from another type, then rotated; for instance,
     //  "house_east" is identical to "house_north", just rotated 90 degrees to

@@ -64,6 +64,16 @@
 
 const mtype_id mon_jabberwock( "mon_jabberwock" );
 
+const mongroup_id GROUP_ANT( "GROUP_ANT" );
+const mongroup_id GROUP_CHUD( "GROUP_CHUD" );
+const mongroup_id GROUP_FOREST( "GROUP_FOREST" );
+const mongroup_id GROUP_RIVER( "GROUP_RIVER" );
+const mongroup_id GROUP_SEWER( "GROUP_SEWER" );
+const mongroup_id GROUP_SPIRAL( "GROUP_SPIRAL" );
+const mongroup_id GROUP_SWAMP( "GROUP_SWAMP" );
+const mongroup_id GROUP_WORM( "GROUP_WORM" );
+const mongroup_id GROUP_ZOMBIE( "GROUP_ZOMBIE" );
+
 const efftype_id effect_pet( "pet" );
 
 using oter_type_id = int_id<oter_type_t>;
@@ -1786,7 +1796,7 @@ bool overmap::generate_sub(int const z)
             } else if (oter_above == "anthill") {
                 int size = rng(MIN_ANT_SIZE, MAX_ANT_SIZE);
                 ant_points.push_back(city(i, j, size));
-                add_mon_group(mongroup( mongroup_id( "GROUP_ANT" ), i * 2, j * 2, z, (size * 3) / 2, rng(6000, 8000)));
+                add_mon_group(mongroup( GROUP_ANT, i * 2, j * 2, z, (size * 3) / 2, rng(6000, 8000)));
             } else if (oter_above == "slimepit_down") {
                 int size = rng(MIN_GOO_SIZE, MAX_GOO_SIZE);
                 goo_points.push_back(city(i, j, size));
@@ -1817,7 +1827,7 @@ bool overmap::generate_sub(int const z)
                     ter( p.x, p.y, p.z ) = oter_id( "spiral" );
                 }
                 ter( i, j, z ) = oter_id( "spiral_hub" );
-                add_mon_group( mongroup( mongroup_id( "GROUP_SPIRAL" ), i * 2, j * 2, z, 2, 200 ) );
+                add_mon_group( mongroup( GROUP_SPIRAL, i * 2, j * 2, z, 2, 200 ) );
             } else if ( oter_above == "silo" ) {
                 if( rng( 2, 7 ) < abs( z ) ) {
                     ter(i, j, z) = oter_id( "silo_finale" );
@@ -1864,10 +1874,10 @@ bool overmap::generate_sub(int const z)
 
     for (auto &i : cities) {
         if (one_in(3)) {
-            add_mon_group(mongroup( mongroup_id( "GROUP_CHUD" ), i.x * 2, i.y * 2, z, i.s, i.s * 20));
+            add_mon_group(mongroup( GROUP_CHUD, i.x * 2, i.y * 2, z, i.s, i.s * 20));
         }
         if (!one_in(8)) {
-            add_mon_group(mongroup( mongroup_id( "GROUP_SEWER" ), i.x * 2, i.y * 2, z, (i.s * 7) / 2, i.s * 70));
+            add_mon_group(mongroup( GROUP_SEWER, i.x * 2, i.y * 2, z, (i.s * 7) / 2, i.s * 70));
         }
     }
 
@@ -2239,7 +2249,7 @@ void overmap::draw( const catacurses::window &w, const catacurses::window &wbar,
                 } else {
                     const auto &groups = overmap_buffer.monsters_at( omx, omy, center.z );
                     for( auto &mgp : groups ) {
-                        if( mgp->type == mongroup_id( "GROUP_FOREST" ) ) {
+                        if( mgp->type == GROUP_FOREST ) {
                             // Don't flood the map with forest creatures.
                             continue;
                         }
@@ -3051,7 +3061,6 @@ void overmap::move_hordes()
 
 
     if(get_option<bool>( "WANDER_SPAWNS" ) ) {
-        static const mongroup_id GROUP_ZOMBIE("GROUP_ZOMBIE");
 
         // Re-absorb zombies into hordes.
         // Scan over monsters outside the player's view and place them back into hordes.
@@ -4426,7 +4435,7 @@ void overmap::place_mongroups()
     for( auto &elem : cities ) {
         if( get_option<bool>( "WANDER_SPAWNS" ) ) {
             if( !one_in( 16 ) || elem.s > 5 ) {
-                mongroup m( mongroup_id( "GROUP_ZOMBIE" ), ( elem.x * 2 ), ( elem.y * 2 ), 0, int( elem.s * 2.5 ),
+                mongroup m( GROUP_ZOMBIE, ( elem.x * 2 ), ( elem.y * 2 ), 0, int( elem.s * 2.5 ),
                             elem.s * 80 );
 //                m.set_target( zg.back().posx, zg.back().posy );
                 m.horde = true;
@@ -4449,7 +4458,7 @@ void overmap::place_mongroups()
                     }
                 }
                 if (swamp_count >= 25)
-                    add_mon_group(mongroup( mongroup_id( "GROUP_SWAMP" ), x * 2, y * 2, 0, 3,
+                    add_mon_group(mongroup( GROUP_SWAMP, x * 2, y * 2, 0, 3,
                                           rng(swamp_count * 8, swamp_count * 25)));
             }
         }
@@ -4468,7 +4477,7 @@ void overmap::place_mongroups()
                     }
                 }
                 if (river_count >= 25)
-                    add_mon_group(mongroup( mongroup_id( "GROUP_RIVER" ), x * 2, y * 2, 0, 3,
+                    add_mon_group(mongroup( GROUP_RIVER, x * 2, y * 2, 0, 3,
                                           rng(river_count * 8, river_count * 25)));
             }
         }
@@ -4478,7 +4487,7 @@ void overmap::place_mongroups()
         // Place the "put me anywhere" groups
         int numgroups = rng(0, 3);
         for (int i = 0; i < numgroups; i++) {
-            add_mon_group(mongroup( mongroup_id( "GROUP_WORM" ), rng(0, OMAPX * 2 - 1), rng(0, OMAPY * 2 - 1), 0,
+            add_mon_group(mongroup( GROUP_WORM, rng(0, OMAPX * 2 - 1), rng(0, OMAPY * 2 - 1), 0,
                          rng(20, 40), rng(30, 50)));
         }
     }

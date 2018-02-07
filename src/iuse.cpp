@@ -74,6 +74,8 @@ const mtype_id mon_vortex( "mon_vortex" );
 const mtype_id mon_wasp( "mon_wasp" );
 const mtype_id mon_cow( "mon_cow" );
 
+const mongroup_id GROUP_FISH( "GROUP_FISH" );
+
 const skill_id skill_firstaid( "firstaid" );
 const skill_id skill_tailor( "tailor" );
 const skill_id skill_survival( "survival" );
@@ -2156,7 +2158,7 @@ int iuse::fish_trap(player *p, item *it, bool t, const tripoint &pos)
                     //not existing in the fishables vector. (maybe it was in range, but wandered off)
                     //lets say it is a 5% chance per fish to catch
                     if (one_in(20)) {
-                        const std::vector<mtype_id> fish_group = MonsterGroupManager::GetMonstersFromGroup( mongroup_id( "GROUP_FISH" ) );
+                        const std::vector<mtype_id> fish_group = MonsterGroupManager::GetMonstersFromGroup( GROUP_FISH );
                         const mtype_id& fish_mon = fish_group[rng(1, fish_group.size()) - 1];
                         //Yes, we can put fishes in the trap like knives in the boot,
                         //and then get fishes via activation of the item,
