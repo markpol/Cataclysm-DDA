@@ -6602,6 +6602,11 @@ monster *game::summon_mon( const mtype_id& id, const tripoint &p )
     return add_zombie( mon, true ) ? critter_at<monster>( p ) : nullptr;
 }
 
+monster *game::summon_mon( const std::string &id, const tripoint &p )
+{
+    return summon_mon( mtype_id( id ), p );
+}
+
 // By default don't pin upgrades to current day
 bool game::add_zombie(monster &critter)
 {

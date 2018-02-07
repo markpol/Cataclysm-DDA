@@ -284,6 +284,8 @@ class game
          * Returns a `nullptr` if the monster could not be created.
          */
         monster *summon_mon( const mtype_id& id, const tripoint &p );
+        monster *summon_mon( const std::string &id, const tripoint &p );
+
         /** Calls the creature_tracker add function. Returns true if successful. */
         bool add_zombie(monster &critter);
         bool add_zombie(monster &critter, bool pin_upgrade);

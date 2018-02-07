@@ -68,6 +68,12 @@ class monster : public Creature
         monster( const mtype_id &id );
         monster( const mtype_id &id, const tripoint &pos );
         monster( const monster & ) ;
+        monster( const std::string &id ) {
+            monster( mtype_id( id ) );
+        }
+        monster( const std::string &id, const tripoint &pos ) {
+            monster( mtype_id( id ), pos );
+        }
         monster( monster && );
         ~monster() override;
         monster &operator=( const monster & );
