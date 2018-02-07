@@ -396,16 +396,16 @@ void overmapbuffer::move_hordes()
 
 std::vector<mongroup*> overmapbuffer::monsters_at(int x, int y, int z)
 {
-    // (x,y) are overmap terrain coordinates, they spawn 2x2 submaps,
+    // (x,y) are overmap terrain coordinates, they spawn (SM_IN_OMT * SM_IN_OMT) submaps,
     // but monster groups are defined with submap coordinates.
     std::vector<mongroup *> result, tmp;
-    tmp = groups_at( x * 2, y * 2 , z );
+    tmp = groups_at( x * SM_IN_OMT, y * SM_IN_OMT , z );
     result.insert( result.end(), tmp.begin(), tmp.end() );
-    tmp = groups_at( x * 2, y * 2 + 1, z );
+    tmp = groups_at( x * SM_IN_OMT, y * SM_IN_OMT + 1, z );
     result.insert( result.end(), tmp.begin(), tmp.end() );
-    tmp = groups_at( x * 2 + 1, y * 2 + 1, z );
+    tmp = groups_at( x * SM_IN_OMT + 1, y * SM_IN_OMT + 1, z );
     result.insert( result.end(), tmp.begin(), tmp.end() );
-    tmp = groups_at( x * 2 + 1, y * 2 , z );
+    tmp = groups_at( x * SM_IN_OMT + 1, y * SM_IN_OMT , z );
     result.insert( result.end(), tmp.begin(), tmp.end() );
     return result;
 }
