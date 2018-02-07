@@ -41,11 +41,6 @@ const mtype_id mon_spider_widow_giant( "mon_spider_widow_giant" );
 const mtype_id mon_wasp( "mon_wasp" );
 const mtype_id mon_zombie_jackson( "mon_zombie_jackson" );
 
-const mongroup_id GROUP_CAVE( "GROUP_CAVE" );
-const mongroup_id GROUP_PHARM( "GROUP_PHARM" );
-const mongroup_id GROUP_POLICE( "GROUP_POLICE" );
-const mongroup_id GROUP_ZOMBIE( "GROUP_ZOMBIE" );
-
 mapgendata::mapgendata( oter_id north, oter_id east, oter_id south, oter_id west,
                         oter_id northeast, oter_id southeast, oter_id southwest, oter_id northwest,
                         oter_id up, int z, const regional_settings &rsettings, map &mp )
@@ -1210,7 +1205,7 @@ void mapgen_road( map *m, oter_id terrain_type, mapgendata dat, int turn, float 
 
     // spawn some monsters
     if( neighbor_sidewalks ) {
-        m->place_spawns( GROUP_ZOMBIE, 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density );
+        m->place_spawns( "GROUP_ZOMBIE", 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density );
         // 1 per 10 overmaps
         if( one_in( 10000 ) ) {
             m->add_spawn( mon_zombie_jackson, 1, SEEX, SEEY );
@@ -1916,7 +1911,7 @@ void mapgen_gas_station(map *m, oter_id terrain_type, mapgendata dat, int, float
     if (terrain_type == "s_gas_west") {
         m->rotate(3);
     }
-    m->place_spawns( GROUP_ZOMBIE, 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
+    m->place_spawns( "GROUP_ZOMBIE", 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
 }
 ////////////////////
 
@@ -2759,7 +2754,7 @@ void mapgen_generic_house(map *m, oter_id terrain_type, mapgendata dat, int turn
         m->place_items("rare", 60, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, false, turn);
 
     } else { // Just boring old zombies
-        m->place_spawns( GROUP_ZOMBIE, 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
+        m->place_spawns( "GROUP_ZOMBIE", 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
     }
 
     m->rotate( static_cast<int>( terrain_type->get_dir() ) );
@@ -2850,7 +2845,7 @@ void mapgen_pharm(map *m, oter_id terrain_type, mapgendata dat, int, float densi
         m->place_items("harddrugs", 88, lw + 2, bw - 1, cw - 2, bw - 1, false, 0);
         m->place_items("behindcounter", 78, lw + 1, tw + 1, lw + 4, tw + 5, false, 0);
         autorotate(false);
-        m->place_spawns( GROUP_PHARM, 2, 0, 0, SEEX * 2 - 1, SEEX * 2 - 1, density);
+        m->place_spawns( "GROUP_PHARM", 2, 0, 0, SEEX * 2 - 1, SEEX * 2 - 1, density);
 
 }
 
@@ -2927,7 +2922,7 @@ void mapgen_s_sports(map *m, oter_id terrain_type, mapgendata dat, int, float de
             m->place_items("allsporting", 92, lw + 1, cw + 1, rw - 1, bw - 1, false, 0);
         }
         autorotate(false);
-        m->place_spawns( GROUP_ZOMBIE, 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
+        m->place_spawns( "GROUP_ZOMBIE", 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
 }
 
 ///////////////////////////////////////////////////////////
@@ -3054,7 +3049,7 @@ void mapgen_basement_junk(map *m, oter_id terrain_type, mapgendata dat, int turn
     m->place_items( "home_hw", 80, 1, 1, SEEX * 2 - 2, SEEY * 2 - 2, false, 0 );
     m->place_items( "homeguns", 10, 1, 1, SEEX * 2 - 2, SEEY * 2 - 2, false, 0 );
     // Chance of zombies in the basement
-    m->place_spawns( GROUP_ZOMBIE, 2, 1, 1, SEEX * 2 - 2, SEEY * 2 - 2, density );
+    m->place_spawns( "GROUP_ZOMBIE", 2, 1, 1, SEEX * 2 - 2, SEEY * 2 - 2, density );
 }
 
 void mapgen_basement_spiders(map *m, oter_id terrain_type, mapgendata dat, int turn, float density)
@@ -3198,7 +3193,7 @@ void mapgen_police(map *m, oter_id terrain_type, mapgendata dat, int, float dens
         }
         autorotate_down();
 
-        m->place_spawns( GROUP_POLICE, 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
+        m->place_spawns( "GROUP_POLICE", 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
 
 
 }
@@ -3424,7 +3419,7 @@ void mapgen_cave(map *m, oter_id, mapgendata dat, int turn, float density)
                 m->place_items("cave_minerals", 50, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, true, 0);
                 break;
             }
-            m->place_spawns( GROUP_CAVE, 2, 6, 6, 18, 18, 1.0);
+            m->place_spawns( "GROUP_CAVE", 2, 6, 6, 18, 18, 1.0);
         } else { // We're above ground!
             // First, draw a forest
 /*

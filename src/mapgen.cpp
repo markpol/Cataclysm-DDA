@@ -93,10 +93,6 @@ const mtype_id mon_zombie_scientist( "mon_zombie_scientist" );
 const mtype_id mon_zombie_shrieker( "mon_zombie_shrieker" );
 const mtype_id mon_zombie_soldier( "mon_zombie_soldier" );
 
-const mongroup_id GROUP_DOMESTIC( "GROUP_DOMESTIC" );
-const mongroup_id GROUP_PUBLICWORKERS( "GROUP_PUBLICWORKERS" );
-const mongroup_id GROUP_ZOMBIE( "GROUP_ZOMBIE" );
-
 bool connects_to(oter_id there, int dir_from_here);
 void science_room(map *m, int x1, int y1, int x2, int y2, int z, int rotate);
 void set_science_room(map *m, int x1, int y1, bool faces_right, int turn);
@@ -2119,7 +2115,7 @@ ssssss______ss______ssss\n",
         place_items("office", 75, 19, 6, 19, 6, false, 0);
         place_items("office", 75, 12, 8, 14, 8, false, 0);
         if (density > 1) {
-            place_spawns( GROUP_ZOMBIE, 2, 0, 0, 12, 3, density);
+            place_spawns( "GROUP_ZOMBIE", 2, 0, 0, 12, 3, density);
         } else {
             if (x_in_y(1, 2)) {
                 add_spawn(mon_zombie, 2, 15, 7);
@@ -2193,7 +2189,7 @@ ss%|rrrr|...|.R.|EEED...\n",
                                                f_indoor_plant, f_null,  f_null,   f_null,   f_table, f_null,   f_null,        f_null,
                                                f_null,   f_toilet, f_sink,  f_fridge, f_bookcase, f_chair, f_counter, f_desk,  f_locker, f_null));
             if (density > 1) {
-                place_spawns( GROUP_ZOMBIE, 2, 0, 0, 2, 8, density);
+                place_spawns( "GROUP_ZOMBIE", 2, 0, 0, 2, 8, density);
             } else {
                 add_spawn(mon_zombie, rng(0, 5), 15, 7);
                 if (x_in_y(1, 1)) {
@@ -2276,7 +2272,7 @@ ssssssssssssssssssssssss\n",
             place_items("cubical_office", 75, 19, 5, 19, 7, false, 0);
             place_items("cleaning", 80, 1, 7, 2, 7, false, 0);
             if (density > 1) {
-                place_spawns( GROUP_ZOMBIE, 2, 0, 0, 14, 10, density);
+                place_spawns( "GROUP_ZOMBIE", 2, 0, 0, 14, 10, density);
             } else {
                 add_spawn(mon_zombie, rng(0, 15), 14, 10);
                 if (x_in_y(1, 2)) {
@@ -2347,7 +2343,7 @@ ssssssssssssssssssssssss\n\
             place_items("office", 75, 16, 11, 17, 12, false, 0);
             place_items("cleaning", 75, 8, 20, 10, 20, false, 0);
             if (density > 1) {
-                place_spawns( GROUP_ZOMBIE, 2, 0, 0, 9, 15, density);
+                place_spawns( "GROUP_ZOMBIE", 2, 0, 0, 9, 15, density);
             } else {
                 add_spawn(mon_zombie, rng(0, 5), 9, 15);
             }
@@ -2408,7 +2404,7 @@ ssssssssssssssssssssssss\n",
                                            f_null,  f_indoor_plant, f_null,  f_null,   f_null,   f_table, f_null,   f_null,        f_null,
                                            f_null,   f_toilet, f_null,  f_fridge, f_bookcase, f_chair, f_counter, f_desk,  f_locker));
         if (density > 1) {
-            place_spawns( GROUP_ZOMBIE, 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
+            place_spawns( "GROUP_ZOMBIE", 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
         } else {
             add_spawn(mon_zombie, rng(0, 5), SEEX * 2 - 1, SEEY * 2 - 1);
         }
@@ -2469,7 +2465,7 @@ sss|........|.R.|EEED___\n",
                                                f_indoor_plant, f_null,  f_null,   f_null,   f_table, f_null,   f_null,        f_null,
                                                f_null,   f_toilet, f_null,  f_fridge, f_bookcase, f_chair, f_counter, f_desk,  f_locker));
             if (density > 1) {
-                place_spawns( GROUP_ZOMBIE, 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
+                place_spawns( "GROUP_ZOMBIE", 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
             } else {
                 add_spawn(mon_zombie, rng(0, 5), SEEX * 2 - 1, SEEY * 2 - 1);
             }
@@ -2570,7 +2566,7 @@ ssssssssssssssssssssssss\n",
                                                f_null,  f_indoor_plant, f_null,  f_null,   f_null,   f_table, f_null,   f_null,        f_null,
                                                f_null,   f_toilet, f_sink,  f_fridge, f_bookcase, f_chair, f_counter, f_desk,  f_locker, f_null));
             if (density > 1) {
-                place_spawns( GROUP_ZOMBIE, 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
+                place_spawns( "GROUP_ZOMBIE", 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
             } else {
                 add_spawn(mon_zombie, rng(0, 5), SEEX * 2 - 1, SEEY * 2 - 1);
             }
@@ -2663,7 +2659,7 @@ ___DEEE|.R.|...,,...|sss\n",
                                                f_indoor_plant, f_null,  f_null,   f_null,   f_table, f_null,   f_null,        f_null,
                                                f_null,   f_toilet, f_null,  f_fridge, f_bookcase, f_chair, f_counter, f_desk,  f_locker));
             if (density > 1) {
-                place_spawns( GROUP_ZOMBIE, 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
+                place_spawns( "GROUP_ZOMBIE", 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, density);
             } else {
                 add_spawn(mon_zombie, rng(0, 5), SEEX * 2 - 1, SEEY * 2 - 1);
             }

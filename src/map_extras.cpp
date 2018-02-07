@@ -21,7 +21,6 @@
 
 namespace MapExtras
 {
-const mongroup_id GROUP_MAYBE_MIL( "GROUP_MAYBE_MIL" );
 
 const mtype_id mon_blank( "mon_blank" );
 const mtype_id mon_chickenbot( "mon_chickenbot" );
@@ -84,7 +83,7 @@ void mx_helicopter( map &m, const tripoint &abs_sub )
             extra_items = "bionics";
             break;
     }
-    m.place_spawns( GROUP_MAYBE_MIL, 2, 0, 0, SEEX * 2 - 1, SEEX * 2 - 1, 0.1f ); //0.1 = 1-5
+    m.place_spawns( "GROUP_MAYBE_MIL", 2, 0, 0, SEEX * 2 - 1, SEEX * 2 - 1, 0.1f ); //0.1 = 1-5
     m.place_items( extra_items, 70, cx - 4, cy - 4, cx + 4, cy + 4, true, 0, 100, 20 );
 }
 
@@ -119,7 +118,7 @@ void mx_military( map &m, const tripoint & )
         int mx = rng( 1, SEEX * 2 - 2 ), my = rng( 1, SEEY * 2 - 2 );
         m.add_spawn( type, 1, mx, my );
     }
-    m.place_spawns( GROUP_MAYBE_MIL, 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1,
+    m.place_spawns( "GROUP_MAYBE_MIL", 2, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1,
                     0.1f ); //0.1 = 1-5
     m.place_items( "rare", 25, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, true, 0 );
 }

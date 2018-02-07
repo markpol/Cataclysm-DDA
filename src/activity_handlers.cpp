@@ -43,8 +43,6 @@ const skill_id skill_firstaid( "firstaid" );
 
 const efftype_id effect_milked( "milked" );
 
-const mongroup_id GROUP_FISH( "GROUP_FISH" );
-
 using namespace activity_handlers;
 
 const std::map< activity_id, std::function<void( player_activity *, player *)> > activity_handlers::do_turn_functions =
@@ -887,7 +885,7 @@ static void rod_fish( player *p, int sSkillLevel, int fishChance )
         if( fishables.size() < 1 ) {
             if( one_in(20) ) {
                 item fish;
-                const std::vector<mtype_id> fish_group = MonsterGroupManager::GetMonstersFromGroup( GROUP_FISH );
+                const std::vector<mtype_id> fish_group = MonsterGroupManager::GetMonstersFromGroup( "GROUP_FISH" );
                 const mtype_id& fish_mon = fish_group[rng(1, fish_group.size()) - 1];
                 g->m.add_item_or_charges(p->pos(), item::make_corpse( fish_mon ) );
                 p->add_msg_if_player(m_good, _("You caught a %s."), fish_mon.obj().nname().c_str());
