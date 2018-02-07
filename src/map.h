@@ -1141,6 +1141,10 @@ class map
         void generate( const int x, const int y, const int z, const int turn );
         void place_spawns( const mongroup_id &group, const int chance,
                            const int x1, const int y1, const int x2, const int y2, const float density );
+        void place_spawns( const std::string &group, const int chance,
+                           const int x1, const int y1, const int x2, const int y2, const float density ){
+            place_spawns( mongroup_id( group ),  chance, x1,  y1, x2, y2, density );
+        }
         void place_gas_pump( const int x, const int y, const int charges );
         void place_gas_pump( const int x, const int y, const int charges, std::string fuel_type );
         // 6 liters at 250 ml per charge
@@ -1152,6 +1156,12 @@ class map
                         bool friendly = false,
                         const int faction_id = -1, const int mission_id = -1,
                         std::string name = "NONE" );
+        void add_spawn( const std::string &type, const int count, const int x, const int y,
+                        bool friendly = false,
+                        const int faction_id = -1, const int mission_id = -1,
+                        std::string name = "NONE" ){
+            add_spawn( mtype_id( type ), count, x,  y, friendly, faction_id, mission_id, name );
+        }
         vehicle *add_vehicle( const vgroup_id &type, const point &p, const int dir,
                               const int init_veh_fuel = -1, const int init_veh_status = -1,
                               const bool merge_wrecks = true );

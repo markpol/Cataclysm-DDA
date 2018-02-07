@@ -171,18 +171,49 @@ class MonsterGroupManager
         static void FinalizeMonsterGroups();
         static MonsterGroupResult GetResultFromGroup( const mongroup_id &group,
                 int *quantity = 0, int turn = -1 );
+        static MonsterGroupResult GetResultFromGroup( const std::string &group,
+                int *quantity = 0, int turn = -1 ) {
+                return GetResultFromGroup( mongroup_id( group ), quantity, turn );
+        }
         static bool IsMonsterInGroup( const mongroup_id &group, const mtype_id &id );
+        static bool IsMonsterInGroup( const mongroup_id &group, const std::string &id ) {
+                return IsMonsterInGroup( group, mtype_id( id ) );
+        }
+        static bool IsMonsterInGroup( const std::string &group, const mtype_id &id ) {
+                return IsMonsterInGroup( mongroup_id( group ), id );
+        }
+        static bool IsMonsterInGroup( const std::string &group, const std::string &id ) {
+                return IsMonsterInGroup( mongroup_id( group ), mtype_id( id ) );
+        }
         static bool isValidMonsterGroup( const mongroup_id &group );
+        static bool isValidMonsterGroup( const std::string &group ) {
+                return isValidMonsterGroup( mongroup_id( group ) );
+        }
         static const mongroup_id &Monster2Group( const mtype_id &id );
+        static const mongroup_id &Monster2Group( const std::string &id ) {
+                return Monster2Group( mtype_id( id ) );
+        }
         static std::vector<mtype_id> GetMonstersFromGroup( const mongroup_id &group );
+        static std::vector<mtype_id> GetMonstersFromGroup( const std::string &group ) {
+                return GetMonstersFromGroup( mongroup_id( group ) );
+        }
         static const MonsterGroup &GetMonsterGroup( const mongroup_id &group );
+        static const MonsterGroup &GetMonsterGroup( const std::string &group ) {
+                return GetMonsterGroup( mongroup_id( group ) );
+        }
         static const MonsterGroup &GetUpgradedMonsterGroup( const mongroup_id &group );
+        static const MonsterGroup &GetUpgradedMonsterGroup( const std::string &group ) {
+                return GetUpgradedMonsterGroup( mongroup_id( group ) );
+        }
 
         static void check_group_definitions();
 
         static void ClearMonsterGroups();
 
         static bool monster_is_blacklisted( const mtype_id &m );
+        static bool monster_is_blacklisted( const std::string &m ) {
+                return monster_is_blacklisted( mtype_id( m ) );
+        }
 
     private:
         static std::map<mongroup_id, MonsterGroup> monsterGroupMap;

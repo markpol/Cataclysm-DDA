@@ -73,6 +73,10 @@ class start_location
          */
         void surround_with_monsters( const tripoint &omtstart, const mongroup_id &type,
                                      float expected_points ) const;
+        void surround_with_monsters( const tripoint &omtstart, const std::string &type,
+                                     float expected_points ) const {
+            surround_with_monsters( omtstart, mongroup_id( type ), expected_points );
+        }
     private:
         friend class generic_factory<start_location>;
         string_id<start_location> id;
