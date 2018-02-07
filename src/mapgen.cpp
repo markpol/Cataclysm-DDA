@@ -431,8 +431,8 @@ mapgen_function_json_base::mapgen_function_json_base( const std::string s )
 : jdata( std::move( s ) )
 , do_format( false )
 , is_ready( false )
-, mapgensize_x( 24 )
-, mapgensize_y( 24 )
+, mapgensize_x( SM_WIDTH )
+, mapgensize_y( SM_HEIGHT )
 , x_offset( 0 )
 , y_offset( 0 )
 , format()
@@ -2114,9 +2114,9 @@ ssssss______ss______ssss\n",
                                            f_null,   f_toilet, f_sink,  f_fridge, f_bookcase, f_chair, f_counter, f_desk,  f_locker, f_null));
         place_items("office", 75, 4, 2, 6, 2, false, 0);
         place_items("office", 75, 19, 6, 19, 6, false, 0);
-        place_items("office", 75, 12, 8, 14, 8, false, 0);
+        place_items("office", 75, SEEX, 8, SEEX + 2, 8, false, 0);
         if (density > 1) {
-            place_spawns( GROUP_ZOMBIE, 2, 0, 0, 12, 3, density);
+            place_spawns( GROUP_ZOMBIE, 2, 0, 0, SEEX, 3, density);
         } else {
             if (x_in_y(1, 2)) {
                 add_spawn(mon_zombie, 2, 15, 7);
@@ -2203,11 +2203,11 @@ ss%|rrrr|...|.R.|EEED...\n",
             place_items("office", 75, 5, 16, 7, 16, false, 0);
             place_items("fridge", 80, 14, 17, 14, 17, false, 0);
             place_items("cleaning", 75, 19, 17, 20, 17, false, 0);
-            place_items("cubical_office", 75, 6, 12, 7, 12, false, 0);
-            place_items("cubical_office", 75, 12, 11, 12, 12, false, 0);
+            place_items("cubical_office", 75, 6, SEEX, 7, 12, false, 0);
+            place_items("cubical_office", 75, SEEX, 11, SEEX, 12, false, 0);
             place_items("cubical_office", 75, 16, 11, 17, 12, false, 0);
             place_items("cubical_office", 75, 4, 5, 5, 5, false, 0);
-            place_items("cubical_office", 75, 11, 5, 12, 5, false, 0);
+            place_items("cubical_office", 75, 11, 5, SEEX, 5, false, 0);
             place_items("cubical_office", 75, 14, 5, 16, 5, false, 0);
             {
                 int num_chairs = rng(0, 6);
@@ -2689,7 +2689,7 @@ ___DEEE|.R.|...,,...|sss\n",
                     }
                 }
                 if (x_in_y(1, 5)) {
-                    add_vehicle( vproto_id( "pickup" ), 12, 17, 270);
+                    add_vehicle( vproto_id( "pickup" ), SEEX, 17, 270);
                 }
                 if (x_in_y(1, 3)) {
                     add_vehicle( vproto_id( "fire_truck" ), 18, 17, 270);
@@ -2894,8 +2894,8 @@ ___DEEE|.R.|...,,...|sss\n",
                                                        f_rack,       f_desk,       f_null,       f_chair,      f_null,    f_null,           f_null,
                                                        f_null,               f_null,       f_null,       f_null,       f_null,       f_null,
                                                        f_null,              f_table,      f_counter,    f_sink,       f_toilet));
-                    for (int i = 0; i <= 23; i++) {
-                        for (int j = 0; j <= 23; j++) {
+                    for (int i = 0; i < SM_WIDTH; i++) {
+                        for (int j = 0; j < SM_HEIGHT; j++) {
                             if (this->furn(i, j) == f_locker) {
                                 place_items( "clothing_soldier_set", 100,  i, j, i, j, false, 0 );
                                 if( one_in( 2 ) ) {
@@ -2925,16 +2925,16 @@ ___DEEE|.R.|...,,...|sss\n",
                     tmpcomp2->add_option(_("UNLOCK ENTRANCE"), COMPACT_UNLOCK, 6);
                     tmpcomp2->add_failure(COMPFAIL_DAMAGE);
                     tmpcomp2->add_failure(COMPFAIL_SHUTDOWN);
-                    tmpcomp = add_computer( tripoint( 15,  12, abs_sub.z ), _("Magazine Entrance"), 6);
+                    tmpcomp = add_computer( tripoint( SEEX + 3,  SEEY, abs_sub.z ), _("Magazine Entrance"), 6);
                     tmpcomp->add_option(_("UNLOCK ENTRANCE"), COMPACT_UNLOCK, 7);
                     tmpcomp->add_failure(COMPFAIL_DAMAGE);
                     tmpcomp->add_failure(COMPFAIL_SHUTDOWN);
                     if (one_in(2)) {
-                        add_spawn(mon_zombie_soldier, rng(1, 4), 12, 12);
+                        add_spawn(mon_zombie_soldier, rng(1, 4), SEEX, SEEY);
                     } else if (one_in(5)) {
-                        add_spawn(mon_zombie_bio_op, rng(1, 2), 12, 12);
+                        add_spawn(mon_zombie_bio_op, rng(1, 2), SEEX, SEEY);
                     } else if (one_in(5)) {
-                        add_spawn(mon_zombie_grenadier, rng(1, 2), 12, 12);
+                        add_spawn(mon_zombie_grenadier, rng(1, 2), SEEX, SEEY);
                     }
                 } else { //human containment
                     mapf::formatted_set_simple(this, 0, 0,
@@ -2971,8 +2971,8 @@ ___DEEE|.R.|...,,...|sss\n",
                                                        f_rack,       f_desk,       f_null,       f_chair,      f_null,    f_null,           f_null,
                                                        f_null,               f_null,       f_null,       f_null,       f_null,       f_null,
                                                        f_null,              f_table,      f_counter,    f_sink,       f_toilet));
-                    for (int i = 0; i <= 23; i++) {
-                        for (int j = 0; j <= 23; j++) {
+                    for (int i = 0; i < SM_WIDTH; i++) {
+                        for (int j = 0; j < SM_HEIGHT; j++) {
                             if (this->furn(i, j) == f_locker) {
                                 place_items("science", 60,  i,  j, i,  j, false, 0);
                             }
@@ -3019,7 +3019,7 @@ ___DEEE|.R.|...,,...|sss\n",
                         add_spawn(mon_zombie_grabber, 1, 19, 9);
                     }
                     if (one_in(2)) {
-                        add_spawn(mon_zombie_scientist, rng(1, 2), 12, 14);
+                        add_spawn(mon_zombie_scientist, rng(1, 2), SEEX, SEEY + 2);
                     }
                 }
                 if (bw == 2) {
@@ -3270,12 +3270,12 @@ ___DEEE|.R.|...,,...|sss\n",
                                                            f_null,       f_null,       f_null,       f_null,       f_null,         f_null ,
                                                            f_table,      f_counter,    f_sink));
                         mtrap_set( this, 19, 3, tr_dissector);
-                        place_spawns( GROUP_LAB_ALIEN_1, 3, 12, 12, 12, 12, 1 );
+                        place_spawns( GROUP_LAB_ALIEN_1, 3, SEEX, SEEY, SEEX, SEEY, 1 );
                         place_spawns( GROUP_LAB_ALIEN_2, 3, 2, 2, 2, 2, 1 );
                         place_spawns( GROUP_LAB_ALIEN_3, 3, 2, 7, 2, 7, 1 );
                         place_spawns( GROUP_LAB_ZOMBIE_SCIENTIST, 2, 12, 18, 12, 18, rng(1, 3) );
-                        for (int i = 0; i <= 23; i++) {
-                            for (int j = 0; j <= 23; j++) {
+                        for (int i = 0; i < SM_WIDTH; i++) {
+                            for (int j = 0; j < SM_HEIGHT; j++) {
                                 if (this->furn(i, j) == f_counter) {
                                     place_items("office", 30,  i,  j, i,  j, false, 0);
                                 } else if (this->furn(i, j) == f_locker) {
@@ -3336,8 +3336,8 @@ A......D.........|dh...|\n\
                                                            f_chair, f_null,    f_null,           f_null,         f_null,         f_null,      f_null,
                                                            f_null,       f_null,       f_null,         f_null,              f_table,  f_counter,
                                                            f_indoor_plant));
-                        for (int i = 0; i <= 23; i++) {
-                            for (int j = 0; j <= 23; j++) {
+                        for (int i = 0; i < SM_WIDTH; i++) {
+                            for (int j = 0; j < SM_HEIGHT; j++) {
                                 if (this->furn(i, j) == f_crate_c) {
                                     if (one_in(2)) {
                                         place_items("robots", 60,  i,  j, i,  j, false, 0);
@@ -3398,8 +3398,8 @@ ff.......|....|WWWWWWWW|\n\
                                                            f_null,    f_null,           f_null,               f_null,               f_null,      f_null,
                                                            f_null,       f_null,       f_null,         f_null,              f_table, f_counter, f_indoor_plant,
                                                            f_null,     f_null,     f_null,                 f_null,     f_null, f_toilet, f_sink,  f_null));
-                        for (int i = 0; i <= 23; i++) {
-                            for (int j = 0; j <= 23; j++) {
+                        for (int i = 0; i < SM_WIDTH; i++) {
+                            for (int j = 0; j < SM_HEIGHT; j++) {
                                 if (this->furn(i, j) == f_locker) {
                                     place_items("science", 60,  i,  j, i,  j, false, 0);
                                 } else if (this->furn(i, j) == f_fridge) {
@@ -3452,8 +3452,8 @@ ff.......|....|WWWWWWWW|\n\
                                                            f_null,    f_null,           f_null,         f_null,         f_null,       f_null,       f_null,
                                                            f_null,       f_null,         f_null,              f_table,      f_counter,    f_indoor_plant,
                                                            f_null, f_null,   f_null));
-                        for (int i = 0; i <= 23; i++) {
-                            for (int j = 0; j <= 23; j++) {
+                        for (int i = 0; i < SM_WIDTH; i++) {
+                            for (int j = 0; j < SM_HEIGHT; j++) {
                                 if (this->furn(i, j) == f_counter) {
                                     place_items("cubical_office", 30,  i,  j, i,  j, false, 0);
                                 }
@@ -4227,7 +4227,7 @@ ff.......|....|WWWWWWWW|\n\
                 }
                 // Finally, fill in the rest with random tiles, and place toggle traps
                 for (int i = SEEX - 3; i <= SEEX + 4; i++) {
-                    for (int j = 2; j <= SM_HEIGHT - 2; j++) {
+                    for (int j = 2; j < SM_HEIGHT - 2; j++) {
                         mtrap_set( this, i, j, tr_temple_toggle);
                         if (ter(i, j) == t_rock_floor) {
                             ter_set(i, j, ter_id( rng(t_rock_red, t_floor_blue) ));
@@ -4600,8 +4600,8 @@ ff.......|....|WWWWWWWW|\n\
 
         for (int i = 0; i < SM_WIDTH; i++) {
             for (int j = 0; j < SM_HEIGHT; j++) {
-                if (i >= w_fac + rng(0, 2) && i <= SM_WIDTH - 1 - e_fac - rng(0, 2) &&
-                    j >= n_fac + rng(0, 2) && j <= SM_HEIGHT - 1 - s_fac - rng(0, 2) &&
+                if (i >= w_fac + rng(0, 2) && i < SM_WIDTH - 1 - e_fac - rng(0, 2) &&
+                    j >= n_fac + rng(0, 2) && j < SM_HEIGHT - 1 - s_fac - rng(0, 2) &&
                     i + j >= 4 && (SM_WIDTH - i) + (SM_HEIGHT - j) >= 6  ) {
                     ter_set(i, j, t_rock_floor);
                 } else {
@@ -5174,8 +5174,8 @@ ff.......|....|WWWWWWWW|\n\
             place_spawns( GROUP_ROBOT_HAZMATBOT, 1, 10, 10, 5, 5, 1 );
         }
         //lazy radiation mapping
-        for (int x = 0; x <= 23; x++) {
-            for (int y = 0; y <= 23; y++) {
+        for (int x = 0; x < SM_WIDTH; x++) {
+            for (int y = 0; y < SM_HEIGHT; y++) {
                 adjust_radiation(x, y, rng(10, 30));
             }
         }
@@ -5245,8 +5245,8 @@ ff.......|....|WWWWWWWW|\n\
                 place_spawns( GROUP_ROBOT_HAZMATBOT, 1, 23, 18, 23, 18, 1 );
             }
             //lazy radiation mapping
-            for (int x = 0; x <= 23; x++) {
-                for (int y = 0; y <= 23; y++) {
+            for (int x = 0; x < SM_WIDTH; x++) {
+                for (int y = 0; y < SM_HEIGHT; y++) {
                     adjust_radiation(x, y, rng(10, 30));
                 }
             }
@@ -5317,8 +5317,8 @@ FFFFFFFFFFFFFFFFFFFFFFf \n\
             place_items("office", 85,  11,  3, 13,  3, false, 0);
             place_items("office", 85,  17,  3, 19,  3, false, 0);
             //lazy radiation mapping
-            for (int x = 0; x <= 23; x++) {
-                for (int y = 0; y <= 23; y++) {
+            for (int x = 0; x < SM_WIDTH; x++) {
+                for (int y = 0; y < SM_HEIGHT; y++) {
                     adjust_radiation(x, y, rng(10, 30));
                 }
             }
@@ -5382,8 +5382,8 @@ FFFFFFFFFFFFFFFFFFFFFFf \n\
                 place_spawns( GROUP_ROBOT_HAZMATBOT, 1, 11, 16, 11, 16, 1 );
             }
             //lazy radiation mapping
-            for (int x = 0; x <= 23; x++) {
-                for (int y = 0; y <= 23; y++) {
+            for (int x = 0; x < SM_WIDTH; x++) {
+                for (int y = 0; y < SM_HEIGHT; y++) {
                     adjust_radiation(x, y, rng(10, 30));
                 }
             }
@@ -5450,8 +5450,8 @@ FFFFFFFFFFFFFFFFFFFFFFf \n\
                                            f_null,     f_null,                 f_null,    f_null,               f_null,
                                            f_counter, f_chair, f_desk,  f_rack,  f_null,                   f_null,   f_null,
                                            f_null,       f_null,       f_null, f_null,       f_null,        f_locker, f_sink,  f_toilet));
-        for (int i = 0; i <= 23; i++) {
-            for (int j = 0; j <= 23; j++) {
+        for (int i = 0; i < SM_WIDTH; i++) {
+            for (int j = 0; j < SM_HEIGHT; j++) {
                 if (this->ter(i, j) == t_rock_floor) {
                     if (one_in(250)) {
                         add_item( i, j, item::make_corpse() );
@@ -5538,8 +5538,8 @@ FFFFFFFFFFFFFFFFFFFFFFf \n\
                                                f_null,     f_null,                 f_null,    f_null,               f_null,
                                                f_counter, f_chair, f_desk,  f_rack,  f_null,                   f_null,   f_null,
                                                f_null,       f_null,       f_null, f_null,       f_null,        f_locker, f_sink,  f_toilet));
-            for (int i = 0; i <= 23; i++) {
-                for (int j = 0; j <= 23; j++) {
+            for (int i = 0; i < SM_WIDTH; i++) {
+                for (int j = 0; j < SM_HEIGHT; j++) {
                     if (this->furn(i, j) == f_rack) {
                         place_items("mechanics", 60,  i,  j, i,  j, false, 0);
                     }
@@ -5625,8 +5625,8 @@ FFFFFFFFFFFFFFFFFFFFFFf \n\
                                                f_null,     f_null,                 f_null,    f_null,               f_null,
                                                f_counter, f_chair, f_desk,  f_rack,  f_null,                   f_null,   f_null,
                                                f_null,       f_null,       f_null, f_null,       f_null,        f_locker, f_sink,  f_toilet));
-            for (int i = 0; i <= 23; i++) {
-                for (int j = 0; j <= 23; j++) {
+            for (int i = 0; i < SM_WIDTH; i++) {
+                for (int j = 0; j < SM_HEIGHT; j++) {
                     if (this->ter(i, j) == t_rock_floor) {
                         if (one_in(250)) {
                             add_item( i, j, item::make_corpse() );
@@ -5709,8 +5709,8 @@ $$$$-|-|=HH-|-HHHH-|####\n",
                                                f_counter, f_chair, f_desk,  f_rack,  f_null,                   f_null,   f_null,
                                                f_null,       f_null,       f_null, f_null,       f_null,        f_locker, f_sink,  f_toilet));
             spawn_item(3, 16, "sarcophagus_access_code");
-            for (int i = 0; i <= 23; i++) {
-                for (int j = 0; j <= 23; j++) {
+            for (int i = 0; i < SM_WIDTH; i++) {
+                for (int j = 0; j < SM_HEIGHT; j++) {
                     if (this->furn(i, j) == f_locker) {
                         place_items("cleaning", 60,  i,  j, i,  j, false, 0);
                     }
@@ -5904,7 +5904,7 @@ $$$$-|-|=HH-|-HHHH-|####\n",
                     }
                 }
             }
-            for (int y = 13; y <= SM_HEIGHT - 2; y += 3) {
+            for (int y = 13; y < SM_HEIGHT - 2; y += 3) {
                 line_furn(this, f_rack, 2, y, SM_WIDTH - 3, y);
                 if (one_in(3)) {
                     place_items("shirts",     75, 2, y, SM_WIDTH - 3, y, false, 0);
@@ -6458,7 +6458,7 @@ $$$$-|-|=HH-|-HHHH-|####\n",
 
         for (int i = 0; i < SM_WIDTH; i++) {
             for (int j = 0; j < SM_HEIGHT; j++) {
-                if ((i >= 3 && i <= SM_WIDTH - 4 && j >= 3 && j <= SM_HEIGHT - 4) ||
+                if ((i >= 3 && i < SM_WIDTH - 4 && j >= 3 && j < SM_HEIGHT - 4) ||
                     one_in(4)) {
                     ter_set(i, j, t_rock_floor);
                     if (!one_in(3)) {
@@ -6655,11 +6655,11 @@ $$$$-|-|=HH-|-HHHH-|####\n",
                 int roll = rng(0, chance_west + chance_east + chance_north + chance_south);
                 if (roll < chance_west && x > 0) {
                     x--;
-                } else if (roll < chance_west + chance_east && x < 23) {
+                } else if (roll < chance_west + chance_east && x < SM_WIDTH - 1) {
                     x++;
                 } else if (roll < chance_west + chance_east + chance_north && y > 0) {
                     y--;
-                } else if (y < 23) {
+                } else if (y < SM_HEIGHT - 1) {
                     y++;
                 }
             } // Done with drunken walk
