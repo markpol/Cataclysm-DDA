@@ -46,7 +46,6 @@
 #include "debug.h"
 
 #define dbg(x) DebugLog((DebugLevel)(x),D_GAME) << __FILE__ << ":" << __LINE__ << ": "
-#define MAPLIMIT ( SEEX * MAPSIZE )
 #define pinbounds(p) ( p.x >= 0 && p.x < MAPLIMIT && p.y >= 0 && p.y < MAPLIMIT)
 
 static const ter_id undefined_ter_id( -1 );

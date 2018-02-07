@@ -51,6 +51,9 @@
 // Height of submap
 #define SM_HEIGHT = SEEY * SM_IN_OMT
 
+// Map limit
+#define MAPLIMIT ( SEEX * MAPSIZE )
+
 #define MAX_VIEW_DISTANCE ( SEEX * int( MAPSIZE / 2 ) )
 
 // Size of the overmap. This is the number of overmap terrain tiles per dimension in one overmap,
