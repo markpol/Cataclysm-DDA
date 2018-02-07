@@ -30,20 +30,24 @@
 // only can wear a maximum of two of any type of clothing
 #define MAX_WORN_PER_TYPE 2
 
+// Values (MAPSIZE|OMT_IN_SEG|SM_IN_OM|SEEX):
+// 11|32| 2|12 - normal values
+//  6|32| 1|24 - values to test with
+
 // Number of submaps in square reality bubble (both width and height)
-#define MAPSIZE 11
+#define MAPSIZE 6
 
 // Number of overmap terrains in square segment (both width and height)
 #define OMT_IN_SEG 32
 
 // Number of submaps in square overmap terrain (both width and height)
-#define SM_IN_OMT 2
+#define SM_IN_OMT 1
 
 // SEEX/SEEY define the size of a nonant, or grid.
 // All map segments will need to be at least this wide.
 #define LEGACY_SEEX 12 
 #define LEGACY_SEEY LEGACY_SEEX 
-#define SEEX 12
+#define SEEX 24
 #define SEEY SEEX
 
 // Width and height of submap
