@@ -322,9 +322,6 @@ struct furn_t : map_data_common_t {
 void load_furniture( JsonObject &jo, const std::string &src );
 void load_terrain( JsonObject &jo, const std::string &src );
 
-void verify_furniture();
-void verify_terrain();
-
 /*
 runtime index: ter_id
 ter_id refers to a position in the terlist[] where the ter_t struct is stored. These global
@@ -474,7 +471,5 @@ extern furn_id f_null,
 
 // consistency checking of terlist & furnlist.
 void check_furniture_and_terrain();
-
-void finalize_furniture_and_terrain();
 
 #endif
