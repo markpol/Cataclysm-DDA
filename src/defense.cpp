@@ -37,13 +37,6 @@
 #define NUMALIGN(n) ((n) >= 10000 ? 20 : ((n) >= 1000 ? 21 :\
                      ((n) >= 100 ? 22 : ((n) >= 10 ? 23 : 24))))
 
-const mongroup_id GROUP_NETHER( "GROUP_NETHER" );
-const mongroup_id GROUP_ROBOT( "GROUP_ROBOT" );
-const mongroup_id GROUP_SPIDER( "GROUP_SPIDER" );
-const mongroup_id GROUP_TRIFFID( "GROUP_TRIFFID" );
-const mongroup_id GROUP_VANILLA( "GROUP_VANILLA" );
-const mongroup_id GROUP_ZOMBIE( "GROUP_ZOMBIE" );
-
 const skill_id skill_barter( "barter" );
 
 std::string caravan_category_name(caravan_category cat);
@@ -1366,27 +1359,27 @@ void defense_game::spawn_wave()
 
 std::vector<mtype_id> defense_game::pick_monster_wave()
 {
-    std::vector<mongroup_id> valid;
+    std::vector<std::string> valid;
     std::vector<mtype_id> ret;
 
     if (zombies || specials) {
         if (specials) {
-            valid.push_back( GROUP_ZOMBIE );
+            valid.push_back( "GROUP_ZOMBIE" );
         } else {
-            valid.push_back( GROUP_VANILLA );
+            valid.push_back( "GROUP_VANILLA" );
         }
     }
     if (spiders) {
-        valid.push_back( GROUP_SPIDER );
+        valid.push_back( "GROUP_SPIDER" );
     }
     if (triffids) {
-        valid.push_back( GROUP_TRIFFID );
+        valid.push_back( "GROUP_TRIFFID" );
     }
     if (robots) {
-        valid.push_back( GROUP_ROBOT );
+        valid.push_back( "GROUP_ROBOT" );
     }
     if (subspace) {
-        valid.push_back( GROUP_NETHER );
+        valid.push_back( "GROUP_NETHER" );
     }
 
     if (valid.empty()) {
