@@ -428,7 +428,8 @@ extern ter_id t_null,
     t_window_enhanced, t_window_enhanced_noglass, t_open_air, t_plut_generator,
     t_pavement_bg_dp, t_pavement_y_bg_dp, t_sidewalk_bg_dp, t_guardrail_bg_dp,
     t_linoleum_white, t_linoleum_gray,
-    t_railroad_rubble, t_railroad_track, t_railroad_track_on_tie, t_railroad_tie;
+    t_railroad_rubble, t_railroad_track, t_railroad_track_on_tie, t_railroad_tie,
+    t_support_l, t_switchgear_l, t_switchgear_s;
 
 
 /*
@@ -465,7 +466,8 @@ extern furn_id f_null,
     f_tatami,
     f_kiln_empty, f_kiln_full, f_kiln_metal_empty, f_kiln_metal_full,
     f_robotic_arm, f_vending_reinforced,
-    f_brazier;
+    f_brazier,
+    f_sign;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //// These are on their way OUT and only used in certain switch statements until they are rewritten.

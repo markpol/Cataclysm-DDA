@@ -9,6 +9,7 @@
 #include "int_id.h"
 #include "string_id.h"
 #include "active_item_cache.h"
+#include "mapdata.h"
 
 #include <vector>
 #include <list>
@@ -121,7 +122,7 @@ struct submap {
     // writing on the square. When both are present, we have signage.
     // Its effect is meant to be cosmetic and atmospheric only.
     bool has_signage( const int x, const int y ) const {
-        if( frn[x][y] == furn_id( "f_sign" ) ) {
+        if( frn[x][y] == f_sign ) {
             return cosmetics[x][y].find( "SIGNAGE" ) != cosmetics[x][y].end();
         }
 
@@ -129,7 +130,7 @@ struct submap {
     }
     // Dependent on furniture + cosmetics.
     const std::string get_signage( const int x, const int y ) const {
-        if( frn[x][y] == furn_id( "f_sign" ) ) {
+        if( frn[x][y] == f_sign ) {
             auto iter = cosmetics[x][y].find( "SIGNAGE" );
             if( iter != cosmetics[x][y].end() ) {
                 return iter->second;

@@ -508,7 +508,8 @@ ter_id t_null,
     t_rock_red, t_rock_green, t_rock_blue, t_floor_red, t_floor_green, t_floor_blue,
     t_switch_rg, t_switch_gb, t_switch_rb, t_switch_even, t_open_air, t_plut_generator,
     t_pavement_bg_dp, t_pavement_y_bg_dp, t_sidewalk_bg_dp, t_guardrail_bg_dp,
-    t_railroad_rubble, t_railroad_track, t_railroad_track_on_tie, t_railroad_tie;
+    t_railroad_rubble, t_railroad_track, t_railroad_track_on_tie, t_railroad_tie,
+    t_support_l, t_switchgear_l, t_switchgear_s;
 
 // @todo Put this crap into an inclusion, which should be generated automatically using JSON data
 
@@ -777,6 +778,9 @@ void set_ter_ids() {
     t_railroad_track = ter_id( "t_railroad_track" );
     t_railroad_track_on_tie = ter_id( "t_railroad_track_on_tie" );
     t_railroad_tie = ter_id( "t_railroad_tie" );
+    t_support_l = ter_id( "t_support_l" );
+    t_switchgear_l = ter_id( "t_switchgear_l" );
+    t_switchgear_s = ter_id( "t_switchgear_s" );
 
     for( auto &elem : terrain_data.get_all() ) {
         ter_t &ter = const_cast<ter_t&>( elem );
@@ -824,7 +828,8 @@ furn_id f_null,
     f_tatami,
     f_kiln_empty, f_kiln_full, f_kiln_metal_empty, f_kiln_metal_full,
     f_robotic_arm, f_vending_reinforced,
-    f_brazier;
+    f_brazier,
+    f_sign;
 
 void set_furn_ids() {
     f_null = furn_id( "f_null" );
@@ -925,6 +930,7 @@ void set_furn_ids() {
     f_kiln_metal_full = furn_id( "f_kiln_metal_full" );
     f_robotic_arm = furn_id( "f_robotic_arm" );
     f_brazier = furn_id( "f_brazier" );
+    f_sign = furn_id( "f_sign" );
 }
 
 size_t ter_t::count()

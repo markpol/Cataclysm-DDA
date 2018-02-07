@@ -455,24 +455,24 @@ void mapbuffer::deserialize( JsonIn &jsin )
                             const ter_str_id tid( jsin.get_string() );
 
                             if( tid == "t_rubble" ) {
-                                sm->ter[i][j] = ter_id( "t_dirt" );
+                                sm->ter[i][j] = t_dirt;
                                 sm->frn[i][j] = furn_id( "f_rubble" );
                                 sm->itm[i][j].push_back( rock );
                                 sm->itm[i][j].push_back( rock );
                             } else if( tid == "t_wreckage" ) {
-                                sm->ter[i][j] = ter_id( "t_dirt" );
+                                sm->ter[i][j] = t_dirt;
                                 sm->frn[i][j] = furn_id( "f_wreckage" );
                                 sm->itm[i][j].push_back( chunk );
                                 sm->itm[i][j].push_back( chunk );
                             } else if( tid == "t_ash" ) {
-                                sm->ter[i][j] = ter_id( "t_dirt" );
+                                sm->ter[i][j] = t_dirt;
                                 sm->frn[i][j] = furn_id( "f_ash" );
                             } else if( tid == "t_pwr_sb_support_l" ) {
-                                sm->ter[i][j] = ter_id( "t_support_l" );
+                                sm->ter[i][j] = t_support_l;
                             } else if( tid == "t_pwr_sb_switchgear_l" ) {
-                                sm->ter[i][j] = ter_id( "t_switchgear_l" );
+                                sm->ter[i][j] = t_switchgear_l;
                             } else if( tid == "t_pwr_sb_switchgear_s" ) {
-                                sm->ter[i][j] = ter_id( "t_switchgear_s" );
+                                sm->ter[i][j] = t_switchgear_s;
                             } else {
                                 sm->ter[i][j] = tid.id();
                             }
