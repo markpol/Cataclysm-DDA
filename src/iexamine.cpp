@@ -39,14 +39,6 @@
 #include <algorithm>
 #include <cstdlib>
 
-const mtype_id mon_dark_wyrm( "mon_dark_wyrm" );
-const mtype_id mon_fungal_blossom( "mon_fungal_blossom" );
-const mtype_id mon_spider_cellar_giant_s( "mon_spider_cellar_giant_s" );
-const mtype_id mon_spider_web_s( "mon_spider_web_s" );
-const mtype_id mon_spider_widow_giant_s( "mon_spider_widow_giant_s" );
-const mtype_id mon_turret( "mon_turret" );
-const mtype_id mon_turret_rifle( "mon_turret_rifle" );
-
 const skill_id skill_computer( "computer" );
 const skill_id skill_fabrication( "fabrication" );
 const skill_id skill_mechanics( "mechanics" );
@@ -675,8 +667,8 @@ void iexamine::cardreader( player &p, const tripoint &examp )
         }
         //@todo only despawn turrets "behind" the door
         for( monster &critter : g->all_monsters() ) {
-            if( ( critter.type->id == mon_turret ) ||
-                ( critter.type->id == mon_turret_rifle ) ) {
+            if( ( critter.type->id == mtype_id( "mon_turret" ) ) ||
+                ( critter.type->id == mtype_id( "mon_turret_rifle" ) ) ) {
                 g->remove_zombie( critter );
             }
         }
@@ -1231,7 +1223,7 @@ void iexamine::pedestal_wyrm(player &p, const tripoint &examp)
                     rl_dist( p.pos(), monp ) <= 2);
         if (tries < 10) {
             g->m.ter_set( monp, t_rock_floor);
-            g->summon_mon(mon_dark_wyrm, monp);
+            g->summon_mon( "mon_dark_wyrm", monp);
         }
     }
     add_msg(_("The pedestal sinks into the ground, with an ominous grinding noise..."));
@@ -1641,17 +1633,17 @@ void iexamine::egg_sack_generic( player &p, const tripoint &examp,
 
 void iexamine::egg_sackbw( player &p, const tripoint &examp )
 {
-    egg_sack_generic( p, examp, mon_spider_widow_giant_s );
+    egg_sack_generic( p, examp, "mon_spider_widow_giant_s" );
 }
 
 void iexamine::egg_sackcs( player &p, const tripoint &examp )
 {
-    egg_sack_generic( p, examp, mon_spider_cellar_giant_s );
+    egg_sack_generic( p, examp, "mon_spider_cellar_giant_s" );
 }
 
 void iexamine::egg_sackws( player &p, const tripoint &examp )
 {
-    egg_sack_generic( p, examp, mon_spider_web_s );
+    egg_sack_generic( p, examp, "mon_spider_web_s" );
 }
 
 /**
@@ -1825,7 +1817,7 @@ void iexamine::aggie_plant(player &p, const tripoint &examp)
                 add_msg(m_info, _("We have altered this unit's configuration to extract and provide local nutriment.  The Mycus provides."));
             } else if ( (p.has_trait(trait_M_DEFENDER)) || ( (p.has_trait(trait_M_SPORES) || p.has_trait(trait_M_FERTILE)) &&
                 one_in(2)) ) {
-                g->summon_mon( mon_fungal_blossom, examp );
+                g->summon_mon( "mon_fungal_blossom", examp );
                 add_msg(m_info, _("The seed blooms forth!  We have brought true beauty to this world."));
             } else if ( (p.has_trait(trait_THRESH_MYCUS)) || one_in(4)) {
                 g->m.furn_set(examp, f_flower_marloss);

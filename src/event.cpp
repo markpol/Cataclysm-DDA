@@ -16,16 +16,6 @@
 
 #include <climits>
 
-const mtype_id mon_amigara_horror( "mon_amigara_horror" );
-const mtype_id mon_copbot( "mon_copbot" );
-const mtype_id mon_dark_wyrm( "mon_dark_wyrm" );
-const mtype_id mon_dermatik( "mon_dermatik" );
-const mtype_id mon_eyebot( "mon_eyebot" );
-const mtype_id mon_riotbot( "mon_riotbot" );
-const mtype_id mon_sewer_snake( "mon_sewer_snake" );
-const mtype_id mon_spider_cellar_giant( "mon_spider_cellar_giant" );
-const mtype_id mon_spider_widow_giant( "mon_spider_widow_giant" );
-
 event::event( event_type e_t, const time_point &w, int f_id, tripoint p )
 : type( e_t )
 , when( w )
@@ -44,13 +34,11 @@ void event::actualize()
     case EVENT_ROBOT_ATTACK: {
         const auto u_pos = g->u.global_sm_location();
         if (rl_dist(u_pos, map_point) <= 4) {
-            const mtype_id& robot_type = one_in( 2 ) ? mon_copbot : mon_riotbot;
-
             g->u.add_memorial_log( pgettext("memorial_male", "Became wanted by the police!"),
                                     pgettext("memorial_female", "Became wanted by the police!"));
             int robx = (u_pos.x > map_point.x ? 0 - SEEX * 2 : SEEX * 4);
             int roby = (u_pos.y > map_point.y ? 0 - SEEY * 2 : SEEY * 4);
-            g->summon_mon(robot_type, tripoint(robx, roby, g->u.posz()));
+            g->summon_mon( one_in( 2 ) ? "mon_copbot" : "mon_riotbot", tripoint( robx, roby, g->u.posz() ) );
         }
     } break;
 
@@ -72,7 +60,7 @@ void event::actualize()
                     rl_dist(g->u.pos(), monp) <= 2);
             if (tries < 10) {
                 g->m.ter_set(monp, t_rock_floor);
-                g->summon_mon(mon_dark_wyrm, monp);
+                g->summon_mon( "mon_dark_wyrm", monp );
             }
         }
         // You could drop the flag, you know.
@@ -126,7 +114,7 @@ void event::actualize()
             } while ((monx == -1 || mony == -1 || !g->is_empty({monx, mony, g->u.posz()})) &&
                         tries < 10);
             if (tries < 10) {
-                g->summon_mon(mon_amigara_horror, tripoint(monx, mony, g->u.posz()));
+                g->summon_mon( "mon_amigara_horror", tripoint( monx, mony, g->u.posz() ) );
             }
         }
     } break;
@@ -220,10 +208,10 @@ void event::actualize()
   } break;
 
     case EVENT_TEMPLE_SPAWN: {
-        static const std::array<mtype_id, 4> temple_monsters = { {
-            mon_sewer_snake, mon_dermatik, mon_spider_widow_giant, mon_spider_cellar_giant
+        static const std::array<std::string, 4> temple_monsters = { {
+            "mon_sewer_snake", "mon_dermatik", "mon_spider_widow_giant", "mon_spider_cellar_giant"
         } };
-        const mtype_id &montype = random_entry( temple_monsters );
+        const std::string &montype = random_entry( temple_monsters );
         int tries = 0, x, y;
         do {
             x = rng(g->u.posx() - 5, g->u.posx() + 5);
@@ -232,7 +220,7 @@ void event::actualize()
         } while (tries < 20 && !g->is_empty({x, y, g->u.posz()}) &&
                     rl_dist(x, y, g->u.posx(), g->u.posy()) <= 2);
         if (tries < 20) {
-            g->summon_mon(montype, tripoint(x, y, g->u.posz()));
+            g->summon_mon( montype, tripoint(x, y, g->u.posz() ) );
         }
     } break;
 
@@ -251,7 +239,7 @@ void event::per_turn()
             if (place.x == -1 && place.y == -1) {
                 return; // We're safely indoors!
             }
-            g->summon_mon(mon_eyebot, tripoint(place.x, place.y, g->u.posz()));
+            g->summon_mon( "mon_eyebot", tripoint( place.x, place.y, g->u.posz() ) );
             if (g->u.sees( tripoint(place.x, place.y, g->u.posz()) )) {
                 add_msg(m_warning, _("An eyebot swoops down nearby!"));
             }

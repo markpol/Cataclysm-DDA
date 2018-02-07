@@ -26,16 +26,6 @@
 
 #include <queue>
 
-const mtype_id mon_flying_polyp( "mon_flying_polyp" );
-const mtype_id mon_hunting_horror( "mon_hunting_horror" );
-const mtype_id mon_mi_go( "mon_mi_go" );
-const mtype_id mon_yugg( "mon_yugg" );
-const mtype_id mon_gelatin( "mon_gelatin" );
-const mtype_id mon_flaming_eye( "mon_flaming_eye" );
-const mtype_id mon_kreck( "mon_kreck" );
-const mtype_id mon_gracke( "mon_gracke" );
-const mtype_id mon_blank( "mon_blank" );
-
 const species_id FUNGUS( "FUNGUS" );
 
 const efftype_id effect_badpoison( "badpoison" );
@@ -1381,14 +1371,14 @@ bool map::process_fields_in_submap( submap *const current_submap,
 
                     case fd_fatigue:
                     {
-                        static const std::array<mtype_id, 9> monids = { {
-                            mon_flying_polyp, mon_hunting_horror, mon_mi_go, mon_yugg, mon_gelatin,
-                            mon_flaming_eye, mon_kreck, mon_gracke, mon_blank
+                        static const std::array<std::string, 9> nether_monsters = { {
+                            "mon_flying_polyp", "mon_hunting_horror", "mon_mi_go", "mon_yugg", "mon_gelatin",
+                            "mon_flaming_eye", "mon_kreck", "mon_gracke", "mon_blank"
                         } };
                         if( cur->getFieldDensity() < 3 && calendar::once_every( 6_hours ) && one_in( 10 ) ) {
                             cur->setFieldDensity(cur->getFieldDensity() + 1);
                         } else if (cur->getFieldDensity() == 3 && one_in(600)) { // Spawn nether creature!
-                            g->summon_mon( random_entry( monids ), p);
+                            g->summon_mon( random_entry( nether_monsters ), p );
                         }
                     }
                         break;

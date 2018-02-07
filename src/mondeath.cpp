@@ -24,21 +24,6 @@
 #include <algorithm>
 #include <vector>
 
-const mtype_id mon_blob( "mon_blob" );
-const mtype_id mon_blob_brain( "mon_blob_brain" );
-const mtype_id mon_blob_small( "mon_blob_small" );
-const mtype_id mon_breather( "mon_breather" );
-const mtype_id mon_breather_hub( "mon_breather_hub" );
-const mtype_id mon_creeper_hub( "mon_creeper_hub" );
-const mtype_id mon_creeper_vine( "mon_creeper_vine" );
-const mtype_id mon_giant_cockroach( "mon_giant_cockroach" );
-const mtype_id mon_giant_cockroach_nymph( "mon_giant_cockroach_nymph" );
-const mtype_id mon_halfworm( "mon_halfworm" );
-const mtype_id mon_sewer_rat( "mon_sewer_rat" );
-const mtype_id mon_thing( "mon_thing" );
-const mtype_id mon_zombie_dancer( "mon_zombie_dancer" );
-const mtype_id mon_zombie_hulk( "mon_zombie_hulk" );
-
 const species_id ZOMBIE( "ZOMBIE" );
 const species_id BLOB( "BLOB" );
 
@@ -331,7 +316,7 @@ void mdeath::worm(monster *z)
     while(worms < 2 && !wormspots.empty()) {
         const tripoint target = random_entry_removed( wormspots );
         if( !g->critter_at( target ) ) {
-            g->summon_mon(mon_halfworm, target);
+            g->summon_mon( "mon_halfworm", target);
             worms++;
         }
     }
@@ -438,7 +423,7 @@ void mdeath::blobsplit(monster *z)
 
     for (int s = 0; s < 2 && !valid.empty(); s++) {
         const tripoint target = random_entry_removed( valid );
-        if( monster * const blob = g->summon_mon( speed < 50 ? mon_blob_small : mon_blob, target ) ) {
+        if( monster * const blob = g->summon_mon( speed < 50 ? "mon_blob_small" : "mon_blob", target ) ) {
             blob->make_ally(z);
             blob->set_speed_base(speed);
             blob->set_hp(speed);
@@ -497,7 +482,7 @@ void mdeath::amigara(monster *z)
 
 void mdeath::thing(monster *z)
 {
-    g->summon_mon(mon_thing, z->pos());
+    g->summon_mon( "mon_thing", z->pos());
 }
 
 void mdeath::explode(monster *z)
@@ -589,7 +574,7 @@ void mdeath::ratking(monster *z)
         }
     }
     for (int rats = 0; rats < 7 && !ratspots.empty(); rats++) {
-        g->summon_mon( mon_sewer_rat, random_entry_removed( ratspots ) );
+        g->summon_mon( "mon_sewer_rat", random_entry_removed( ratspots ) );
     }
 }
 
@@ -763,7 +748,7 @@ void mdeath::preg_roach( monster *z )
     while( !roachspots.empty() ) {
         const tripoint target = random_entry_removed( roachspots );
         if( !g->critter_at( target ) ) {
-            g->summon_mon( mon_giant_cockroach_nymph, target );
+            g->summon_mon( "mon_giant_cockroach_nymph", target );
             num_roach--;
             if( g->u.sees(*z) ) {
                 add_msg(m_warning, _("A cockroach nymph crawls out of the pregnant giant cockroach corpse."));

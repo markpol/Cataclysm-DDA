@@ -45,12 +45,12 @@
 #include <algorithm>
 #include <numeric>
 
+const mtype_id mon_laserturret( "mon_laserturret" );
+
 const skill_id skill_mechanics( "mechanics" );
 const skill_id skill_survival( "survival" );
 const skill_id skill_firstaid( "firstaid" );
 const skill_id skill_fabrication( "fabrication" );
-
-const mtype_id mon_laserturret( "mon_laserturret" );
 
 const species_id ZOMBIE( "ZOMBIE" );
 const species_id HUMAN( "HUMAN" );

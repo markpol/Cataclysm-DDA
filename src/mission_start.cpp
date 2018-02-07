@@ -23,18 +23,6 @@
 #include "npc.h"
 #include "npc_class.h"
 
-const mtype_id mon_charred_nightmare( "mon_charred_nightmare" );
-const mtype_id mon_dog( "mon_dog" );
-const mtype_id mon_graboid( "mon_graboid" );
-const mtype_id mon_jabberwock( "mon_jabberwock" );
-const mtype_id mon_zombie( "mon_zombie" );
-const mtype_id mon_zombie_brute( "mon_zombie_brute" );
-const mtype_id mon_zombie_dog( "mon_zombie_dog" );
-const mtype_id mon_zombie_electric( "mon_zombie_electric" );
-const mtype_id mon_zombie_hulk( "mon_zombie_hulk" );
-const mtype_id mon_zombie_master( "mon_zombie_master" );
-const mtype_id mon_zombie_necro( "mon_zombie_necro" );
-
 const efftype_id effect_infection( "infection" );
 
 /* These functions are responsible for making changes to the game at the moment
@@ -361,7 +349,7 @@ void mission_start::kill_100_z( mission *miss )
     p->attitude = NPCATT_FOLLOW;//npc joins you
     miss->monster_type = mon_zombie.str(); // TODO: change monster_type to be mtype_id (better: species!)
     int killed = 0;
-    killed += g->kill_count( mon_zombie );
+    killed += g->kill_count( "mon_zombie" );
     miss->monster_kill_goal = 100 + killed; //your kill score must increase by 100
 }
 

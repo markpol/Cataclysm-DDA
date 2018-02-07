@@ -20,8 +20,6 @@
 
 #include <functional>
 
-const mtype_id mon_dermatik_larva( "mon_dermatik_larva" );
-
 const efftype_id effect_adrenaline( "adrenaline" );
 const efftype_id effect_alarm_clock( "alarm_clock" );
 const efftype_id effect_asthma( "asthma" );
@@ -471,7 +469,7 @@ void player::hardcoded_effects( effect &it )
                     }
                     tripoint dest( i, j, posz() );
                     if( !g->critter_at( dest ) ) {
-                        if( monster *const grub = g->summon_mon( mon_dermatik_larva, dest ) ) {
+                        if( monster *const grub = g->summon_mon( "mon_dermatik_larva", dest ) ) {
                             if( one_in( 3 ) ) {
                                 grub->friendly = -1;
                             }

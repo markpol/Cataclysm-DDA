@@ -14,10 +14,6 @@
 #include "mapdata.h"
 #include "mtype.h"
 
-const mtype_id mon_blob( "mon_blob" );
-const mtype_id mon_shadow( "mon_shadow" );
-const mtype_id mon_shadow_snake( "mon_shadow_snake" );
-
 const species_id ROBOT( "ROBOT" );
 
 const skill_id skill_throw( "throw" );
@@ -1205,7 +1201,7 @@ void trapfunc::shadow( Creature *c, const tripoint &p )
              !g->m.sees( monp, g->u.pos(), 10 ) );
 
     if( tries < 5 ) { // @todo: tries increment is missing, so this expression is always true
-        if( monster *const spawned = g->summon_mon( mon_shadow, monp ) ) {
+        if( monster *const spawned = g->summon_mon( "mon_shadow", monp ) ) {
             add_msg( m_warning, _( "A shadow forms nearby." ) );
             spawned->reset_special_rng( "DISAPPEAR" );
         }
@@ -1259,7 +1255,7 @@ void trapfunc::snake( Creature *c, const tripoint &p )
 
         if( tries < 5 ) { // @todo: tries increment is missing, so this expression is always true
             add_msg( m_warning, _( "A shadowy snake forms nearby." ) );
-            g->summon_mon( mon_shadow_snake, p );
+            g->summon_mon( "mon_shadow_snake", p );
             g->m.remove_trap( p );
         }
     }

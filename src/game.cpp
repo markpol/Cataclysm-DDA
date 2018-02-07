@@ -140,8 +140,6 @@ static constexpr int DANGEROUS_PROXIMITY = 5;
 /** Will be set to true when running unit tests */
 bool test_mode = false;
 
-const mtype_id mon_manhack( "mon_manhack" );
-
 const skill_id skill_melee( "melee" );
 const skill_id skill_dodge( "dodge" );
 const skill_id skill_driving( "driving" );
@@ -11146,7 +11144,7 @@ bool game::disable_robot( const tripoint &p )
         // Can only disable / reprogram friendly monsters
         return false;
     }
-    const auto mid = critter.type->id;
+    const auto mid = mtype_id( critter.type->id );
     const auto mon_item_id = critter.type->revert_to_itype;
     if( !mon_item_id.empty() ) {
         if( !query_yn( _( "Deactivate the %s?" ), critter.name().c_str() ) ) {
@@ -11165,7 +11163,7 @@ bool game::disable_robot( const tripoint &p )
         return true;
     }
     // Manhacks are special, they have their own menu here.
-    if( mid == mon_manhack ) {
+    if( mid == "mon_manhack" ) {
         int choice = 0;
         if( critter.has_effect( effect_docile ) ) {
             choice = menu( true, _( "Reprogram the manhack?" ), _( "Engage targets." ), _( "Cancel" ), NULL );

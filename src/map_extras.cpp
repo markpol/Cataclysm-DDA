@@ -22,27 +22,6 @@
 namespace MapExtras
 {
 
-const mtype_id mon_blank( "mon_blank" );
-const mtype_id mon_chickenbot( "mon_chickenbot" );
-const mtype_id mon_crawler( "mon_crawler" );
-const mtype_id mon_gelatin( "mon_gelatin" );
-const mtype_id mon_gracke( "mon_gracke" );
-const mtype_id mon_flaming_eye( "mon_flaming_eye" );
-const mtype_id mon_kreck( "mon_kreck" );
-const mtype_id mon_mi_go( "mon_mi_go" );
-const mtype_id mon_tankbot( "mon_tankbot" );
-const mtype_id mon_turret( "mon_turret" );
-const mtype_id mon_turret_bmg( "mon_turret_bmg" );
-const mtype_id mon_turret_rifle( "mon_turret_rifle" );
-const mtype_id mon_zombie( "mon_zombie" );
-const mtype_id mon_zombie_bio_op( "mon_zombie_bio_op" );
-const mtype_id mon_zombie_grenadier( "mon_zombie_grenadier" );
-const mtype_id mon_zombie_scientist( "mon_zombie_scientist" );
-const mtype_id mon_zombie_smoker( "mon_zombie_smoker" );
-const mtype_id mon_zombie_soldier( "mon_zombie_soldier" );
-const mtype_id mon_zombie_spitter( "mon_zombie_spitter" );
-const mtype_id mon_zombie_tough( "mon_zombie_tough" );
-
 void mx_null( map &, const tripoint & )
 {
     debugmsg( "Tried to generate null map extra." );
@@ -108,13 +87,13 @@ void mx_military( map &m, const tripoint & )
         }
 
     }
-    static const std::array<mtype_id, 4> netherspawns = { {
-            mon_gelatin, mon_mi_go, mon_kreck, mon_gracke,
+    static const std::array<std::string, 4> netherspawns = { {
+            "mon_gelatin", "mon_mi_go", "mon_kreck", "mon_gracke",
         }
     };
     int num_monsters = rng( 0, 3 );
     for( int i = 0; i < num_monsters; i++ ) {
-        const mtype_id &type = random_entry( netherspawns );
+        const std::string &type = random_entry( netherspawns );
         int mx = rng( 1, SEEX * 2 - 2 ), my = rng( 1, SEEY * 2 - 2 );
         m.add_spawn( type, 1, mx, my );
     }

@@ -27,9 +27,6 @@
 #include <sstream>
 #include <algorithm>
 
-const mtype_id mon_manhack( "mon_manhack" );
-const mtype_id mon_secubot( "mon_secubot" );
-
 const skill_id skill_computer( "computer" );
 
 const species_id ZOMBIE( "ZOMBIE" );
@@ -1254,7 +1251,7 @@ void computer::activate_failure(computer_failure_type fail)
             } while (!g->is_empty( mp ) && tries < 10);
             if (tries != 10) {
                 add_msg(m_warning, _("Manhacks drop from compartments in the ceiling."));
-                g->summon_mon( mon_manhack, mp );
+                g->summon_mon( "mon_manhack", mp );
             }
         }
     }
@@ -1272,7 +1269,7 @@ void computer::activate_failure(computer_failure_type fail)
             } while (!g->is_empty(mp) && tries < 10);
             if (tries != 10) {
                 add_msg(m_warning, _("Secubots emerge from compartments in the floor."));
-                g->summon_mon(mon_secubot, mp);
+                g->summon_mon( "mon_secubot", mp);
             }
         }
     }

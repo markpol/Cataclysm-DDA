@@ -33,8 +33,6 @@ const efftype_id effect_brainworms( "brainworms" );
 const efftype_id effect_paincysts( "paincysts" );
 const efftype_id effect_nausea( "nausea" );
 
-const mtype_id mon_player_blob( "mon_player_blob" );
-
 const bionic_id bio_advreactor( "bio_advreactor" );
 const bionic_id bio_batteries( "bio_batteries" );
 const bionic_id bio_digestion( "bio_digestion" );
@@ -840,7 +838,7 @@ void player::consume_effects( const item &food )
         int numslime = 1;
         for( int i = 0; i < numslime && !valid.empty(); i++ ) {
             const tripoint target = random_entry_removed( valid );
-            if( monster *const slime = g->summon_mon( mon_player_blob, target ) ) {
+            if( monster *const slime = g->summon_mon( "mon_player_blob", target ) ) {
                 slime->friendly = -1;
             }
         }

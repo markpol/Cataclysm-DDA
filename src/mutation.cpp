@@ -18,8 +18,6 @@
 
 #include <algorithm>
 
-const mtype_id mon_player_blob( "mon_player_blob" );
-
 static const trait_id trait_ROBUST( "ROBUST" );
 static const trait_id trait_GLASSJAW( "GLASSJAW" );
 static const trait_id trait_BURROW( "BURROW" );
@@ -430,7 +428,7 @@ void player::activate_mutation( const trait_id &mut )
         int numslime = 1;
         for (int i = 0; i < numslime && !valid.empty(); i++) {
             const tripoint target = random_entry_removed( valid );
-            if( monster * const slime = g->summon_mon( mon_player_blob, target ) ) {
+            if( monster * const slime = g->summon_mon( "mon_player_blob", target ) ) {
                 slime->friendly = -1;
             }
         }

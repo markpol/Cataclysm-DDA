@@ -37,8 +37,6 @@
 #define NUMALIGN(n) ((n) >= 10000 ? 20 : ((n) >= 1000 ? 21 :\
                      ((n) >= 100 ? 22 : ((n) >= 10 ? 23 : 24))))
 
-const mtype_id mon_generator( "mon_generator" );
-
 const mongroup_id GROUP_NETHER( "GROUP_NETHER" );
 const mongroup_id GROUP_ROBOT( "GROUP_ROBOT" );
 const mongroup_id GROUP_SPIDER( "GROUP_SPIDER" );
@@ -290,7 +288,7 @@ void defense_game::init_map()
     g->u.sety( SEEY );
 
     g->update_map( g-> u );
-    monster generator( mon_generator, tripoint( g->u.posx() + 1, g->u.posy() + 1, g->u.posz() ) );
+    monster generator( "mon_generator", tripoint( g->u.posx() + 1, g->u.posy() + 1, g->u.posz() ) );
     // Find a valid spot to spawn the generator
     std::vector<tripoint> valid;
     for (int x = g->u.posx() - 1; x <= g->u.posx() + 1; x++) {

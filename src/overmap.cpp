@@ -62,8 +62,6 @@
 #define MIN_RIFT_SIZE 6
 #define MAX_RIFT_SIZE 16
 
-const mtype_id mon_jabberwock( "mon_jabberwock" );
-
 const efftype_id effect_pet( "pet" );
 
 using oter_type_id = int_id<oter_type_t>;
