@@ -46,8 +46,8 @@
 #include "debug.h"
 
 #define dbg(x) DebugLog((DebugLevel)(x),D_GAME) << __FILE__ << ":" << __LINE__ << ": "
-#define maplim 132
-#define pinbounds(p) ( p.x >= 0 && p.x < maplim && p.y >= 0 && p.y < maplim)
+#define MAPLIMIT ( SEEX * MAPSIZE )
+#define pinbounds(p) ( p.x >= 0 && p.x < MAPLIMIT && p.y >= 0 && p.y < MAPLIMIT)
 
 static const ter_id undefined_ter_id( -1 );
 static const furn_id undefined_furn_id( -1 );
@@ -55,8 +55,8 @@ static const trap_id undefined_trap_id( -1 );
 
 bool inbounds( const int x, const int y, const int z )
 {
-    return x >= 0 && x < maplim &&
-           y >= 0 && y < maplim &&
+    return x >= 0 && x < MAPLIMIT &&
+           y >= 0 && y < MAPLIMIT &&
            z >= -OVERMAP_DEPTH && z <= OVERMAP_HEIGHT;
 }
 
@@ -462,7 +462,7 @@ void editmap::uber_draw_ter( const catacurses::window &w, map *m )
     */
     bool draw_itm = true;
     bool game_map = ( ( m == &g->m || w == g->w_terrain ) ? true : false );
-    const int msize = SEEX * MAPSIZE;
+    const int msize = MAPLIMIT;
     if( refresh_mplans == true ) {
         hilights["mplan"].points.clear();
     }
@@ -1510,8 +1510,8 @@ bool editmap::move_target( const std::string &action, int moveorigin )
     tripoint mp;
     bool move_origin = ( moveorigin == 1 ? true : ( moveorigin == 0 ? false : moveall ) );
     if( eget_direction( mp, action ) ) {
-        target.x = limited_shift( target.x, mp.x, 0, maplim );
-        target.y = limited_shift( target.y, mp.y, 0, maplim );
+        target.x = limited_shift( target.x, mp.x, 0, MAPLIMIT );
+        target.y = limited_shift( target.y, mp.y, 0, MAPLIMIT );
         target.z = limited_shift( target.z, mp.z, -OVERMAP_DEPTH, OVERMAP_HEIGHT + 1 );
         if( move_origin ) {
             origin += mp;

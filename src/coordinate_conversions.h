@@ -3,6 +3,7 @@
 #define COORDINATE_CONVERSIONS_H
 
 #include "enums.h"
+#include "game_constants.h"
 
 /**
  * Coordinate systems used here are:
@@ -11,11 +12,11 @@
  * There is a unique overmap for each overmap coord.
  *
  * segment (seg): A segment is a unit of terrain saved to a directory.
- * Each segment contains 32x32 overmap terrains, and is used only for
+ * Each segment contains (OMT_IN_SEG * OMT_IN_SEG) overmap terrains, and is used only for
  * saving/loading submaps, see mapbuffer.cpp.
  * Translation from omt to seg:
- * om.x /= 32
- * om.y /= 32
+ * om.x /= OMT_IN_SEG
+ * om.y /= OMT_IN_SEG
  * (with special handling for negative values).
  *
  * overmap terrain (omt): the position of a overmap terrain (oter_id).
@@ -27,10 +28,10 @@
  *
  * Z-components are never considered and simply copied.
  *
- * submap (sm): each overmap terrain contains (2*2) submaps.
+ * submap (sm): each overmap terrain contains (SM_IN_OMT * SM_IN_OMT) submaps.
  * Translating from sm to omt coordinates:
- * sm.x /= 2
- * sm.y /= 2
+ * sm.x /= SM_IN_OMT
+ * sm.y /= SM_IN_OMT
  *
  * map square (ms): used by @ref map, each map square may contain a single
  * piece of furniture, it has a terrain (ter_t).
@@ -95,7 +96,7 @@ inline point sm_to_omt_remain( point &p )
 {
     return sm_to_omt_remain( p.x, p.y );
 }
-// submap to overmap, basically: x / (OMAPX * 2)
+// submap to overmap, basically: x / (OMAPX * SM_IN_OMT)
 point sm_to_om_copy( int x, int y );
 inline point sm_to_om_copy( const point &p )
 {
@@ -116,12 +117,12 @@ inline point sm_to_om_remain( point &p )
 {
     return sm_to_om_remain( p.x, p.y );
 }
-// overmap terrain to submap, basically: x *= 2
+// overmap terrain to submap, basically: x *= SM_IN_OMT
 point omt_to_sm_copy( int x, int y );
 
 inline int omt_to_sm_copy( int a )
 {
-    return 2 * a;
+    return SM_IN_OMT * a;
 }
 
 inline point omt_to_sm_copy( const point &p )
@@ -138,7 +139,7 @@ inline void omt_to_sm( tripoint &p )
 {
     omt_to_sm( p.x, p.y );
 }
-// overmap to submap, basically: x *= 2 * OMAPX
+// overmap to submap, basically: x *= SM_IN_OMT * OMAPX
 point om_to_sm_copy( int x, int y );
 inline point om_to_sm_copy( const point &p )
 {
@@ -193,7 +194,7 @@ inline void sm_to_ms( tripoint &p )
 {
     sm_to_ms( p.x, p.y );
 }
-// map squares to overmap terrain, basically: x /= SEEX * 2
+// map squares to overmap terrain, basically: x /= SEEX * SM_IN_OMT
 point ms_to_omt_copy( int x, int y );
 inline point ms_to_omt_copy( const point &p )
 {
