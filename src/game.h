@@ -465,8 +465,10 @@ class game
         void reload_npcs();
         /** Returns the number of kills of the given mon_id by the player. */
         int kill_count( const mtype_id& id );
+        int kill_count( const std::string& id );
         /** Increments the number of kills of the given mtype_id by the player upwards. */
         void increase_kill_count( const mtype_id& id );
+        void increase_kill_count( const std::string& id );
         /** Record the fact that the player murdered an NPC. */
         void record_npc_kill( const npc *p );
 

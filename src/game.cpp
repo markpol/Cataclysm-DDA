@@ -1804,9 +1804,19 @@ int game::kill_count( const mtype_id& mon )
     return 0;
 }
 
+int game::kill_count( const std::string& mon )
+{
+    return kill_count( mtype_id( mon ) );
+}
+
 void game::increase_kill_count( const mtype_id& id )
 {
     kills[id]++;
+}
+
+void game::increase_kill_count( const std::string& id )
+{
+    increase_kill_count( mtype_id( id ) );
 }
 
 void game::record_npc_kill( const npc *p )
