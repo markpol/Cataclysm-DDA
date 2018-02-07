@@ -62,6 +62,8 @@
 #define MIN_RIFT_SIZE 6
 #define MAX_RIFT_SIZE 16
 
+const mtype_id mon_jabberwock( "mon_jabberwock" );
+
 const efftype_id effect_pet( "pet" );
 
 using oter_type_id = int_id<oter_type_t>;
@@ -3068,7 +3070,7 @@ void overmap::move_hordes()
             auto& type = *(this_monster.type);
             if(
                 !type.species.count(species_id("ZOMBIE")) || // Only add zombies to hordes.
-                type.id == mtype_id("mon_jabberwock") || // Jabberwockies are an exception.
+                type.id == mon_jabberwock || // Jabberwockies are an exception.
                 this_monster.has_effect( effect_pet ) || // "Zombie pet" zlaves are, too.
                 this_monster.mission_id != -1 // We mustn't delete monsters that are related to missions.
             ) {

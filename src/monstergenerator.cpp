@@ -26,8 +26,6 @@
 
 extern bool test_mode;
 
-const mtype_id mon_generator( "mon_generator" );
-
 /** @relates string_id */
 template<>
 const mtype &string_id<mtype>::obj() const

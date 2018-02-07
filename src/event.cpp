@@ -23,8 +23,8 @@ const mtype_id mon_dermatik( "mon_dermatik" );
 const mtype_id mon_eyebot( "mon_eyebot" );
 const mtype_id mon_riotbot( "mon_riotbot" );
 const mtype_id mon_sewer_snake( "mon_sewer_snake" );
-const mtype_id mon_spider_widow_giant( "mon_spider_widow_giant" );
 const mtype_id mon_spider_cellar_giant( "mon_spider_cellar_giant" );
+const mtype_id mon_spider_widow_giant( "mon_spider_widow_giant" );
 
 event::event( event_type e_t, const time_point &w, int f_id, tripoint p )
 : type( e_t )
