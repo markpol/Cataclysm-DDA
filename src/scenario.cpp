@@ -14,6 +14,7 @@
 #include "mutation.h"
 #include "mapgen.h"
 #include "generic_factory.h"
+#include "map_extras.h"
 
 namespace
 {

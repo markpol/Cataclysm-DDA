@@ -14,6 +14,7 @@
 #include "overmap.h"
 #include "overmapbuffer.h"
 #include "player.h"
+#include "map_extras.h"
 
 #include <algorithm>
 

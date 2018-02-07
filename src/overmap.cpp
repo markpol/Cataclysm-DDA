@@ -39,6 +39,7 @@
 #include "messages.h"
 #include "rotatable_symbols.h"
 #include "string_input_popup.h"
+#include "map_extras.h"
 
 #include <cassert>
 #include <stdlib.h>
