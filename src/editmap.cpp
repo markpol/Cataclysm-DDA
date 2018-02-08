@@ -1663,7 +1663,7 @@ int editmap::mapgen_preview( real_coords &tc, uimenu &gmenu )
     tinymap tmpmap;
     // TODO: add a do-not-save-generated-submaps parameter
     // TODO: keep track of generated submaps to delete them properly and to avoid memory leaks
-    tmpmap.generate( omt_pos.x * 2, omt_pos.y * 2, target.z, calendar::turn );
+    tmpmap.generate( omt_pos.x * SM_IN_OMT, omt_pos.y * SM_IN_OMT, target.z, calendar::turn );
 
     tripoint pofs = pos2screen( { target.x - 11, target.y - 11, target.z } );
     catacurses::window w_preview = catacurses::newwin( 24, 24, pofs.y, pofs.x );
@@ -1697,7 +1697,7 @@ int editmap::mapgen_preview( real_coords &tc, uimenu &gmenu )
             lastsel = gmenu.selected;
             omt_ref = oter_id( gmenu.selected );
             cleartmpmap( tmpmap );
-            tmpmap.generate( omt_pos.x * 2, omt_pos.y * 2, target.z, calendar::turn );
+            tmpmap.generate( omt_pos.x * SM_IN_OMT, omt_pos.y * SM_IN_OMT, target.z, calendar::turn );
             showpreview = true;
         }
         if( showpreview ) {
@@ -1723,7 +1723,7 @@ int editmap::mapgen_preview( real_coords &tc, uimenu &gmenu )
             if( gpmenu.ret == 0 ) {
 
                 cleartmpmap( tmpmap );
-                tmpmap.generate( omt_pos.x * 2, omt_pos.y * 2, target.z, calendar::turn );
+                tmpmap.generate( omt_pos.x * SM_IN_OMT, omt_pos.y * SM_IN_OMT, target.z, calendar::turn );
                 showpreview = true;
             } else if( gpmenu.ret == 1 ) {
                 tmpmap.rotate( 1 );
@@ -1865,13 +1865,13 @@ int editmap::mapgen_retarget()
         action = ctxt.handle_input( BLINK_SPEED );
         blink = !blink;
         if( ctxt.get_direction( omx, omy, action ) ) {
-            tripoint ptarget = tripoint( target.x + ( omx * 24 ), target.y + ( omy * 24 ), target.z );
-            if( pinbounds( ptarget ) && inbounds( ptarget.x + 24, ptarget.y + 24, ptarget.z ) ) {
+            tripoint ptarget = tripoint( target.x + ( omx * SM_WIDTH ), target.y + ( omy * SM_HEIGHT ), target.z );
+            if( pinbounds( ptarget ) && inbounds( ptarget.x + SM_WIDTH, ptarget.y + SM_HEIGHT, ptarget.z ) ) {
                 target = ptarget;
 
                 target_list.clear();
-                for( int x = target.x - 11; x < target.x + 13; x++ ) {
-                    for( int y = target.y - 11; y < target.y + 13; y++ ) {
+                for( int x = target.x - SM_WIDTH / 2 - 1; x < target.x + SM_WIDTH / 2 + 1; x++ ) {
+                    for( int y = target.y - SM_WIDTH / 2 - 1; y < target.y + SM_WIDTH / 2 + 1; y++ ) {
                         target_list.push_back( tripoint( x, y, target.z ) );
                     }
                 }

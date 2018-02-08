@@ -1883,7 +1883,7 @@ void mapgen_gas_station(map *m, oter_id terrain_type, mapgendata dat, int, float
         }
     }
     m->place_items("fridgesnacks", 82, left_w + 1, top_w + 1, left_w + 1, bottom_w - 1, false, 0);
-    m->place_items("road",  12, 0,      0,  SEEX*2 - 1, top_w - 1, false, 0);
+    m->place_items("road",  12, 0,      0,  SM_WIDTH - 1, top_w - 1, false, 0);
     m->place_items("behindcounter", 70, right_w - 4, top_w + 1, right_w - 1, top_w + 2, false, 0);
     m->place_items("softdrugs", 12, right_w - 1, bottom_w - 2, right_w - 1, bottom_w - 2, false, 0);
     if (terrain_type == "s_gas_east") {

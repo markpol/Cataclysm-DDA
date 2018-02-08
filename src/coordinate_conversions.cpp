@@ -156,23 +156,23 @@ void sm_to_ms( int &x, int &y )
 
 point ms_to_omt_copy( int x, int y )
 {
-    return point( divide( x, SEEX * SM_IN_OMT ), divide( y, SEEY * SM_IN_OMT ) );
+    return point( divide( x, SM_WIDTH ), divide( y, SM_HEIGHT ) );
 }
 
 tripoint ms_to_omt_copy( const tripoint &p )
 {
-    return tripoint( divide( p.x, SEEX * SM_IN_OMT ), divide( p.y, SEEY * SM_IN_OMT ), p.z );
+    return tripoint( divide( p.x, SM_WIDTH ), divide( p.y, SM_HEIGHT ), p.z );
 }
 
 void ms_to_omt( int &x, int &y )
 {
-    x = divide( x, SEEX * SM_IN_OMT );
-    y = divide( y, SEEY * SM_IN_OMT );
+    x = divide( x, SM_WIDTH );
+    y = divide( y, SM_HEIGHT );
 }
 
 point ms_to_omt_remain( int &x, int &y )
 {
-    return point( divide( x, SEEX * SM_IN_OMT, x ), divide( y, SEEY * SM_IN_OMT, y ) );
+    return point( divide( x, SM_WIDTH, x ), divide( y, SM_HEIGHT, y ) );
 }
 
 

@@ -273,8 +273,8 @@ void faction::load_info(std::string data)
          good >> omx >> omy >> mapx >> mapy >> size >> power >> combat_ability >>
          food_supply >> wealth;
     // Make mapx/mapy global coordinate
-    mapx += omx * OMAPX * 2;
-    mapy += omy * OMAPY * 2;
+    mapx += omx * OMAPX * SM_IN_OMT;
+    mapy += omy * OMAPY * SM_IN_OMT;
     values = valuetmp;
     goal = faction_goal(goaltmp);
     job1 = faction_job(jobtmp1);
@@ -414,9 +414,9 @@ void faction::randomize()
 void faction::make_army()
 {
     name = _("The army");
-    mapx = OMAPX / 2;
-    mapy = OMAPY / 2;
-    size = OMAPX * 2;
+    mapx = OMAPX / SM_IN_OMT; //@todo: return back to 2?
+    mapy = OMAPY / SM_IN_OMT; //@todo: return back to 2?
+    size = OMAPX * SM_IN_OMT; //@todo: return back to 2?
     power = OMAPX;
     goal = FACGOAL_DOMINANCE;
     job1 = FACJOB_MERCENARIES;

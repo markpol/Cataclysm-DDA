@@ -198,7 +198,7 @@ void game::unserialize(std::istream & fin)
         calendar::turn = tmpturn;
         calendar::start = tmpcalstart;
 
-        load_map( tripoint( levx + comx * OMAPX * 2, levy + comy * OMAPY * 2, levz ) );
+        load_map( tripoint( levx + comx * OMAPX * SM_IN_OMT, levy + comy * OMAPY * SM_IN_OMT, levz ) );
 
         safe_mode = static_cast<safe_mode_type>( tmprun );
         if (get_option<bool>( "SAFEMODE" ) && safe_mode == SAFE_MODE_OFF) {

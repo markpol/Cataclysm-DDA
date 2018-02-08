@@ -1784,7 +1784,7 @@ bool overmap::generate_sub(int const z)
             } else if (oter_above == "anthill") {
                 int size = rng(MIN_ANT_SIZE, MAX_ANT_SIZE);
                 ant_points.push_back(city(i, j, size));
-                add_mon_group(mongroup( mongroup_id( "GROUP_ANT" ), i * 2, j * 2, z, (size * 3) / 2, rng(6000, 8000)));
+                add_mon_group(mongroup( mongroup_id( "GROUP_ANT" ), i * SM_IN_OMT, j * SM_IN_OMT, z, (size * 3) / 2, rng(6000, 8000)));
             } else if (oter_above == "slimepit_down") {
                 int size = rng(MIN_GOO_SIZE, MAX_GOO_SIZE);
                 goo_points.push_back(city(i, j, size));
@@ -1815,7 +1815,7 @@ bool overmap::generate_sub(int const z)
                     ter( p.x, p.y, p.z ) = oter_id( "spiral" );
                 }
                 ter( i, j, z ) = oter_id( "spiral_hub" );
-                add_mon_group( mongroup( mongroup_id( "GROUP_SPIRAL" ), i * 2, j * 2, z, 2, 200 ) );
+                add_mon_group( mongroup( mongroup_id( "GROUP_SPIRAL" ), i * SM_IN_OMT, j * SM_IN_OMT, z, 2, 200 ) );
             } else if ( oter_above == "silo" ) {
                 if (rng(2, 7) < abs(z) || rng(2, 7) < abs(z)) {
                     ter(i, j, z) = oter_id( "silo_finale" );
@@ -1862,10 +1862,10 @@ bool overmap::generate_sub(int const z)
 
     for (auto &i : cities) {
         if (one_in(3)) {
-            add_mon_group(mongroup( mongroup_id( "GROUP_CHUD" ), i.x * 2, i.y * 2, z, i.s, i.s * 20));
+            add_mon_group(mongroup( mongroup_id( "GROUP_CHUD" ), i.x * SM_IN_OMT, i.y * SM_IN_OMT, z, i.s, i.s * 20));
         }
         if (!one_in(8)) {
-            add_mon_group(mongroup( mongroup_id( "GROUP_SEWER" ), i.x * 2, i.y * 2, z, (i.s * 7) / 2, i.s * 70));
+            add_mon_group(mongroup( mongroup_id( "GROUP_SEWER" ), i.x * SM_IN_OMT, i.y * SM_IN_OMT, z, (i.s * 7) / 2, i.s * 70));
         }
     }
 
@@ -2227,11 +2227,11 @@ void overmap::draw( const catacurses::window &w, const catacurses::window &wbar,
                 // Check if this tile is the target of the currently selected group
 
                 // Convert to position within overmap
-                int localx = omx * 2;
-                int localy = omy * 2;
+                int localx = omx * SM_IN_OMT;
+                int localy = omy * SM_IN_OMT;
                 sm_to_om_remain(localx, localy);
 
-                if(mgroup && mgroup->target.x / 2 == localx / 2 && mgroup->target.y / 2 == localy / 2) {
+                if(mgroup && mgroup->target.x / SM_IN_OMT == localx / SM_IN_OMT && mgroup->target.y / SM_IN_OMT == localy / SM_IN_OMT) {
                     ter_color = c_red;
                     ter_sym = 'x';
                 } else {
@@ -4271,7 +4271,7 @@ void overmap::place_special( const overmap_special &special, const tripoint &p, 
         const overmap_special_spawns& spawns = special.spawns;
         const int pop = rng( spawns.population.min, spawns.population.max );
         const int rad = rng( spawns.radius.min, spawns.radius.max );
-        add_mon_group(mongroup(spawns.group, p.x * 2, p.y * 2, p.z, rad, pop));
+        add_mon_group(mongroup(spawns.group, p.x * SM_IN_OMT, p.y * SM_IN_OMT, p.z, rad, pop));
     }
 }
 
@@ -4424,7 +4424,7 @@ void overmap::place_mongroups()
     for( auto &elem : cities ) {
         if( get_option<bool>( "WANDER_SPAWNS" ) ) {
             if( !one_in( 16 ) || elem.s > 5 ) {
-                mongroup m( mongroup_id( "GROUP_ZOMBIE" ), ( elem.x * 2 ), ( elem.y * 2 ), 0, int( elem.s * 2.5 ),
+                mongroup m( mongroup_id( "GROUP_ZOMBIE" ), ( elem.x * SM_IN_OMT ), ( elem.y * SM_IN_OMT ), 0, int( elem.s * 2.5 ),
                             elem.s * 80 );
 //                m.set_target( zg.back().posx, zg.back().posy );
                 m.horde = true;
@@ -4447,7 +4447,7 @@ void overmap::place_mongroups()
                     }
                 }
                 if (swamp_count >= 25)
-                    add_mon_group(mongroup( mongroup_id( "GROUP_SWAMP" ), x * 2, y * 2, 0, 3,
+                    add_mon_group(mongroup( mongroup_id( "GROUP_SWAMP" ), x * SM_IN_OMT, y * SM_IN_OMT, 0, 3,
                                           rng(swamp_count * 8, swamp_count * 25)));
             }
         }
@@ -4466,7 +4466,7 @@ void overmap::place_mongroups()
                     }
                 }
                 if (river_count >= 25)
-                    add_mon_group(mongroup( mongroup_id( "GROUP_RIVER" ), x * 2, y * 2, 0, 3,
+                    add_mon_group(mongroup( mongroup_id( "GROUP_RIVER" ), x * SM_IN_OMT, y * SM_IN_OMT, 0, 3,
                                           rng(river_count * 8, river_count * 25)));
             }
         }
@@ -4476,7 +4476,7 @@ void overmap::place_mongroups()
         // Place the "put me anywhere" groups
         int numgroups = rng(0, 3);
         for (int i = 0; i < numgroups; i++) {
-            add_mon_group(mongroup( mongroup_id( "GROUP_WORM" ), rng(0, OMAPX * 2 - 1), rng(0, OMAPY * 2 - 1), 0,
+            add_mon_group(mongroup( mongroup_id( "GROUP_WORM" ), rng(0, OMAPX * SM_IN_OMT - 1), rng(0, OMAPY * SM_IN_OMT - 1), 0,
                          rng(20, 40), rng(30, 50)));
         }
     }
@@ -4498,27 +4498,27 @@ void overmap::place_radios()
                 case 0:
                     message = string_format(_("This is emergency broadcast station %d%d.\
   Please proceed quickly and calmly to your designated evacuation point."), i, j);
-                    radios.push_back(radio_tower(i * 2, j * 2, rng(RADIO_MIN_STRENGTH, RADIO_MAX_STRENGTH), message));
+                    radios.push_back(radio_tower(i * SM_IN_OMT, j * SM_IN_OMT, rng(RADIO_MIN_STRENGTH, RADIO_MAX_STRENGTH), message));
                     break;
                 case 1:
-                    radios.push_back(radio_tower(i * 2, j * 2, rng(RADIO_MIN_STRENGTH, RADIO_MAX_STRENGTH),
+                    radios.push_back(radio_tower(i * SM_IN_OMT, j * SM_IN_OMT, rng(RADIO_MIN_STRENGTH, RADIO_MAX_STRENGTH),
                                                  _("Head West.  All survivors, head West.  Help is waiting.")));
                     break;
                 case 2:
-                    radios.push_back(radio_tower(i * 2, j * 2, rng(RADIO_MIN_STRENGTH, RADIO_MAX_STRENGTH), "",
+                    radios.push_back(radio_tower(i * SM_IN_OMT, j * SM_IN_OMT, rng(RADIO_MIN_STRENGTH, RADIO_MAX_STRENGTH), "",
                                                  WEATHER_RADIO));
                     break;
                 }
             } else if (ter(i, j, 0) == "lmoe") {
                 message = string_format(_("This is automated emergency shelter beacon %d%d.\
   Supplies, amenities and shelter are stocked."), i, j);
-                radios.push_back(radio_tower(i * 2, j * 2, rng(RADIO_MIN_STRENGTH, RADIO_MAX_STRENGTH) / 2,
+                radios.push_back(radio_tower(i * SM_IN_OMT, j * SM_IN_OMT, rng(RADIO_MIN_STRENGTH, RADIO_MAX_STRENGTH) / 2,
                                              message));
             } else if (ter(i, j, 0) == "fema_entrance") {
                 message = string_format(_("This is FEMA camp %d%d.\
   Supplies are limited, please bring supplemental food, water, and bedding.\
   This is FEMA camp %d%d.  A designated long-term emergency shelter."), i, j, i, j);
-                radios.push_back(radio_tower(i * 2, j * 2, rng(RADIO_MIN_STRENGTH, RADIO_MAX_STRENGTH), message));
+                radios.push_back(radio_tower(i * SM_IN_OMT, j * SM_IN_OMT, rng(RADIO_MIN_STRENGTH, RADIO_MAX_STRENGTH), message));
             }
         }
     }

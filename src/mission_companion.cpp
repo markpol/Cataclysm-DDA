@@ -683,7 +683,7 @@ void talk_function::field_build_1( npc &p )
     g->u.cash += -100000;
     const tripoint site = overmap_buffer.find_closest( g->u.global_omt_location(), "ranch_camp_63", 20, false );
     tinymap bay;
-    bay.load(site.x * 2, site.y * 2, site.z, false);
+    bay.load(site.x * SM_IN_OMT, site.y * SM_IN_OMT, site.z, false);
     bay.draw_square_ter(t_dirt, 5, 4, 15, 14);
     bay.draw_square_ter(t_dirtmound, 6, 5, 6, 13);
     bay.draw_square_ter(t_dirtmound, 8, 5, 8, 13);
@@ -705,7 +705,7 @@ void talk_function::field_build_2( npc &p )
     g->u.cash += -550000;
     const tripoint site = overmap_buffer.find_closest( g->u.global_omt_location(), "ranch_camp_63", 20, false );
     tinymap bay;
-    bay.load(site.x * 2, site.y * 2, site.z, false);
+    bay.load(site.x * SM_IN_OMT, site.y * SM_IN_OMT, site.z, false);
     bay.draw_square_ter(t_fence_h, 4, 3, 16, 3);
     bay.draw_square_ter(t_fence_h, 4, 15, 16, 15);
     bay.draw_square_ter(t_fence_v, 4, 3, 4, 15);
@@ -768,9 +768,9 @@ void talk_function::field_plant( npc &p, std::string place )
     //Now we need to find how many free plots we have to plant in...
     const tripoint site = overmap_buffer.find_closest( g->u.global_omt_location(), place, 20, false );
     tinymap bay;
-    bay.load(site.x * 2, site.y * 2, site.z, false);
-    for (int x = 0; x < 23; x++){
-        for (int y = 0; y < 23; y++){
+    bay.load(site.x * SM_IN_OMT, site.y * SM_IN_OMT, site.z, false);
+    for (int x = 0; x < SM_WIDTH - 1; x++){
+        for (int y = 0; y < SM_HEIGHT - 1; y++){
             if( bay.ter( x, y ) == t_dirtmound ) {
                 empty_plots++;
             }
@@ -796,8 +796,8 @@ void talk_function::field_plant( npc &p, std::string place )
     }
 
     //Plant the actual seeds
-    for (int x = 0; x < 23; x++){
-        for (int y = 0; y < 23; y++){
+    for (int x = 0; x < SM_WIDTH - 1; x++){
+        for (int y = 0; y < SM_HEIGHT - 1; y++){
             if( bay.ter( x, y ) == t_dirtmound && limiting_number > 0){
                 std::list<item> used_seed;
                 if( item::count_by_charges( seed_id ) ) {
@@ -827,9 +827,9 @@ void talk_function::field_harvest( npc &p, std::string place )
     std::vector<itype_id> seed_types;
     std::vector<itype_id> plant_types;
     std::vector<std::string> plant_names;
-    bay.load(site.x * 2, site.y * 2, site.z, false);
-    for (int x = 0; x < 23; x++){
-        for (int y = 0; y < 23; y++){
+    bay.load(site.x * SM_IN_OMT, site.y * SM_IN_OMT, site.z, false);
+    for (int x = 0; x < SM_WIDTH - 1; x++){
+        for (int y = 0; y < SM_HEIGHT - 1; y++){
             if (bay.furn(x,y) == furn_str_id( "f_plant_harvest" ) && !bay.i_at(x,y).empty()){
                 const item &seed = bay.i_at( x,y )[0];
                 if( seed.is_seed() ) {
@@ -874,8 +874,8 @@ void talk_function::field_harvest( npc &p, std::string place )
     if ( p.has_trait( trait_NPC_CONSTRUCTION_LEV_2 ) )
         skillLevel += 2;
 
-    for (int x = 0; x < 23; x++){
-        for (int y = 0; y < 23; y++){
+    for (int x = 0; x < SM_WIDTH - 1; x++){
+        for (int y = 0; y < SM_HEIGHT - 1; y++){
             if (bay.furn(x,y) == furn_str_id( "f_plant_harvest" ) && !bay.i_at(x,y).empty()){
                 const item &seed = bay.i_at( x,y )[0];
                 if( seed.is_seed() ) {
@@ -1490,9 +1490,9 @@ std::vector<item*> talk_function::loot_building(const tripoint site)
     tinymap bay;
     std::vector<item *> items_found;
     tripoint p;
-    bay.load(site.x * 2, site.y * 2, site.z, false);
-    for (int x = 0; x < 23; x++){
-        for (int y = 0; y < 23; y++){
+    bay.load(site.x * SM_IN_OMT, site.y * SM_IN_OMT, site.z, false);
+    for (int x = 0; x < SM_WIDTH - 1; x++){
+        for (int y = 0; y < SM_HEIGHT - 1; y++){
             p.x = x;
             p.y = y;
             p.z = site.z;

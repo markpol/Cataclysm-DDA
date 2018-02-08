@@ -107,12 +107,12 @@ void overmapbuffer::fix_mongroups(overmap &new_overmap)
             continue;
         }
         // Inside the bounds of the overmap?
-        if( mg.pos.x >= 0 && mg.pos.y >= 0 && mg.pos.x < OMAPX * 2 && mg.pos.y < OMAPY * 2 ) {
+        if( mg.pos.x >= 0 && mg.pos.y >= 0 && mg.pos.x < OMAPX * SM_IN_OMT && mg.pos.y < OMAPY * SM_IN_OMT ) {
             ++it;
             continue;
         }
-        point smabs( mg.pos.x + new_overmap.pos().x * OMAPX * 2,
-                     mg.pos.y + new_overmap.pos().y * OMAPY * 2 );
+        point smabs( mg.pos.x + new_overmap.pos().x * OMAPX * SM_IN_OMT,
+                     mg.pos.y + new_overmap.pos().y * OMAPY * SM_IN_OMT );
         point omp = sm_to_om_remain( smabs );
         if( !has( omp.x, omp.y ) ) {
             // Don't generate new overmaps, as this can be called from the
@@ -619,7 +619,7 @@ tripoint overmapbuffer::find_closest(const tripoint& origin, const std::string& 
     // XXXXXXXXX
     //
     // See overmap::place_specials for how we attempt to insure specials are placed within this range.
-    // The actual number is 5 becuase 1 covers the current overmap,
+    // The actual number is 5 because 1 covers the current overmap,
     // and each additional one expends the search to the next concentric circle of overmaps.
 
     int max = ( radius == 0 ? OMAPX * 5 : radius );

@@ -78,7 +78,7 @@ struct real_coords {
     void fromomap( int rel_omx, int rel_omy, int rel_om_posx, int rel_om_posy ) {
         int ax = ( rel_omx * OMAPX ) + rel_om_posx;
         int ay = ( rel_omy * OMAPY ) + rel_om_posy;
-        fromabs( ax * SEEX * SM_IN_OMT, ay * SEEY * SM_IN_OMT );
+        fromabs( ax * SM_WIDTH, ay * SM_HEIGHT );
     }
 
     // helper functions to return abs_pos of submap/overmap tile/overmap's start

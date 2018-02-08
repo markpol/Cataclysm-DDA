@@ -13466,7 +13466,7 @@ void game::nuke( const tripoint &p )
     int x = p.x;
     int y = p.y;
     tinymap tmpmap;
-    tmpmap.load( x * 2, y * 2, 0, false);
+    tmpmap.load( x * SM_IN_OMT, y * SM_IN_OMT, 0, false);
     tripoint dest( 0, 0, p.z );
     int &i = dest.x;
     int &j = dest.y;

@@ -1079,10 +1079,10 @@ void npc::load(JsonObject &data)
         data.read( "mapy", old_coords.y );
         int o = 0;
         if( data.read( "omx", o ) ) {
-            old_coords.x += o * OMAPX * 2;
+            old_coords.x += o * OMAPX * SM_IN_OMT;
         }
         if( data.read( "omy", o ) ) {
-            old_coords.y += o * OMAPY * 2;
+            old_coords.y += o * OMAPY * SM_IN_OMT;
         }
         submap_coords = point( old_coords.x + posx() / SEEX, old_coords.y + posy() / SEEY );
     }
@@ -2139,10 +2139,10 @@ void faction::deserialize(JsonIn &jsin)
     // omx,omy are obsolete, use them (if present) to make mapx,mapy global coordinates
     int o = 0;
     if(jo.read("omx", o)) {
-        mapx += o * OMAPX * 2;
+        mapx += o * OMAPX * SM_IN_OMT;
     }
     if(jo.read("omy", o)) {
-        mapy += o * OMAPY * 2;
+        mapy += o * OMAPY * SM_IN_OMT;
     }
     jo.read("size", size);
     jo.read("power", power);

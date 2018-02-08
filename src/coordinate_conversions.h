@@ -194,7 +194,7 @@ inline void sm_to_ms( tripoint &p )
 {
     sm_to_ms( p.x, p.y );
 }
-// map squares to overmap terrain, basically: x /= SEEX * SM_IN_OMT
+// map squares to overmap terrain, basically: x /= SM_WIDTH
 point ms_to_omt_copy( int x, int y );
 inline point ms_to_omt_copy( const point &p )
 {
