@@ -1633,17 +1633,17 @@ void iexamine::egg_sack_generic( player &p, const tripoint &examp,
 
 void iexamine::egg_sackbw( player &p, const tripoint &examp )
 {
-    egg_sack_generic( p, examp, "mon_spider_widow_giant_s" );
+    egg_sack_generic( p, examp, mtype_id( "mon_spider_widow_giant_s" ) );
 }
 
 void iexamine::egg_sackcs( player &p, const tripoint &examp )
 {
-    egg_sack_generic( p, examp, "mon_spider_cellar_giant_s" );
+    egg_sack_generic( p, examp, mtype_id( "mon_spider_cellar_giant_s" ) );
 }
 
 void iexamine::egg_sackws( player &p, const tripoint &examp )
 {
-    egg_sack_generic( p, examp, "mon_spider_web_s" );
+    egg_sack_generic( p, examp, mtype_id( "mon_spider_web_s" ) );
 }
 
 /**

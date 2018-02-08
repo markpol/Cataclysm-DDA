@@ -34,9 +34,6 @@ namespace iexamine
 {
 
 void egg_sack_generic( player &p, const tripoint &examp, const mtype_id &montype );
-void egg_sack_generic( player &p, const tripoint &examp, const std::string &montype ) {
-    egg_sack_generic( p, examp, mtype_id( montype ) );
-}
 
 void none( player &p, const tripoint &examp );
 
