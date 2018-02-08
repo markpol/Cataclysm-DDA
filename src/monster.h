@@ -4,6 +4,7 @@
 
 #include "creature.h"
 #include "enums.h"
+#include "item.h"
 #include "int_id.h"
 
 #include <vector>
