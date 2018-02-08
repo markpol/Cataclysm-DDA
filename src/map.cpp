@@ -6662,10 +6662,10 @@ void map::loadn( const int gridx, const int gridy, const int gridz, const bool u
         // It doesn't exist; we must generate it!
         dbg( D_INFO | D_WARNING ) << "map::loadn: Missing mapbuffer data. Regenerating.";
 
-        // Each overmap square is two nonants; to prevent overlap, generate only at
-        //  squares divisible by 2.
-        const int newmapx = absx - ( abs( absx ) % 2 );
-        const int newmapy = absy - ( abs( absy ) % 2 );
+        // Each overmap square is SM_IN_OMT nonants; to prevent overlap, generate only at
+        //  squares divisible by SM_IN_OMT.
+        const int newmapx = absx - ( abs( absx ) % SM_IN_OMT );
+        const int newmapy = absy - ( abs( absy ) % SM_IN_OMT );
         // Short-circuit if the map tile is uniform
         int overx = newmapx;
         int overy = newmapy;

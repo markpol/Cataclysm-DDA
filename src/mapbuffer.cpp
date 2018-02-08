@@ -125,7 +125,7 @@ void mapbuffer::save( bool delete_after_save )
         }
 
         // Whatever the coordinates of the current submap are,
-        // we're saving a 2x2 quad of submaps at a time.
+        // we're saving a (SM_IN_OMT * SM_IN_OMT) quad of submaps at a time.
         // Submaps are generated in quads, so we know if we have one member of a quad,
         // we have the rest of it, if that assumption is broken we have REAL problems.
         const tripoint om_addr = sm_to_omt_copy( elem.first );
@@ -135,7 +135,7 @@ void mapbuffer::save( bool delete_after_save )
         }
         saved_submaps.insert( om_addr );
 
-        // A segment is a chunk of 32x32 submap quads.
+        // A segment is a chunk of (OMT_IN_SEG * OMT_IN_SEG) submap quads.
         // We're breaking them into subdirectories so there aren't too many files per directory.
         // Might want to make a set for this one too so it's only checked once per save().
         std::stringstream dirname;
@@ -153,9 +153,9 @@ void mapbuffer::save( bool delete_after_save )
         save_quad( dirname.str(), quad_path.str(), om_addr, submaps_to_delete,
                    delete_after_save || zlev_del ||
                    om_addr.x < map_origin.x || om_addr.y < map_origin.y ||
-                   om_addr.x > map_origin.x + ( MAPSIZE / 2 ) ||
-                   om_addr.y > map_origin.y + ( MAPSIZE / 2 ) );
-        num_saved_submaps += 4;
+                   om_addr.x > map_origin.x + ( MAPSIZE / SM_IN_OMT ) ||
+                   om_addr.y > map_origin.y + ( MAPSIZE / SM_IN_OMT ) );
+        num_saved_submaps += SM_IN_OMT * SM_IN_OMT;
     }
     for( auto &elem : submaps_to_delete ) {
         remove_submap( elem );
