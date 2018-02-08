@@ -1559,7 +1559,7 @@ class tinymap : public map
 {
         friend class editmap;
     public:
-        tinymap( int mapsize = 2, bool zlevels = false );
+        tinymap( int mapsize = SM_IN_OMT, bool zlevels = false );
 };
 
 #endif
