@@ -79,6 +79,80 @@
     "type": "overmap_location",
     "id": "need_food",
     "terrains": [ "s_grocery" ]
+  },
+  {
+    "type": "overmap_location",
+    "id": "evac_shelter",
+    "terrains": [ "shelter", "shelter_basement" ]
+  },
+  {
+    "type": "overmap_location",
+    "id": "town_buildings",
+    "terrains": [ "house", "s_grocery", "s_gun", "s_garage", "pawn", "bank", "mil_surplus", "furniture", "s_library", "s_bookstore" ]
+  },
+  {
+    "type": "overmap_location",
+    "id": "lab",
+    "terrains": [ "lab_stairs", "lab_finale", "ice_lab_stairs", "ice_lab_finale" ]
+  },
+  {
+    "type": "overmap_location",
+    "id": "cabin",
+    "terrains": [ "cabin" ]
+  },
+  {
+    "type": "overmap_location",
+    "id": "outside",
+    "terrains": [ "forest", "field", "cabin" ]
+  },
+  {
+    "type": "overmap_location",
+    "id": "shelter",
+    "terrains": [ "lmoe", "shelter" ]
+  },
+  {
+    "type": "overmap_location",
+    "id": "hospital",
+    "terrains": [ "hospital_1", "hospital_2", "hospital_3", "hospital_4", "hospital_5", "hospital_6", "hospital_7", "hospital_8", "hospital_9" ]
+  },
+  {
+    "type": "overmap_location",
+    "id": "prison",
+    "terrains": [ "prison_1_b_2" ]
+  },
+  {
+    "type": "overmap_location",
+    "id": "mall",
+    "terrains": [ "mall_a_12", "mall_a_30" ]
+  },
+  {
+    "type": "overmap_location",
+    "id": "fire_station",
+    "terrains": [ "fire_station" ]
+  },
+  {
+    "type": "overmap_location",
+    "id": "police_station",
+    "terrains": [ "police" ]
+  },
+  {
+    "type": "overmap_location",
+    "id": "school",
+    "terrains": [ "school_1_5" ]
+  },
+  {
+    "type": "overmap_location",
+    "id": "mine_finale",
+    "terrains": [ "mine_finale" ]
+  },
+  {
+    "type": "overmap_location",
+    "id": "public_holdout",
+    "terrains": [ "s_bookstore", "s_grocery", "police", "s_garage", "s_library", "hospital_2", "mall_a_30", "church", "cemetery_4square_10" ]
+  },
+  {
+    "type": "overmap_location",
+    "id": "wilderness_buildings",
+    "terrains": [ "hunter_shack", "campsite_a", "farm_2", "cabin_woods" ]
   }
 ]
-
