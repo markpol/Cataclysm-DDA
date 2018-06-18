@@ -200,10 +200,11 @@ bool overmap_special_id::is_valid() const
     return specials.is_valid( *this );
 }
 
-city::city( int const X, int const Y, int const S)
+city::city( int const X, int const Y, int const S, omzone_type Z = OMZONE_CITY )
 : x (X)
 , y (Y)
 , s (S)
+, zone (Z)
 , name( Name::get( nameIsTownName ) )
 {
 }
@@ -1711,6 +1712,8 @@ void overmap::generate( const overmap *north, const overmap *east,
 
     place_specials( enabled_specials );
     polish_river();
+
+    place_zones();
 
     // @todo: there is no reason we can't generate the sublevels in one pass
     //       for that matter there is no reason we can't as we add the entrance ways either
@@ -3406,6 +3409,8 @@ void overmap::place_cities()
             tmp.y = cy;
             tmp.s = size;
             cities.push_back(tmp);
+
+            tmp.zone = get_random_zone();
 
             const auto start_dir = om_direction::random();
             auto cur_dir = start_dir;

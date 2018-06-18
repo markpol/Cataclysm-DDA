@@ -5,9 +5,11 @@
 #include "color.h"
 #include "common_types.h"
 #include "enums.h"
+#include "line.h"
 #include "int_id.h"
 #include "string_id.h"
 #include "translations.h"
+#include "rng.h"
 
 #include <string>
 #include <vector>
@@ -85,6 +87,45 @@ type random();
 bool are_parallel( type dir1, type dir2 );
 
 };
+
+// Overmap "Zones"
+// Areas which have special post-generation processing attached to them
+
+enum omzone_type : int
+{
+    OMZONE_NULL = 0,
+    OMZONE_CITY,        // Basic city; place corpses
+    OMZONE_BOMBED,      // Terrain is heavily destroyed
+    OMZONE_IRRADIATED,  // Lots of radioactivity TODO
+    OMZONE_CORRUPTED,   // Fabric of space is weak TODO
+    OMZONE_OVERGROWN,   // Lots of plants, etc. TODO
+    OMZONE_FUNGAL,      // Overgrown with fungus TODO
+    OMZONE_MILITARIZED, // _Was_ occupied by the military TODO
+    OMZONE_FLOODED,     // Flooded out TODO
+    OMZONE_TRAPPED,     // Heavily booby-trapped TODO
+    OMZONE_MUTATED,     // Home of mutation experiments - mutagen & monsters TODO
+    OMZONE_FORTIFIED,   // Boarded up windows &c TODO
+    OMZONE_BOTS,        // Home of the bots TODO
+    OMZONE_MAX
+};
+
+omzone_type get_random_zone()
+{
+    return ( omzone_type )rng( 1, OMZONE_MAX );
+}
+
+struct overmap_zone {
+    omzone_type z;
+    tripoint center;
+    std::set<tripoint> points;
+    int size;
+    int distance_from_center( tripoint p ) {return rl_dist( center, p );}
+    bool contains_tripoint( tripoint p ) {return ( points.find( p ) != points.end() );}
+};
+
+void loot();
+void burn();
+void post_process( omzone_type zones, int distance );
 
 struct overmap_spawns {
         overmap_spawns() : group( mongroup_id::NULL_ID() ) {}
