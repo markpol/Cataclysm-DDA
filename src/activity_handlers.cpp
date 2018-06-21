@@ -2023,7 +2023,7 @@ void activity_handlers::disassemble_finish( player_activity *, player *p )
 
 void activity_handlers::build_finish( player_activity *, player * )
 {
-    complete_construction();
+    create_construction_result();
 }
 
 void activity_handlers::vibe_finish( player_activity *act, player *p )

@@ -3,6 +3,8 @@
 #define CONSTRUCTION_H
 
 #include "string_id.h"
+#include "requirements.h"
+#include "generic_factory.h"
 
 #include <string>
 #include <set>
@@ -17,54 +19,106 @@ class window;
 class JsonObject;
 class nc_color;
 class Skill;
-struct requirement_data;
 struct tripoint;
 
 using skill_id = string_id<Skill>;
-using requirement_id = string_id<requirement_data>;
 
-struct construction {
-        std::string category; //Construction type category
-        std::string description; // how the action is displayed to the player
-        std::string pre_note; // Additional note displayed along with construction requirements.
-        std::string pre_terrain; // beginning terrain for construction
-        std::string post_terrain;// final terrain after construction
+class construction;
+using construction_id = string_id<construction>;
 
-        std::set<std::string> pre_flags; // flags beginning terrain must have
-
-        /** Skill->skill level mapping. Can be empty. */
-        std::map<skill_id, int> required_skills;
-        requirement_id requirement;
-
-        size_t id; // Index in construction vector
-        int time;
-
-        // If true, the requirements are generated during finalization
-        bool vehicle_start;
-
-        std::function<bool( const tripoint & )> pre_special; // custom constructibility check
-        std::function<void( const tripoint & )> post_special; // custom after-effects
-        std::function<void( const tripoint & )> explain_failure; // Custom error message display
-
-        bool pre_is_furniture; // whether it's furniture or terrain
-        bool post_is_furniture; // whether it's furniture or terrain
-
-        int adjusted_time() const; // NPC assistance adjusted
-        int print_time( const catacurses::window &w, int ypos, int xpos, int width, nc_color col ) const;
-        std::vector<std::string> get_folded_time_string( int width ) const;
-        float time_scale() const; //result of construction scaling option
-    private:
-        std::string get_time_string() const;
+enum class construction_result : int
+{
+    terrain,
+    furniture
 };
 
-//! Set all constructions to take the specified time.
-void standardize_construction_times( int time );
+namespace io
+{
 
-void load_construction( JsonObject &jsobj );
-void reset_constructions();
-void construction_menu();
-void complete_construction();
-void check_constructions();
-void finalize_constructions();
+    static const std::map<std::string, construction_result> construction_result_map = {{
+            { "terrain", construction_result::terrain },
+            { "furniture", construction_result::furniture },
+        }
+    };
+
+    template<>
+    construction_result string_to_enum<construction_result>( const std::string &data )
+    {
+        return string_to_enum_look_up( construction_result_map, data );
+    }
+
+}
+
+class construction
+{
+        friend class construction_dictionary;
+
+    private:
+        std::string result_ = "null";
+
+    public:
+        construction();
+
+        operator bool() const {
+            return result_ != "null";
+        }
+
+        const std::string &result() const {
+            return result_;
+        }
+
+        construction_result result_type;
+        std::string category;
+        std::string subcategory;
+
+        int time = 0; // in movement points (100 per turn)
+        int difficulty = 0;
+
+        /** Fetch combined requirement data (inline and via "using" syntax) */
+        const requirement_data &requirements() const {
+            return requirements_;
+        }
+
+        const construction_id &ident() const {
+            return ident_;
+        }
+
+        bool is_blacklisted() const {
+            return requirements_.is_blacklisted();
+        }
+
+        /// @returns The name (@ref item::nname) of the resulting item (@ref result).
+        std::string result_name() const;
+
+        std::map<itype_id, int> byproducts;
+
+        skill_id skill_used;
+        std::map<skill_id, int> required_skills;
+
+        //Create a string list to describe the skill requirements for this construction
+        // Format: skill_name(amount), skill_name(amount)
+        std::string required_skills_string() const;
+
+        void load( JsonObject &jo, const std::string &src );
+        void finalize();
+
+        /** Returns a non-empty string describing an inconsistency (if any) in the construction. */
+        std::string get_consistency_error() const;
+
+    private:
+        construction_id ident_ = construction_id::NULL_ID();
+
+        /** External requirements (via "using" syntax) where second field is multiplier */
+        std::vector<std::pair<requirement_id, int>> reqs_external;
+
+        /** Requires specified inline with the construction (and replaced upon inheritance) */
+        std::vector<std::pair<requirement_id, int>> reqs_internal;
+
+        /** Combined requirements cached when construction finalized */
+        requirement_data requirements_;
+
+ };
+
+ void create_construction_result();
 
 #endif

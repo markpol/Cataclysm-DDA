@@ -230,7 +230,7 @@ void DynamicDataLoader::initialize()
     add( "effect_type", &load_effect_type );
     add( "tutorial_messages", &load_tutorial_messages );
     add( "overmap_terrain", &overmap_terrains::load );
-    add( "construction", &load_construction );
+    add( "construction", &construction_dictionary::load_construction );
     add( "mapgen", &load_mapgen );
     add( "overmap_connection", &overmap_connections::load );
     add( "overmap_location", &overmap_locations::load );
@@ -376,7 +376,7 @@ void DynamicDataLoader::unload_data()
     faction_template::reset();
     quality::reset();
     trap::reset();
-    reset_constructions();
+    construction_dictionary::reset();
     overmap_terrains::reset();
     reset_region_settings();
     reset_mapgens();
@@ -436,7 +436,7 @@ void DynamicDataLoader::finalize_loaded_data( loading_ui &ui )
         { _( "Monster factions" ), &monfactions::finalize },
         { _( "Crafting recipes" ), &recipe_dictionary::finalize },
         { _( "Martial arts" ), &finialize_martial_arts },
-        { _( "Constructions" ), &finalize_constructions },
+        { _( "Constructions" ), &construction_dictionary::finalize },
         { _( "NPC classes" ), &npc_class::finalize_all },
         { _( "Harvest lists" ), &harvest_list::finalize_all },
         { _( "Anatomies" ), &anatomy::finalize_all },
@@ -477,7 +477,6 @@ void DynamicDataLoader::check_consistency( loading_ui &ui )
         { _( "Monster types" ), []() { MonsterGenerator::generator().check_monster_definitions(); } },
         { _( "Monster groups" ), &MonsterGroupManager::check_group_definitions },
         { _( "Furniture and terrain" ), &check_furniture_and_terrain },
-        { _( "Constructions" ), &check_constructions },
         { _( "Professions" ), &profession::check_definitions },
         { _( "Scenarios" ), &scenario::check_definitions },
         { _( "Martial arts" ), &check_martialarts },
