@@ -265,3 +265,6 @@ struct requirement_data {
 };
 
 #endif
+
+void add_requirements( requirement_data &existing_requirements,
+                           const std::vector<std::pair<requirement_id, int>> &new_requirements );

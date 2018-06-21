@@ -98,9 +98,6 @@ class recipe
         std::string get_consistency_error() const;
 
     private:
-        void add_requirements( const std::vector<std::pair<requirement_id, int>> &reqs );
-
-    private:
         recipe_id ident_ = recipe_id::NULL_ID();
 
         /** Abstract recipes can be inherited from but are themselves disposed of at finalization */

@@ -14,6 +14,7 @@
 #include "generic_factory.h"
 
 #include <algorithm>
+#include <numeric>
 #include <cmath>
 #include <limits>
 #include <sstream>
@@ -915,4 +916,14 @@ requirement_data requirement_data::disassembly_requirements() const
         } ), ret.components.end() );
 
     return ret;
+}
+
+void add_requirements( requirement_data &existing_requirements,
+                           const std::vector<std::pair<requirement_id, int>> &new_requirements )
+{
+    existing_requirements = std::accumulate( new_requirements.begin(), new_requirements.end(),
+                            existing_requirements,
+    []( const requirement_data & lhs, const std::pair<requirement_id, int> &rhs ) {
+        return lhs + ( *rhs.first * rhs.second );
+    } );
 }
