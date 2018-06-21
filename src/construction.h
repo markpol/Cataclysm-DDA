@@ -3,6 +3,7 @@
 #define CONSTRUCTION_H
 
 #include "string_id.h"
+#include "requirements.h"
 
 #include <string>
 #include <set>
@@ -34,7 +35,11 @@ struct construction {
 
         /** Skill->skill level mapping. Can be empty. */
         std::map<skill_id, int> required_skills;
-        requirement_id requirements;
+        std::vector<std::pair<requirement_id, int>> requirements_vector;
+        requirement_data requirements;
+        bool is_blacklisted() const {
+            return requirements.is_blacklisted();
+        }
 
         size_t id; // Index in construction vector
         int time;

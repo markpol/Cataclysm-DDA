@@ -152,7 +152,8 @@ nc_color construction_color( std::string &con_name, bool highlight )
         std::vector<construction *> cons = constructions_by_desc( con_name );
         const inventory &total_inv = g->u.crafting_inventory();
         for( auto &con : cons ) {
-            if( con->requirements->can_make_with_inventory( total_inv ) ) {
+            const requirement_data &rd = con->requirements;
+            if( rd.can_make_with_inventory( total_inv ) ) {
                 con_first = con;
                 break;
             }
@@ -202,7 +203,7 @@ void construction_menu()
     const int w_list_height = w_height - 4;
     const int w_list_x0 = 1;
     catacurses::window w_list = catacurses::newwin( w_list_height, w_list_width,
-                                                    w_y0 + 3, w_x0 + w_list_x0 );
+                                w_y0 + 3, w_x0 + w_list_x0 );
 
     draw_grid( w_con, w_list_width + w_list_x0 );
 
@@ -295,10 +296,10 @@ void construction_menu()
                 constructs.clear();
                 previous_select = -1;
                 std::copy_if( available.begin(), available.end(),
-                    std::back_inserter( constructs ),
-                    [&](const std::string &a){
-                        return lcmatch(a, filter);
-                    } );
+                              std::back_inserter( constructs ),
+                [&]( const std::string & a ) {
+                    return lcmatch( a, filter );
+                } );
             } else {
                 constructs = cat_available[category_name];
                 previous_index = tabindex;
@@ -395,7 +396,8 @@ void construction_menu()
                             continue;
                         }
                         // Update the cached availability of components and tools in the requirement object
-                        current_con->requirements->can_make_with_inventory( total_inv );
+                        const requirement_data &rd = current_con->requirements;
+                        rd.can_make_with_inventory( total_inv );
 
                         std::vector<std::string> current_buffer;
                         std::ostringstream current_line;
@@ -429,9 +431,9 @@ void construction_menu()
                             current_line << _( "N/A" );
                         } else {
                             current_line <<
-                                enumerate_as_string( current_con->required_skills.begin(),
-                                                     current_con->required_skills.end(),
-                                                     []( const std::pair<skill_id, int> &skill ) {
+                                         enumerate_as_string( current_con->required_skills.begin(),
+                                                              current_con->required_skills.end(),
+                            []( const std::pair<skill_id, int> &skill ) {
                                 nc_color col;
                                 int s_lvl = g->u.get_skill_level( skill.first );
                                 if( s_lvl < skill.second ) {
@@ -479,12 +481,11 @@ void construction_menu()
                         std::vector<std::string> folded_time = current_con->get_folded_time_string(
                                 available_window_width );
                         current_buffer.insert( current_buffer.end(), folded_time.begin(), folded_time.end() );
-
-                        std::vector<std::string> folded_tools = current_con->requirements->get_folded_tools_list(
+                        std::vector<std::string> folded_tools = rd.get_folded_tools_list(
                                 available_window_width, color_stage, total_inv );
                         current_buffer.insert( current_buffer.end(), folded_tools.begin(), folded_tools.end() );
 
-                        std::vector<std::string> folded_components = current_con->requirements->get_folded_components_list(
+                        std::vector<std::string> folded_components = rd.get_folded_components_list(
                                     available_window_width, color_stage, total_inv );
                         current_buffer.insert( current_buffer.end(), folded_components.begin(), folded_components.end() );
 
@@ -667,7 +668,7 @@ bool player_can_build( player &p, const inventory &pinv, const construction &con
     if( !character_has_skill_for( p, con ) ) {
         return false;
     }
-    return con.requirements->can_make_with_inventory( pinv );
+    return con.requirements.can_make_with_inventory( pinv );
 }
 
 bool can_construct( const std::string &desc )
@@ -698,7 +699,7 @@ bool can_construct( const construction &con, const tripoint &p )
     }
     // see if the flags check out
     place_okay &= std::all_of( con.pre_flags.begin(), con.pre_flags.end(),
-        [&p] ( const std::string &flag ) {
+    [&p]( const std::string & flag ) {
         return g->m.has_flag( flag, p );
     } );
 
@@ -766,7 +767,7 @@ void complete_construction()
     player &u = g->u;
     const construction &built = constructions[u.activity.index];
 
-    const auto award_xp = [&]( player &c ) {
+    const auto award_xp = [&]( player & c ) {
         for( const auto &pr : built.required_skills ) {
             c.practice( pr.first, ( int )( ( 10 + 15 * pr.second ) * ( 1 + built.time / 30000.0 ) ),
                         ( int )( pr.second * 1.25 ) );
@@ -787,10 +788,11 @@ void complete_construction()
         award_xp( *elem );
     }
 
-    for( const auto &it : built.requirements->get_components() ) {
+    const requirement_data &reqs = built.requirements;
+    for( const auto &it : reqs.get_components() ) {
         u.consume_items( it );
     }
-    for( const auto &it : built.requirements->get_tools() ) {
+    for( const auto &it : reqs.get_tools() ) {
         u.consume_tools( it );
     }
 
@@ -824,11 +826,11 @@ bool construct::check_empty( const tripoint &p )
 inline std::array<tripoint, 4> get_orthogonal_neighbors( const tripoint &p )
 {
     return {{
-        tripoint( p.x, p.y - 1, p.z ),
-        tripoint( p.x, p.y + 1, p.z ),
-        tripoint( p.x - 1, p.y, p.z ),
-        tripoint( p.x + 1, p.y, p.z )
-    }};
+            tripoint( p.x, p.y - 1, p.z ),
+            tripoint( p.x, p.y + 1, p.z ),
+            tripoint( p.x - 1, p.y, p.z ),
+            tripoint( p.x + 1, p.y, p.z )
+        }};
 }
 
 bool construct::check_support( const tripoint &p )
@@ -1145,14 +1147,19 @@ void load_construction( JsonObject &jo )
     // with recipes/requirements, TODO: should be changed in json
     con.time = jo.get_int( "time" ) * 1000;
 
-    if( jo.has_string( "using" ) ) {
-        con.requirements = requirement_id( jo.get_string( "using" ) );
+    if( jo.has_array( "using" ) ) {
+        auto arr = jo.get_array( "using" );
+        while( arr.has_more() ) {
+            auto cur = arr.next_array();
+            con.requirements_vector.emplace_back( requirement_id( cur.get_string( 0 ) ), cur.get_int( 1 ) );
+        }
     } else {
         // Warning: the IDs may change!
         std::string req_id = string_format( "inline_construction_%u", con.id );
         requirement_data::load_requirement( jo, req_id );
-        con.requirements = requirement_id( req_id );
+        con.requirements_vector.emplace_back( requirement_id( req_id ), -1 );
     }
+
     con.pre_note = jo.get_string( "pre_note", "" );
     con.pre_terrain = jo.get_string( "pre_terrain", "" );
     if( con.pre_terrain.size() > 1
@@ -1227,10 +1234,7 @@ void check_constructions()
             }
         }
 
-        if( !c.requirements.is_valid() ) {
-            debugmsg( "construction %s has missing requirement data %s",
-                      display_name.c_str(), c.requirements.c_str() );
-        }
+        c.requirements.check_consistency();
 
         if( !c.pre_terrain.empty() ) {
             if( c.pre_is_furniture ) {
@@ -1312,6 +1316,11 @@ std::vector<std::string> construction::get_folded_time_string( int width ) const
 
 void finalize_constructions()
 {
+    for( auto con : constructions ) {
+        add_requirements( con.requirements, con.requirements_vector );
+        con.requirements_vector.clear();
+    }
+
     std::vector<item_comp> frame_items;
     for( const auto &e : vpart_info::all() ) {
         const vpart_info &vp = e.second;
@@ -1327,13 +1336,19 @@ void finalize_constructions()
 
     for( construction &con : constructions ) {
         if( con.vehicle_start ) {
-            const_cast<requirement_data &>( con.requirements.obj() ).get_components().push_back( frame_items );
+            con.requirements.get_components().push_back( frame_items );
         }
     }
-
+    std::vector<construction> temp_constructions;
+    for( construction c : constructions ) {
+        const requirement_data &rd = c.requirements;
+        if( !rd.is_blacklisted() ) {
+            temp_constructions.emplace_back( c );
+        }
+    }
     constructions.erase( std::remove_if( constructions.begin(), constructions.end(),
-        [&]( const construction &c ) {
-            return c.requirements->is_blacklisted();
+    [&]( const construction & c ) {
+        return c.is_blacklisted();
     } ), constructions.end() );
 
     for( size_t i = 0; i < constructions.size(); i++ ) {
