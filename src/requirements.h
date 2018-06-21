@@ -231,6 +231,8 @@ struct requirement_data {
          */
         requirement_data disassembly_requirements() const;
 
+        void add_requirements( const std::vector<std::pair<requirement_id, int>> &reqs );
+
     private:
         requirement_id id_ = requirement_id( "null" );
 

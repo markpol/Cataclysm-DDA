@@ -208,8 +208,8 @@ void recipe::load( JsonObject &jo, const std::string &src )
 void recipe::finalize()
 {
     // concatenate both external and inline requirements
-    add_requirements( reqs_external );
-    add_requirements( reqs_internal );
+    requirements_.add_requirements( reqs_external );
+    requirements_.add_requirements( reqs_internal );
 
     reqs_external.clear();
     reqs_internal.clear();
@@ -224,14 +224,6 @@ void recipe::finalize()
             autolearn_requirements[ skill_used ] = difficulty;
         }
     }
-}
-
-void recipe::add_requirements( const std::vector<std::pair<requirement_id, int>> &reqs )
-{
-    requirements_ = std::accumulate( reqs.begin(), reqs.end(), requirements_,
-    []( const requirement_data & lhs, const std::pair<requirement_id, int> &rhs ) {
-        return lhs + ( *rhs.first * rhs.second );
-    } );
 }
 
 std::string recipe::get_consistency_error() const
