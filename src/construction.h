@@ -34,7 +34,7 @@ struct construction {
 
         /** Skill->skill level mapping. Can be empty. */
         std::map<skill_id, int> required_skills;
-        requirement_id requirements;
+        requirement_id requirement;
 
         size_t id; // Index in construction vector
         int time;
