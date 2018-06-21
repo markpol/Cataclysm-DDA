@@ -73,7 +73,7 @@ class recipe
         std::map<skill_id, int> learn_by_disassembly; // Skill levels required to learn by disassembly
         std::map<itype_id, int> booksets; // Books containing this recipe, and the skill level required
 
-        //Create a string list to describe the skill requirements fir this recipe
+        //Create a string list to describe the skill requirements for this recipe
         // Format: skill_name(amount), skill_name(amount)
         std::string required_skills_string() const;
 
