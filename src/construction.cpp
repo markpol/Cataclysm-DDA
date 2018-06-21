@@ -202,7 +202,7 @@ void construction_menu()
     const int w_list_height = w_height - 4;
     const int w_list_x0 = 1;
     catacurses::window w_list = catacurses::newwin( w_list_height, w_list_width,
-                                                    w_y0 + 3, w_x0 + w_list_x0 );
+                                w_y0 + 3, w_x0 + w_list_x0 );
 
     draw_grid( w_con, w_list_width + w_list_x0 );
 
@@ -295,10 +295,10 @@ void construction_menu()
                 constructs.clear();
                 previous_select = -1;
                 std::copy_if( available.begin(), available.end(),
-                    std::back_inserter( constructs ),
-                    [&](const std::string &a){
-                        return lcmatch(a, filter);
-                    } );
+                              std::back_inserter( constructs ),
+                [&]( const std::string & a ) {
+                    return lcmatch( a, filter );
+                } );
             } else {
                 constructs = cat_available[category_name];
                 previous_index = tabindex;
@@ -429,9 +429,9 @@ void construction_menu()
                             current_line << _( "N/A" );
                         } else {
                             current_line <<
-                                enumerate_as_string( current_con->required_skills.begin(),
-                                                     current_con->required_skills.end(),
-                                                     []( const std::pair<skill_id, int> &skill ) {
+                                         enumerate_as_string( current_con->required_skills.begin(),
+                                                              current_con->required_skills.end(),
+                            []( const std::pair<skill_id, int> &skill ) {
                                 nc_color col;
                                 int s_lvl = g->u.get_skill_level( skill.first );
                                 if( s_lvl < skill.second ) {
@@ -698,7 +698,7 @@ bool can_construct( const construction &con, const tripoint &p )
     }
     // see if the flags check out
     place_okay &= std::all_of( con.pre_flags.begin(), con.pre_flags.end(),
-        [&p] ( const std::string &flag ) {
+    [&p]( const std::string & flag ) {
         return g->m.has_flag( flag, p );
     } );
 
@@ -766,7 +766,7 @@ void complete_construction()
     player &u = g->u;
     const construction &built = constructions[u.activity.index];
 
-    const auto award_xp = [&]( player &c ) {
+    const auto award_xp = [&]( player & c ) {
         for( const auto &pr : built.required_skills ) {
             c.practice( pr.first, ( int )( ( 10 + 15 * pr.second ) * ( 1 + built.time / 30000.0 ) ),
                         ( int )( pr.second * 1.25 ) );
@@ -824,11 +824,11 @@ bool construct::check_empty( const tripoint &p )
 inline std::array<tripoint, 4> get_orthogonal_neighbors( const tripoint &p )
 {
     return {{
-        tripoint( p.x, p.y - 1, p.z ),
-        tripoint( p.x, p.y + 1, p.z ),
-        tripoint( p.x - 1, p.y, p.z ),
-        tripoint( p.x + 1, p.y, p.z )
-    }};
+            tripoint( p.x, p.y - 1, p.z ),
+            tripoint( p.x, p.y + 1, p.z ),
+            tripoint( p.x - 1, p.y, p.z ),
+            tripoint( p.x + 1, p.y, p.z )
+        }};
 }
 
 bool construct::check_support( const tripoint &p )
@@ -1332,8 +1332,8 @@ void finalize_constructions()
     }
 
     constructions.erase( std::remove_if( constructions.begin(), constructions.end(),
-        [&]( const construction &c ) {
-            return c.requirements->is_blacklisted();
+    [&]( const construction & c ) {
+        return c.requirements->is_blacklisted();
     } ), constructions.end() );
 
     for( size_t i = 0; i < constructions.size(); i++ ) {
