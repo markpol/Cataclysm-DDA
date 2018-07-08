@@ -666,14 +666,7 @@
     "skills_required": [ "fabrication", 5 ],
     "time": 90000,
     "autolearn": true,
-    "using": [ [ "sewing_standard", 160 ] ],
-    "components": [
-      [ [ "rag", 14 ] ],
-      [ [ "leather", 16 ], [ "tanned_hide", 3 ] ],
-      [ [ "backpack", 4 ], [ "backpack_leather", 4 ], [ "molle_pack", 2 ], [ "duffelbag", 1 ], [ "rucksack", 2 ] ],
-      [ [ "chestrig", 1 ], [ "legrig", 1 ], [ "vest", 1 ], [ "tool_belt", 1 ], [ "ragpouch", 4 ], [ "leather_pouch", 2 ], [ "dump_pouch", 1 ], [ "purse", 2 ], [ "fanny", 2 ] ],
-      [ [ "duct_tape", 160 ] ]
-    ]
+    "using": [ [ "tailoring_leather", 160 ] ]
   },
   {
     "result": "survivor_runner_pack",

@@ -1,0 +1,34 @@
+[
+  {
+    "id": "tailoring_filament",
+    "type": "requirement",
+    "//": "Thread used for tailoring",
+    "components": [ [ [ "thread", 1 ], [ "sinew", 1 ], [ "plant_fibre", 1 ], [ "yarn", 1 ] ] ]
+  },
+  {
+    "id": "tailoring_fabric_cotton",
+    "type": "requirement",
+    "//": "Materials used for tailoring cotton items",
+    "components": [ [ [ "rag", 1 ] ] ]
+  },
+  {
+    "id": "tailoring_fabric_leather",
+    "type": "requirement",
+    "//": "Materials used for tailoring leather items",
+    "components": [ [ [ "leather", 1 ] ] ]
+  },
+  {
+    "id": "tailoring_cotton",
+    "type": "requirement",
+    "//": "Tailoring or repairing of cotton items",
+    "qualities": [ { "id": "SEW", "level": 1 }, { "id": "CUT", "level": 1 } ],
+    "components": [ [ [ "tailoring_filament", 10, "LIST" ] ], [ [ "tailoring_fabric_cotton", 1, "LIST" ] ] ]
+  },
+  {
+    "id": "tailoring_leather",
+    "type": "requirement",
+    "//": "Tailoring or repairing of leather items",
+    "qualities": [ { "id": "SEW", "level": 1 }, { "id": "CUT", "level": 1 } ],
+    "components": [ [ [ "tailoring_filament", 10, "LIST" ] ], [ [ "tailoring_fabric_leather", 1, "LIST" ] ] ]
+  }
+]
