@@ -181,6 +181,11 @@ class game
 
         /** Initializes the UI. */
         void init_ui( const bool resized = false );
+        void init_3d();
+        void clear_map_cache();
+        void begin_3d_rendering();
+        void stop_3d_rendering();
+        void update_map_cache( int x, int y, long sym, nc_color col, int flags );
         void setup();
         /** True if the game has just started or loaded, else false. */
         bool new_game;

@@ -4592,6 +4592,8 @@ void game::draw()
     draw_sidebar();
 
     werase( w_terrain );
+    g->begin_3d_rendering();
+    g->clear_map_cache();
     draw_ter();
     wrefresh( w_terrain );
 }
