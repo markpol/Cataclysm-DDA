@@ -1,0 +1,22 @@
+#TSU'S 32 TILESET
+
+#Based on the Tsu's tileset by "tsu"
+
+#With contributions from Sean "Chezzo" Osman and "cavefish"
+
+#Name of the tileset
+NAME: tsu32
+
+#Viewing (Option) name of the tileset
+VIEW: Tsu's 32
+
+#JSON Path
+JSON: tsu32_tile_config.json
+
+#Tileset Path
+TILESET: tsu32_tiles.png
+
+#
+# tiles:id,multitile,rotates,height_3d,additional_tiles,fg,bg,weight,sprite
+# overlay_ordering
+#
