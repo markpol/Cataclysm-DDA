@@ -3,6 +3,7 @@
 #define RECIPE_H
 
 #include "string_id.h"
+#include "item_factory.h"
 #include "requirements.h"
 
 #include <map>
@@ -55,7 +56,7 @@ class recipe
         }
 
         bool is_blacklisted() const {
-            return requirements_.is_blacklisted();
+            return requirements_.is_blacklisted() && item_is_blacklisted( result_ );
         }
 
         /** Prevent this recipe from ever being added to the player's learned recipies ( used for special NPC crafting ) */

@@ -50,6 +50,12 @@ const recipe &string_id<recipe>::obj() const
 }
 
 template<>
+bool string_id<recipe>::is_blacklisted() const
+{
+    return recipe_dict.blacklist.find( *this ) != recipe_dict.blacklist.end();
+}
+
+template<>
 bool string_id<recipe>::is_valid() const
 {
     return recipe_dict.recipes.find( *this ) != recipe_dict.recipes.end();
@@ -214,6 +220,9 @@ void recipe_dictionary::finalize_internal( std::map<recipe_id, recipe> &obj )
 {
     for( auto &elem : obj ) {
         elem.second.finalize();
+        if( elem.second.is_blacklisted() ) {
+            recipe_dict.blacklist.emplace( elem );
+        }
     }
     // remove any blacklisted or invalid recipes...
     delete_if( []( const recipe & elem ) {
@@ -289,6 +298,7 @@ void recipe_dictionary::reset()
     recipe_dict.autolearn.clear();
     recipe_dict.recipes.clear();
     recipe_dict.uncraft.clear();
+    recipe_dict.blacklist.clear();
 }
 
 void recipe_dictionary::delete_if( const std::function<bool( const recipe & )> &pred )

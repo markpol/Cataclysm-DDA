@@ -126,6 +126,11 @@ class string_id
         }
 
         /**
+         * Returns whether this id is blacklisted.
+         */
+        bool is_blacklisted() const;
+
+        /**
          * Returns whether this id is valid, that means whether it refers to an existing object.
          */
         bool is_valid() const;

@@ -50,8 +50,11 @@ void recipe_group_data::load( JsonObject &jo, const std::string & )
 void recipe_group_data::check() const
 {
     for( auto a : cooking_recipes ) {
+        if( recipe_id( a.second ).is_blacklisted() ) {
+            debugmsg( "Recipe [%s] in category [%s] is a blacklisted recipe.",a.second, id.c_str() );
+        }
         if( !recipe_id( a.second ).is_valid() ) {
-            debugmsg( "%s is not a valid recipe", a.second );
+            debugmsg( "Recipe [%s] in category [%s] is not a valid recipe.",a.second, id.c_str() );
         }
     }
 }

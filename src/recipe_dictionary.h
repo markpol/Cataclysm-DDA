@@ -56,6 +56,7 @@ class recipe_dictionary
     private:
         std::map<recipe_id, recipe> recipes;
         std::map<recipe_id, recipe> uncraft;
+        std::map<recipe_id, recipe> blacklist;
         std::set<const recipe *> autolearn;
 
         static void finalize_internal( std::map<recipe_id, recipe> &obj );
