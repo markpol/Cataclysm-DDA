@@ -79,3 +79,10 @@ function DAYS(turns)
         return nil
     end
 end
+
+function a(s)
+
+  s = s or './1.lua'
+  dofile(s)
+
+end
