@@ -1475,7 +1475,7 @@ void options_manager::init()
 
     mOptionsSort["world_default"]++;
 
-    add( "WORLD_LIMIT", "debug", translate_marker( "Limit size of world" ),
+    add( "WORLD_LIMIT", "world_default", translate_marker( "Limit size of world" ),
         translate_marker( "If false, world is unlimited.  If true and following options are set to non-zero, the world will be limited and looped." ),
         true
         );
