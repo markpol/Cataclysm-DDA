@@ -446,12 +446,22 @@ void oter_type_t::load( JsonObject &jo, const std::string &src )
     const bool strict = src == "dda";
 
     assign( jo, "sym", sym, strict );
+    if( jo.has_string( "alt_sym" ) ) {
+        assign( jo, "alt_sym", alt_sym, strict );
+    } else {
+        alt_sym = sym;
+    }
     assign( jo, "name", name, strict );
     assign( jo, "see_cost", see_cost, strict );
     assign( jo, "extras", extras, strict );
     assign( jo, "mondensity", mondensity, strict );
     assign( jo, "spawns", static_spawns, strict );
     assign( jo, "color", color, strict );
+    if( jo.has_string( "alt_color" ) ) {
+        assign( jo, "alt_color", alt_color, strict );
+    } else {
+        alt_color = color;
+    }
 
     const typed_flag_reader<decltype( oter_flags_map )> flag_reader{ oter_flags_map, "invalid overmap terrain flag" };
     optional( jo, was_loaded, "flags", flags, flag_reader );
@@ -538,19 +548,22 @@ oter_t::oter_t() : oter_t( oter_type_t::null_type ) {}
 oter_t::oter_t( const oter_type_t &type ) :
     type( &type ),
     id( type.id.str() ),
-    sym( type.sym ) {}
+    sym( type.sym ),
+    alt_sym( type.alt_sym ) {}
 
 oter_t::oter_t( const oter_type_t &type, om_direction::type dir ) :
     type( &type ),
     id( type.id.str() + "_" + om_direction::id( dir ) ),
     dir( dir ),
     sym( om_direction::rotate_symbol( type.sym, dir ) ),
+    alt_sym( om_direction::rotate_symbol( type.alt_sym, dir ) ),
     line( om_lines::from_dir( dir ) ) {}
 
 oter_t::oter_t( const oter_type_t &type, size_t line ) :
     type( &type ),
     id( type.id.str() + om_lines::all[line].suffix ),
     sym( om_lines::all[line].sym ),
+    alt_sym( om_lines::all[line].sym ),
     line( line ) {}
 
 std::string oter_t::get_mapgen_id() const

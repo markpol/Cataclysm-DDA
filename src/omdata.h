@@ -140,7 +140,9 @@ struct oter_type_t {
         string_id<oter_type_t> id;
         std::string name;               // Untranslated name
         long sym = '\0';                // This is a long, so we can support curses line drawing
+        long alt_sym = '\0';            // This is a long, so we can support curses line drawing
         nc_color color = c_black;
+        nc_color alt_color = c_black;
         unsigned char see_cost = 0;     // Affects how far the player can see in the overmap
         std::string extras = "none";
         int mondensity = 0;
@@ -204,12 +206,12 @@ struct oter_t {
             return _( type->name.c_str() );
         }
 
-        long get_sym() const {
-            return sym;
+        long get_sym( const bool use_alt = false ) const {
+            return use_alt ? alt_sym : sym;
         }
 
-        nc_color get_color() const {
-            return type->color;
+        nc_color get_color( const bool use_alt = false ) const {
+            return use_alt ? type->alt_color : type->color;
         }
 
         om_direction::type get_dir() const {
@@ -262,6 +264,7 @@ struct oter_t {
     private:
         om_direction::type dir = om_direction::type::none;
         long sym = '\0';         // This is a long, so we can support curses line drawing.
+        long alt_sym = '\0';         // This is a long, so we can support curses line drawing.
         size_t line = 0;         // Index of line. Only valid in case of line drawing.
 };
 
@@ -364,6 +367,18 @@ class overmap_special
 };
 
 namespace overmap_terrains
+{
+
+void load( JsonObject &jo, const std::string &src );
+void check_consistency();
+void finalize();
+void reset();
+
+const std::vector<oter_t> &get_all();
+
+}
+
+namespace overmap_map_key
 {
 
 void load( JsonObject &jo, const std::string &src );
