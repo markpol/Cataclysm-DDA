@@ -84,6 +84,8 @@
     "name": "crater",
     "sym": 79,
     "color": "red",
+    "alt_sym": 42,
+    "alt_color": "pink",
     "see_cost": 2,
     "extras": "field",
     "flags": [ "NO_ROTATE" ]
@@ -105,6 +107,7 @@
     "name": "forest",
     "sym": 70,
     "color": "green",
+    "alt_sym": 35,
     "see_cost": 3,
     "extras": "forest",
     "spawns": { "group": "GROUP_FOREST", "population": [ 0, 3 ], "chance": 13 },
@@ -116,6 +119,8 @@
     "name": "forest",
     "sym": 70,
     "color": "green",
+    "alt_sym": 35,
+    "alt_color": "green",
     "see_cost": 4,
     "extras": "forest_thick",
     "spawns": { "group": "GROUP_FOREST", "population": [ 0, 6 ], "chance": 15 },
@@ -128,6 +133,8 @@
     "name": "swamp",
     "sym": 70,
     "color": "cyan",
+    "alt_sym": 35,
+    "alt_color": "green",
     "see_cost": 4,
     "extras": "forest_water",
     "spawns": { "group": "GROUP_SWAMP", "population": [ 1, 4 ], "chance": 16 },
@@ -198,6 +205,7 @@
     "name": "river",
     "sym": 82,
     "color": "blue",
+    "alt_sym": 126,
     "see_cost": 1,
     "mapgen": [ { "method": "builtin", "name": "river_center" } ],
     "flags": [ "RIVER", "NO_ROTATE" ]
@@ -208,6 +216,7 @@
     "name": "river bank",
     "sym": 82,
     "color": "light_blue",
+    "alt_sym": 126,
     "see_cost": 1,
     "mapgen": [ { "method": "builtin", "name": "river_straight" } ],
     "flags": [ "RIVER" ]
@@ -218,6 +227,7 @@
     "name": "river bank",
     "sym": 82,
     "color": "light_blue",
+    "alt_sym": 126,
     "see_cost": 1,
     "mapgen": [ { "method": "builtin", "name": "river_curved_not" } ],
     "flags": [ "RIVER", "NO_ROTATE" ]
@@ -228,6 +238,7 @@
     "name": "river bank",
     "sym": 82,
     "color": "light_blue",
+    "alt_sym": 126,
     "see_cost": 1,
     "mapgen": [ { "method": "builtin", "name": "river_curved_not" } ],
     "flags": [ "RIVER", "NO_ROTATE" ]
@@ -238,6 +249,7 @@
     "name": "river bank",
     "sym": 82,
     "color": "light_blue",
+    "alt_sym": 126,
     "see_cost": 1,
     "mapgen": [ { "method": "builtin", "name": "river_curved_not" } ],
     "flags": [ "RIVER", "NO_ROTATE" ]
@@ -248,6 +260,7 @@
     "name": "river bank",
     "sym": 82,
     "color": "light_blue",
+    "alt_sym": 126,
     "see_cost": 1,
     "mapgen": [ { "method": "builtin", "name": "river_curved_not" } ],
     "flags": [ "RIVER", "NO_ROTATE" ]
@@ -258,6 +271,7 @@
     "name": "river bank",
     "sym": 82,
     "color": "light_blue",
+    "alt_sym": 126,
     "see_cost": 1,
     "mapgen": [ { "method": "builtin", "name": "river_curved" } ],
     "flags": [ "RIVER", "NO_ROTATE" ]
@@ -268,6 +282,7 @@
     "name": "river bank",
     "sym": 82,
     "color": "light_blue",
+    "alt_sym": 126,
     "see_cost": 1,
     "mapgen": [ { "method": "builtin", "name": "river_curved" } ],
     "flags": [ "RIVER", "NO_ROTATE" ]
@@ -278,6 +293,7 @@
     "name": "river bank",
     "sym": 82,
     "color": "light_blue",
+    "alt_sym": 126,
     "see_cost": 1,
     "mapgen": [ { "method": "builtin", "name": "river_curved" } ],
     "flags": [ "RIVER", "NO_ROTATE" ]
@@ -288,6 +304,7 @@
     "name": "river bank",
     "sym": 82,
     "color": "light_blue",
+    "alt_sym": 126,
     "see_cost": 1,
     "mapgen": [ { "method": "builtin", "name": "river_curved" } ],
     "flags": [ "RIVER", "NO_ROTATE" ]
@@ -340,6 +357,8 @@
     "name": "parking lot",
     "sym": 79,
     "color": "dark_gray",
+    "alt_sym": 112,
+    "alt_color": "light_blue",
     "see_cost": 1,
     "extras": "build",
     "mondensity": 2,
@@ -352,6 +371,8 @@
     "name": "park",
     "sym": 79,
     "color": "green",
+    "alt_sym": 112,
+    "alt_color": "blue",
     "see_cost": 2,
     "extras": "build",
     "mondensity": 2,
@@ -363,6 +384,7 @@
     "name": "pool",
     "sym": 79,
     "color": "blue",
+    "alt_sym": 112,
     "see_cost": 2,
     "mondensity": 2,
     "flags": [ "SIDEWALK", "NO_ROTATE" ]
