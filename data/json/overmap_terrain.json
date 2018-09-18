@@ -394,28 +394,34 @@
     "id": "s_gas",
     "name": "gas station",
     "copy-from": "generic_city_building",
-    "color": "light_blue"
+    "color": "light_blue",
+    "alt_sym": 103
   },
   {
     "type": "overmap_terrain",
     "id": "s_pharm",
     "name": "pharmacy",
     "copy-from": "generic_city_building",
-    "color": "light_red"
+    "color": "light_red",
+    "alt_sym": 112
   },
   {
     "type": "overmap_terrain",
     "id": "office_doctor",
     "name": "doctor's office",
     "copy-from": "generic_city_building",
-    "color": "i_light_red"
+    "color": "i_light_red",
+    "alt_sym": 100,
+    "alt_color": "light_red"
   },
   {
     "type": "overmap_terrain",
     "id": "office_cubical",
     "name": "office",
     "copy-from": "generic_city_building",
-    "color": "light_gray"
+    "color": "light_gray",
+    "alt_sym": 111,
+    "alt_color": "dark_gray"
   },
   {
     "type": "overmap_terrain",
@@ -423,6 +429,7 @@
     "name": "apartment tower",
     "sym": 65,
     "color": "light_green",
+    "alt_color": "i_light_green",
     "see_cost": 5,
     "mondensity": 2,
     "flags": [ "SIDEWALK" ]
@@ -473,6 +480,8 @@
     "name": "office tower",
     "sym": 84,
     "color": "i_light_gray",
+    "alt_sym": 79,
+    "alt_color": "i_black",
     "see_cost": 5,
     "mondensity": 2,
     "flags": [ "SIDEWALK", "NO_ROTATE" ]
@@ -483,6 +492,8 @@
     "name": "office tower",
     "sym": 116,
     "color": "i_light_gray",
+    "alt_sym": 79,
+    "alt_color": "i_black",
     "see_cost": 5,
     "mondensity": 2,
     "flags": [ "SIDEWALK", "NO_ROTATE" ]
@@ -493,6 +504,8 @@
     "name": "tower parking",
     "sym": 112,
     "color": "i_light_gray",
+    "alt_sym": 79,
+    "alt_color": "i_black",
     "see_cost": 5,
     "mondensity": 2,
     "flags": [ "SIDEWALK", "NO_ROTATE" ]
@@ -503,6 +516,8 @@
     "name": "tower parking",
     "sym": 112,
     "color": "i_light_gray",
+    "alt_sym": 79,
+    "alt_color": "i_black",
     "see_cost": 5,
     "mondensity": 2,
     "flags": [ "SIDEWALK", "NO_ROTATE" ]
@@ -513,6 +528,8 @@
     "name": "office tower",
     "sym": 116,
     "color": "i_light_gray",
+    "alt_sym": 111,
+    "alt_color": "i_black",
     "see_cost": 5,
     "mondensity": 2,
     "flags": [ "SIDEWALK" ]
@@ -523,6 +540,8 @@
     "name": "office tower",
     "sym": 116,
     "color": "i_light_gray",
+    "alt_sym": 111,
+    "alt_color": "i_black",
     "see_cost": 5,
     "mondensity": 2,
     "flags": [ "SIDEWALK" ]
@@ -533,6 +552,8 @@
     "name": "office courtyard",
     "sym": 79,
     "color": "light_gray",
+    "alt_sym": 111,
+    "alt_color": "i_black",
     "see_cost": 5,
     "mondensity": 2,
     "flags": [ "SIDEWALK" ]
@@ -543,6 +564,8 @@
     "name": "office tower",
     "sym": 116,
     "color": "i_light_gray",
+    "alt_sym": 111,
+    "alt_color": "i_black",
     "see_cost": 5,
     "mondensity": 2,
     "flags": [ "SIDEWALK" ]
@@ -553,6 +576,8 @@
     "name": "office tower",
     "sym": 116,
     "color": "i_light_gray",
+    "alt_sym": 111,
+    "alt_color": "i_black",
     "see_cost": 5,
     "mondensity": 2,
     "flags": [ "SIDEWALK" ]
@@ -563,6 +588,8 @@
     "name": "office tower",
     "sym": 84,
     "color": "i_light_gray",
+    "alt_sym": 111,
+    "alt_color": "i_black",
     "see_cost": 5,
     "mondensity": 2,
     "flags": [ "SIDEWALK" ]
@@ -573,6 +600,8 @@
     "name": "office tower",
     "sym": 116,
     "color": "i_light_gray",
+    "alt_sym": 111,
+    "alt_color": "i_black",
     "see_cost": 5,
     "mondensity": 2,
     "flags": [ "SIDEWALK" ]
@@ -590,7 +619,9 @@
     "copy-from": "generic_city_building",
     "name": "church",
     "sym": 67,
-    "color": "light_red"
+    "color": "light_red",
+    "alt_sym": 99,
+    "alt_color": "white"
   },
   {
     "type": "overmap_terrain",
@@ -598,6 +629,8 @@
     "name": "cathedral",
     "sym": 67,
     "color": "i_light_red",
+    "alt_sym": 99,
+    "alt_color": "i_white",
     "see_cost": 5,
     "mondensity": 2,
     "flags": [ "SIDEWALK", "KNOWN_DOWN" ]
@@ -605,17 +638,23 @@
   {
     "type": "overmap_terrain",
     "id": "cathedral_1_NE",
-    "copy-from": "cathedral_1_NW"
+    "copy-from": "cathedral_1_NW",
+    "alt_sym": 99,
+    "alt_color": "i_white"
   },
   {
     "type": "overmap_terrain",
     "id": "cathedral_1_SW",
-    "copy-from": "cathedral_1_NW"
+    "copy-from": "cathedral_1_NW",
+    "alt_sym": 99,
+    "alt_color": "i_white"
   },
   {
     "type": "overmap_terrain",
     "id": "cathedral_1_SE",
-    "copy-from": "cathedral_1_NW"
+    "copy-from": "cathedral_1_NW",
+    "alt_sym": 99,
+    "alt_color": "i_white"
   },
   {
     "type": "overmap_terrain",
@@ -644,35 +683,44 @@
     "id": "s_grocery",
     "name": "grocery store",
     "copy-from": "generic_city_building",
-    "color": "green"
+    "color": "green",
+    "alt_sym": 103
   },
   {
     "type": "overmap_terrain",
     "id": "s_hardware",
     "name": "hardware store",
     "copy-from": "generic_city_building",
-    "color": "cyan"
+    "color": "cyan",
+    "alt_sym": 104,
+    "alt_color": "light_cyan"
   },
   {
     "type": "overmap_terrain",
     "id": "s_electronics",
     "name": "electronics store",
     "copy-from": "generic_city_building",
-    "color": "yellow"
+    "color": "yellow",
+    "alt_sym": 101,
+    "alt_color": "light_cyan"
   },
   {
     "type": "overmap_terrain",
     "id": "s_sports",
     "name": "sporting goods store",
     "copy-from": "generic_city_building",
-    "color": "light_cyan"
+    "color": "light_cyan",
+    "alt_sym": 115,
+    "alt_color": "magenta"
   },
   {
     "type": "overmap_terrain",
     "id": "s_liquor",
     "name": "liquor store",
     "copy-from": "generic_city_building",
-    "color": "magenta"
+    "color": "magenta",
+    "alt_sym": 108,
+    "alt_color": "green"
   },
   {
     "type": "overmap_terrain",
