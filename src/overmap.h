@@ -243,6 +243,8 @@ class overmap
         std::map<int, om_vehicle> vehicles;
         std::vector<city> cities;
         std::vector<city> roads_out;
+        std::vector<city> railroad_stations;
+        std::vector<city> railroads_out;
 
         /// Adds the npc to the contained list of npcs ( @ref npcs ).
         void insert_npc( std::shared_ptr<npc> who );
@@ -323,6 +325,7 @@ class overmap
         overmap_special_id pick_random_building_to_place( int town_dist ) const;
 
         void place_cities();
+        void place_railroad_stations();
         void place_building( const tripoint &p, om_direction::type dir, const city &town );
 
         void build_city_street( const overmap_connection &connection, const point &p, int cs,
