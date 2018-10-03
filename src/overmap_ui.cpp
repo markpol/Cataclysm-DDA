@@ -195,6 +195,46 @@ void draw_city_labels( const catacurses::window &w, const tripoint &center )
     }
 }
 
+void draw_railroad_labels( const catacurses::window &w, const tripoint &center )
+{
+    const int win_x_max = getmaxx( w );
+    const int win_y_max = getmaxy( w );
+    const int sm_radius = std::max( win_x_max, win_y_max );
+
+    const point screen_center_pos( win_x_max / 2, win_y_max / 2 );
+    for( const auto &element : overmap_buffer.get_railroad_stations_near( omt_to_sm_copy( center ),
+            sm_radius ) ) {
+
+        const point railroad_station_pos( sm_to_omt_copy( element.abs_sm_pos.x, element.abs_sm_pos.y ) );
+        const point screen_pos( railroad_station_pos - point( center.x, center.y ) + screen_center_pos );
+
+        const int text_width = utf8_width( element.city->name, true );
+        const int text_x_min = screen_pos.x - text_width / 2;
+        const int text_x_max = text_x_min + text_width;
+        const int text_y = screen_pos.y;
+
+        if( text_x_min < 0 ||
+            text_x_max > win_x_max ||
+            text_y < 0 ||
+            text_y > win_y_max ) {
+            continue;   // outside of the window bounds.
+        }
+
+        if( screen_center_pos.x >= ( text_x_min - 1 ) &&
+            screen_center_pos.x <= ( text_x_max ) &&
+            screen_center_pos.y >= ( text_y - 1 ) &&
+            screen_center_pos.y <= ( text_y + 1 ) ) {
+            continue;   // right under the cursor.
+        }
+
+        if( !overmap_buffer.seen( railroad_station_pos.x, railroad_station_pos.y, center.z ) ) {
+            continue;   // haven't seen it.
+        }
+
+        mvwprintz( w, text_y, text_x_min, i_green, element.city->name );
+    }
+}
+
 point draw_notes( int z )
 {
     const overmapbuffer::t_notes_vector notes = overmap_buffer.get_all_notes( z );
@@ -543,6 +583,10 @@ void draw( const catacurses::window &w, const catacurses::window &wbar, const tr
         draw_city_labels( w, tripoint( cursx, cursy, z ) );
     }
 
+    if( z == 0 && uistate.overmap_show_railroad_labels ) {
+        draw_railroad_labels( w, tripoint( cursx, cursy, z ) );
+    }
+
     if( has_target && blink &&
         ( target.x < offset_x ||
           target.x >= offset_x + om_map_width ||
@@ -714,6 +758,7 @@ void draw( const catacurses::window &w, const catacurses::window &wbar, const tr
         print_hint( "TOGGLE_BLINKING" );
         print_hint( "TOGGLE_OVERLAYS" );
         print_hint( "TOGGLE_CITY_LABELS", uistate.overmap_show_city_labels ? c_pink : c_magenta );
+        print_hint( "TOGGLE_RAILROAD_LABELS", uistate.overmap_show_railroad_labels ? c_pink : c_magenta );
         print_hint( "TOGGLE_HORDES", uistate.overmap_show_hordes ? c_pink : c_magenta );
         print_hint( "TOGGLE_EXPLORED" );
         print_hint( "HELP_KEYBINDINGS" );
@@ -907,6 +952,8 @@ tripoint display( const tripoint &orig, const draw_data_t &data = draw_data_t() 
             uistate.overmap_show_hordes = !uistate.overmap_show_hordes;
         } else if( action == "TOGGLE_CITY_LABELS" ) {
             uistate.overmap_show_city_labels = !uistate.overmap_show_city_labels;
+        } else if( action == "TOGGLE_RAILROAD_LABELS" ) {
+            uistate.overmap_show_railroad_labels = !uistate.overmap_show_railroad_labels;
         } else if( action == "TOGGLE_EXPLORED" ) {
             overmap_buffer.toggle_explored( curs.x, curs.y, curs.z );
         } else if( action == "SEARCH" ) {
