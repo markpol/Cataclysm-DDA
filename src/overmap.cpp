@@ -3180,17 +3180,28 @@ bool overmap::can_place_special( const overmap_special &special, const tripoint 
 void overmap::place_special( const overmap_special &special, const tripoint &p,
                              om_direction::type dir, const city &cit )
 {
+
+    DebugLog( D_ERROR, D_GAME ) << " Near city [" << cit.name << "] at [" << cit.x << "," << cit.y <<
+                                "] placing overmap special [" << special.id.c_str() << "] at [" << p.x << "," << p.y << "].";
+
     assert( p != invalid_tripoint );
+    DebugLog( D_ERROR, D_GAME ) << "tripoint is valid";
     assert( dir != om_direction::type::invalid );
+    DebugLog( D_ERROR, D_GAME ) << "direction is valid";
     assert( can_place_special( special, p, dir ) );
+    DebugLog( D_ERROR, D_GAME ) << "can_place_special is true";
 
     const bool blob = special.flags.count( "BLOB" ) > 0;
+
+    DebugLog( D_ERROR, D_GAME ) << "special.terrains.size()=" << special.terrains.size();
 
     for( const auto &elem : special.terrains ) {
         const tripoint location = p + om_direction::rotate( elem.p, dir );
         const oter_id tid = elem.terrain->get_rotated( dir );
 
         ter( location.x, location.y, location.z ) = tid;
+        DebugLog( D_ERROR, D_GAME ) << "Placed [" << tid.id().c_str() << "] at [" << location.x << "," <<
+                                    location.y << "," << location.z << "].";
 
         if( blob ) {
             for( int x = -2; x <= 2; x++ ) {
