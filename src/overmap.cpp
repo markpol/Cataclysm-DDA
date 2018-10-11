@@ -2191,7 +2191,7 @@ void overmap::place_railroad_stations()
         const city &nearest_city = get_nearest_city( p );
         const std::string railroad_station_special_id = "Railroad Station";
         overmap_special railroad_station_special;
-        for each( const auto &os in overmap_specials::get_all() ) {
+        for each( const auto & os in overmap_specials::get_all() ) {
             if( os.id.c_str() == railroad_station_special_id ) {
                 railroad_station_special = os;
                 break;

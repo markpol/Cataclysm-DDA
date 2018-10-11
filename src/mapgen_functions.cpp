@@ -4303,7 +4303,7 @@ void place_stairs( map *m, oter_id terrain_type, mapgendata dat )
                          << "and the rest may end up in odd locations.";
     }
 
-    for( auto &&p : stairs ) {
+    for( auto && p : stairs ) {
         tripoint stair = p + shift;
 
         if( m->ter_set( stair, t_stairs_down ) ) {
