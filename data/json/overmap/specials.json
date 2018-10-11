@@ -2132,7 +2132,7 @@
     "locations": [ "land", "forest" ],
     "city_distance": [ -1, 10 ],
     "city_sizes": [ 1, 12 ],
-    "occurrences": [ 10, 20 ],
+    "occurrences": [ 0, 0 ],
     "flags": [ "CLASSIC" ]
   },{
     "type": "overmap_special",
