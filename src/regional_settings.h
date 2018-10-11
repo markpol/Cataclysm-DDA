@@ -159,6 +159,7 @@ struct regional_settings {
     weighted_int_list<ter_id> default_groundcover; // ie, 'grass_or_dirt'
     std::shared_ptr<weighted_int_list<ter_str_id>> default_groundcover_str;
 
+    int num_railroad_stations = 10;   // number of railroad stations per overmap
     int num_forests           = 250;  // amount of forest groupings per overmap
     int forest_size_min       = 15;   // size range of a forest group
     int forest_size_max       = 40;   // size range of a forest group

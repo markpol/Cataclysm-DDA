@@ -203,6 +203,9 @@ void load_region_settings( JsonObject &jo )
     } else if( strict ) {
         jo.throw_error( "Weighted list 'default_groundcover' required for 'default'" );
     }
+    if( ! jo.read( "num_railroad_stations", new_region.num_railroad_stations ) && strict ) {
+        jo.throw_error( "num_railroad_stations required for default" );
+    }
     if( ! jo.read( "num_forests", new_region.num_forests ) && strict ) {
         jo.throw_error( "num_forests required for default" );
     }
@@ -423,6 +426,7 @@ void apply_region_overlay( JsonObject &jo, regional_settings &region )
         }
     }
 
+    jo.read( "num_railroad_stations", region.num_railroad_stations );
     jo.read( "num_forests", region.num_forests );
     jo.read( "forest_size_min", region.forest_size_min );
     jo.read( "forest_size_max", region.forest_size_max );

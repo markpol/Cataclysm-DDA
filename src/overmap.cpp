@@ -2176,13 +2176,11 @@ void overmap::place_cities()
 
 void overmap::place_railroad_stations()
 {
-    // Move it to region settings json.
-    const size_t NUM_RAILROAD_STATIONS = 10;
     DebugLog( D_ERROR, D_GAME ) <<
-                                " Trying to run `overmap::place_railroad_stations` with NUM_RAILROAD_STATIONS = [" <<
-                                NUM_RAILROAD_STATIONS << "].";
+                                " Trying to run `overmap::place_railroad_stations` with [settings.num_railroad_stations] = [" <<
+                                settings.num_railroad_stations << "].";
 
-    while( railroad_stations.size() < NUM_RAILROAD_STATIONS ) {
+    while( railroad_stations.size() <= settings.num_railroad_stations ) {
         int railroad_station_size = 2;
         // TODO put railroad_stations closer to the edge when they can span overmaps
         // don't draw railroad_stations across the edge of the map, they will get clipped
