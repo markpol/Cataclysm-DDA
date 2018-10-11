@@ -423,6 +423,7 @@ static const trait_id trait_URSINE_EYE( "URSINE_EYE" );
 static const trait_id trait_URSINE_FUR( "URSINE_FUR" );
 static const trait_id trait_VISCOUS( "VISCOUS" );
 static const trait_id trait_VOMITOUS( "VOMITOUS" );
+static const trait_id trait_WATERSLEEP( "WATERSLEEP" );
 static const trait_id trait_WEAKSCENT( "WEAKSCENT" );
 static const trait_id trait_WEAKSTOMACH( "WEAKSTOMACH" );
 static const trait_id trait_WEBBED( "WEBBED" );
@@ -1501,7 +1502,7 @@ int player::floor_bedding_warmth( const tripoint &pos )
     if( furn_at_pos == f_bed ) {
         floor_bedding_warmth += 1000;
     } else if( furn_at_pos == f_makeshift_bed || furn_at_pos == f_armchair ||
-               furn_at_pos == f_sofa ) {
+               furn_at_pos == f_sofa || furn_at_pos == f_autodoc_couch ) {
         floor_bedding_warmth += 500;
     } else if( veh_bed && veh_seat ) {
         // BED+SEAT is intentionally worse than just BED
@@ -4284,7 +4285,7 @@ void player::check_needs_extremes()
 
                 mod_healthy_mod( -5, 0 );
             }
-            // else you pass out for 20 hours, guaranteed 
+            // else you pass out for 20 hours, guaranteed
 
             // Microsleeps are slightly worse if you're sleep deprived, but not by much. (chance: 1 in (75 + int_cur) at lethal sleep deprivation)
             // Note: these can coexist with fatigue-related microsleeps
@@ -4306,7 +4307,7 @@ void player::check_needs_extremes()
 
                     if( sleep_deprivation >= SLEEP_DEPRIVATION_MAJOR ) {
                         fall_asleep( 20_hours );
-                    } 
+                    }
                     else if( sleep_deprivation >= SLEEP_DEPRIVATION_SERIOUS ) {
                         fall_asleep( 16_hours );
                     }
@@ -7581,8 +7582,7 @@ item::reload_option player::select_ammo( const item& base, bool prompt ) const
     for( const auto e : opts ) {
         for( item_location& ammo : find_ammo( *e ) ) {
             // don't try to unload frozen liquids
-            if( ammo->is_watertight_container() &&
-                ammo->contents.front().made_of( SOLID ) ) {
+            if( ammo->is_watertight_container() && ammo->contents_made_of( SOLID ) ) {
                 continue;
             }
             auto id = ( ammo->is_ammo_container() || ammo->is_watertight_container() )
@@ -7768,7 +7768,7 @@ ret_val<bool> player::can_wear( const item& it  ) const
 
 ret_val<bool> player::can_wield( const item &it ) const
 {
-    if( it.made_of( LIQUID, true ) ) {
+    if( it.made_of_from_type( LIQUID ) ) {
         return ret_val<bool>::make_failure( _( "Can't wield spilt liquids." ) );
     }
 
@@ -9876,6 +9876,7 @@ void player::try_to_sleep( const time_duration &dur )
     bool webforce = false;
     bool websleeping = false;
     bool in_shell = false;
+    bool watersleep = false;
     if (has_trait( trait_CHLOROMORPH )) {
         plantsleep = true;
         if( (ter_at_pos == t_dirt || ter_at_pos == t_pit ||
@@ -9930,15 +9931,25 @@ void player::try_to_sleep( const time_duration &dur )
         // Your shell's interior is a comfortable place to sleep.
         in_shell = true;
     }
+    if( has_trait( trait_WATERSLEEP ) ) {
+        if( underwater ) {
+            add_msg_if_player( m_good, _( "You lay beneath the waves' embrace, gazing up through the water's surface..." ) );
+            watersleep = true;
+        } else if( g->m.has_flag_ter( "SWIMMABLE", pos() ) ) {
+            add_msg_if_player( m_good, _( "You settle into the water and begin to drowse..." ) );
+            watersleep = true;
+        }
+    }
     if(!plantsleep && (furn_at_pos == f_bed || furn_at_pos == f_makeshift_bed ||
          trap_at_pos.loadid == tr_cot || trap_at_pos.loadid == tr_rollmat ||
          trap_at_pos.loadid == tr_fur_rollmat || furn_at_pos == f_armchair ||
-         furn_at_pos == f_sofa || furn_at_pos == f_hay || furn_at_pos == f_straw_bed ||
+         furn_at_pos == f_sofa || furn_at_pos == f_autodoc_couch ||
+         furn_at_pos == f_hay || furn_at_pos == f_straw_bed ||
          ter_at_pos == t_improvised_shelter || (in_shell) || (websleeping) ||
          vp.part_with_feature( "SEAT" ) ||
          vp.part_with_feature( "BED" ) ) ) {
         add_msg_if_player(m_good, _("This is a comfortable place to sleep."));
-    } else if (ter_at_pos != t_floor && !plantsleep && !fungaloid_cosplay) {
+    } else if (ter_at_pos != t_floor && !plantsleep && !fungaloid_cosplay && !watersleep) {
         add_msg_if_player( ter_at_pos.obj().movecost <= 2 ?
                  _("It's a little hard to get to sleep on this %s.") :
                  _("It's hard to get to sleep on this %s."),
@@ -9961,6 +9972,7 @@ comfort_level player::base_comfort_value( const tripoint &p ) const
     bool websleep = has_trait( trait_WEB_WALKER );
     bool webforce = has_trait( trait_THRESH_SPIDER ) && ( has_trait( trait_WEB_SPINNER ) || ( has_trait( trait_WEB_WEAVER ) ) );
     bool in_shell = has_active_mutation( trait_SHELL2 );
+    bool watersleep = has_trait( trait_WATERSLEEP );
 
     const optional_vpart_position vp = g->m.veh_at( p );
     const maptile tile = g->m.maptile_at( p );
@@ -9993,7 +10005,7 @@ comfort_level player::base_comfort_value( const tripoint &p ) const
             comfort += 0 + (int)comfort_level::comfortable;
         }
         else if( furn_at_pos == f_makeshift_bed || trap_at_pos.loadid == tr_cot ||
-                 furn_at_pos == f_sofa ) {
+                 furn_at_pos == f_sofa || furn_at_pos == f_autodoc_couch ) {
             comfort += 1 + (int)comfort_level::slightly_comfortable;
         }
         // Web sleepers can use their webs if better furniture isn't available
@@ -10051,9 +10063,13 @@ comfort_level player::base_comfort_value( const tripoint &p ) const
                 comfort = (int)comfort_level::uncomfortable;
             }
         }
-    }
+    //Has watersleep
+    } else if( watersleep ) {
+        if( g->m.has_flag_ter( "SWIMMABLE", pos() ) ) {
+            comfort += (int)comfort_level::very_comfortable;
+        }
     // Has webforce
-    else {
+    } else {
         if( web >= 3 ) {
             // Thick Web and you're good to go
             comfort += (int)comfort_level::very_comfortable;
@@ -12033,7 +12049,7 @@ void player::place_corpse()
     g->m.add_item_or_charges( pos(), body );
 }
 
-void player::place_corpse( tripoint om_target )
+void player::place_corpse( const tripoint &om_target )
 {
     tinymap bay;
     bay.load( om_target.x * 2, om_target.y * 2, om_target.z, false );
@@ -12245,6 +12261,13 @@ void player::on_item_takeoff( const item &it )
     lua_callback_args_info.emplace_back( getID() );
     lua_callback_args_info.emplace_back( it );
     lua_callback( "on_player_item_takeoff", lua_callback_args_info );
+}
+
+void player::on_worn_item_washed( const item &it )
+{
+    if( is_worn( it ) ) {
+        morale->on_worn_item_washed( it );
+    }
 }
 
 void player::on_effect_int_change( const efftype_id &eid, int intensity, body_part bp )

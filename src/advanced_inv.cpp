@@ -2098,21 +2098,19 @@ bool advanced_inventory::move_content( item &src_container, item &dest_container
         return false;
     }
 
-    if( src_container.is_non_resealable_container() ) {
-        long max_charges = dest_container.get_remaining_capacity_for_liquid( src );
-        if( src.charges > max_charges ) {
-            popup( _( "You can't partially unload liquids from unsealable container." ) );
-            return false;
-        }
-        src_container.on_contents_changed();
-    }
-
     std::string err;
     // @todo: Allow buckets here, but require them to be on the ground or wielded
     const long amount = dest_container.get_remaining_capacity_for_liquid( src, false, &err );
     if( !err.empty() ) {
         popup( err.c_str() );
         return false;
+    }
+    if( src_container.is_non_resealable_container() ) {
+        if( src.charges > amount ) {
+            popup( _( "You can't partially unload liquids from unsealable container." ) );
+            return false;
+        }
+        src_container.on_contents_changed();
     }
     dest_container.fill_with( src, amount );
 
@@ -2161,7 +2159,7 @@ bool advanced_inventory::query_charges( aim_location destarea, const advanced_in
     amount = input_amount;
 
     // Includes moving from/to inventory and around on the map.
-    if( it.made_of( LIQUID, true ) ) {
+    if( it.made_of_from_type( LIQUID ) ) {
         popup( _( "You can't pick up a liquid." ) );
         redraw = true;
         return false;
