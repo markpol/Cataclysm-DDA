@@ -693,9 +693,9 @@
   },
   {
     "type": "keybinding",
-    "id": "TOGGLE_RAILROAD_STATION_LABELS",
+    "id": "TOGGLE_RAILROAD_LABELS",
     "category": "OVERMAP",
-    "name": "Toggle Station Labels",
+    "name": "Toggle Railroad Labels",
     "bindings": [ { "input_method": "keyboard", "key": "R" } ]
   },
   {
