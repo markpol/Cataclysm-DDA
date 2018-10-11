@@ -820,6 +820,7 @@ tripoint display( const tripoint &orig, const draw_data_t &data = draw_data_t() 
     ictxt.register_action( "TOGGLE_OVERLAYS" );
     ictxt.register_action( "TOGGLE_HORDES" );
     ictxt.register_action( "TOGGLE_CITY_LABELS" );
+    ictxt.register_action( "TOGGLE_RAILROAD_LABELS" );
     ictxt.register_action( "TOGGLE_EXPLORED" );
     if( data.debug_editor ) {
         ictxt.register_action( "PLACE_TERRAIN" );
