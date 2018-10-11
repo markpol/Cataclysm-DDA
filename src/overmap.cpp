@@ -2176,6 +2176,7 @@ void overmap::place_cities()
 
 void overmap::place_railroad_stations()
 {
+    // Move it to region settings json.
     const size_t NUM_RAILROAD_STATIONS = 10;
     DebugLog( D_ERROR, D_GAME ) <<
                                 " Trying to run `overmap::place_railroad_stations` with NUM_RAILROAD_STATIONS = [" <<
@@ -2188,51 +2189,30 @@ void overmap::place_railroad_stations()
         int cx = rng( railroad_station_size - 1, OMAPX - railroad_station_size );
         int cy = rng( railroad_station_size - 1, OMAPY - railroad_station_size );
 
-        const point pp = omt_to_om_copy( cx, cy );
-        const tripoint p = tripoint( pp.x, pp.y, 0 );
+        const tripoint p = tripoint( cx, cy, 0 );
         const city &nearest_city = get_nearest_city( p );
         const std::string railroad_station_special_id = "Railroad Station";
         overmap_special railroad_station_special;
-        railroad_station_special.id = overmap_special_id( railroad_station_special_id );
+        for each( const auto &os in overmap_specials::get_all() ) {
+            if( os.id.c_str() == railroad_station_special_id ) {
+                railroad_station_special = os;
+                break;
+            }
+        }
 
-        DebugLog( D_ERROR, D_GAME ) << " Near [" << nearest_city.name << "] at [" << p.x << "," << p.y <<
-                                    "] placing [" << railroad_station_special_id << "].";
-
-        //if ( ter( cx, cy, 0 ) == settings.default_oter ){
         const auto rotation = random_special_rotation( railroad_station_special, p );
         if( rotation == om_direction::type::invalid ) {
             continue;
         }
         place_special( railroad_station_special, p, rotation, nearest_city );
-        /*
-         ter( cx, cy, 0 ) = oter_id( "railroad_station_1_1_north" );
-         ter( cx + 1, cy, 0 ) = oter_id( "railroad_station_1_2_north" );
-         ter( cx, cy + 1, 0 ) = oter_id( "railroad_station_1_3_north" );
-         ter( cx + 1, cy + 1, 0 ) = oter_id( "railroad_station_1_4_north" );
-         */
-        /*
-         ter(cx, cy - 1, 0) = oter_id( "railroad_straight_north" );
-         ter(cx, cy, 0) = oter_id( "railroad_station_1_1_north" );
-         ter(cx + 1, cy, 0) = oter_id( "railroad_station_1_2_north" );
-         ter(cx, cy + 1, 0) = oter_id( "railroad_station_1_3_north" );
-         ter(cx + 1, cy + 1, 0) = oter_id( "railroad_station_1_4_north" );
-         ter(cx + 2, cy + 1, 0) = oter_id( "road_straight_west" );
-         */
-        /*
-        ter( cx - 1, cy, 0 ) = oter_id( "railroad_station_1_1_north" );
-        ter( cx - 1, cy, 0 ) = oter_id( "railroad_station_1_2_north" );
-        ter( cx - 1, cy - 1, 0 ) = oter_id( "railroad_station_1_3_north" );
-        ter( cx - 1, cy - 1, 0 ) = oter_id( "railroad_station_1_4_north" );
-        */
 
-        //ter( cx, cy, 0 ) = oter_id( "railroad_straight_north" );
+        city railroad_station( cx, cy - 1, railroad_station_size );
+        railroad_stations.push_back( railroad_station );
 
-        city tmp;
-        tmp.x = cx;
-        tmp.y = cy - 1;
-        tmp.s = railroad_station_size;
-        railroad_stations.push_back( tmp );
-        //}
+        DebugLog( D_ERROR, D_GAME ) << " Near city [" << nearest_city.name << "] at [" << nearest_city.x <<
+                                    "," << nearest_city.y <<
+                                    "] placing [" << railroad_station_special_id << "] named [" << railroad_station.name << "] at [" <<
+                                    railroad_station.x << "," << railroad_station.y << "].";
     }
 }
 overmap_special_id overmap::pick_random_building_to_place( int town_dist ) const
