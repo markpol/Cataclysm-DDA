@@ -49,21 +49,27 @@
     "subtypes": [
       {
         "terrain": "railroad",
-        "locations": [ "wilderness", "railroad" ],
+        "locations": [ "railroad" ],
+        "basic_cost": 1,
+        "flags": [ "ORTHOGONAL" ]
+      },{
+        "terrain": "railroad",
+        "locations": [ "wilderness" ],
+        "basic_cost": 1,
         "flags": [ "ORTHOGONAL" ]
       },{
         "terrain": "railroad",
         "locations": [ "swamp" ],
-        "basic_cost": 2,
+        "basic_cost": 1,
         "flags": [ "ORTHOGONAL" ]
       },{
         "terrain": "railroad_level_crossing",
-        "locations": [ "road" ],
-        "basic_cost": 100
+        "locations": [ "railroad_level_crossing_allowed" ],
+        "basic_cost": 1
       },{
         "terrain": "railroad_bridge",
         "locations": [ "water" ],
-        "basic_cost": 100,
+        "basic_cost": 1,
         "flags": [ "ORTHOGONAL" ]
       }
     ]
