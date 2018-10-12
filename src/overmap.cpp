@@ -1284,11 +1284,10 @@ void overmap::generate( const overmap *north, const overmap *east,
         }
     }
 
-    // Railroad stations
-    place_railroad_stations();
-    // Cities and forests come next.
+    // Cities, railroad stations and forests come next.
     // These are agnostic of adjacent maps, so it's very simple.
     place_cities();
+    place_railroad_stations();
     place_forest();
 
     // Ideally we should have at least two exit points for roads, on different sides
@@ -1380,10 +1379,6 @@ void overmap::generate( const overmap *north, const overmap *east,
         road_points.emplace_back( elem.x, elem.y );
     }
 
-    // And finally connect them via roads.
-    const string_id<overmap_connection> local_road( "local_road" );
-    connect_closest_points( road_points, 0, *local_road );
-
     std::vector<point> railroad_points; // railroad_stations and railroads_out together
     // Compile our master list of railroads; it's less messy if railroads_out is first
     railroad_points.reserve( railroads_out.size() + railroad_stations.size() );
@@ -1396,6 +1391,10 @@ void overmap::generate( const overmap *north, const overmap *east,
     // And finally connect them via railroads.
     const string_id<overmap_connection> local_railroad( "local_railroad" );
     connect_closest_points( railroad_points, 0, *local_railroad );
+
+    // And finally connect them via roads.
+    const string_id<overmap_connection> local_road( "local_road" );
+    connect_closest_points( road_points, 0, *local_road );
 
     place_specials( enabled_specials );
     polish_river();
