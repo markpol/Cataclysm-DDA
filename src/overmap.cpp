@@ -354,6 +354,16 @@ const std::vector<overmap_special> &overmap_specials::get_all()
     return specials.get_all();
 }
 
+const overmap_special &overmap_specials::get_specific( const std::string &id )
+{
+    for( const auto &elem : specials.get_all() ) {
+        if( elem.id.str() == id ) {
+            return elem;
+        }
+    }
+    return overmap_special();
+}
+
 overmap_special_batch overmap_specials::get_default_batch( const point &origin )
 {
     const bool only_classic = get_option<bool>( "CLASSIC_ZOMBIES" );
@@ -1378,6 +1388,9 @@ void overmap::generate( const overmap *north, const overmap *east,
     for( const auto &elem : cities ) {
         road_points.emplace_back( elem.x, elem.y );
     }
+    // And finally connect them via roads.
+    const string_id<overmap_connection> local_road( "local_road" );
+    connect_closest_points( road_points, 0, *local_road );
 
     std::vector<point> railroad_points; // railroad_stations and railroads_out together
     // Compile our master list of railroads; it's less messy if railroads_out is first
@@ -1391,10 +1404,6 @@ void overmap::generate( const overmap *north, const overmap *east,
     // And finally connect them via railroads.
     const string_id<overmap_connection> local_railroad( "local_railroad" );
     connect_closest_points( railroad_points, 0, *local_railroad );
-
-    // And finally connect them via roads.
-    const string_id<overmap_connection> local_road( "local_road" );
-    connect_closest_points( road_points, 0, *local_road );
 
     place_specials( enabled_specials );
     polish_river();
@@ -2175,9 +2184,8 @@ void overmap::place_cities()
 
 void overmap::place_railroad_stations()
 {
-    DebugLog( D_ERROR, D_GAME ) <<
-                                " Trying to run `overmap::place_railroad_stations` with [settings.num_railroad_stations] = [" <<
-                                settings.num_railroad_stations << "].";
+    DebugLog( D_ERROR, D_GAME ) << " Running `place_railroad_stations` with [num_railroad_stations] = ["
+                                << settings.num_railroad_stations << "].";
 
     while( railroad_stations.size() <= settings.num_railroad_stations ) {
         int railroad_station_size = 2;
@@ -2189,14 +2197,8 @@ void overmap::place_railroad_stations()
         const tripoint p = tripoint( cx, cy, 0 );
         const city &nearest_city = get_nearest_city( p );
         const std::string railroad_station_special_id = "Railroad Station";
-        overmap_special railroad_station_special;
-        for each( const auto & os in overmap_specials::get_all() ) {
-            if( os.id.c_str() == railroad_station_special_id ) {
-                railroad_station_special = os;
-                break;
-            }
-        }
-
+        overmap_special railroad_station_special = overmap_specials::get_specific(
+                    railroad_station_special_id );
         const auto rotation = random_special_rotation( railroad_station_special, p );
         if( rotation == om_direction::type::invalid ) {
             continue;
