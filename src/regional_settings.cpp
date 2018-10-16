@@ -813,7 +813,7 @@ void building_bin::finalize( bool check_for_negative_coordinates )
                 const tripoint &p = ter.p;
                 if( p.x != 0 || p.y != 0 ) {
                     debugmsg( "Tried to add city building %s, but it has a part with non-zero X or Y coordinates (not supported yet)",
-                                current_id.c_str() );
+                              current_id.c_str() );
                     skip = true;
                     break;
                 }
