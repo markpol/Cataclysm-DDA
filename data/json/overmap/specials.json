@@ -2125,8 +2125,6 @@
       { "point": [ 0, 2, 0 ], "overmap": "railroad_station_0_2_north"},
       { "point": [ 0, 3, 0 ], "overmap": "railroad_station_0_3_north"},
       { "point": [ 0, 4, 0 ], "overmap": "railroad_station_0_4_north"},
-      { "point": [ 0, 5, 0 ], "overmap": "railroad_station_railway_straight_north" },
-      { "point": [ 0, 6, 0 ], "overmap": "railroad_end_south" },
 
       { "point": [ 1, 1, 0 ], "overmap": "railroad_station_1_1_north" },
       { "point": [ 1, 2, 0 ], "overmap": "railroad_station_1_2_north" },
@@ -2151,7 +2149,6 @@
     ],
     "connections": [
       { "point": [ 0, -1, 0 ], "terrain": "railroad" },
-      { "point": [ 0, 6, 0 ], "terrain": "railroad" },
       { "point": [ 2, 0, 0 ], "terrain": "road" },
       { "point": [ 2, 5, 0 ], "terrain": "road" }
     ],

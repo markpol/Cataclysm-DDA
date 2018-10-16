@@ -1400,10 +1400,7 @@ void overmap::generate( const overmap *north, const overmap *east,
         railroad_points.emplace_back( elem.x, elem.y );
     }
     for( const auto &elem : railroad_stations ) {
-        //om_direction::type rotation = om_direction::type::none;
-        om_direction::type rotation = elem.r;
-        railroad_points.emplace_back( om_direction::rotate( point( elem.x, elem.y - 2 ), rotation ) );
-        railroad_points.emplace_back( om_direction::rotate( point( elem.x, elem.y + 5 ), rotation ) );
+        railroad_points.emplace_back( point( elem.x, elem.y - 1 ) );
     }
     // And finally connect them via railroads.
     const string_id<overmap_connection> local_railroad( "local_railroad" );
@@ -2215,7 +2212,7 @@ void overmap::place_railroad_stations()
 
         DebugLog( D_ERROR, D_GAME ) << " Near city [" << nearest_city.name << "] at [" << nearest_city.x <<
                                     "," << nearest_city.y << "] placing [" << station_id << "] named [" <<
-                                    station.name << "] at [" << station.x << "," << station.y << "].";
+                                    station.name << "] at [" << station.x << "," << station.y << "] with rotation [" << static_cast<int>(station.r) << "].";
     }
 }
 overmap_special_id overmap::pick_random_building_to_place( int town_dist ) const
@@ -3165,7 +3162,7 @@ void overmap::place_special( const overmap_special &special, const tripoint &p,
 {
 
     DebugLog( D_ERROR, D_GAME ) << " Near city [" << cit.name << "] at [" << cit.x << "," << cit.y <<
-                                "] placing overmap special [" << special.id.c_str() << "] at [" << p.x << "," << p.y << "].";
+                                "] placing overmap special [" << special.id.c_str() << "] at [" << p.x << "," << p.y << "] with dir [" << static_cast<int>( dir ) << "].";
 
     assert( p != invalid_tripoint );
     DebugLog( D_ERROR, D_GAME ) << "tripoint is valid";
@@ -3201,6 +3198,7 @@ void overmap::place_special( const overmap_special &special, const tripoint &p,
     if( cit ) {
         for( const auto &elem : special.connections ) {
             if( elem.connection ) {
+                DebugLog( D_ERROR, D_GAME ) << "Making connection [" << elem.connection.c_str() << "] with terrain [" << elem.terrain.c_str() << "] at point [" << p.x << "," << p.y << "," << p.z << "].";
                 const tripoint rp( p + om_direction::rotate( elem.p, dir ) );
                 build_connection( point( cit.x, cit.y ), point( rp.x, rp.y ), elem.p.z, *elem.connection );
             }
