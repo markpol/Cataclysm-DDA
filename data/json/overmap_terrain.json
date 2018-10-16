@@ -976,34 +976,6 @@
     ],
     "flags" : [ "RIVER" ]
   },{
-    "id": "railroad_station_obsolete_1_1",
-    "type": "overmap_terrain",
-    "name": "railroad station",
-    "copy-from": "generic_city_building_no_sidewalk",
-    "sym": 79,
-    "color": "light_green"
-  },{
-    "id": "railroad_station_obsolete_1_2",
-    "type": "overmap_terrain",
-    "name": "railroad station",
-    "copy-from": "generic_city_building_no_sidewalk",
-    "sym": 79,
-    "color": "light_green"
-  },{
-    "id": "railroad_station_obsolete_1_3",
-    "type": "overmap_terrain",
-    "name": "railroad station",
-    "copy-from": "generic_city_building_no_sidewalk",
-    "sym": 79,
-    "color": "light_green"
-  },{
-    "id": "railroad_station_obsolete_1_4",
-    "type": "overmap_terrain",
-    "name": "railroad station",
-    "copy-from": "generic_city_building_no_sidewalk",
-    "sym": 79,
-    "color": "light_green"
-  },{
     "type" : "overmap_terrain",
     "id" : "railroad_level_crossing",
     "name" : "railroad level crossing",
@@ -1012,138 +984,100 @@
     "see_cost" : 2,
     "extras" : "road"
   },{
-    "id": "railroad_station_0_1",
+    "abstract": "generic_railroad_station",
     "type": "overmap_terrain",
     "name": "railroad station",
     "copy-from": "generic_city_building_no_sidewalk",
-    "sym": 83,
-    "color": "magenta"
+    "sym": 82,
+    "color": "light_green"
+  },{
+    "abstract": "generic_railroad_station_parking_lot",
+    "type": "overmap_terrain",
+    "name": "railroad station (parking lot)",
+    "copy-from": "generic_railroad_station",
+    "sym": 80,
+    "color": "light_gray"
+  },{
+    "id": "railroad_station_railway_straight",
+    "type": "overmap_terrain",
+    "copy-from": "generic_railroad_station",
+    "sym": 4194424
+  },{
+    "id": "railroad_station_0_1",
+    "type": "overmap_terrain",
+    "copy-from": "generic_railroad_station",
+    "sym": 4194424
   },{
     "id": "railroad_station_0_2",
     "type": "overmap_terrain",
-    "name": "railroad station",
-    "copy-from": "generic_city_building_no_sidewalk",
-    "sym": 83,
-    "color": "magenta"
+    "copy-from": "generic_railroad_station",
+    "sym": 4194424
   },{
     "id": "railroad_station_0_3",
     "type": "overmap_terrain",
-    "name": "railroad station",
-    "copy-from": "generic_city_building_no_sidewalk",
-    "sym": 83,
-    "color": "magenta"
+    "copy-from": "generic_railroad_station",
+    "sym": 4194424
   },{
     "id": "railroad_station_0_4",
     "type": "overmap_terrain",
-    "name": "railroad station",
-    "copy-from": "generic_city_building_no_sidewalk",
-    "sym": 83,
-    "color": "magenta"
+    "copy-from": "generic_railroad_station",
+    "sym": 4194424
   },{
     "id": "railroad_station_1_1",
     "type": "overmap_terrain",
-    "name": "railroad station",
-    "copy-from": "generic_city_building_no_sidewalk",
-    "sym": 83,
-    "color": "magenta"
+    "copy-from": "generic_railroad_station"
   },{
     "id": "railroad_station_1_2",
     "type": "overmap_terrain",
-    "name": "railroad station",
-    "copy-from": "generic_city_building_no_sidewalk",
-    "sym": 83,
-    "color": "magenta"
+    "copy-from": "generic_railroad_station"
   },{
     "id": "railroad_station_1_3",
     "type": "overmap_terrain",
-    "name": "railroad station",
-    "copy-from": "generic_city_building_no_sidewalk",
-    "sym": 83,
-    "color": "magenta"
+    "copy-from": "generic_railroad_station"
   },{
     "id": "railroad_station_1_4",
     "type": "overmap_terrain",
-    "name": "railroad station",
-    "copy-from": "generic_city_building_no_sidewalk",
-    "sym": 83,
-    "color": "magenta"
+    "copy-from": "generic_railroad_station"
   },{
     "id": "railroad_station_2_1",
     "type": "overmap_terrain",
-    "name": "railroad station",
-    "copy-from": "generic_city_building_no_sidewalk",
-    "sym": 83,
-    "color": "magenta"
+    "copy-from": "generic_railroad_station_parking_lot"
   },{
     "id": "railroad_station_2_2",
     "type": "overmap_terrain",
-    "name": "railroad station",
-    "copy-from": "generic_city_building_no_sidewalk",
-    "sym": 83,
-    "color": "magenta"
+    "copy-from": "generic_railroad_station_parking_lot"
   },{
     "id": "railroad_station_2_3",
     "type": "overmap_terrain",
-    "name": "railroad station",
-    "copy-from": "generic_city_building_no_sidewalk",
-    "sym": 83,
-    "color": "magenta"
+    "copy-from": "generic_railroad_station_parking_lot"
   },{
     "id": "railroad_station_2_4",
     "type": "overmap_terrain",
-    "name": "railroad station",
-    "copy-from": "generic_city_building_no_sidewalk",
-    "sym": 83,
-    "color": "magenta"
+    "copy-from": "generic_railroad_station_parking_lot"
   },{
     "id": "railroad_station_under_0_1",
     "type": "overmap_terrain",
-    "name": "railroad station",
-    "copy-from": "generic_city_building_no_sidewalk",
-    "sym": 83,
-    "color": "magenta"
+    "copy-from": "generic_railroad_station"
   },{
     "id": "railroad_station_under_0_2",
     "type": "overmap_terrain",
-    "name": "railroad station",
-    "copy-from": "generic_city_building_no_sidewalk",
-    "sym": 83,
-    "color": "magenta"
+    "copy-from": "generic_railroad_station"
   },{
     "id": "railroad_station_under_0_3",
     "type": "overmap_terrain",
-    "name": "railroad station",
-    "copy-from": "generic_city_building_no_sidewalk",
-    "sym": 83,
-    "color": "magenta"
+    "copy-from": "generic_railroad_station"
   },{
     "id": "railroad_station_under_1_1",
     "type": "overmap_terrain",
-    "name": "railroad station",
-    "copy-from": "generic_city_building_no_sidewalk",
-    "sym": 83,
-    "color": "magenta"
+    "copy-from": "generic_railroad_station"
   },{
     "id": "railroad_station_under_1_2",
     "type": "overmap_terrain",
-    "name": "railroad station",
-    "copy-from": "generic_city_building_no_sidewalk",
-    "sym": 83,
-    "color": "magenta"
+    "copy-from": "generic_railroad_station"
   },{
     "id": "railroad_station_under_1_3",
     "type": "overmap_terrain",
-    "name": "railroad station",
-    "copy-from": "generic_city_building_no_sidewalk",
-    "sym": 83,
-    "color": "magenta"
-  },{
-    "type" : "overmap_terrain",
-    "id" : "railroad_station_single",
-    "name" : "railroad station (single track)",
-    "sym" : 4194414,
-    "color" : "light_red",
-    "see_cost" : 2
+    "copy-from": "generic_railroad_station"
   },
   {
     "type": "overmap_terrain",
