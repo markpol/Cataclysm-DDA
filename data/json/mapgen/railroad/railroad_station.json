@@ -110,7 +110,12 @@
         " ^X^^^X^        ^X^^^X^                    #######$$.......::.......$$  "
       ],
       "palettes": [ "railroad", "railroad_station" ],
-      "vendingmachines": { "6": { "item_group": "vending_drink" }, "7": { "item_group": "vending_food" }, "8": { "item_group": "vending_drink" }, "9": { "item_group": "vending_food" } }
+      "vendingmachines": {
+        "6": { "item_group": "vending_drink" },
+        "7": { "item_group": "vending_food" },
+        "8": { "item_group": "vending_drink" },
+        "9": { "item_group": "vending_food" }
+      }
     }
   },
   {
