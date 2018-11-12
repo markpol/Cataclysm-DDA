@@ -1323,7 +1323,7 @@ void overmap::generate( const overmap *north, const overmap *east,
     //       for that matter there is no reason we can't as we add the entrance ways either
 
     // Always need at least one sublevel, but how many more
-    int z = -1;
+    int z = settings.z_levels.basement;
     bool requires_sub = false;
     do {
         requires_sub = generate_sub( z );
@@ -1359,9 +1359,7 @@ bool overmap::generate_sub( int const z )
     for( int i = 0; i < OMAPX; i++ ) {
         for( int j = 0; j < OMAPY; j++ ) {
             oter_id oter_above = ter( i, j, z + 1 );
-            oter_id oter_ground = ter( i, j, 0 );
-            //oter_id oter_sewer = ter(i, j, -1);
-            //oter_id oter_underground = ter(i, j, -2);
+            oter_id oter_ground = ter( i, j, settings.z_levels.ground );
 
             // implicitly skip skip_above oter_ids
             bool skipme = false;
@@ -1375,10 +1373,10 @@ bool overmap::generate_sub( int const z )
                 continue;
             }
 
-            if( is_ot_type( "sub_station", oter_ground ) && z == -1 ) {
+            if( is_ot_type( "sub_station", oter_ground ) && z == settings.z_levels.sewer ) {
                 ter( i, j, z ) = oter_id( "sewer_sub_station" );
                 requires_sub = true;
-            } else if( is_ot_type( "sub_station", oter_ground ) && z == -2 ) {
+            } else if( is_ot_type( "sub_station", oter_ground ) && z == settings.z_levels.subway ) {
                 ter( i, j, z ) = oter_id( "subway_isolated" );
                 subway_points.emplace_back( i, j - 1 );
                 subway_points.emplace_back( i, j );
@@ -1388,14 +1386,14 @@ bool overmap::generate_sub( int const z )
                 sewer_points.emplace_back( i, j );
             } else if( oter_above == "sewage_treatment" ) {
                 sewer_points.emplace_back( i, j );
-            } else if( oter_above == "cave" && z == -1 ) {
+            } else if( oter_above == "cave" && z == settings.z_levels.basement ) {
                 if( one_in( 3 ) ) {
                     ter( i, j, z ) = oter_id( "cave_rat" );
                     requires_sub = true; // rat caves are two level
                 } else {
                     ter( i, j, z ) = oter_id( "cave" );
                 }
-            } else if( oter_above == "cave_rat" && z == -2 ) {
+            } else if( oter_above == "cave_rat" && z == settings.z_levels.subway ) {
                 ter( i, j, z ) = oter_id( "cave_rat" );
             } else if( oter_above == "anthill" || oter_above == "acid_anthill" ) {
                 mongroup_id ant_group( oter_above == "anthill" ? "GROUP_ANT" : "GROUP_ANT_ACID" );
@@ -1415,7 +1413,7 @@ bool overmap::generate_sub( int const z )
             } else if( oter_above == "lab_stairs" ) {
                 ter( i, j, z ) = oter_id( "lab" );
             } else if( oter_above == "ice_lab_core" ||
-                       ( z == -1 && oter_above == "ice_lab_stairs" ) ) {
+                       ( z == settings.z_levels.basement && oter_above == "ice_lab_stairs" ) ) {
                 ice_lab_points.push_back( city( i, j, rng( 1, 5 + z ) ) );
             } else if( oter_above == "ice_lab_stairs" ) {
                 ter( i, j, z ) = oter_id( "ice_lab" );

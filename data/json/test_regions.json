@@ -186,6 +186,12 @@
           "base_humidity" : 40.0,
           "base_pressure" : 1015.0,
           "base_acid" : 0.0
+      },
+      "z_levels": {
+        "ground": 0,    "//": "Z-level where buildings are located",
+        "basement": -1, "//": "Z-level where basements are located",
+        "sewer": -1,    "//": "Z-level where sewer system is located",
+        "subway": -2,   "//": "Z-level where subway system is located"
       }
    },
    {

@@ -60,6 +60,17 @@ struct city_settings {
     void finalize();
 };
 
+struct z_level_settings {
+    /** Z-level where buildings are located */
+    int ground = 0;
+    /** Z-level where basements are located */
+    int basement = -1;
+    /** Z-level where sewer system is located */
+    int sewer = basement;
+    /** Z-level where subway system is located */
+    int subway = -2;
+};
+
 struct ter_furn_id {
     ter_id ter;
     furn_id furn;
@@ -172,6 +183,8 @@ struct regional_settings {
     forest_mapgen_settings forest_composition;
 
     weather_generator weather;
+
+    z_level_settings z_levels; // z-levels for different locations
 
     std::unordered_map<std::string, map_extras> region_extras;
 

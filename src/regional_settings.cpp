@@ -367,6 +367,26 @@ void load_region_settings( JsonObject &jo )
         new_region.weather = weather_generator::load( wjo );
     }
 
+    if( ! jo.has_object( "z_levels" ) ) {
+        if( strict ) {
+            jo.throw_error( "\"z_levels\": { ... } required for default" );
+        }
+    } else {
+        JsonObject zjo = jo.get_object( "z_levels" );
+        if( ! zjo.read( "ground", new_region.z_levels.ground ) && strict ) {
+            jo.throw_error( "z_levels: ground required for default" );
+        }
+        if( ! zjo.read( "basement",  new_region.z_levels.basement ) && strict ) {
+            jo.throw_error( "z_levels: basement required for default" );
+        }
+        if( ! zjo.read( "sewer", new_region.z_levels.sewer ) && strict ) {
+            jo.throw_error( "z_levels: sewer required for default" );
+        }
+        if( ! zjo.read( "subway", new_region.z_levels.subway ) && strict ) {
+            jo.throw_error( "z_levels: subway required for default" );
+        }
+    }
+
     region_settings_map[new_region.id] = new_region;
 }
 
@@ -530,6 +550,21 @@ void apply_region_overlay( JsonObject &jo, regional_settings &region )
     load_building_types( "basements", region.city_spec.basements );
     load_building_types( "shops", region.city_spec.shops );
     load_building_types( "parks", region.city_spec.parks );
+
+    JsonObject zjo = jo.get_object( "z_levels" );
+    int tmpz = 0;
+    if( zjo.read( "ground", tmpz ) ) {
+        region.z_levels.ground = tmpz;
+    }
+    if( zjo.read( "basement", tmpz ) ) {
+        region.z_levels.basement = tmpz;
+    }
+    if( zjo.read( "sewer", tmpz ) ) {
+        region.z_levels.sewer = tmpz;
+    }
+    if( zjo.read( "subway", tmpz ) ) {
+        region.z_levels.subway = tmpz;
+    }
 }
 
 void groundcover_extra::finalize()   // @todo: fixme return bool for failure
