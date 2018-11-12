@@ -147,7 +147,7 @@
         "locations" : [ "land" ],
         "city_distance" : [10, 20],
         "city_sizes" : [4, 12],
-        "occurrences" : [0, 4],
+        "occurrences" : [1, 4],
         "rotate" : false,
         "flags" : [ "CLASSIC" ]
     },{
@@ -1751,9 +1751,9 @@
             { "point" : [0,-1,0], "terrain" : "road" }
         ],
         "locations" : [ "land" ],
-        "city_distance" : [ 1,4 ],
+        "city_distance" : [ 1, 4 ],
         "city_sizes" : [ 4, 12 ],
-        "occurrences" : [ 0, 1 ],
+        "occurrences" : [ 0, 4 ]
         "flags" : ["CLASSIC"]
     },{
         "type" : "overmap_special",
