@@ -1384,8 +1384,8 @@ bool overmap::generate_sub( int const z )
             } else if( oter_above == "road_nesw_manhole" ) {
                 ter( i, j, z ) = oter_id( "sewer_isolated" );
                 sewer_points.emplace_back( i, j );
-            } else if( oter_above == "sewage_treatment" ) {
-                sewer_points.emplace_back( i, j );
+            } else if( oter_above == "sewage_treatment_hub" && z == settings.z_levels.sewer ) {
+                sewer_points.emplace_back( i, j + 2 );
             } else if( oter_above == "cave" && z == settings.z_levels.basement ) {
                 if( one_in( 3 ) ) {
                     ter( i, j, z ) = oter_id( "cave_rat" );

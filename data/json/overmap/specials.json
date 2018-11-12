@@ -142,7 +142,8 @@
             { "point":[1,2,-1], "overmap": "sewage_treatment_under"}
         ],
         "connections" : [
-            { "point" : [0,-1,0] }
+            { "point" : [0,-1,0], "terrain" : "road" },
+            { "point" : [0,3,-1], "terrain" : "sewer" }
         ],
         "locations" : [ "land" ],
         "city_distance" : [10, 20],
@@ -1748,7 +1749,9 @@
             { "point" : [0,1,-1],  "overmap" : "pump_station_5_north" }
         ],
         "connections" : [
-            { "point" : [0,-1,0], "terrain" : "road" }
+            { "point" : [0,-1,0], "terrain" : "road" },
+            { "point" : [0,-2,-1], "terrain" : "sewer" },
+            { "point" : [0,2,-1], "terrain" : "sewer" }
         ],
         "locations" : [ "land" ],
         "city_distance" : [ 1, 4 ],
