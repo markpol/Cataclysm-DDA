@@ -43,7 +43,13 @@
   {
     "type": "overmap_location",
     "id": "subterranean",
-    "terrains": [ "cavern", "empty_rock", "hellmouth", "rift", "rock", "slimepit", "sewer" ]
+    "terrains": [ "cavern", "empty_rock", "hellmouth", "rift", "rock", "slimepit", "sewer",
+        "sewage_treatment_hub",
+        "sewage_treatment_under",
+        "pump_station_3",
+        "pump_station_4",
+        "pump_station_5"
+    ]
   },
   {
     "type": "overmap_location",
