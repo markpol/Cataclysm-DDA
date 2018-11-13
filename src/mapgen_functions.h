@@ -195,14 +195,8 @@ void mapgen_hellmouth( map *m, oter_id terrain_type, mapgendata dat, const time_
 void mapgen_subway( map *m, oter_id terrain_type, mapgendata dat, const time_point &turn,
                     float density );
 
-void mapgen_sewer_curved( map *m, oter_id terrain_type, mapgendata dat, const time_point &turn,
+void mapgen_sewer( map *m, oter_id terrain_type, mapgendata dat, const time_point &turn,
                           float density );
-void mapgen_sewer_four_way( map *m, oter_id terrain_type, mapgendata dat, const time_point &turn,
-                            float density );
-void mapgen_sewer_straight( map *m, oter_id terrain_type, mapgendata dat, const time_point &turn,
-                            float density );
-void mapgen_sewer_tee( map *m, oter_id terrain_type, mapgendata dat, const time_point &turn,
-                       float density );
 
 void mapgen_ants_curved( map *m, oter_id terrain_type, mapgendata dat, const time_point &turn,
                          float density );

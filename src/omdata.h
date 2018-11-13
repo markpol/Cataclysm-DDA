@@ -126,6 +126,7 @@ enum oter_flags {
     has_sidewalk,
     line_drawing, // does this tile have 8 versions, including straights, bends, tees, and a fourway?
     subway_connection,
+    sewer_connection,
     num_oter_flags
 };
 

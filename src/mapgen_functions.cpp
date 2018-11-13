@@ -142,12 +142,12 @@ building_gen_pointer get_mapgen_cfunction( const std::string &ident )
             { "subway_tee",         &mapgen_subway },
             { "subway_four_way",    &mapgen_subway },
 
-            { "sewer_straight",    &mapgen_sewer_straight },
-            { "sewer_curved",      &mapgen_sewer_curved },
+            { "sewer_straight",    &mapgen_sewer },
+            { "sewer_curved",      &mapgen_sewer },
             // @todo: Add a dedicated dead-end function. For now it copies the straight section above.
-            { "sewer_end",         &mapgen_sewer_straight },
-            { "sewer_tee",         &mapgen_sewer_tee },
-            { "sewer_four_way",    &mapgen_sewer_four_way },
+            { "sewer_end",         &mapgen_sewer },
+            { "sewer_tee",         &mapgen_sewer },
+            { "sewer_four_way",    &mapgen_sewer },
 
             { "ants_straight",    &mapgen_ants_straight },
             { "ants_curved",      &mapgen_ants_curved },
@@ -1428,97 +1428,310 @@ XxXXxXXxXXxXXxXXxXXxXXxX\n\
     m->rotate( rot );
 }
 
-void mapgen_sewer_straight( map *m, oter_id terrain_type, mapgendata dat, const time_point &turn,
+void mapgen_sewer( map *m, oter_id terrain_type, mapgendata dat, const time_point &turn,
                             float )
 {
-    ( void )dat;
-    for( int i = 0; i < SEEX * 2; i++ ) {
-        for( int j = 0; j < SEEY * 2; j++ ) {
-            if( i < SEEX - 2 || i > SEEX + 1 ) {
-                m->ter_set( i, j, t_rock );
-            } else {
-                m->ter_set( i, j, t_sewage );
+    // start by filling the whole map with grass/dirt/etc
+    dat.fill_groundcover();
+
+    // which of the cardinal directions get sewer?
+    bool sewer_nesw[4] = {};
+    int num_dirs = terrain_type_to_nesw_array( terrain_type, sewer_nesw );
+
+    for( int dir = 0; dir < 4; dir++ ) { // N E S W
+        if( dat.t_nesw[dir]->has_flag( sewer_connection ) && !sewer_nesw[dir] ) {
+            num_dirs++;
+            sewer_nesw[dir] = true;
+        }
+    }
+
+    // which way should our sewer curve, based on neighbor sewer?
+    int curvedir_nesw[4] = {};
+    for( int dir = 0; dir < 4; dir++ ) { // N E S W
+        if( !sewer_nesw[dir] ) {
+            continue;
+        }
+
+        if( dat.t_nesw[dir]->get_type_id().str() != "sewer" &&
+            !dat.t_nesw[dir]->has_flag( sewer_connection ) ) {
+            continue;
+        }
+        // n_* contain details about the neighbor being considered
+        bool n_sewer_nesw[4] = {};
+        //TODO figure out how to call this function without creating a new oter_id object
+        int n_num_dirs = terrain_type_to_nesw_array( dat.t_nesw[dir], n_sewer_nesw );
+        for( int dir = 0; dir < 4; dir++ ) {
+            if( dat.t_nesw[dir]->has_flag( sewer_connection ) && !n_sewer_nesw[dir] ) {
+                n_num_dirs++;
+                n_sewer_nesw[dir] = true;
+            }
+        }
+        // if 2-way neighbor has a sewer facing us
+        if( n_num_dirs == 2 && n_sewer_nesw[( dir + 2 ) % 4] ) {
+            // curve towards the direction the neighbor turns
+            if( n_sewer_nesw[( dir - 1 + 4 ) % 4] ) {
+                curvedir_nesw[dir]--;    // our sewer curves counterclockwise
+            }
+            if( n_sewer_nesw[( dir + 1 ) % 4] ) {
+                curvedir_nesw[dir]++;    // our sewer curves clockwise
             }
         }
     }
+
+    // calculate how far to rotate the map so we can work with just one orientation
+    // also keep track of diagonal sewer
+    int rot = 0;
+    bool diag = false;
+    //TODO reduce amount of logical/conditional constructs here
+    switch( num_dirs ) {
+        case 4: // 4-way intersection
+            break;
+        case 3: // tee
+            if( !sewer_nesw[0] ) {
+                rot = 2;    // E/S/W, rotate 180 degrees
+                break;
+            }
+            if( !sewer_nesw[1] ) {
+                rot = 3;    // N/S/W, rotate 270 degrees
+                break;
+            }
+            if( !sewer_nesw[3] ) {
+                rot = 1;    // N/E/S, rotate  90 degrees
+                break;
+            }
+            break;                                    // N/E/W, don't rotate
+        case 2: // straight or diagonal
+            if( sewer_nesw[1] && sewer_nesw[3] ) {
+                rot = 1;    // E/W, rotate  90 degrees
+                break;
+            }
+            if( sewer_nesw[1] && sewer_nesw[2] ) {
+                rot = 1;    // E/S, rotate  90 degrees
+                diag = true;
+                break;
+            }
+            if( sewer_nesw[2] && sewer_nesw[3] ) {
+                rot = 2;    // S/W, rotate 180 degrees
+                diag = true;
+                break;
+            }
+            if( sewer_nesw[3] && sewer_nesw[0] ) {
+                rot = 3;    // W/N, rotate 270 degrees
+                diag = true;
+                break;
+            }
+            if( sewer_nesw[0] && sewer_nesw[1] ) {
+                diag = true;    // N/E, don't rotate
+                break;
+            }
+            break;                                                                  // N/S, don't rotate
+        case 1: // dead end
+            if( sewer_nesw[1] ) {
+                rot = 1;    // E, rotate  90 degrees
+                break;
+            }
+            if( sewer_nesw[2] ) {
+                rot = 2;    // S, rotate 180 degrees
+                break;
+            }
+            if( sewer_nesw[3] ) {
+                rot = 3;    // W, rotate 270 degrees
+                break;
+            }
+            break;                                   // N, don't rotate
+    }
+
+    // rotate the arrays left by rot steps
+    nesw_array_rotate<bool>( sewer_nesw, 4, rot );
+    nesw_array_rotate<int> ( curvedir_nesw,  4, rot );
+
+    // now we have only these shapes: '   |   '-   -'-   -|-
+
+    switch( num_dirs ) {
+        case 4: // 4-way intersection
+            mapf::formatted_set_simple( m, 0, 0, "\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#######...~~~~...#######\n\
+#######.<.~~~~.<.#######\n\
+..........~~~~..........\n\
+~~~~~~~~~~~~~~~~~~~~~~~~\n\
+~~~~~~~~~~~~~~~~~~~~~~~~\n\
+~~~~~~~~~~~~~~~~~~~~~~~~\n\
+~~~~~~~~~~~~~~~~~~~~~~~~\n\
+..........~~~~..........\n\
+#######.<.~~~~.<.#######\n\
+#######...~~~~...#######\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########",
+                                        mapf::ter_bind( ". # ~ <",
+                                                t_rock_floor,
+                                                t_rock,
+                                                t_sewage,
+                                                t_stairs_up),
+                                        mapf::furn_bind( ". # ~ <",
+                                                f_null,
+                                                f_null,
+                                                f_null,
+                                                f_null) );
+            break;
+        case 3: // tee
+            mapf::formatted_set_simple( m, 0, 0, "\
+########################\n\
+########################\n\
+########################\n\
+########################\n\
+########################\n\
+########################\n\
+########################\n\
+########################\n\
+########################\n\
+........................\n\
+~~~~~~~~~~~~~~~~~~~~~~~~\n\
+~~~~~~~~~~~~~~~~~~~~~~~~\n\
+~~~~~~~~~~~~~~~~~~~~~~~~\n\
+~~~~~~~~~~~~~~~~~~~~~~~~\n\
+..........~~~~..........\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########",
+                                        mapf::ter_bind( ". # ~",
+                                                t_rock_floor,
+                                                t_rock,
+                                                t_sewage),
+                                        mapf::furn_bind( ". # ~",
+                                                f_null,
+                                                f_null,
+                                                f_null) );
+            break;
+        case 2: // straight or diagonal
+            if( diag ) { // diagonal sewer get drawn differently from all other types
+                mapf::formatted_set_simple( m, 0, 0, "\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~..........\n\
+#########.~~~~~~~~~~~~~~\n\
+#########.~~~~~~~~~~~~~~\n\
+#########.~~~~~~~~~~~~~~\n\
+#########.~~~~~~~~~~~~~~\n\
+#########...............\n\
+########################\n\
+########################\n\
+########################\n\
+########################\n\
+########################\n\
+########################\n\
+########################\n\
+########################\n\
+########################",
+                                        mapf::ter_bind( ". # ~",
+                                                t_rock_floor,
+                                                t_rock,
+                                                t_sewage),
+                                        mapf::furn_bind( ". # ~",
+                                                f_null,
+                                                f_null,
+                                                f_null) );
+            } else { // normal sewer drawing
+            mapf::formatted_set_simple( m, 0, 0, "\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########",
+                                        mapf::ter_bind( ". # ~",
+                                                t_rock_floor,
+                                                t_rock,
+                                                t_sewage),
+                                        mapf::furn_bind( ". # ~",
+                                                f_null,
+                                                f_null,
+                                                f_null) );
+            }
+            break;
+        case 1:  // dead end
+            mapf::formatted_set_simple( m, 0, 0, "\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########.~~~~.#########\n\
+#########......#########\n\
+########################\n\
+########################\n\
+########################\n\
+########################\n\
+########################\n\
+########################\n\
+########################\n\
+########################\n\
+########################\n\
+########################\n\
+########################\n\
+########################",
+                                        mapf::ter_bind( ". # ~",
+                                                t_rock_floor,
+                                                t_rock,
+                                                t_sewage),
+                                        mapf::furn_bind( ". # ~",
+                                                f_null,
+                                                f_null,
+                                                f_null) );
+            break;
+    }
+
     m->place_items( "sewer", 10, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, true, turn );
-    if( terrain_type == "sewer_ew" ) {
-        m->rotate( 1 );
-    }
-}
 
-void mapgen_sewer_curved( map *m, oter_id terrain_type, mapgendata dat, const time_point &turn,
-                          float )
-{
-    ( void )dat;
-    for( int i = 0; i < SEEX * 2; i++ ) {
-        for( int j = 0; j < SEEY * 2; j++ ) {
-            if( ( i > SEEX + 1 && j < SEEY - 2 ) || i < SEEX - 2 || j > SEEY + 1 ) {
-                m->ter_set( i, j, t_rock );
-            } else {
-                m->ter_set( i, j, t_sewage );
-            }
-        }
-    }
-    m->place_items( "sewer", 18, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, true, turn );
-    if( terrain_type == "sewer_es" ) {
-        m->rotate( 1 );
-    }
-    if( terrain_type == "sewer_sw" ) {
-        m->rotate( 2 );
-    }
-    if( terrain_type == "sewer_wn" ) {
-        m->rotate( 3 );
-    }
-}
-
-void mapgen_sewer_tee( map *m, oter_id terrain_type, mapgendata dat, const time_point &turn, float )
-{
-    ( void )dat;
-    for( int i = 0; i < SEEX * 2; i++ ) {
-        for( int j = 0; j < SEEY * 2; j++ ) {
-            if( i < SEEX - 2 || ( i > SEEX + 1 && ( j < SEEY - 2 || j > SEEY + 1 ) ) ) {
-                m->ter_set( i, j, t_rock );
-            } else {
-                m->ter_set( i, j, t_sewage );
-            }
-        }
-    }
-    m->place_items( "sewer", 23, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, true, turn );
-    if( terrain_type == "sewer_esw" ) {
-        m->rotate( 1 );
-    }
-    if( terrain_type == "sewer_nsw" ) {
-        m->rotate( 2 );
-    }
-    if( terrain_type == "sewer_new" ) {
-        m->rotate( 3 );
-    }
-}
-
-void mapgen_sewer_four_way( map *m, oter_id, mapgendata dat, const time_point &turn, float )
-{
-    ( void )dat;
-    int rn = rng( 0, 3 );
-    for( int i = 0; i < SEEX * 2; i++ ) {
-        for( int j = 0; j < SEEY * 2; j++ ) {
-            if( ( i < SEEX - 2 || i > SEEX + 1 ) && ( j < SEEY - 2 || j > SEEY + 1 ) ) {
-                m->ter_set( i, j, t_rock );
-            } else {
-                m->ter_set( i, j, t_sewage );
-            }
-            if( rn == 0 && ( trig_dist( i, j, SEEX - 1, SEEY - 1 ) <= 6 ||
-                             trig_dist( i, j, SEEX - 1, SEEY ) <= 6 ||
-                             trig_dist( i, j, SEEX,     SEEY - 1 ) <= 6 ||
-                             trig_dist( i, j, SEEX,     SEEY ) <= 6 ) ) {
-                m->ter_set( i, j, t_sewage );
-            }
-            if( rn == 0 && ( i == SEEX - 1 || i == SEEX ) && ( j == SEEY - 1 || j == SEEY ) ) {
-                m->ter_set( i, j, t_grate );
-            }
-        }
-    }
-    m->place_items( "sewer", 28, 0, 0, SEEX * 2 - 1, SEEY * 2 - 1, true, turn );
+    // finally, unrotate the map
+    m->rotate( rot );
 }
 
 ///////////////////

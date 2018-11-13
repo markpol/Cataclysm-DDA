@@ -159,13 +159,14 @@ generic_factory<overmap_special> specials( "overmap special" );
 }
 
 static const std::map<std::string, oter_flags> oter_flags_map = {
-    { "KNOWN_DOWN",     known_down     },
-    { "KNOWN_UP",       known_up       },
-    { "RIVER",          river_tile     },
-    { "SIDEWALK",       has_sidewalk   },
-    { "NO_ROTATE",      no_rotate      },
-    { "LINEAR",         line_drawing   },
-    { "SUBWAY",         subway_connection   }
+    { "KNOWN_DOWN",     known_down        },
+    { "KNOWN_UP",       known_up          },
+    { "RIVER",          river_tile        },
+    { "SIDEWALK",       has_sidewalk      },
+    { "NO_ROTATE",      no_rotate         },
+    { "LINEAR",         line_drawing      },
+    { "SUBWAY",         subway_connection },
+    { "SEWER",          sewer_connection  }
 };
 
 template<>
