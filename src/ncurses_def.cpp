@@ -1,4 +1,4 @@
-#if !(defined TILES || defined _WIN32 || defined WINDOWS)
+#if !(defined TILES || ((defined _WIN32 || defined WINDOWS) && !USE_PDCURSES))
 
 // input.h must be include *before* the ncurses header. The later has some macro
 // defines that clash with the constants defined in input.h (e.g. KEY_UP).
@@ -202,7 +202,11 @@ void catacurses::resizeterm()
 {
     const int new_x = ::getmaxx( stdscr.get<::WINDOW>() );
     const int new_y = ::getmaxy( stdscr.get<::WINDOW>() );
+#if !defined(USE_PDCURSES)
     if( ::is_term_resized( new_x, new_y ) ) {
+#else
+    if( ::is_termresized() ) {
+#endif
         game_ui::init_ui();
     }
 }
@@ -225,7 +229,9 @@ void catacurses::init_interface()
     noecho();  // Don't echo keypresses
     cbreak();  // C-style breaks (e.g. ^C to SIGINT)
     keypad( stdscr.get<::WINDOW>(), true ); // Numpad is numbers
+#if !defined (USE_PDCURSES)
     set_escdelay( 10 ); // Make Escape actually responsive
+#endif
     start_color(); //@todo: error checking
     init_colors();
 }
@@ -259,7 +265,11 @@ input_event input_manager::get_input_event()
         catacurses::resizeterm();
     } else if( key == KEY_MOUSE ) {
         MEVENT event;
+#if !defined (USE_PDCURSES)
         if( getmouse( &event ) == OK ) {
+#else
+        if( nc_getmouse( &event ) == OK ) {
+#endif
             rval.type = CATA_INPUT_MOUSE;
             rval.mouse_x = event.x - VIEW_OFFSET_X;
             rval.mouse_y = event.y - VIEW_OFFSET_Y;
