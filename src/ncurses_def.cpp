@@ -31,6 +31,7 @@ static void curses_check_result( const int result, const int expected, const cha
     }
 }
 
+catacurses::window catacurses::stdscr;
 catacurses::window catacurses::newwin( const int nlines, const int ncols, const int begin_y,
                                        const int begin_x )
 {
@@ -196,12 +197,10 @@ void catacurses::init_pair( const short pair, const base_color f, const base_col
                                 OK, "init_pair" );
 }
 
-catacurses::window catacurses::stdscr;
-
 void catacurses::resizeterm()
 {
-    const int new_x = ::getmaxx( stdscr.get<::WINDOW>() );
-    const int new_y = ::getmaxy( stdscr.get<::WINDOW>() );
+    const int new_x = ::getmaxx( catacurses::stdscr.get<::WINDOW>() );
+    const int new_y = ::getmaxy( catacurses::stdscr.get<::WINDOW>() );
 #if !defined(USE_PDCURSES)
     if( ::is_term_resized( new_x, new_y ) ) {
 #else
@@ -216,8 +215,8 @@ void catacurses::resizeterm()
 void catacurses::init_interface()
 {
     // ::endwin will free the pointer returned by ::initscr
-    stdscr = std::shared_ptr<void>( ::initscr(), []( void *const ) { } );
-    if( !stdscr ) {
+    catacurses::stdscr = std::shared_ptr<void>( ::initscr(), []( void *const ) { } );
+    if( !catacurses::stdscr ) {
         throw std::runtime_error( "initscr failed" );
     }
 #if !(defined __CYGWIN__)
@@ -228,7 +227,7 @@ void catacurses::init_interface()
     // behave exactly like the wrapper, therefor:
     noecho();  // Don't echo keypresses
     cbreak();  // C-style breaks (e.g. ^C to SIGINT)
-    keypad( stdscr.get<::WINDOW>(), true ); // Numpad is numbers
+    keypad(catacurses::stdscr.get<::WINDOW>(), true ); // Numpad is numbers
 #if !defined (USE_PDCURSES)
     set_escdelay( 10 ); // Make Escape actually responsive
 #endif

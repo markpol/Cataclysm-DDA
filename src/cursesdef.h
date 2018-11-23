@@ -87,7 +87,7 @@ enum base_color : short {
 using chtype = int;
 using attr_t = unsigned short;
 
-extern window stdscr;
+extern catacurses::window stdscr;
 
 window newwin( int nlines, int ncols, int begin_y, int begin_x );
 void wborder( const window &win, chtype ls, chtype rs, chtype ts, chtype bs, chtype tl, chtype tr,
