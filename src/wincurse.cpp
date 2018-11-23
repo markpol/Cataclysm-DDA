@@ -2,28 +2,23 @@
 #define UNICODE 1
 #define _UNICODE 1
 
-#include "cursesport.h"
+#include "cata_utility.h"
+#include "catacharset.h"
+#include "color.h"
+#include "color_loader.h"
 #include "cursesdef.h"
+#include "cursesport.h"
+#include "debug.h"
+#include "font_loader.h"
+#include "get_version.h"
+#include "input.h"
 #include "options.h"
 #include "output.h"
-#include "color.h"
-#include "catacharset.h"
-#include "get_version.h"
-#include <cstdlib>
-#include <fstream>
-#include <sstream>
-#include "catacharset.h"
-#include "init.h"
-#include "input.h"
-#include "path_info.h"
-#include "filesystem.h"
-#include "debug.h"
-#include "cata_utility.h"
-#include "string_formatter.h"
-#include "color_loader.h"
-#include "font_loader.h"
 #include "platform_win.h"
-#include "mmsystem.h"
+#include "string_formatter.h"
+
+#include <cstdlib>
+#include <mmsystem.h>
 
 //***********************************
 //Globals                           *
