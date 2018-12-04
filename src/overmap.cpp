@@ -1295,9 +1295,11 @@ void overmap::generate( const overmap *north, const overmap *east,
         }
     }
 
+    generate_city_points();
     // Cities, railroad stations and forests come next.
     // These are agnostic of adjacent maps, so it's very simple.
     place_cities();
+    connect_railroad_points( north, east, south, west );
     place_railroad_stations();
     place_forest();
 
@@ -1341,45 +1343,6 @@ void overmap::generate( const overmap *north, const overmap *east,
         }
     }
 
-    if( railroads_out.size() < 2 ) {
-        std::vector<city> viable_railroads;
-        int tmp;
-        // Populate viable_railroads with one point for each neighborless side.
-        // Make sure these points don't conflict with rivers.
-        // TODO: In theory this is a potential infinte loop...
-        if( north == NULL ) {
-            do {
-                tmp = rng( 10, OMAPX - 11 );
-            } while( is_river( ter( tmp, 0, 0 ) ) || is_river( ter( tmp - 1, 0, 0 ) ) ||
-                     is_river( ter( tmp + 1, 0, 0 ) ) );
-            viable_railroads.push_back( city( tmp, 0, 0 ) );
-        }
-        if( east == NULL ) {
-            do {
-                tmp = rng( 10, OMAPY - 11 );
-            } while( is_river( ter( OMAPX - 1, tmp, 0 ) ) || is_river( ter( OMAPX - 1, tmp - 1, 0 ) ) ||
-                     is_river( ter( OMAPX - 1, tmp + 1, 0 ) ) );
-            viable_railroads.push_back( city( OMAPX - 1, tmp, 0 ) );
-        }
-        if( south == NULL ) {
-            do {
-                tmp = rng( 10, OMAPX - 11 );
-            } while( is_river( ter( tmp, OMAPY - 1, 0 ) ) || is_river( ter( tmp - 1, OMAPY - 1, 0 ) ) ||
-                     is_river( ter( tmp + 1, OMAPY - 1, 0 ) ) );
-            viable_railroads.push_back( city( tmp, OMAPY - 1, 0 ) );
-        }
-        if( west == NULL ) {
-            do {
-                tmp = rng( 10, OMAPY - 11 );
-            } while( is_river( ter( 0, tmp, 0 ) ) || is_river( ter( 0, tmp - 1, 0 ) ) ||
-                     is_river( ter( 0, tmp + 1, 0 ) ) );
-            viable_railroads.push_back( city( 0, tmp, 0 ) );
-        }
-        while( railroads_out.size() < 2 && !viable_railroads.empty() ) {
-            railroads_out.push_back( random_entry_removed( viable_railroads ) );
-        }
-    }
-
     std::vector<point> road_points; // cities and roads_out together
     // Compile our master list of roads; it's less messy if roads_out is first
     road_points.reserve( roads_out.size() + cities.size() );
@@ -1392,19 +1355,6 @@ void overmap::generate( const overmap *north, const overmap *east,
     // And finally connect them via roads.
     const string_id<overmap_connection> local_road( "local_road" );
     connect_closest_points( road_points, 0, *local_road );
-
-    std::vector<point> railroad_points; // railroad_stations and railroads_out together
-    // Compile our master list of railroads; it's less messy if railroads_out is first
-    railroad_points.reserve( railroads_out.size() + railroad_stations.size() * 2 );
-    for( const auto &elem : railroads_out ) {
-        railroad_points.emplace_back( elem.x, elem.y );
-    }
-    for( const auto &elem : railroad_stations ) {
-        railroad_points.emplace_back( point( elem.x, elem.y - 1 ) );
-    }
-    // And finally connect them via railroads.
-    const string_id<overmap_connection> local_railroad( "local_railroad" );
-    connect_closest_points( railroad_points, 0, *local_railroad );
 
     place_specials( enabled_specials );
     polish_river();
@@ -2104,18 +2054,9 @@ void overmap::place_river( point pa, point pb )
     } while( pb.x != x || pb.y != y );
 }
 
-/*: the root is overmap::place_cities()
-20:50 <kevingranade>: which is at overmap.cpp:1355 or so
-20:51 <kevingranade>: the key is cs = rng(4, 17), setting the "size" of the city
-20:51 <kevingranade>: which is roughly it's radius in overmap tiles
-20:52 <kevingranade>: then later overmap::place_mongroups() is called
-20:52 <kevingranade>: which creates a mongroup with radius city_size * 2.5 and population city_size * 80
-20:53 <kevingranade>: tadaa
-
-spawns happen at... <cue Clue music>
-20:56 <kevingranade>: game:pawn_mon() in game.cpp:7380*/
-void overmap::place_cities()
+void overmap::generate_city_points()
 {
+    //cities
     int op_city_size = get_option<int>( "CITY_SIZE" );
     if( op_city_size <= 0 ) {
         return;
@@ -2142,10 +2083,6 @@ void overmap::place_cities()
     // how many cities on this overmap?
     const int NUM_CITIES =
         roll_remainder( omts_per_overmap * city_map_coverage_ratio / omts_per_city );
-
-    const string_id<overmap_connection> local_road_id( "local_road" );
-    const overmap_connection &local_road( *local_road_id );
-
     // place a seed for NUM_CITIES cities, and maybe one more
     while( cities.size() < size_t( NUM_CITIES ) ) {
         // randomly make some cities smaller or larger
@@ -2166,20 +2103,120 @@ void overmap::place_cities()
         int cx = rng( size - 1, OMAPX - size );
         int cy = rng( size - 1, OMAPY - size );
         if( ter( cx, cy, 0 ) == settings.default_oter ) {
-            ter( cx, cy, 0 ) = oter_id( "road_nesw" ); // every city starts with an intersection
             city tmp;
             tmp.x = cx;
             tmp.y = cy;
             tmp.s = size;
             cities.push_back( tmp );
-
-            const auto start_dir = om_direction::random();
-            auto cur_dir = start_dir;
-
-            do {
-                build_city_street( local_road, point( cx, cy ), size, cur_dir, tmp );
-            } while( ( cur_dir = om_direction::turn_right( cur_dir ) ) != start_dir );
         }
+    }
+    //railway network
+    const size_t num_stations = settings.railroad_spec.num_stations;
+    const size_t num_junctions = settings.railroad_spec.num_junctions;
+    const int min_border_distance = settings.railroad_spec.min_border_distance;
+    while( railroad_junctions.size() <= num_junctions ) {
+        // TODO put railroad_junctions closer to the edge when they can span overmaps
+        // don't draw railroad_junctions across the edge of the map, they will get clipped
+        int cx = rng( min_border_distance - 1, OMAPX - min_border_distance );
+        int cy = rng( min_border_distance - 1, OMAPY - min_border_distance );
+        city junction( cx, cy, 0, om_direction::random());
+        railroad_junctions.push_back( junction );
+    }
+}
+
+void overmap::connect_railroad_points( const overmap *north, const overmap *east,
+                        const overmap *south, const overmap *west )
+{
+
+    if( railroads_out.size() < 2 ) {
+        std::vector<city> viable_railroads;
+        int tmp;
+        // Populate viable_railroads with one point for each neighborless side.
+        // Make sure these points don't conflict with rivers.
+        // TODO: In theory this is a potential infinte loop...
+        if( north == NULL ) {
+            do {
+                tmp = rng( 10, OMAPX - 11 );
+            } while( is_river( ter( tmp, 0, 0 ) ) || is_river( ter( tmp - 1, 0, 0 ) ) ||
+                     is_river( ter( tmp + 1, 0, 0 ) ) );
+            viable_railroads.push_back( city( tmp, 0, 0 ) );
+        }
+        if( east == NULL ) {
+            do {
+                tmp = rng( 10, OMAPY - 11 );
+            } while( is_river( ter( OMAPX - 1, tmp, 0 ) ) || is_river( ter( OMAPX - 1, tmp - 1, 0 ) ) ||
+                     is_river( ter( OMAPX - 1, tmp + 1, 0 ) ) );
+            viable_railroads.push_back( city( OMAPX - 1, tmp, 0 ) );
+        }
+        if( south == NULL ) {
+            do {
+                tmp = rng( 10, OMAPX - 11 );
+            } while( is_river( ter( tmp, OMAPY - 1, 0 ) ) || is_river( ter( tmp - 1, OMAPY - 1, 0 ) ) ||
+                     is_river( ter( tmp + 1, OMAPY - 1, 0 ) ) );
+            viable_railroads.push_back( city( tmp, OMAPY - 1, 0 ) );
+        }
+        if( west == NULL ) {
+            do {
+                tmp = rng( 10, OMAPY - 11 );
+            } while( is_river( ter( 0, tmp, 0 ) ) || is_river( ter( 0, tmp - 1, 0 ) ) ||
+                     is_river( ter( 0, tmp + 1, 0 ) ) );
+            viable_railroads.push_back( city( 0, tmp, 0 ) );
+        }
+        while( railroads_out.size() < 10 && !viable_railroads.empty() ) {
+            DebugLog( D_ERROR, D_GAME ) << "viable_railroads: added 1";
+            railroads_out.push_back( random_entry_removed( viable_railroads ) );
+        }
+    }
+    
+    const string_id<overmap_connection> local_railroad( "local_railroad" );
+
+    std::vector<point> railroad_points; // railroad_stations and railroads_out together
+    // Compile our master list of railroads; it's less messy if railroads_out is first
+    railroad_points.reserve( railroads_out.size() + railroad_junctions.size() + railroad_stations.size() );
+    for( const auto &elem : railroads_out ) {
+        DebugLog( D_ERROR, D_GAME ) << " elem at [railroads_out] = [" << elem.x << "," << elem.y << "].";
+        ter( elem.x, elem.y, 0 ) = oter_id( "railroad_isolated" );
+        railroad_points.emplace_back( elem.x, elem.y );
+    }
+
+    for( const auto &elem : railroad_junctions ) {
+        DebugLog( D_ERROR, D_GAME ) << " elem at [railroad_junctions] = [" << elem.x << "," << elem.y << "].";
+        ter( elem.x, elem.y, 0 ) = oter_id( "railroad_isolated" );
+        railroad_points.emplace_back( elem.x, elem.y );
+        connect_closest_points( railroad_points, 0, *local_railroad );
+    }
+
+    for( const auto &elem : railroad_stations ) {
+        railroad_points.emplace_back( point( elem.x, elem.y - 1 ) );
+        connect_closest_points( railroad_points, 0, *local_railroad );
+    }
+    // And finally connect them via railroads.
+    //connect_closest_points( railroad_points, 0, *local_railroad );
+}
+
+/*: the root is overmap::place_cities()
+20:50 <kevingranade>: which is at overmap.cpp:1355 or so
+20:51 <kevingranade>: the key is cs = rng(4, 17), setting the "size" of the city
+20:51 <kevingranade>: which is roughly it's radius in overmap tiles
+20:52 <kevingranade>: then later overmap::place_mongroups() is called
+20:52 <kevingranade>: which creates a mongroup with radius city_size * 2.5 and population city_size * 80
+20:53 <kevingranade>: tadaa
+
+spawns happen at... <cue Clue music>
+20:56 <kevingranade>: game:pawn_mon() in game.cpp:7380*/
+void overmap::place_cities()
+{
+    const string_id<overmap_connection> local_road_id( "local_road" );
+    const overmap_connection &local_road( *local_road_id );
+
+    for each (auto city in cities)
+    {
+        ter( city.x, city.y, 0 ) = oter_id( "road_nesw" ); // every city starts with an intersection
+        const auto start_dir = om_direction::random();
+        auto cur_dir = start_dir;
+        do {
+            build_city_street( local_road, point( city.x, city.y ), city.s, cur_dir, city );
+        } while( ( cur_dir = om_direction::turn_right( cur_dir ) ) != start_dir );
     }
 }
 

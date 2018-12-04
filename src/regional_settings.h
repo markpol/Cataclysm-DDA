@@ -32,6 +32,7 @@ class building_bin
 
 struct railroad_settings {
     int num_stations = 5;
+    int num_junctions = 20;
     int min_border_distance = 10;
     building_bin stations;
 

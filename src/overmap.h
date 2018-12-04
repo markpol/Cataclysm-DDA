@@ -244,6 +244,7 @@ class overmap
         std::map<int, om_vehicle> vehicles;
         std::vector<city> cities;
         std::vector<city> roads_out;
+        std::vector<city> railroad_junctions;
         std::vector<city> railroad_stations;
         std::vector<city> railroads_out;
 
@@ -325,6 +326,9 @@ class overmap
         // City Building
         overmap_special_id pick_random_building_to_place( int town_dist ) const;
 
+        void generate_city_points();
+        void connect_railroad_points( const overmap *north, const overmap *east,
+                        const overmap *south, const overmap *west);
         void place_cities();
         void place_railroad_stations();
         void place_building( const tripoint &p, om_direction::type dir, const city &town );

@@ -153,6 +153,7 @@
       "swamp_spread_chance": 8500,          "//": "one_in(n) chance a swampy forest makes a swamp in a non-forest. Apparently.",
       "railroad": {                         "//": "various railway network settings",
         "num_stations": 5,                  "//": "# of railroad stations per overmap",
+        "num_junctions": 20,                "//": "# of junctions per overmap",
         "min_border_distance": 10,          "//": "minimum distance from overmap border",
         "stations": {                       "//": "weighted list for railroad station overmap specials",
               "Railroad Station": 1

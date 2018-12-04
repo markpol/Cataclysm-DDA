@@ -328,6 +328,9 @@ void load_region_settings( JsonObject &jo )
         if( ! cjo.read( "num_stations", new_region.railroad_spec.num_stations ) && strict ) {
             jo.throw_error( "railroad: num_stations required for default" );
         }
+        if( ! cjo.read( "num_junctions", new_region.railroad_spec.num_junctions ) && strict ) {
+            jo.throw_error( "railroad: num_junctions required for default" );
+        }
         if( ! cjo.read( "min_border_distance", new_region.railroad_spec.min_border_distance ) && strict ) {
             jo.throw_error( "railroad: min_border_distance required for default" );
         }
