@@ -1,5 +1,6 @@
 #include "inventory_ui.h"
 
+#include "accessibility.h"
 #include "cata_utility.h"
 #include "catacharset.h"
 #include "game.h"
@@ -1499,6 +1500,7 @@ inventory_selector::inventory_selector( const player &u, const inventory_selecto
     ctxt.register_action( "HELP_KEYBINDINGS" );
     ctxt.register_action( "ANY_INPUT" ); // For invlets
     ctxt.register_action( "INVENTORY_FILTER" );
+    ctxt.register_action( "ESPEAK" );
 
     append_column( own_inv_column );
     append_column( map_column );
@@ -1678,6 +1680,10 @@ item_location inventory_pick_selector::execute()
             return input.entry->location.clone();
         } else if( input.action == "QUIT" ) {
             return item_location();
+        } else if( input.action == "ESPEAK" ) {
+            item &i = *get_active_column().get_selected().location.clone().get_item();
+            const std::string tts = i.display_name();
+            accessibility::espeak( tts );
         } else if( input.action == "CONFIRM" ) {
             return get_active_column().get_selected().location.clone();
         } else if( input.action == "INVENTORY_FILTER" ) {

@@ -1161,6 +1161,40 @@ void options_manager::add_options_interface()
         { "zh_CN", no_translation( R"(中文 (天朝))" ) },
         { "zh_TW", no_translation( R"(中文 (台灣))" ) },
     }, "" );
+#if( !defined MSYS2 && ( defined _WIN32 || defined WINDOWS ) )
+
+    mOptionsSort["interface"]++;
+
+    add( "USE_ESPEAKNG", "interface", translate_marker( "Use eSpeakNG speech synthesizer" ),
+         translate_marker( "If true, will enable use of eSpeakNG for speech synthesis." ),
+         false
+       );
+
+    add( "ESPEAKNG_PATH", "interface", translate_marker( "Path to eSpeakNG" ),
+         translate_marker( "Set full path to eSpeakNG executable for speech synthesis." ),
+         "C:\\Program Files\\eSpeak NG\\espeak-ng.exe", 255
+       );
+
+    get_option( "ESPEAKNG_PATH" ).setPrerequisite( "USE_ESPEAKNG" );
+
+    add( "ESPEAKNG_LANG", "interface", translate_marker( "Language to be used with eSpeakNG" ),
+    translate_marker( "Set language to be used by eSpeakNG for speech synthesis." ), {
+        { "en-us", no_translation( R"(English)" ) },
+        { "de", no_translation( R"(Deutsch)" ) },
+        { "es-419", no_translation( R"(Español (Argentina))" ) },
+        { "es", no_translation( R"(Español (España))" ) },
+        { "fr-fr", no_translation( R"(Français)" ) },
+        { "hu", no_translation( R"(Magyar)" ) },
+        //{ "", no_translation( R"(日本語)" ) },
+        { "ko", no_translation( R"(한국어)" ) },
+        { "pl", no_translation( R"(Polski)" ) },
+        { "ru", no_translation( R"(Русский)" ) },
+        { "cmn", no_translation( R"(中文 (天朝))" ) },
+        //{ "", no_translation( R"(中文 (台灣))" ) },
+    }, "" );
+
+    get_option( "ESPEAKNG_LANG" ).setPrerequisite( "USE_ESPEAKNG" );
+#endif
 
     mOptionsSort["interface"]++;
 
