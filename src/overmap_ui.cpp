@@ -363,7 +363,7 @@ void draw( const catacurses::window &w, const catacurses::window &wbar, const tr
         if( info ) {
             const bool explored = show_explored && overmap_buffer.is_explored( omx, omy, z );
             ter_color = explored ? c_dark_gray : info->get_color( uistate.overmap_alt_map_key );
-            ter_sym   = info->get_sym( uistate.overmap_alt_map_key )
+            ter_sym = info->get_sym( uistate.overmap_alt_map_key );
         }
     };
 
