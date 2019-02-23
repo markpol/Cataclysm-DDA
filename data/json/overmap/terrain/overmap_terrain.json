@@ -1,0 +1,2941 @@
+[
+  {
+    "type": "overmap_terrain",
+    "id": "s_lot",
+    "name": "parking lot",
+    "sym": 79,
+    "color": "dark_gray",
+    "see_cost": 1,
+    "extras": "build",
+    "mondensity": 2,
+    "mapgen": [ { "method": "builtin", "name": "parking_lot" } ],
+    "flags": [ "SIDEWALK", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "park",
+    "name": "park",
+    "sym": 79,
+    "color": "green",
+    "see_cost": 2,
+    "extras": "build",
+    "mondensity": 2,
+    "flags": [ "SIDEWALK", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "pool",
+    "name": "pool",
+    "sym": 79,
+    "color": "blue",
+    "see_cost": 2,
+    "mondensity": 2,
+    "flags": [ "SIDEWALK", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_gas",
+    "name": "gas station",
+    "copy-from": "generic_city_building",
+    "color": "light_blue"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_pharm",
+    "name": "pharmacy",
+    "copy-from": "generic_city_building",
+    "color": "light_red"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "office_doctor",
+    "name": "doctor's office",
+    "copy-from": "generic_city_building",
+    "color": "i_light_red"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "office_cubical",
+    "name": "office",
+    "copy-from": "generic_city_building",
+    "color": "light_gray"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "office_tower_1_entrance",
+    "name": "office tower",
+    "sym": 84,
+    "color": "i_light_gray",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "SIDEWALK", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "office_tower_1",
+    "name": "office tower",
+    "sym": 116,
+    "color": "i_light_gray",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "SIDEWALK", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "office_tower_b_entrance",
+    "name": "tower parking",
+    "sym": 112,
+    "color": "i_light_gray",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "SIDEWALK", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "office_tower_b",
+    "name": "tower parking",
+    "sym": 112,
+    "color": "i_light_gray",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "SIDEWALK", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "office_tower_2_a1",
+    "name": "office tower",
+    "sym": 116,
+    "color": "i_light_gray",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "office_tower_2_a2",
+    "name": "office tower",
+    "sym": 116,
+    "color": "i_light_gray",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "office_tower_2_a3",
+    "name": "office courtyard",
+    "sym": 79,
+    "color": "light_gray",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "office_tower_2_b1",
+    "name": "office tower",
+    "sym": 116,
+    "color": "i_light_gray",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "office_tower_2_b2",
+    "name": "office tower",
+    "sym": 116,
+    "color": "i_light_gray",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "office_tower_2_b3",
+    "name": "office tower",
+    "sym": 84,
+    "color": "i_light_gray",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "office_tower_2_a1_tower_lab",
+    "name": "office tower",
+    "sym": 116,
+    "color": "i_light_gray",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "office_tower_open_air_corner",
+    "name": "open air",
+    "sym": 46,
+    "color": "blue"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "church",
+    "copy-from": "generic_city_building",
+    "name": "church",
+    "sym": 67,
+    "color": "light_red"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "cathedral_1_NW",
+    "name": "cathedral",
+    "sym": 67,
+    "color": "i_light_red",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "SIDEWALK", "KNOWN_DOWN" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "cathedral_1_NE",
+    "copy-from": "cathedral_1_NW"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "cathedral_1_SW",
+    "copy-from": "cathedral_1_NW"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "cathedral_1_SE",
+    "copy-from": "cathedral_1_NW"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "cathedral_b_NW",
+    "copy-from": "cathedral_1_NW",
+    "name": "cathedral basement",
+    "delete": { "flags": [ "SIDEWALK", "KNOWN_DOWN" ] }
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "cathedral_b_NE",
+    "copy-from": "cathedral_b_NW"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "cathedral_b_SW",
+    "copy-from": "cathedral_b_NW"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "cathedral_b_SE",
+    "copy-from": "cathedral_b_NW"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_grocery",
+    "name": "grocery store",
+    "copy-from": "generic_city_building",
+    "color": "green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_hardware",
+    "name": "hardware store",
+    "copy-from": "generic_city_building",
+    "color": "cyan"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_electronics",
+    "name": "electronics store",
+    "copy-from": "generic_city_building",
+    "color": "yellow"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_sports",
+    "name": "sporting goods store",
+    "copy-from": "generic_city_building",
+    "color": "light_cyan"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_liquor",
+    "name": "liquor store",
+    "copy-from": "generic_city_building",
+    "color": "magenta"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_gun",
+    "name": "gun store",
+    "copy-from": "generic_city_building",
+    "color": "red"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_clothes",
+    "name": "clothing store",
+    "copy-from": "generic_city_building",
+    "color": "blue"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_library",
+    "name": "library",
+    "copy-from": "generic_city_building",
+    "color": "i_brown"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_bookstore",
+    "name": "bookstore",
+    "copy-from": "generic_city_building",
+    "color": "i_brown"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_restaurant",
+    "name": "restaurant",
+    "copy-from": "generic_city_building",
+    "color": "pink"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_restaurant_fast",
+    "name": "fast food restaurant",
+    "copy-from": "generic_city_building",
+    "color": "yellow_magenta"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_restaurant_coffee",
+    "name": "coffee shop",
+    "copy-from": "generic_city_building",
+    "color": "white_magenta"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_teashop",
+    "name": "teashop",
+    "copy-from": "generic_city_building",
+    "color": "c_light_cyan_magenta"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "bar",
+    "name": "bar",
+    "copy-from": "generic_city_building",
+    "color": "i_magenta"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_butcher",
+    "name": "butcher shop",
+    "copy-from": "generic_city_building",
+    "color": "i_red"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_bike_shop",
+    "name": "bike shop",
+    "copy-from": "generic_city_building",
+    "color": "i_cyan"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_pizza_parlor",
+    "name": "pizza parlor",
+    "copy-from": "generic_city_building",
+    "color": "pink_magenta"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "sub_station",
+    "name": "subway station",
+    "sym": 83,
+    "color": "yellow",
+    "see_cost": 5,
+    "extras": "build",
+    "mondensity": 2,
+    "flags": [ "KNOWN_DOWN", "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_garage",
+    "copy-from": "generic_city_building",
+    "name": "garage",
+    "sym": 79,
+    "color": "white"
+  },
+
+  {
+    "type": "overmap_terrain",
+    "id": "police",
+    "name": "police station",
+    "copy-from": "generic_city_building",
+    "color": "h_yellow"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "bank",
+    "name": "bank",
+    "sym": 36,
+    "color": "light_gray",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "pawn",
+    "name": "pawn shop",
+    "copy-from": "generic_city_building",
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "mil_surplus",
+    "name": "mil. surplus",
+    "sym": 77,
+    "copy-from": "generic_city_building",
+    "color": "i_light_gray"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "furniture",
+    "name": "furniture store",
+    "copy-from": "generic_city_building",
+    "color": "brown"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "abstorefront",
+    "name": "abandoned storefront",
+    "copy-from": "generic_city_building",
+    "color": "h_dark_gray"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_music",
+    "copy-from": "generic_city_building",
+    "name": "music store",
+    "sym": 109,
+    "color": "brown"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "megastore_entrance",
+    "name": "megastore",
+    "sym": 43,
+    "color": "light_blue",
+    "see_cost": 5,
+    "extras": "build",
+    "mondensity": 2,
+    "flags": [ "SIDEWALK", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "megastore",
+    "name": "megastore",
+    "sym": 77,
+    "color": "blue",
+    "see_cost": 5,
+    "extras": "build",
+    "mondensity": 2,
+    "flags": [ "SIDEWALK", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "abstract": "generic_hospital",
+    "copy-from": "generic_city_building",
+    "name": "hospital",
+    "sym": 72,
+    "color": "red"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hospital_1",
+    "copy-from": "generic_hospital"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hospital_2",
+    "copy-from": "generic_hospital",
+    "color": "light_red"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hospital_3",
+    "copy-from": "generic_hospital"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hospital_4",
+    "copy-from": "generic_hospital"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hospital_5",
+    "copy-from": "generic_hospital"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hospital_6",
+    "copy-from": "generic_hospital"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hospital_7",
+    "copy-from": "generic_hospital"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hospital_8",
+    "copy-from": "generic_hospital"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hospital_9",
+    "copy-from": "generic_hospital"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "public_works_NE",
+    "name": "public works",
+    "sym": 119,
+    "color": "light_gray",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "public_works_NW",
+    "name": "public works",
+    "sym": 119,
+    "color": "light_gray",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "public_works_SW",
+    "name": "public works",
+    "sym": 87,
+    "color": "light_gray",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "public_works_SE",
+    "name": "public works",
+    "sym": 119,
+    "color": "light_gray",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "school_1_1",
+    "name": "regional school",
+    "sym": 115,
+    "color": "light_blue",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "school_1_2",
+    "name": "regional school",
+    "sym": 83,
+    "color": "light_blue",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "school_1_3",
+    "name": "regional school",
+    "sym": 115,
+    "color": "light_blue",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "school_1_4",
+    "name": "regional school",
+    "sym": 115,
+    "color": "light_blue",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "school_1_5",
+    "name": "regional school",
+    "sym": 115,
+    "color": "light_blue",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "school_1_6",
+    "name": "regional school",
+    "sym": 115,
+    "color": "light_blue",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "school_1_7",
+    "name": "regional school",
+    "sym": 115,
+    "color": "light_blue",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "school_1_8",
+    "name": "regional school",
+    "sym": 115,
+    "color": "light_blue",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "school_1_9",
+    "name": "regional school",
+    "sym": 115,
+    "color": "light_blue",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "prison_1_1",
+    "name": "prison",
+    "sym": 112,
+    "color": "i_light_blue",
+    "see_cost": 5,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "prison_1_2",
+    "name": "prison",
+    "sym": 80,
+    "color": "i_light_blue",
+    "see_cost": 5,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "prison_1_3",
+    "name": "prison",
+    "sym": 112,
+    "color": "i_light_blue",
+    "see_cost": 5,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "prison_1_4",
+    "name": "prison",
+    "sym": 112,
+    "color": "i_light_blue",
+    "see_cost": 5,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "prison_1_5",
+    "name": "prison",
+    "sym": 112,
+    "color": "i_light_blue",
+    "see_cost": 5,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "prison_1_6",
+    "name": "prison",
+    "sym": 112,
+    "color": "i_light_blue",
+    "see_cost": 5,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "prison_1_7",
+    "name": "prison",
+    "sym": 112,
+    "color": "i_light_blue",
+    "see_cost": 5,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "prison_1_8",
+    "name": "prison",
+    "sym": 112,
+    "color": "i_light_blue",
+    "see_cost": 5,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "prison_1_9",
+    "name": "prison",
+    "sym": 112,
+    "color": "i_light_blue",
+    "see_cost": 5,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "prison_1_b_1",
+    "name": "prison",
+    "sym": 112,
+    "color": "i_light_blue",
+    "see_cost": 5
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "prison_1_b_2",
+    "name": "prison",
+    "sym": 80,
+    "color": "i_light_blue",
+    "see_cost": 5
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "prison_1_b_3",
+    "name": "prison",
+    "sym": 112,
+    "color": "i_light_blue",
+    "see_cost": 5
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "prison_1_b_4",
+    "name": "prison",
+    "sym": 112,
+    "color": "i_light_blue",
+    "see_cost": 5
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "prison_1_b_5",
+    "name": "prison",
+    "sym": 112,
+    "color": "i_light_blue",
+    "see_cost": 5
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "prison_1_b_6",
+    "name": "prison",
+    "sym": 112,
+    "color": "i_light_blue",
+    "see_cost": 5
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "prison_1_b_7",
+    "name": "prison",
+    "sym": 112,
+    "color": "i_light_blue",
+    "see_cost": 5
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "prison_1_b_8",
+    "name": "prison",
+    "sym": 112,
+    "color": "i_light_blue",
+    "see_cost": 5
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "prison_1_b_9",
+    "name": "prison",
+    "sym": 112,
+    "color": "i_light_blue",
+    "see_cost": 5
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "prison_1_b_7_hidden",
+    "name": "prison",
+    "sym": 112,
+    "color": "i_light_blue",
+    "see_cost": 5
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "prison_1_b_8_hidden_lab_stairs",
+    "name": "prison",
+    "sym": 112,
+    "color": "i_light_blue",
+    "see_cost": 5
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "prison_1_b_9_hidden",
+    "name": "prison",
+    "sym": 112,
+    "color": "i_light_blue",
+    "see_cost": 5
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hotel_tower_1_1",
+    "copy-from": "generic_city_building",
+    "name": "hotel parking",
+    "sym": 104,
+    "color": "light_blue"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hotel_tower_1_2",
+    "copy-from": "generic_city_building",
+    "name": "hotel parking",
+    "sym": 104,
+    "color": "light_blue"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hotel_tower_1_3",
+    "copy-from": "generic_city_building",
+    "name": "hotel parking",
+    "sym": 104,
+    "color": "light_blue"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hotel_tower_1_4",
+    "copy-from": "generic_city_building",
+    "name": "hotel parking",
+    "sym": 104,
+    "color": "light_blue"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hotel_tower_1_5",
+    "copy-from": "generic_city_building",
+    "name": "hotel entrance",
+    "sym": 72,
+    "color": "light_blue"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hotel_tower_1_6",
+    "copy-from": "generic_city_building",
+    "name": "hotel parking",
+    "sym": 104,
+    "color": "light_blue"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hotel_tower_1_7",
+    "copy-from": "generic_city_building",
+    "name": "hotel tower",
+    "sym": 72,
+    "color": "light_blue"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hotel_tower_1_8",
+    "copy-from": "generic_city_building",
+    "name": "hotel tower",
+    "sym": 72,
+    "color": "light_blue"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hotel_tower_1_9",
+    "copy-from": "generic_city_building",
+    "name": "hotel tower",
+    "sym": 72,
+    "color": "light_blue"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hotel_tower_b_1",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "hotel basement",
+    "sym": 66,
+    "color": "light_blue"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hotel_tower_b_2",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "hotel basement",
+    "sym": 66,
+    "color": "light_blue"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hotel_tower_b_3",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "hotel basement",
+    "sym": 66,
+    "color": "light_blue"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "motel_entrance",
+    "copy-from": "generic_city_building",
+    "name": "motel",
+    "sym": 104,
+    "color": "light_blue"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "motel_1",
+    "copy-from": "generic_city_building",
+    "name": "motel",
+    "sym": 104,
+    "color": "light_blue"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "motel_2",
+    "copy-from": "generic_city_building",
+    "name": "motel",
+    "sym": 104,
+    "color": "light_blue"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "motel_3",
+    "copy-from": "generic_city_building",
+    "name": "motel",
+    "sym": 104,
+    "color": "light_blue"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_gas_rural",
+    "name": "gas station",
+    "sym": 94,
+    "color": "light_blue",
+    "extras": "build",
+    "mondensity": 2,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "station_radio",
+    "copy-from": "generic_city_building",
+    "name": "radio station",
+    "sym": 88,
+    "color": "i_light_gray"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "sewage_treatment",
+    "name": "sewage treatment",
+    "sym": 80,
+    "color": "red",
+    "see_cost": 5,
+    "flags": [ "KNOWN_DOWN", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "sewage_treatment_hub",
+    "name": "sewage treatment",
+    "sym": 80,
+    "color": "green",
+    "see_cost": 5,
+    "extras": "build",
+    "flags": [ "KNOWN_UP", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "sewage_treatment_under",
+    "name": "sewage treatment",
+    "sym": 80,
+    "color": "green",
+    "see_cost": 5,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "mine_entrance",
+    "name": "mine entrance",
+    "sym": 77,
+    "color": "light_gray",
+    "see_cost": 5,
+    "flags": [ "KNOWN_DOWN", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "mine_shaft",
+    "name": "mine shaft",
+    "sym": 79,
+    "color": "dark_gray",
+    "see_cost": 5,
+    "flags": [ "KNOWN_UP", "KNOWN_DOWN", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "mine",
+    "name": "mine",
+    "sym": 77,
+    "color": "brown",
+    "see_cost": 2,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "mine_down",
+    "name": "mine",
+    "sym": 77,
+    "color": "brown",
+    "see_cost": 2,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "mine_finale",
+    "name": "mine",
+    "sym": 77,
+    "color": "brown",
+    "see_cost": 2,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "spiral_hub",
+    "name": "spiral cavern",
+    "sym": 64,
+    "color": "pink",
+    "see_cost": 2,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "spiral",
+    "name": "spiral cavern",
+    "sym": 64,
+    "color": "pink",
+    "see_cost": 2,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "radio_tower",
+    "name": "radio tower",
+    "sym": 88,
+    "color": "light_gray",
+    "see_cost": 2,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "toxic_dump",
+    "name": "toxic waste dump",
+    "sym": 68,
+    "color": "pink",
+    "see_cost": 2,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "haz_sar_entrance",
+    "name": "hazardous waste sarcophagus",
+    "sym": 88,
+    "color": "pink",
+    "see_cost": 5,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "haz_sar",
+    "name": "hazardous waste sarcophagus",
+    "sym": 88,
+    "color": "pink",
+    "see_cost": 5,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "haz_sar_entrance_b1",
+    "name": "hazardous waste sarcophagus",
+    "sym": 88,
+    "color": "pink",
+    "see_cost": 5,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "haz_sar_b1",
+    "name": "hazardous waste sarcophagus",
+    "sym": 88,
+    "color": "pink",
+    "see_cost": 5,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "sewer_sub_station",
+    "name": "subway station (sewer level)",
+    "sym": 83,
+    "color": "yellow",
+    "see_cost": 5,
+    "extras": "subway",
+    "flags": [ "KNOWN_UP", "KNOWN_DOWN", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "underground_sub_station",
+    "name": "subway station (underground level)",
+    "sym": 83,
+    "color": "yellow",
+    "see_cost": 5,
+    "extras": "subway",
+    "flags": [ "KNOWN_UP", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "subway",
+    "name": "subway",
+    "color": "dark_gray",
+    "see_cost": 5,
+    "extras": "subway",
+    "mapgen_straight": [ { "method": "builtin", "name": "subway_straight" } ],
+    "mapgen_curved": [ { "method": "builtin", "name": "subway_curved" } ],
+    "mapgen_end": [ { "method": "builtin", "name": "subway_end" } ],
+    "mapgen_tee": [ { "method": "builtin", "name": "subway_tee" } ],
+    "mapgen_four_way": [ { "method": "builtin", "name": "subway_four_way" } ],
+    "flags": [ "LINEAR" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "sewer",
+    "name": "sewer",
+    "color": "green",
+    "see_cost": 5,
+    "flags": [ "LINEAR" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "sai",
+    "name": "serving area interface",
+    "sym": 48,
+    "color": "i_magenta",
+    "see_cost": 5,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "pwr_sub_s",
+    "name": "small power substation",
+    "sym": 72,
+    "color": "light_cyan",
+    "see_cost": 5,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "pwr_large_entrance",
+    "name": "large power substation",
+    "sym": 72,
+    "color": "cyan",
+    "see_cost": 5,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "pwr_large_2",
+    "name": "large power substation",
+    "sym": 72,
+    "color": "cyan",
+    "see_cost": 5,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "pwr_large_3",
+    "name": "large power substation",
+    "sym": 72,
+    "color": "cyan",
+    "see_cost": 5,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "pwr_large_4",
+    "name": "large power substation",
+    "sym": 72,
+    "color": "cyan",
+    "see_cost": 5,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "warehouse",
+    "copy-from": "generic_city_building",
+    "name": "small warehouse",
+    "sym": 119,
+    "color": "light_blue"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hdwr_large_entrance",
+    "name": "home improvement superstore entrance",
+    "sym": 72,
+    "color": "light_green_yellow",
+    "see_cost": 5,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hdwr_large_SW",
+    "name": "home improvement superstore",
+    "sym": 72,
+    "color": "light_green_yellow",
+    "see_cost": 5,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hdwr_large_NW",
+    "name": "home improvement superstore",
+    "sym": 72,
+    "color": "light_green_yellow",
+    "see_cost": 5,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hdwr_large_NE",
+    "name": "home improvement superstore",
+    "sym": 72,
+    "color": "light_green_yellow",
+    "see_cost": 5,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hdwr_large_backroom",
+    "name": "home improvement superstore",
+    "sym": 72,
+    "color": "light_green_yellow",
+    "see_cost": 5,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hdwr_large_loadingbay",
+    "name": "home improvement superstore",
+    "sym": 72,
+    "color": "light_green_yellow",
+    "see_cost": 5,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "football_field_a1",
+    "copy-from": "generic_city_building",
+    "name": "football field",
+    "sym": 79,
+    "color": "light_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "football_field_a2",
+    "copy-from": "generic_city_building",
+    "name": "football field",
+    "sym": 79,
+    "color": "light_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "football_field_a3",
+    "copy-from": "generic_city_building",
+    "name": "football field",
+    "sym": 79,
+    "color": "light_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "football_field_a4",
+    "copy-from": "generic_city_building",
+    "name": "football field",
+    "sym": 79,
+    "color": "light_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "football_field_a5",
+    "copy-from": "generic_city_building",
+    "name": "football field",
+    "sym": 79,
+    "color": "light_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "football_field_b1",
+    "copy-from": "generic_city_building",
+    "name": "football field",
+    "sym": 79,
+    "color": "light_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "football_field_b2",
+    "copy-from": "generic_city_building",
+    "name": "football field",
+    "sym": 79,
+    "color": "light_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "football_field_b3",
+    "copy-from": "generic_city_building",
+    "name": "football field",
+    "sym": 79,
+    "color": "light_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "football_field_b4",
+    "copy-from": "generic_city_building",
+    "name": "football field",
+    "sym": 79,
+    "color": "light_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "football_field_b5",
+    "copy-from": "generic_city_building",
+    "name": "football field",
+    "sym": 79,
+    "color": "light_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "football_field_c1",
+    "copy-from": "generic_city_building",
+    "name": "football field",
+    "sym": 79,
+    "color": "light_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "football_field_c2",
+    "copy-from": "generic_city_building",
+    "name": "football field",
+    "sym": 79,
+    "color": "light_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "football_field_c3",
+    "copy-from": "generic_city_building",
+    "name": "football field",
+    "sym": 79,
+    "color": "light_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "football_field_c4",
+    "copy-from": "generic_city_building",
+    "name": "football field",
+    "sym": 79,
+    "color": "light_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "football_field_c5",
+    "copy-from": "generic_city_building",
+    "name": "football field",
+    "sym": 79,
+    "color": "light_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "pump_station_1",
+    "copy-from": "generic_city_building",
+    "name": "pump station",
+    "sym": 80,
+    "color": "red",
+    "flags": [ "KNOWN_DOWN" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "pump_station_2",
+    "copy-from": "generic_city_building",
+    "name": "pump station",
+    "sym": 80,
+    "color": "red",
+    "flags": [ "KNOWN_DOWN" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "pump_station_3",
+    "name": "sewer",
+    "sym": 4194414,
+    "color": "green",
+    "see_cost": 999,
+    "mondensity": 2
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "pump_station_4",
+    "name": "sewer",
+    "sym": 4194414,
+    "color": "green",
+    "see_cost": 999,
+    "mondensity": 2
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "pump_station_5",
+    "name": "sewer",
+    "sym": 4194414,
+    "color": "green",
+    "see_cost": 999,
+    "mondensity": 2
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "garage_gas_1",
+    "copy-from": "generic_city_building",
+    "name": "garage - gas station",
+    "color": "light_blue",
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "garage_gas_2",
+    "copy-from": "generic_city_building",
+    "name": "garage",
+    "sym": 79,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "garage_gas_3",
+    "copy-from": "generic_city_building",
+    "name": "garage",
+    "sym": 79,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "cemetery_4square_00",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "religious cemetery",
+    "sym": 110,
+    "color": "white",
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "cemetery_4square_10",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "religious cemetery",
+    "sym": 110,
+    "color": "white",
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "cemetery_4square_01",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "religious cemetery",
+    "sym": 110,
+    "color": "white",
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "cemetery_4square_11",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "religious cemetery",
+    "sym": 110,
+    "color": "white",
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "id": "dispensary",
+    "type": "overmap_terrain",
+    "copy-from": "generic_city_building",
+    "name": "dispensary",
+    "sym": 68,
+    "color": "i_green"
+  },
+  {
+    "id": "art_gallery",
+    "type": "overmap_terrain",
+    "copy-from": "generic_city_building",
+    "name": "art gallery",
+    "sym": 97,
+    "color": "i_yellow"
+  },
+  {
+    "id": "state_park_0_0",
+    "type": "overmap_terrain",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "state park",
+    "sym": 83,
+    "color": "i_green"
+  },
+  {
+    "id": "state_park_0_1",
+    "type": "overmap_terrain",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "state park",
+    "sym": 83,
+    "color": "i_green"
+  },
+  {
+    "id": "state_park_1_0",
+    "type": "overmap_terrain",
+    "copy-from": "generic_city_building",
+    "name": "state park parking",
+    "sym": 36,
+    "color": "i_green"
+  },
+  {
+    "id": "state_park_1_1",
+    "type": "overmap_terrain",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "state park",
+    "sym": 83,
+    "color": "i_green"
+  },
+  {
+    "id": "fishing_pond_0_0",
+    "type": "overmap_terrain",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "fishing pond",
+    "sym": 83,
+    "color": "i_blue"
+  },
+  {
+    "id": "fishing_pond_0_1",
+    "type": "overmap_terrain",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "fishing pond",
+    "sym": 83,
+    "color": "i_blue"
+  },
+  {
+    "id": "fishing_pond_1_0",
+    "type": "overmap_terrain",
+    "copy-from": "generic_city_building",
+    "name": "fishing pond",
+    "sym": 83,
+    "color": "i_blue"
+  },
+  {
+    "id": "fishing_pond_1_1",
+    "type": "overmap_terrain",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "fishing pond",
+    "sym": 83,
+    "color": "i_blue"
+  },
+  {
+    "id": "cemetery_small",
+    "type": "overmap_terrain",
+    "copy-from": "generic_city_building",
+    "name": "small cemetery",
+    "sym": 67,
+    "color": "light_gray"
+  },
+  {
+    "id": "skate_park",
+    "type": "overmap_terrain",
+    "copy-from": "generic_city_building",
+    "name": "skate park",
+    "sym": 79,
+    "color": "light_gray"
+  },
+  {
+    "id": "small_office",
+    "type": "overmap_terrain",
+    "copy-from": "generic_city_building",
+    "name": "small office",
+    "sym": 111,
+    "color": "brown"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "construction_site",
+    "name": "construction site",
+    "copy-from": "generic_city_building",
+    "sym": 120,
+    "color": "i_light_gray"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "post_office",
+    "name": "post office",
+    "copy-from": "generic_city_building",
+    "color": "blue"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "candy_shop",
+    "name": "candy shop",
+    "copy-from": "generic_city_building",
+    "color": "c_red_white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "bakery",
+    "name": "bakery",
+    "copy-from": "generic_city_building",
+    "color": "c_yellow_white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "icecream_shop",
+    "name": "icecream shop",
+    "copy-from": "generic_city_building",
+    "color": "c_blue_white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "dumpsite",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "dumpsite",
+    "sym": 68,
+    "color": "brown"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "dump",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "dump",
+    "sym": 68,
+    "color": "i_brown"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "recyclecenter",
+    "copy-from": "generic_city_building",
+    "name": "recycle center",
+    "sym": 82,
+    "color": "i_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "landfill",
+    "copy-from": "generic_city_building",
+    "name": "landfill",
+    "sym": 76,
+    "color": "i_brown"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "junkyard_1a",
+    "copy-from": "generic_city_building",
+    "name": "junkyard",
+    "sym": 74,
+    "color": "i_brown"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "junkyard_1b",
+    "copy-from": "generic_city_building",
+    "name": "junkyard",
+    "sym": 74,
+    "color": "i_brown"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "junkyard_2a",
+    "copy-from": "generic_city_building",
+    "name": "junkyard",
+    "sym": 74,
+    "color": "i_brown"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "junkyard_2b",
+    "copy-from": "generic_city_building",
+    "name": "junkyard",
+    "sym": 74,
+    "color": "i_brown"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "NatureTrail_1a",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "nature trail",
+    "sym": 83,
+    "color": "i_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "NatureTrail_1b",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "nature trail",
+    "sym": 83,
+    "color": "i_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "PublicPond_1a",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "public pond",
+    "sym": 80,
+    "color": "i_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "PublicPond_1b",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "public pond",
+    "sym": 80,
+    "color": "i_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "Cemetery_1a",
+    "name": "cemetery",
+    "sym": 110,
+    "color": "white",
+    "see_cost": 5,
+    "extras": "field",
+    "mondensity": 2
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "Cemetery_1b",
+    "name": "cemetery",
+    "sym": 110,
+    "color": "white",
+    "see_cost": 5,
+    "extras": "field",
+    "mondensity": 2
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "communitygarden",
+    "name": "community garden",
+    "sym": 103,
+    "color": "yellow",
+    "see_cost": 5,
+    "extras": "field",
+    "mondensity": 2
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "publicgarden",
+    "name": "public garden",
+    "sym": 103,
+    "color": "light_green",
+    "see_cost": 5,
+    "extras": "field",
+    "mondensity": 2
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "BotanicalGarden_1a",
+    "name": "botanical garden",
+    "sym": 103,
+    "color": "i_green",
+    "see_cost": 5,
+    "extras": "field",
+    "mondensity": 2
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "BotanicalGarden_1b",
+    "name": "botanical garden",
+    "sym": 103,
+    "color": "i_green",
+    "see_cost": 5,
+    "extras": "field",
+    "mondensity": 2
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "TreeFarm_1a",
+    "name": "tree farm",
+    "sym": 84,
+    "color": "i_green",
+    "see_cost": 5,
+    "extras": "field",
+    "mondensity": 2
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "moonshine_still",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "moonshine still",
+    "sym": 83,
+    "color": "i_brown"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "TreeFarm_1b",
+    "name": "tree farm",
+    "sym": 84,
+    "color": "i_green",
+    "see_cost": 5,
+    "extras": "field",
+    "mondensity": 2
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "shootingrange_1a",
+    "name": "shooting range",
+    "sym": 83,
+    "color": "red",
+    "see_cost": 5,
+    "extras": "field",
+    "mondensity": 2
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "shootingrange_2a",
+    "name": "shooting range",
+    "sym": 83,
+    "color": "red",
+    "see_cost": 5,
+    "extras": "field",
+    "mondensity": 2
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "campground_1a",
+    "name": "campground",
+    "sym": 43,
+    "color": "i_green",
+    "see_cost": 5,
+    "extras": "field",
+    "mondensity": 2
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "campground_1b",
+    "name": "campground",
+    "sym": 43,
+    "color": "i_green",
+    "see_cost": 5,
+    "extras": "field",
+    "mondensity": 2
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "campground_2a",
+    "name": "campground",
+    "sym": 43,
+    "color": "i_green",
+    "see_cost": 5,
+    "extras": "field",
+    "mondensity": 2
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "campground_2b",
+    "name": "campground",
+    "sym": 43,
+    "color": "i_green",
+    "see_cost": 5,
+    "extras": "field",
+    "mondensity": 2
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "desolatebarn",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "desolate barn",
+    "sym": 66,
+    "color": "brown"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "emptycommerciallot",
+    "copy-from": "generic_city_building",
+    "name": "empty commercial lot",
+    "sym": 79,
+    "color": "i_light_gray"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "emptyresidentiallot",
+    "copy-from": "generic_city_building",
+    "name": "empty residential lot",
+    "sym": 79,
+    "color": "i_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "abandonedwarehouse",
+    "copy-from": "generic_city_building",
+    "name": "abandoned warehouse",
+    "sym": 119,
+    "color": "brown"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "dollarstore",
+    "copy-from": "generic_city_building",
+    "name": "dollar store",
+    "sym": 36,
+    "color": "yellow"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "lancenter",
+    "name": "LAN center",
+    "copy-from": "generic_city_building",
+    "sym": 76,
+    "color": "light_gray"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "landscapingsupplyco_1a",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "landscaping supply co",
+    "sym": 76,
+    "color": "i_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "landscapingsupplyco_1b",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "landscaping supply co",
+    "sym": 76,
+    "color": "i_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "bandit_garage_1",
+    "name": "forest",
+    "sym": 70,
+    "color": "green",
+    "see_cost": 5,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "bandit_garage_2",
+    "name": "forest",
+    "sym": 70,
+    "color": "green",
+    "see_cost": 5,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "golfcourse_00",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "golf course",
+    "sym": 71,
+    "color": "green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "golfcourse_01",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "golf course",
+    "sym": 71,
+    "color": "green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "golfcourse_02",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "golf course",
+    "sym": 71,
+    "color": "green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "golfcourse_10",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "golf course",
+    "sym": 71,
+    "color": "green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "golfcourse_11",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "golf course",
+    "sym": 71,
+    "color": "green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "golfcourse_12",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "golf course",
+    "sym": 71,
+    "color": "green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "golfcourse_20",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "golf course",
+    "sym": 71,
+    "color": "green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "golfcourse_21",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "golf course",
+    "sym": 71,
+    "color": "green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "golfcourse_22",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "golf course",
+    "sym": 71,
+    "color": "green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "golfcourse_30",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "golf course parking lot",
+    "sym": 71,
+    "color": "light_gray"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "golfcourse_31",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "golf course service building",
+    "sym": 71,
+    "color": "light_gray"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "golfcourse_32",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "golf course",
+    "sym": 71,
+    "color": "green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_vfw",
+    "copy-from": "generic_city_building",
+    "name": "veterans of foreign wars",
+    "color": "i_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_thrift",
+    "copy-from": "generic_city_building",
+    "name": "thrift store",
+    "color": "light_gray"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_daycare",
+    "copy-from": "generic_city_building",
+    "name": "daycare center",
+    "color": "blue"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_petstore",
+    "copy-from": "generic_city_building",
+    "name": "pet supply store",
+    "color": "i_yellow"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "large_storage_units_3",
+    "copy-from": "generic_city_building",
+    "name": "storage units",
+    "sym": 77,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "large_storage_units_2",
+    "copy-from": "generic_city_building",
+    "name": "storage units",
+    "sym": 77,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "large_storage_units_1",
+    "copy-from": "generic_city_building",
+    "name": "storage units",
+    "sym": 77,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "medium_storage_units_1",
+    "copy-from": "generic_city_building",
+    "name": "storage units",
+    "sym": 77,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "medium_storage_units_2",
+    "copy-from": "generic_city_building",
+    "name": "storage units",
+    "sym": 77,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_baseballfield_a1",
+    "copy-from": "generic_city_building",
+    "name": "baseball field",
+    "sym": 35,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_baseballfield_a2",
+    "copy-from": "generic_city_building",
+    "name": "baseball field",
+    "sym": 35,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_baseballfield_b1",
+    "copy-from": "generic_city_building",
+    "name": "baseball field",
+    "sym": 35,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_baseballfield_b2",
+    "copy-from": "generic_city_building",
+    "name": "baseball field",
+    "sym": 35,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_shoppingplaza_a1",
+    "copy-from": "generic_city_building",
+    "name": "abandoned shopping plaza",
+    "sym": 43,
+    "color": "red"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_shoppingplaza_a2",
+    "copy-from": "generic_city_building",
+    "name": "abandoned shopping plaza",
+    "sym": 43,
+    "color": "red"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_shoppingplaza_a3",
+    "copy-from": "generic_city_building",
+    "name": "abandoned shopping plaza",
+    "sym": 43,
+    "color": "red"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_shoppingplaza_a4",
+    "copy-from": "generic_city_building",
+    "name": "abandoned shopping plaza",
+    "sym": 43,
+    "color": "red"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_shoppingplaza_a5",
+    "copy-from": "generic_city_building",
+    "name": "abandoned shopping plaza",
+    "sym": 43,
+    "color": "red"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_shoppingplaza_a6",
+    "copy-from": "generic_city_building",
+    "name": "abandoned shopping plaza",
+    "sym": 77,
+    "color": "red"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_shoppingplaza_b1",
+    "copy-from": "generic_city_building",
+    "name": "abandoned shopping plaza",
+    "sym": 77,
+    "color": "red"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_shoppingplaza_b2",
+    "copy-from": "generic_city_building",
+    "name": "abandoned shopping plaza",
+    "sym": 77,
+    "color": "red"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_shoppingplaza_b3",
+    "copy-from": "generic_city_building",
+    "name": "abandoned shopping plaza",
+    "sym": 77,
+    "color": "red"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_shoppingplaza_b4",
+    "copy-from": "generic_city_building",
+    "name": "abandoned shopping plaza",
+    "sym": 77,
+    "color": "red"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_shoppingplaza_b5",
+    "copy-from": "generic_city_building",
+    "name": "abandoned shopping plaza",
+    "sym": 77,
+    "color": "red"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_shoppingplaza_b6",
+    "copy-from": "generic_city_building",
+    "name": "abandoned shopping plaza",
+    "sym": 77,
+    "color": "red"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_reststop_1",
+    "copy-from": "generic_city_building",
+    "name": "rest area",
+    "sym": 35,
+    "color": "blue"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_reststop_2",
+    "copy-from": "generic_city_building",
+    "name": "rest area",
+    "sym": 35,
+    "color": "blue"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_restparking_1",
+    "copy-from": "generic_city_building",
+    "name": "rest area parking",
+    "sym": 43,
+    "color": "dark_gray"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_restparking_2",
+    "copy-from": "generic_city_building",
+    "name": "rest area parking",
+    "sym": 43,
+    "color": "dark_gray"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "zoo_0_0",
+    "copy-from": "generic_city_building",
+    "name": "zoo parking",
+    "sym": 80,
+    "color": "i_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "zoo_1_0",
+    "copy-from": "generic_city_building",
+    "name": "zoo parking",
+    "sym": 80,
+    "color": "i_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "zoo_2_0",
+    "copy-from": "generic_city_building",
+    "name": "zoo pavilion",
+    "sym": 80,
+    "color": "i_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "zoo_0_1",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "zoo",
+    "sym": 90,
+    "color": "i_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "zoo_1_1",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "zoo",
+    "sym": 90,
+    "color": "i_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "zoo_2_1",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "zoo",
+    "sym": 90,
+    "color": "i_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "zoo_0_2",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "zoo",
+    "sym": 90,
+    "color": "i_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "zoo_1_2",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "zoo",
+    "sym": 90,
+    "color": "i_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "zoo_2_2",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "zoo",
+    "sym": 90,
+    "color": "i_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "stadium_0_0",
+    "copy-from": "generic_city_building",
+    "name": "stadium parking",
+    "sym": 43,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "stadium_1_0",
+    "copy-from": "generic_city_building",
+    "name": "stadium parking",
+    "sym": 43,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "stadium_2_0",
+    "copy-from": "generic_city_building",
+    "name": "stadium parking",
+    "sym": 43,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "stadium_3_0",
+    "copy-from": "generic_city_building",
+    "name": "stadium parking",
+    "sym": 43,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "stadium_0_1",
+    "copy-from": "generic_city_building",
+    "name": "stadium",
+    "sym": 48,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "stadium_1_1",
+    "copy-from": "generic_city_building",
+    "name": "stadium entrance",
+    "sym": 48,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "stadium_2_1",
+    "copy-from": "generic_city_building",
+    "name": "stadium",
+    "sym": 48,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "stadium_3_1",
+    "copy-from": "generic_city_building",
+    "name": "stadium",
+    "sym": 48,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "stadium_0_2",
+    "copy-from": "generic_city_building",
+    "name": "stadium",
+    "sym": 48,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "stadium_1_2",
+    "copy-from": "generic_city_building",
+    "name": "stadium field",
+    "sym": 88,
+    "color": "green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "stadium_2_2",
+    "copy-from": "generic_city_building",
+    "name": "stadium field",
+    "sym": 88,
+    "color": "green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "stadium_3_2",
+    "copy-from": "generic_city_building",
+    "name": "stadium",
+    "sym": 48,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "stadium_0_3",
+    "copy-from": "generic_city_building",
+    "name": "stadium",
+    "sym": 48,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "stadium_1_3",
+    "copy-from": "generic_city_building",
+    "name": "stadium field",
+    "sym": 88,
+    "color": "green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "stadium_2_3",
+    "copy-from": "generic_city_building",
+    "name": "stadium field",
+    "sym": 88,
+    "color": "green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "stadium_3_3",
+    "copy-from": "generic_city_building",
+    "name": "stadium",
+    "sym": 48,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "stadium_0_4",
+    "copy-from": "generic_city_building",
+    "name": "stadium garage",
+    "sym": 48,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "stadium_1_4",
+    "copy-from": "generic_city_building",
+    "name": "stadium",
+    "sym": 48,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "stadium_2_4",
+    "copy-from": "generic_city_building",
+    "name": "stadium",
+    "sym": 48,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "stadium_3_4",
+    "copy-from": "generic_city_building",
+    "name": "stadium bar",
+    "sym": 48,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "headshop",
+    "copy-from": "generic_city_building",
+    "name": "Head Shop",
+    "sym": 48,
+    "color": "i_white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "natural_spring",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "Natural Spring",
+    "sym": 111,
+    "color": "blue"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "movietheater_0_0",
+    "copy-from": "generic_city_building",
+    "name": "movie theater",
+    "sym": 77,
+    "color": "i_yellow"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "movietheater_1_0",
+    "copy-from": "generic_city_building",
+    "name": "movie theater entrance",
+    "sym": 77,
+    "color": "i_yellow"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "movietheater_2_0",
+    "copy-from": "generic_city_building",
+    "name": "movie theater",
+    "sym": 77,
+    "color": "i_yellow"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "movietheater_0_1",
+    "copy-from": "generic_city_building",
+    "name": "movie theater",
+    "sym": 77,
+    "color": "i_yellow"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "movietheater_1_1",
+    "name": "movie theater",
+    "copy-from": "generic_city_building",
+    "sym": 77,
+    "color": "i_yellow"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "movietheater_2_1",
+    "copy-from": "generic_city_building",
+    "name": "movie theater",
+    "sym": 77,
+    "color": "i_yellow"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "movietheater_0_2",
+    "copy-from": "generic_city_building",
+    "name": "movie theater",
+    "sym": 77,
+    "color": "i_yellow"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "movietheater_1_2",
+    "copy-from": "generic_city_building",
+    "name": "movie theater",
+    "sym": 77,
+    "color": "i_yellow"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "movietheater_2_2",
+    "copy-from": "generic_city_building",
+    "name": "movie theater",
+    "sym": 77,
+    "color": "i_yellow"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "paintball_field",
+    "copy-from": "generic_city_building",
+    "name": "paintball field",
+    "sym": 112,
+    "color": "red"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "smoke_lounge",
+    "copy-from": "generic_city_building",
+    "name": "smoking lounge",
+    "sym": 115,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "music_venue",
+    "copy-from": "generic_city_building",
+    "name": "music venue",
+    "sym": 77,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "gambling_hall",
+    "copy-from": "generic_city_building",
+    "name": "gambling hall",
+    "sym": 103,
+    "color": "blue"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "homelesscamp",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "homeless camp",
+    "sym": 72,
+    "color": "green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "smallscrapyard",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "small scrap yard",
+    "sym": 115,
+    "color": "red"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "stripclub",
+    "copy-from": "generic_city_building",
+    "name": "strip club",
+    "sym": 115,
+    "color": "i_red"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "veterinarian",
+    "name": "veterinarian clinic",
+    "copy-from": "generic_city_building",
+    "color": "i_pink"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "museum",
+    "name": "museum",
+    "copy-from": "generic_city_building",
+    "sym": 77,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "mortuary",
+    "name": "mortuary",
+    "copy-from": "generic_city_building",
+    "sym": 77,
+    "color": "i_blue",
+    "mondensity": 6
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_laundromat",
+    "name": "laundromat",
+    "copy-from": "generic_city_building",
+    "color": "white_white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_jewelry",
+    "name": "jewelry store",
+    "copy-from": "generic_city_building",
+    "sym": 74,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "abstract": "generic_motel",
+    "name": "2-story motel",
+    "copy-from": "generic_city_building",
+    "sym": 104,
+    "color": "light_blue"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "2fmotel_entrance",
+    "copy-from": "generic_motel"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "2fmotel_1",
+    "copy-from": "generic_motel"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "2fmotel_2",
+    "copy-from": "generic_motel"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "2fmotel_3",
+    "copy-from": "generic_motel"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "2fmotel_entrance_f2",
+    "copy-from": "generic_motel"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "2fmotel_1_f2",
+    "copy-from": "generic_motel"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "2fmotel_2_f2",
+    "copy-from": "generic_motel"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "2fmotel_3_f2",
+    "copy-from": "generic_motel"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "2fmotel_1_r",
+    "copy-from": "generic_motel"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "2fmotel_2_r",
+    "copy-from": "generic_motel"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "2fmotel_3_r",
+    "copy-from": "generic_motel"
+  },
+  {
+    "type": "overmap_terrain",
+    "abstract": "generic_large_office_tower",
+    "name": "Large Office Tower",
+    "copy-from": "generic_city_building_no_rotate",
+    "sym": 84,
+    "color": "white"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "home_improvement",
+    "name": "home improvement store",
+    "copy-from": "generic_city_building",
+    "color": "c_yellow_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "loffice_tower_1",
+    "copy-from": "generic_large_office_tower"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "loffice_tower_2",
+    "copy-from": "generic_large_office_tower"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "loffice_tower_3",
+    "copy-from": "generic_large_office_tower"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "loffice_tower_4",
+    "copy-from": "generic_large_office_tower"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "loffice_tower_5",
+    "copy-from": "generic_large_office_tower"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "loffice_tower_6",
+    "copy-from": "generic_large_office_tower"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "loffice_tower_7",
+    "copy-from": "generic_large_office_tower"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "loffice_tower_8",
+    "copy-from": "generic_large_office_tower"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "loffice_tower_9",
+    "copy-from": "generic_large_office_tower"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "loffice_tower_10",
+    "copy-from": "generic_large_office_tower"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "loffice_tower_11",
+    "copy-from": "generic_large_office_tower"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "loffice_tower_12",
+    "copy-from": "generic_large_office_tower"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "loffice_tower_13",
+    "copy-from": "generic_large_office_tower"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "loffice_tower_14",
+    "copy-from": "generic_large_office_tower"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "loffice_tower_15",
+    "copy-from": "generic_large_office_tower"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "loffice_tower_16",
+    "copy-from": "generic_large_office_tower"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "animalpound",
+    "name": "animal pound",
+    "copy-from": "generic_city_building",
+    "sym": 84,
+    "color": "i_brown"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "animalshelter",
+    "name": "animal shelter",
+    "copy-from": "generic_city_building",
+    "color": "i_pink"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_antique",
+    "name": "antique store",
+    "copy-from": "generic_city_building",
+    "sym": 65,
+    "color": "brown"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_arcade",
+    "name": "arcade",
+    "copy-from": "generic_city_building",
+    "sym": 65,
+    "color": "cyan"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "bowling_alley",
+    "name": "bowling alley",
+    "copy-from": "generic_city_building",
+    "sym": 66,
+    "color": "red"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "gym",
+    "name": "boxing gym",
+    "copy-from": "generic_city_building",
+    "color": "yellow_cyan"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "gym_fitness",
+    "name": "fitness gym",
+    "copy-from": "generic_city_building",
+    "color": "i_light_cyan"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "dojo",
+    "name": "dojo",
+    "copy-from": "generic_city_building",
+    "color": "i_light_cyan"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "fire_station",
+    "name": "fire station",
+    "copy-from": "generic_city_building",
+    "sym": 70,
+    "color": "red"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "s_gardening",
+    "name": "gardening supply",
+    "copy-from": "generic_city_building",
+    "sym": 70,
+    "color": "green"
+  }
+]

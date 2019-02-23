@@ -1,0 +1,1374 @@
+[
+  {
+    "type": "overmap_terrain",
+    "id": "",
+    "name": "nothing",
+    "sym": 37,
+    "color": "white",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "open_air",
+    "name": "open air",
+    "sym": 46,
+    "color": "blue",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "crater",
+    "name": "crater",
+    "sym": 79,
+    "color": "red",
+    "see_cost": 2,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "field",
+    "name": "field",
+    "sym": 46,
+    "color": "brown",
+    "see_cost": 2,
+    "extras": "field",
+    "spawns": { "group": "GROUP_FOREST", "population": [ 0, 1 ], "chance": 13 },
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "forest",
+    "name": "forest",
+    "sym": 70,
+    "color": "green",
+    "see_cost": 3,                                                                         
+    "extras": "forest",
+    "spawns": { "group": "GROUP_FOREST", "population": [ 0, 3 ], "chance": 13 },
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "forest_thick",
+    "name": "forest",
+    "sym": 70,
+    "color": "green",
+    "see_cost": 4,
+    "extras": "forest_thick",
+    "spawns": { "group": "GROUP_FOREST", "population": [ 0, 6 ], "chance": 15 },
+    "mapgen": [ { "method": "builtin", "name": "forest" } ],
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "forest_water",
+    "name": "swamp",
+    "sym": 70,
+    "color": "cyan",
+    "see_cost": 4,
+    "extras": "forest_water",
+    "spawns": { "group": "GROUP_SWAMP", "population": [ 1, 4 ], "chance": 16 },
+    "mapgen": [ { "method": "builtin", "name": "forest" } ],
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hiway_ns",
+    "name": "highway",
+    "sym": 72,
+    "color": "dark_gray",
+    "see_cost": 2,
+    "extras": "road",
+    "mapgen": [ { "method": "builtin", "name": "highway" } ],
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hiway_ew",
+    "name": "highway",
+    "sym": 61,
+    "color": "dark_gray",
+    "see_cost": 2,
+    "extras": "road",
+    "mapgen": [ { "method": "builtin", "name": "highway" } ],
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "road",
+    "name": "road",
+    "color": "dark_gray",
+    "see_cost": 2,
+    "extras": "road",
+    "//": "the entries below are optional and serve as an example of mapgen for line_drawing tiles",
+    "mapgen_straight": [ { "method": "builtin", "name": "road_straight" } ],
+    "mapgen_curved": [ { "method": "builtin", "name": "road_curved" } ],
+    "mapgen_end": [ { "method": "builtin", "name": "road_end" } ],
+    "mapgen_tee": [ { "method": "builtin", "name": "road_tee" } ],
+    "mapgen_four_way": [ { "method": "builtin", "name": "road_four_way" } ],
+    "flags": [ "LINEAR" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "road_nesw_manhole",
+    "name": "road, manhole",
+    "sym": 4194414,
+    "color": "yellow",
+    "see_cost": 2,
+    "extras": "road",
+    "mapgen": [ { "method": "builtin", "name": "road_four_way" } ],
+    "flags": [ "KNOWN_DOWN", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "bridge",
+    "name": "bridge",
+    "sym": 4194424,
+    "color": "white",
+    "see_cost": 2,
+    "mapgen": [ { "method": "builtin", "name": "bridge" } ],
+    "flags": [ "RIVER" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "river_center",
+    "name": "river",
+    "sym": 82,
+    "color": "blue",
+    "see_cost": 1,
+    "mapgen": [ { "method": "builtin", "name": "river_center" } ],
+    "flags": [ "RIVER", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "river",
+    "name": "river bank",
+    "sym": 82,
+    "color": "light_blue",
+    "see_cost": 1,
+    "mapgen": [ { "method": "builtin", "name": "river_straight" } ],
+    "flags": [ "RIVER" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "river_c_not_ne",
+    "name": "river bank",
+    "sym": 82,
+    "color": "light_blue",
+    "see_cost": 1,
+    "mapgen": [ { "method": "builtin", "name": "river_curved_not" } ],
+    "flags": [ "RIVER", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "river_c_not_nw",
+    "name": "river bank",
+    "sym": 82,
+    "color": "light_blue",
+    "see_cost": 1,
+    "mapgen": [ { "method": "builtin", "name": "river_curved_not" } ],
+    "flags": [ "RIVER", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "river_c_not_se",
+    "name": "river bank",
+    "sym": 82,
+    "color": "light_blue",
+    "see_cost": 1,
+    "mapgen": [ { "method": "builtin", "name": "river_curved_not" } ],
+    "flags": [ "RIVER", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "river_c_not_sw",
+    "name": "river bank",
+    "sym": 82,
+    "color": "light_blue",
+    "see_cost": 1,
+    "mapgen": [ { "method": "builtin", "name": "river_curved_not" } ],
+    "flags": [ "RIVER", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "river_ne",
+    "name": "river bank",
+    "sym": 82,
+    "color": "light_blue",
+    "see_cost": 1,
+    "mapgen": [ { "method": "builtin", "name": "river_curved" } ],
+    "flags": [ "RIVER", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "river_se",
+    "name": "river bank",
+    "sym": 82,
+    "color": "light_blue",
+    "see_cost": 1,
+    "mapgen": [ { "method": "builtin", "name": "river_curved" } ],
+    "flags": [ "RIVER", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "river_sw",
+    "name": "river bank",
+    "sym": 82,
+    "color": "light_blue",
+    "see_cost": 1,
+    "mapgen": [ { "method": "builtin", "name": "river_curved" } ],
+    "flags": [ "RIVER", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "river_nw",
+    "name": "river bank",
+    "sym": 82,
+    "color": "light_blue",
+    "see_cost": 1,
+    "mapgen": [ { "method": "builtin", "name": "river_curved" } ],
+    "flags": [ "RIVER", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "cabin_strange",
+    "name": "forest",
+    "sym": 70,
+    "color": "green",
+    "see_cost": 5,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "cabin_strange_b",
+    "name": "cabin basement",
+    "sym": 67,
+    "color": "i_green",
+    "see_cost": 5,
+    "extras": "build",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "cabin",
+    "name": "cabin",
+    "sym": 67,
+    "color": "i_green",
+    "see_cost": 5,
+    "extras": "build",
+    "mondensity": 2,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "dirtlot",
+    "name": "dirt lot",
+    "sym": 79,
+    "color": "brown",
+    "see_cost": 5,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "sugar_house",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "sugar house",
+    "sym": 83,
+    "color": "i_brown"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "farm_1",
+    "name": "farm field",
+    "sym": 35,
+    "color": "i_brown",
+    "see_cost": 5,
+    "extras": "field",
+    "mondensity": 2
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "farm_2",
+    "name": "farm house",
+    "sym": 94,
+    "color": "i_brown",
+    "see_cost": 5,
+    "extras": "build",
+    "mondensity": 2
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "farm_3",
+    "name": "farm field",
+    "sym": 35,
+    "color": "i_brown",
+    "see_cost": 5,
+    "extras": "field",
+    "mondensity": 2
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "farm_4",
+    "name": "farm field",
+    "sym": 35,
+    "color": "i_brown",
+    "see_cost": 5,
+    "extras": "field",
+    "mondensity": 2
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "farm_5",
+    "name": "farm field",
+    "sym": 35,
+    "color": "i_brown",
+    "see_cost": 5,
+    "extras": "field",
+    "mondensity": 2
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "farm_6",
+    "name": "farm field",
+    "sym": 35,
+    "color": "i_brown",
+    "see_cost": 5,
+    "extras": "field",
+    "mondensity": 2
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "farm_7",
+    "name": "farm field",
+    "sym": 35,
+    "color": "i_brown",
+    "see_cost": 5,
+    "extras": "field",
+    "mondensity": 2
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "farm_8",
+    "name": "farm field",
+    "sym": 35,
+    "color": "i_brown",
+    "see_cost": 5,
+    "extras": "field",
+    "mondensity": 2
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "farm_9",
+    "name": "farm field",
+    "sym": 35,
+    "color": "i_brown",
+    "see_cost": 5,
+    "extras": "field",
+    "mondensity": 2
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "dirtroad1_aban1",
+    "name": "forest",
+    "sym": 70,
+    "color": "green",
+    "see_cost": 4
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "forest_aban1",
+    "name": "forest",
+    "sym": 70,
+    "color": "green",
+    "see_cost": 4
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "dirtroad2_aban1",
+    "name": "forest",
+    "sym": 70,
+    "color": "green",
+    "see_cost": 4
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "dirtplaza_aban1",
+    "name": "forest",
+    "sym": 70,
+    "color": "green",
+    "see_cost": 4
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "cabin_aban1",
+    "name": "ruined cabin",
+    "sym": 70,
+    "color": "green",
+    "see_cost": 4
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "barn_aban1",
+    "name": "barn",
+    "sym": 70,
+    "color": "green",
+    "see_cost": 4
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "car_corner_aban1",
+    "name": "car corner",
+    "sym": 70,
+    "color": "green",
+    "see_cost": 4
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "shipwreck_river_1",
+    "name": "shipwreck",
+    "sym": 119,
+    "color": "red",
+    "see_cost": 4,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "shipwreck_river_2",
+    "name": "shipwreck",
+    "sym": 119,
+    "color": "red",
+    "see_cost": 4,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "shipwreck_river_3",
+    "name": "razorclaw nest",
+    "sym": 119,
+    "color": "red",
+    "see_cost": 4,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "shipwreck_river_4",
+    "name": "shipwreck",
+    "sym": 119,
+    "color": "red",
+    "see_cost": 4,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "fema_entrance",
+    "name": "fema camp",
+    "sym": 43,
+    "color": "blue",
+    "see_cost": 5,
+    "extras": "build",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "fema",
+    "name": "fema camp",
+    "sym": 70,
+    "color": "i_blue",
+    "see_cost": 5,
+    "extras": "build",
+    "flags": [ "NO_ROTATE" ]
+  },
+
+  {
+    "type": "overmap_terrain",
+    "id": "shelter",
+    "name": "evac shelter",
+    "sym": 43,
+    "color": "white",
+    "see_cost": 2,
+    "flags": [ "KNOWN_DOWN", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "shelter_under",
+    "name": "evac shelter",
+    "sym": 43,
+    "color": "white",
+    "see_cost": 2,
+    "flags": [ "KNOWN_UP", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "lmoe",
+    "name": "LMOE shelter",
+    "sym": 43,
+    "color": "red",
+    "see_cost": 2,
+    "flags": [ "KNOWN_DOWN", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "lmoe_under",
+    "name": "LMOE shelter",
+    "sym": 43,
+    "color": "red",
+    "see_cost": 2,
+    "flags": [ "KNOWN_UP", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "bunker",
+    "name": "military bunker",
+    "sym": 66,
+    "color": "dark_gray",
+    "see_cost": 2,
+    "flags": [ "KNOWN_DOWN" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "bunker_basement",
+    "name": "military bunker",
+    "sym": 66,
+    "color": "dark_gray",
+    "see_cost": 2,
+    "flags": [ "KNOWN_UP", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "outpost",
+    "name": "military outpost",
+    "sym": 77,
+    "color": "dark_gray",
+    "see_cost": 2,
+    "extras": "build",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "silo",
+    "name": "missile silo",
+    "sym": 48,
+    "color": "light_gray",
+    "see_cost": 2,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "silo_finale",
+    "name": "missile silo",
+    "sym": 48,
+    "color": "light_gray",
+    "see_cost": 2,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "temple",
+    "name": "strange temple",
+    "sym": 84,
+    "color": "magenta",
+    "see_cost": 5,
+    "flags": [ "KNOWN_DOWN", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "standing_stones",
+    "name": "forest",
+    "sym": 70,
+    "color": "green",
+    "see_cost": 3,
+    "extras": "field",
+    "spawns": { "group": "GROUP_STANDING_STONES", "population": [ 1, 4 ], "chance": 100 },
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "temple_stairs",
+    "name": "strange temple",
+    "sym": 84,
+    "color": "pink",
+    "see_cost": 5,
+    "flags": [ "KNOWN_DOWN", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "temple_finale",
+    "name": "strange temple",
+    "sym": 84,
+    "color": "yellow",
+    "see_cost": 5,
+    "flags": [ "KNOWN_DOWN", "NO_ROTATE" ]
+  },
+
+  {
+    "type": "overmap_terrain",
+    "id": "cave",
+    "name": "cave",
+    "sym": 67,
+    "color": "brown",
+    "see_cost": 2,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "cave_rat",
+    "name": "rat cave",
+    "sym": 67,
+    "color": "dark_gray",
+    "see_cost": 2,
+    "flags": [ "KNOWN_DOWN", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hive",
+    "name": "bee hive",
+    "sym": 56,
+    "color": "yellow",
+    "see_cost": 3,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "fungal_bloom",
+    "name": "fungal bloom",
+    "sym": 84,
+    "color": "light_gray",
+    "see_cost": 2,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "fungal_tower",
+    "name": "fungal tower",
+    "sym": 84,
+    "color": "yellow",
+    "see_cost": 3,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "fungal_flowers",
+    "name": "fungal flowers",
+    "sym": 84,
+    "color": "cyan",
+    "see_cost": 5,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "spider_pit",
+    "name": "forest",
+    "sym": 70,
+    "color": "green",
+    "see_cost": 3,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "spider_pit_under",
+    "name": "cavern",
+    "sym": 48,
+    "color": "light_gray",
+    "see_cost": 5,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "anthill",
+    "name": "anthill",
+    "sym": 37,
+    "color": "brown",
+    "see_cost": 2,
+    "flags": [ "KNOWN_DOWN", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "acid_anthill",
+    "name": "sulfurous anthill",
+    "sym": 37,
+    "color": "green",
+    "see_cost": 2,
+    "flags": [ "KNOWN_DOWN", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "slimepit",
+    "name": "slime pit",
+    "sym": 126,
+    "color": "light_green",
+    "see_cost": 2,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "slimepit_down",
+    "name": "slime pit",
+    "sym": 126,
+    "color": "light_green",
+    "see_cost": 2,
+    "flags": [ "KNOWN_DOWN", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "triffid_grove",
+    "name": "triffid grove",
+    "sym": 84,
+    "color": "light_red",
+    "see_cost": 5,
+    "flags": [ "KNOWN_DOWN", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "triffid_roots",
+    "name": "triffid roots",
+    "sym": 84,
+    "color": "light_red",
+    "see_cost": 5,
+    "flags": [ "KNOWN_UP", "KNOWN_DOWN", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "triffid_finale",
+    "name": "triffid heart",
+    "sym": 84,
+    "color": "red",
+    "see_cost": 5,
+    "flags": [ "KNOWN_UP", "NO_ROTATE" ]
+  },
+
+  {
+    "type": "overmap_terrain",
+    "id": "cavern",
+    "name": "cavern",
+    "sym": 48,
+    "color": "light_gray",
+    "see_cost": 5,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "rock",
+    "//": "This is old rock type, new one (below) will replace it in new overmaps",
+    "name": "solid rock",
+    "sym": 37,
+    "color": "dark_gray",
+    "see_cost": 5,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "empty_rock",
+    "name": "solid rock",
+    "sym": 37,
+    "color": "dark_gray",
+    "see_cost": 5,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "rift",
+    "name": "rift",
+    "sym": 94,
+    "color": "red",
+    "see_cost": 2,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hellmouth",
+    "name": "hellmouth",
+    "sym": 94,
+    "color": "light_red",
+    "see_cost": 2,
+    "flags": [ "KNOWN_DOWN", "NO_ROTATE" ]
+  },
+
+  {
+    "type": "overmap_terrain",
+    "id": "ants",
+    "name": "ant tunnel",
+    "color": "brown",
+    "see_cost": 5,
+    "flags": [ "LINEAR" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "ants_food",
+    "name": "ant food storage",
+    "sym": 79,
+    "color": "green",
+    "see_cost": 5,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "ants_larvae",
+    "name": "ant larva chamber",
+    "sym": 79,
+    "color": "white",
+    "see_cost": 5,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "ants_queen",
+    "name": "ant queen chamber",
+    "sym": 79,
+    "color": "red",
+    "see_cost": 5,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "tutorial",
+    "name": "tutorial room",
+    "sym": 79,
+    "color": "cyan",
+    "see_cost": 5,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "bandit_cabin",
+    "name": "forest",
+    "sym": 70,
+    "color": "green",
+    "see_cost": 5,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "bandit_camp_1",
+    "name": "forest",
+    "sym": 70,
+    "color": "green",
+    "see_cost": 5,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "bandit_camp_2",
+    "name": "forest",
+    "sym": 70,
+    "color": "green",
+    "see_cost": 5,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "bandit_camp_3",
+    "name": "forest",
+    "sym": 70,
+    "color": "green",
+    "see_cost": 5,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "bandit_camp_4",
+    "name": "forest",
+    "sym": 70,
+    "color": "green",
+    "see_cost": 5,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+
+  {
+    "type": "overmap_terrain",
+    "id": "campsite",
+    "name": "campsite",
+    "sym": 43,
+    "color": "green",
+    "see_cost": 5,
+    "extras": "field",
+    "spawns": { "group": "GROUP_FOREST", "population": [ 0, 1 ], "chance": 13 },
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "campsite_a",
+    "name": "campsites",
+    "sym": 43,
+    "color": "green",
+    "see_cost": 5,
+    "extras": "field",
+    "spawns": { "group": "GROUP_FOREST", "population": [ 0, 1 ], "chance": 13 },
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "campsite_cabin_incomplete",
+    "name": "incomplete cabin",
+    "sym": 43,
+    "color": "light_green",
+    "see_cost": 5,
+    "extras": "field",
+    "spawns": { "group": "GROUP_FOREST", "population": [ 0, 1 ], "chance": 13 },
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "campsite_field_biker",
+    "name": "field campsite",
+    "sym": 43,
+    "color": "light_green",
+    "see_cost": 5,
+    "extras": "field",
+    "spawns": { "group": "GROUP_FOREST", "population": [ 0, 1 ], "chance": 13 },
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "campsite_field_biker_destroyed",
+    "name": "field campsite",
+    "sym": 43,
+    "color": "light_green",
+    "see_cost": 5,
+    "extras": "field",
+    "spawns": { "group": "GROUP_FOREST", "population": [ 0, 1 ], "chance": 13 },
+    "flags": [ "NO_ROTATE" ]
+  },
+
+  {
+    "type": "overmap_terrain",
+    "id": "roadstop",
+    "name": "roadstop",
+    "sym": 94,
+    "color": "light_blue",
+    "mondensity": 2,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "roadstop_a",
+    "name": "public washroom",
+    "sym": 94,
+    "color": "light_blue",
+    "mondensity": 2,
+    "flags": [ "SIDEWALK" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "roadstop_b",
+    "name": "roadside foodcart",
+    "sym": 94,
+    "color": "magenta",
+    "mondensity": 2,
+    "flags": [ "SIDEWALK" ]
+  },
+
+  {
+    "type": "overmap_terrain",
+    "id": "4way_road",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "road",
+    "sym": 43,
+    "color": "light_gray",
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "pond_field",
+    "name": "pond",
+    "sym": 46,
+    "color": "blue",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "pond_forest",
+    "name": "basin",
+    "sym": 70,
+    "color": "blue",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "pond_swamp",
+    "name": "bog",
+    "sym": 70,
+    "color": "blue",
+    "see_cost": 5,
+    "mondensity": 2,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "hunter_shack",
+    "name": "swamp shack",
+    "sym": 70,
+    "color": "cyan",
+    "see_cost": 5,
+    "extras": "field",
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "orchard_tree_apple",
+    "name": "apple orchard",
+    "sym": 84,
+    "color": "light_green",
+    "see_cost": 5,
+    "extras": "field",
+    "mondensity": 3,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "orchard_processing",
+    "name": "orchard processing",
+    "sym": 84,
+    "color": "i_light_green",
+    "see_cost": 5,
+    "extras": "field",
+    "mondensity": 3,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "orchard_stall",
+    "name": "orchard stall",
+    "sym": 84,
+    "color": "i_light_green",
+    "see_cost": 5,
+    "extras": "field",
+    "mondensity": 3,
+    "flags": [ "NO_ROTATE" ]
+  },
+  {
+    "id": "dairy_farm_NW",
+    "type": "overmap_terrain",
+    "name": "dairy farm",
+    "sym": 119,
+    "color": "brown",
+    "see_cost": 1,
+    "flags": [ "SIDEWALK", "NO_ROTATE" ]
+  },
+  {
+    "id": "dairy_farm_NE",
+    "type": "overmap_terrain",
+    "name": "dairy farm",
+    "sym": 119,
+    "color": "brown",
+    "see_cost": 1,
+    "flags": [ "SIDEWALK", "NO_ROTATE" ]
+  },
+  {
+    "id": "dairy_farm_SE",
+    "type": "overmap_terrain",
+    "name": "dairy farm",
+    "sym": 119,
+    "color": "brown",
+    "see_cost": 5,
+    "flags": [ "SIDEWALK", "NO_ROTATE" ]
+  },
+  {
+    "id": "dairy_farm_SW",
+    "type": "overmap_terrain",
+    "name": "dairy farm",
+    "sym": 119,
+    "color": "brown",
+    "see_cost": 5,
+    "flags": [ "SIDEWALK", "NO_ROTATE" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "dirtroad",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "name": "dirt road",
+    "sym": 35,
+    "color": "brown"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "mass_grave",
+    "name": "mass grave",
+    "sym": 88,
+    "color": "yellow"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "railroad",
+    "name": "railroad",
+    "color": "light_green",
+    "see_cost": 2,
+    "mapgen_straight": [ { "method": "builtin", "name": "railroad_straight" } ],
+    "mapgen_curved": [ { "method": "builtin", "name": "railroad_curved" } ],
+    "mapgen_end": [ { "method": "builtin", "name": "railroad_end" } ],
+    "mapgen_tee": [ { "method": "builtin", "name": "railroad_tee" } ],
+    "mapgen_four_way": [ { "method": "builtin", "name": "railroad_four_way" } ],
+    "flags": [ "LINEAR" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "railroad_bridge",
+    "name": "railroad bridge",
+    "sym": 4194424,
+    "color": "light_cyan",
+    "see_cost": 2,
+    "mapgen": [ { "method": "builtin", "name": "railroad_bridge" } ],
+    "flags": [ "RIVER" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "railroad_level_crossing",
+    "name": "railroad level crossing",
+    "sym": 4194414,
+    "color": "red",
+    "see_cost": 2,
+    "extras": "road"
+  },
+  {
+    "abstract": "generic_railroad_station",
+    "type": "overmap_terrain",
+    "name": "railroad station",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "sym": 82,
+    "color": "light_green"
+  },
+  {
+    "abstract": "generic_railroad_station_under",
+    "type": "overmap_terrain",
+    "copy-from": "generic_railroad_station",
+    "color": "dark_gray"
+  },
+  {
+    "abstract": "generic_railroad_station_parking_lot",
+    "type": "overmap_terrain",
+    "name": "railroad station parking lot",
+    "copy-from": "generic_railroad_station",
+    "sym": 79,
+    "color": "dark_gray"
+  },
+  {
+    "id": "railroad_station_0_1",
+    "type": "overmap_terrain",
+    "copy-from": "generic_railroad_station",
+    "sym": 4194424
+  },
+  {
+    "id": "railroad_station_0_2",
+    "type": "overmap_terrain",
+    "copy-from": "generic_railroad_station",
+    "sym": 4194424
+  },
+  {
+    "id": "railroad_station_0_3",
+    "type": "overmap_terrain",
+    "copy-from": "generic_railroad_station",
+    "sym": 4194424
+  },
+  {
+    "id": "railroad_station_0_4",
+    "type": "overmap_terrain",
+    "copy-from": "generic_railroad_station",
+    "sym": 4194424
+  },
+  {
+    "id": "railroad_station_1_1",
+    "type": "overmap_terrain",
+    "copy-from": "generic_railroad_station"
+  },
+  {
+    "id": "railroad_station_1_2",
+    "type": "overmap_terrain",
+    "copy-from": "generic_railroad_station"
+  },
+  {
+    "id": "railroad_station_1_3",
+    "type": "overmap_terrain",
+    "copy-from": "generic_railroad_station"
+  },
+  {
+    "id": "railroad_station_1_4",
+    "type": "overmap_terrain",
+    "copy-from": "generic_railroad_station"
+  },
+  {
+    "id": "railroad_station_2_1",
+    "type": "overmap_terrain",
+    "copy-from": "generic_railroad_station_parking_lot"
+  },
+  {
+    "id": "railroad_station_2_2",
+    "type": "overmap_terrain",
+    "copy-from": "generic_railroad_station_parking_lot"
+  },
+  {
+    "id": "railroad_station_2_3",
+    "type": "overmap_terrain",
+    "copy-from": "generic_railroad_station_parking_lot"
+  },
+  {
+    "id": "railroad_station_2_4",
+    "type": "overmap_terrain",
+    "copy-from": "generic_railroad_station_parking_lot"
+  },
+  {
+    "id": "railroad_station_under_0_1",
+    "type": "overmap_terrain",
+    "copy-from": "generic_railroad_station_under"
+  },
+  {
+    "id": "railroad_station_under_0_2",
+    "type": "overmap_terrain",
+    "copy-from": "generic_railroad_station_under"
+  },
+  {
+    "id": "railroad_station_under_0_3",
+    "type": "overmap_terrain",
+    "copy-from": "generic_railroad_station_under"
+  },
+  {
+    "id": "railroad_station_under_1_1",
+    "type": "overmap_terrain",
+    "copy-from": "generic_railroad_station_under"
+  },
+  {
+    "id": "railroad_station_under_1_2",
+    "type": "overmap_terrain",
+    "copy-from": "generic_railroad_station_under"
+  },
+  {
+    "id": "railroad_station_under_1_3",
+    "type": "overmap_terrain",
+    "copy-from": "generic_railroad_station_under"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "forest_trail",
+    "name": "forest trail",
+    "sym": 84,
+    "color": "green",
+    "mapgen_straight": [ { "method": "builtin", "name": "forest_trail_straight" } ],
+    "mapgen_curved": [ { "method": "builtin", "name": "forest_trail_curved" } ],
+    "mapgen_end": [ { "method": "builtin", "name": "forest_trail_straight" } ],
+    "mapgen_tee": [ { "method": "builtin", "name": "forest_trail_tee" } ],
+    "mapgen_four_way": [ { "method": "builtin", "name": "forest_trail_four_way" } ],
+    "flags": [ "LINEAR" ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "trailhead",
+    "name": "trailhead",
+    "sym": 84,
+    "color": "brown"
+  },
+  {
+    "id": "small_wooded_trail",
+    "type": "overmap_terrain",
+    "copy-from": "generic_city_building",
+    "name": "small wooded trail",
+    "sym": 83,
+    "color": "i_green"
+  },
+  {
+    "id": "derelict_property",
+    "type": "overmap_terrain",
+    "copy-from": "generic_city_building",
+    "name": "derelict property",
+    "sym": 88,
+    "color": "i_brown",
+    "extras": "field"
+  },
+  {
+    "id": "pavilion",
+    "type": "overmap_terrain",
+    "copy-from": "generic_city_building",
+    "name": "pavilion",
+    "sym": 65,
+    "color": "i_green"
+  },
+  {
+    "id": "hunting_blind",
+    "type": "overmap_terrain",
+    "name": "hunting blind",
+    "sym": 72,
+    "color": "i_green",
+    "see_cost": 5,
+    "mondensity": 2,
+    "extras": "field"
+  },
+  {
+    "id": "small_storage_units",
+    "type": "overmap_terrain",
+    "copy-from": "generic_city_building",
+    "name": "small storage units",
+    "sym": 35,
+    "color": "i_yellow"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "lumberyard_0_0",
+    "name": "lumberyard",
+    "copy-from": "generic_city_building",
+    "sym": 76,
+    "color": "i_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "lumberyard_0_1",
+    "name": "lumberyard",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "sym": 76,
+    "color": "i_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "lumberyard_1_0",
+    "name": "lumberyard",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "sym": 76,
+    "color": "i_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "lumberyard_1_1",
+    "name": "lumberyard",
+    "copy-from": "generic_city_building_no_sidewalk",
+    "sym": 76,
+    "color": "i_green"
+  },
+  {
+    "id": "orchard",
+    "type": "overmap_terrain",
+    "copy-from": "generic_city_building",
+    "name": "orchard",
+    "sym": 35,
+    "color": "i_green"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "looted_building",
+    "name": "looted building",
+    "sym": 35,
+    "color": "light_gray",
+    "see_cost": 2
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "debug_ramps",
+    "name": "ramp testing area",
+    "sym": 37,
+    "color": "white",
+    "flags": [ "NO_ROTATE" ]
+  }
+]
