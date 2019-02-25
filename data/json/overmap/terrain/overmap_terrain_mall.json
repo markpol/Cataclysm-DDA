@@ -3,6 +3,8 @@
     "type": "overmap_terrain",
     "abstract": "generic_mall",
     "name": "mall",
+    "sym": 77,
+    "color": "i_red",
     "see_cost": 5,
     "mondensity": 2,
     "flags": [ "SIDEWALK" ]
@@ -28,24 +30,19 @@
     "id": "mall_a_3",
     "name": "mall - loading bay",
     "copy-from": "generic_mall",
-    "sym": 77,
     "color": "i_light_red"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_4",
     "name": "mall - utilities",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_5",
     "name": "mall - utilities",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
@@ -90,30 +87,23 @@
   {
     "type": "overmap_terrain",
     "id": "mall_a_11",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_12",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_13",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_14",
     "name": "mall - entrance",
     "copy-from": "generic_mall",
-    "sym": 77,
     "color": "i_light_red"
   },
   {
@@ -161,50 +151,37 @@
     "id": "mall_a_20",
     "name": "mall - food court",
     "copy-from": "generic_mall",
-    "sym": 77,
     "color": "i_light_red"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_21",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_22",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_23",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_24",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_25",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_26",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
@@ -227,50 +204,37 @@
     "id": "mall_a_29",
     "name": "mall - food court",
     "copy-from": "generic_mall",
-    "sym": 77,
     "color": "i_light_red"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_30",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_31",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_32",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_33",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_34",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_35",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
@@ -291,51 +255,37 @@
   {
     "type": "overmap_terrain",
     "id": "mall_a_38",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_39",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_40",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_41",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_42",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_43",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_44",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
@@ -358,50 +308,38 @@
     "id": "mall_a_47",
     "name": "mall - entrance",
     "copy-from": "generic_mall",
-    "sym": 77,
     "color": "i_light_red"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_48",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_49",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_50",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_51",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_52",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_53",
     "name": "mall - entrance",
     "copy-from": "generic_mall",
-    "sym": 77,
     "color": "i_light_red"
   },
   {
@@ -423,51 +361,37 @@
   {
     "type": "overmap_terrain",
     "id": "mall_a_56",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_57",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_58",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_59",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_60",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_61",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_62",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
@@ -488,52 +412,39 @@
   {
     "type": "overmap_terrain",
     "id": "mall_a_65",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_66",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_67",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_68",
     "name": "mall - entrance",
     "copy-from": "generic_mall",
-    "sym": 77,
     "color": "i_light_red"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_69",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_70",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
     "id": "mall_a_71",
-    "copy-from": "generic_mall",
-    "sym": 77,
-    "color": "i_red"
+    "copy-from": "generic_mall"
   },
   {
     "type": "overmap_terrain",
