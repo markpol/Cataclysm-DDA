@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Cataclysm-DDA\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-09-14 09:22+0300\n"
-"PO-Revision-Date: 2015-09-13 09:22+0000\n"
+"PO-Revision-Date: 2016-01-05 17:58+0800\n"
 "Last-Translator: Miku_middo <1047928645@qq.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/"
 "cataclysm-dda/language/zh_CN/)\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Launchpad-Export-Date: 2015-09-18 09:34+0000\n"
-"X-Generator: Launchpad (build 17746)\n"
+"X-Generator: Poedit 1.8.6\n"
 
 #: lang/json/AMMO_from_json.py
 msgid ".20 DREAD Pellet"
@@ -20884,7 +20884,6 @@ msgstr[0] "啤酒原汁"
 msgid "berry-shaped anomaly"
 msgid_plural "berry-shaped anomaly"
 msgstr[0] ""
-msgstr[1] ""
 
 #: lang/json/COMESTIBLE_from_json.py
 msgid "bird egg"
@@ -22042,7 +22041,6 @@ msgstr[0] "果酒原汁"
 msgid "fruit-shaped anomaly"
 msgid_plural "fruit-shaped anomalies"
 msgstr[0] ""
-msgstr[1] ""
 
 #: lang/json/COMESTIBLE_from_json.py
 msgid "fungicide"
@@ -23450,7 +23448,6 @@ msgstr[0] "土豆块茎"
 msgid "seed-shaped anomaly"
 msgid_plural "seed-shaped anomalies"
 msgstr[0] ""
-msgstr[1] ""
 
 #: lang/json/COMESTIBLE_from_json.py
 msgid "sewagas inhaler"
@@ -32744,7 +32741,6 @@ msgstr[0] "AK-74步枪"
 msgid "AN-94"
 msgid_plural "AN-94"
 msgstr[0] ""
-msgstr[1] ""
 
 #: lang/json/GUN_from_json.py lang/json/vehicle_part_from_json.py
 msgid "AP rifle turret"
@@ -33317,7 +33313,6 @@ msgstr[0] "FTK-93核聚变步枪"
 msgid "FiveO handcannon"
 msgid_plural "FiveO handcannons"
 msgstr[0] ""
-msgstr[1] ""
 
 #. ~ Description for flintlock rifle
 #: lang/json/GUN_from_json.py
@@ -33368,7 +33363,6 @@ msgstr[0] "H&K MP5冲锋枪"
 msgid "H&K MP5A5 EOD"
 msgid_plural "H&K MP5"
 msgstr[0] ""
-msgstr[1] ""
 
 #: lang/json/GUN_from_json.py
 msgid "H&K MP7"
@@ -33448,7 +33442,6 @@ msgstr[0] "Kel-Tec KSG 霰弹枪"
 msgid "L.T. carbine"
 msgid_plural "L.T. carbines"
 msgstr[0] ""
-msgstr[1] ""
 
 #: lang/json/GUN_from_json.py
 msgid "L12 Defender"
@@ -33633,7 +33626,6 @@ msgstr[0] "M1014 霰弹枪"
 msgid "M134D-H Minigun"
 msgid_plural "M134D-H Miniguns"
 msgstr[0] ""
-msgstr[1] ""
 
 #: lang/json/GUN_from_json.py
 msgid "M14"
@@ -33679,7 +33671,6 @@ msgstr[0] "M202 Flash火箭筒"
 msgid "M240"
 msgid_plural "M240"
 msgstr[0] ""
-msgstr[1] ""
 
 #: lang/json/GUN_from_json.py
 msgid "M249"
@@ -33715,7 +33706,6 @@ msgstr[0] "M4A1步枪"
 msgid "M60"
 msgid_plural "M60"
 msgstr[0] ""
-msgstr[1] ""
 
 #: lang/json/GUN_from_json.py
 msgid "M72 LAW"
@@ -33736,7 +33726,6 @@ msgstr[0] "MAC-10冲锋枪"
 msgid "Makarov PM"
 msgid_plural "Makarov PM"
 msgstr[0] ""
-msgstr[1] ""
 
 #. ~ Description for M3 recoilless rifle
 #: lang/json/GUN_from_json.py
@@ -34054,7 +34043,6 @@ msgstr[0] "Remington 870霰弹枪"
 msgid "Rico 454"
 msgid_plural "Rico 454s"
 msgstr[0] ""
-msgstr[1] ""
 
 #: lang/json/GUN_from_json.py
 msgid "Ruger 10/22"
@@ -34165,13 +34153,11 @@ msgstr ""
 msgid "Skorpion Vz. 61"
 msgid_plural "Skorpion Vz. 61"
 msgstr[0] ""
-msgstr[1] ""
 
 #: lang/json/GUN_from_json.py
 msgid "Skorpion Vz. 82"
 msgid_plural "Skorpion Vz. 82"
 msgstr[0] ""
-msgstr[1] ""
 
 #. ~ Description for FiveO handcannon
 #: lang/json/GUN_from_json.py
@@ -35063,7 +35049,6 @@ msgstr ""
 msgid "Thompson submachine gun"
 msgid_plural "Thompson submachine guns"
 msgstr[0] ""
-msgstr[1] ""
 
 #: lang/json/GUN_from_json.py
 msgid "Tokarev TT-30"
@@ -35204,7 +35189,6 @@ msgstr "配件"
 msgid "advanced submachine gun"
 msgid_plural "advanced submachine guns"
 msgstr[0] ""
-msgstr[1] ""
 
 #: lang/json/GUN_from_json.py
 msgid "antimaterial rifle"
@@ -35215,7 +35199,6 @@ msgstr[0] "反器材步枪"
 msgid "arc cannon"
 msgid_plural "arc cannons"
 msgstr[0] ""
-msgstr[1] ""
 
 #: lang/json/GUN_from_json.py
 msgid "assault rifle"
@@ -35240,7 +35223,6 @@ msgstr "枪管"
 msgid "battle rifle"
 msgid_plural "battle rifles"
 msgstr[0] ""
-msgstr[1] ""
 
 #: lang/json/GUN_from_json.py lang/json/vehicle_part_from_json.py
 msgid "blob darter"
@@ -35325,7 +35307,6 @@ msgstr[0] "战斗霰弹枪"
 msgid "combination gun"
 msgid_plural "combination guns"
 msgstr[0] ""
-msgstr[1] ""
 
 #: lang/json/GUN_from_json.py
 msgid "composite bow"
@@ -35444,13 +35425,11 @@ msgstr "握把"
 msgid "gunknife"
 msgid_plural "gunknives"
 msgstr[0] ""
-msgstr[1] ""
 
 #: lang/json/GUN_from_json.py
 msgid "gunsword"
 msgid_plural "gunswords"
 msgstr[0] ""
-msgstr[1] ""
 
 #: lang/json/GUN_from_json.py
 msgid "handheld laser cannon"
@@ -35486,7 +35465,6 @@ msgstr[0] ""
 msgid "holdout pistol"
 msgid_plural "holdout pistols"
 msgstr[0] ""
-msgstr[1] ""
 
 #: lang/json/GUN_from_json.py
 msgid "homemade hand cannon"
@@ -35512,7 +35490,6 @@ msgstr[0] "激光指"
 msgid "lever action carbine"
 msgid_plural "lever action carbines"
 msgstr[0] ""
-msgstr[1] ""
 
 #: lang/json/GUN_from_json.py
 msgid "light machine gun"
@@ -35690,7 +35667,6 @@ msgstr[0] ""
 msgid "pipe combination gun"
 msgid_plural "pipe combination guns"
 msgstr[0] ""
-msgstr[1] ""
 
 #: lang/json/GUN_from_json.py
 msgid "pipe gun: pistol ammo"
@@ -35756,7 +35732,6 @@ msgstr[0] "手弩"
 msgid "plinking carbine"
 msgid_plural "plinking carbines"
 msgstr[0] ""
-msgstr[1] ""
 
 #: lang/json/GUN_from_json.py
 msgid "pneumatic assault rifle"
@@ -35871,7 +35846,6 @@ msgstr[0] "半自动手枪"
 msgid "service rifle"
 msgid_plural "service rifles"
 msgstr[0] ""
-msgstr[1] ""
 
 #: lang/json/GUN_from_json.py
 msgid "short bow"
@@ -35985,7 +35959,6 @@ msgstr[0] "磁暴线圈加农炮台"
 msgid "testgun"
 msgid_plural "testguns"
 msgstr[0] ""
-msgstr[1] ""
 
 #. ~ Description for laser finger
 #. ~ Description for fusion blaster
@@ -52201,8 +52174,7 @@ msgstr "撞击声！"
 msgid "crate"
 msgstr "板条箱"
 
-#: lang/json/furniture_from_json.py lang/json/terrain_from_json.py
-#: src/iuse.cpp
+#: lang/json/furniture_from_json.py lang/json/terrain_from_json.py src/iuse.cpp
 msgid "crunch!"
 msgstr "嘎嚓！"
 
@@ -52290,8 +52262,8 @@ msgstr "真菌团"
 msgid "glass breaking"
 msgstr "玻璃破裂"
 
-#: lang/json/furniture_from_json.py lang/json/terrain_from_json.py
-#: src/iuse.cpp src/map.cpp src/ranged.cpp
+#: lang/json/furniture_from_json.py lang/json/terrain_from_json.py src/iuse.cpp
+#: src/map.cpp src/ranged.cpp
 msgid "glass breaking!"
 msgstr "玻璃破裂的声音！"
 
@@ -76193,8 +76165,7 @@ msgstr "请首先选择一个人物！"
 msgid "Rules"
 msgstr "规则"
 
-#: src/auto_pickup.cpp src/color.cpp src/game.cpp src/input.cpp
-#: src/options.cpp
+#: src/auto_pickup.cpp src/color.cpp src/game.cpp src/input.cpp src/options.cpp
 msgid "Save changes?"
 msgstr "保存修改？"
 
@@ -94919,9 +94890,7 @@ msgstr "<N>直接游戏！"
 
 #: src/main_menu.cpp
 msgid "Please report bugs to kevin.granade@gmail.com or post on the forums."
-msgstr ""
-"模都精校版汉化：报告汉化错误或下载汉化请到百度cataclysmdda吧，汉化说明请看帮"
-"助。"
+msgstr "请回报bug到 kevin.granade@gmail.com 或是发文到论坛上。"
 
 #: src/main_menu.cpp
 msgid "Press 'd' to delete a preset."
