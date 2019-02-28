@@ -1,0 +1,14 @@
+[
+    {
+        "type": "playlist",
+        "playlists":
+        [
+            {
+                "id" : "title",
+                "shuffle" : false,
+                "files" : [
+                ]
+            }
+        ]
+    }
+]
