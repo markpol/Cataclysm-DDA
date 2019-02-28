@@ -1,0 +1,1 @@
+C_INCLUDE_PATH="/usr/local/Cellar/gettext/0.19.4/include" CPLUS_INCLUDE_PATH="/usr/local/Cellar/gettext/0.19.4/include"  LDFLAGS="-L/usr/local/Cellar/gettext/0.19.4/lib" make  NATIVE=osx OSX_MIN=10.7 CLANG=1 RELEASE=1 TILES=1 SOUND=1 LOCALIZE=1 LANGUAGES="cs de el es_AR es_ES fi fr it_IT ja ko pl pt pt_BR pt_PT ru sr vi zh_CN zh_TW" -j4
