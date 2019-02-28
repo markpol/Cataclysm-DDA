@@ -1503,11 +1503,11 @@ void vehicle::honk_horn()
         const auto horn_pos = global_pos3() + parts[p].precalc[0];
         //Determine sound
         if( horn_type.bonus >= 40 ) {
-            sounds::sound( horn_pos, horn_type.bonus, _("HOOOOORNK!") );
+            sounds::sound( horn_pos, horn_type.bonus, _("HOOOOORNK!"), true, "vehicle", "horn_large" );
         } else if( horn_type.bonus >= 20 ) {
-            sounds::sound( horn_pos, horn_type.bonus, _("BEEEP!") );
+            sounds::sound( horn_pos, horn_type.bonus, _("BEEEP!"), true, "vehicle", "horn_medium" );
         } else {
-            sounds::sound( horn_pos, horn_type.bonus, _("honk.") );
+            sounds::sound( horn_pos, horn_type.bonus, _("honk."), true, "vehicle", "horn_small" );
         }
     }
 

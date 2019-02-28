@@ -913,7 +913,7 @@ void sfx::do_footstep() {
             start_sfx_timestamp = std::chrono::high_resolution_clock::now();
             return;
         } else {
-            play_variant_sound( "plmove", "walk_tarmac", heard_volume, 0, 0.8, 1.2 );
+            play_variant_sound( "plmove", "walk_tarmac", heard_volume, 0, 1.2, 1.2 );
             start_sfx_timestamp = std::chrono::high_resolution_clock::now();
             return;
         }

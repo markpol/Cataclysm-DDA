@@ -7220,6 +7220,12 @@ void game::close( const tripoint &closep )
             }
             if (veh->parts[openable].open) {
                 veh->close(openable);
+                
+                if( g->u.in_vehicle )
+                    sfx::play_variant_sound( "vehicle", "close_door_inside", sfx::get_heard_volume(u.pos()) );
+                else
+                    sfx::play_variant_sound( "vehicle", "close_door_outside", sfx::get_heard_volume(u.pos()) );
+                
                 didit = true;
             } else {
                 add_msg(m_info, _("That %s is already closed."), name);
@@ -11984,10 +11990,12 @@ bool game::plmove(int dx, int dy, int dz)
     if( veh_closed_door ) {
         if( outside_vehicle ) {
             veh1->open_all_at( dpart );
+            sfx::play_variant_sound( "vehicle", "open_door_outside", sfx::get_heard_volume(u.pos()) );
         } else {
             veh1->open(dpart);
             add_msg(_("You open the %1$s's %2$s."), veh1->name.c_str(),
                     veh1->part_info(dpart).name.c_str());
+            sfx::play_variant_sound( "vehicle", "open_door_inside", sfx::get_heard_volume(u.pos()) );
         }
 
         u.moves -= 100;

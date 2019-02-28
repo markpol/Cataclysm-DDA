@@ -347,8 +347,10 @@ bool game::opening_screen()
             }
             if ((action == "UP" || action == "CONFIRM") && sel1 > 0 && sel1 != 7) {
                 if (sel1 == 5) {
+                    sfx::play_variant_sound("menu_move", "default", 100);
                     show_options();
                 } else if (sel1 == 6) {
+                    sfx::play_variant_sound("menu_move", "default", 100);
                     display_help();
                 } else if (sel1 == 8) {
                     uquit = QUIT_MENU;
@@ -358,6 +360,7 @@ bool game::opening_screen()
                     layer = 2;
                     print_menu(w_open, sel1, iMenuOffsetX, iMenuOffsetY, (sel1 == 0 || sel1 == 7) ? false : true);
                 }
+                sfx::play_variant_sound("menu_move", "default", 100);
             }
         } else if (layer == 2) {
             if (sel1 == 1) { // New Character
@@ -387,16 +390,20 @@ bool game::opening_screen()
                     if (sel2 < 0) {
                         sel2 = vSubItems.size() - 1;
                     }
+                    sfx::play_variant_sound("menu_move", "default", 100);
                 } else if (action == "RIGHT") {
                     sel2++;
                     if (sel2 >= (int)vSubItems.size()) {
                         sel2 = 0;
                     }
+                    sfx::play_variant_sound("menu_move", "default", 100);
                 } else if (action == "DOWN" || action == "QUIT") {
                     layer = 1;
                     sel1 = 1;
+                    sfx::play_variant_sound("menu_move", "default", 100);
                 }
                 if (action == "UP" || action == "CONFIRM") {
+                    sfx::play_variant_sound("menu_move", "default", 100);
                     if (sel2 == 0 || sel2 == 2 || sel2 == 3) {
                         // First load the mods, this is done by
                         // loading the world.
@@ -474,19 +481,23 @@ bool game::opening_screen()
                     } else {
                         sel2 = world_generator->all_worldnames.size() - 1;
                     }
+                    sfx::play_variant_sound("menu_move", "default", 100);
                 } else if (action == "UP") {
                     if (sel2 < (int)world_generator->all_worldnames.size() - 1) {
                         sel2++;
                     } else {
                         sel2 = 0;
                     }
+                    sfx::play_variant_sound("menu_move", "default", 100);
                 } else if (action == "LEFT" || action == "QUIT") {
                     layer = 1;
+                    sfx::play_variant_sound("menu_move", "default", 100);
                 } else if (action == "RIGHT" || action == "CONFIRM") {
                     if (sel2 >= 0 && sel2 < (int)world_generator->all_worldnames.size()) {
                         layer = 3;
                         sel3 = 0;
                     }
+                    sfx::play_variant_sound("menu_move", "default", 100);
                 }
             } else if (sel1 == 3) {  // World Menu
                 // Show options for Create, Destroy, Reset worlds.
@@ -536,17 +547,21 @@ bool game::opening_screen()
                     } else {
                         sel2 = world_subs_to_display - 1;
                     }
+                    sfx::play_variant_sound("menu_move", "default", 100);
                 } else if (action == "RIGHT") {
                     if (sel2 < world_subs_to_display - 1) {
                         ++sel2;
                     } else {
                         sel2 = 0;
                     }
+                    sfx::play_variant_sound("menu_move", "default", 100);
                 } else if (action == "DOWN" || action == "QUIT") {
                     layer = 1;
+                    sfx::play_variant_sound("menu_move", "default", 100);
                 }
 
                 if (action == "UP" || action == "CONFIRM") {
+                    sfx::play_variant_sound("menu_move", "default", 100);
                     if (sel2 == 0) { // Create world
                         // Open up world creation screen!
                         if (world_generator->make_new_world()) {
@@ -587,16 +602,20 @@ bool game::opening_screen()
                     } else {
                         sel2 = NUM_SPECIAL_GAMES - 2;
                     }
+                    sfx::play_variant_sound("menu_move", "default", 100);
                 } else if (action == "RIGHT") {
                     if (sel2 < NUM_SPECIAL_GAMES - 2) {
                         sel2++;
                     } else {
                         sel2 = 0;
                     }
+                    sfx::play_variant_sound("menu_move", "default", 100);
                 } else if (action == "DOWN" || action == "QUIT") {
                     layer = 1;
+                    sfx::play_variant_sound("menu_move", "default", 100);
                 }
                 if (action == "UP" || action == "CONFIRM") {
+                    sfx::play_variant_sound("menu_move", "default", 100);
                     if (sel2 >= 0 && sel2 < NUM_SPECIAL_GAMES - 1) {
                         delete gamemode;
                         gamemode = get_special_game( special_game_id(sel2 + 1) );
@@ -666,18 +685,22 @@ bool game::opening_screen()
                     } else {
                         sel3 = savegames.size() - 1;
                     }
+                    sfx::play_variant_sound("menu_move", "default", 100);
                 } else if (action == "UP") {
                     if (sel3 < (int)savegames.size() - 1) {
                         sel3++;
                     } else {
                         sel3 = 0;
                     }
+                    sfx::play_variant_sound("menu_move", "default", 100);
                 } else if (action == "LEFT" || action == "QUIT") {
                     layer = 2;
                     sel3 = 0;
                     print_menu(w_open, sel1, iMenuOffsetX, iMenuOffsetY);
+                    sfx::play_variant_sound("menu_move", "default", 100);
                 }
                 if (action == "RIGHT" || action == "CONFIRM") {
+                    sfx::play_variant_sound("menu_move", "default", 100);
                     if (sel3 >= 0 && sel3 < (int)savegames.size()) {
                         werase(w_background);
                         wrefresh(w_background);
@@ -717,18 +740,22 @@ bool game::opening_screen()
                     } else {
                         sel3 = world_generator->all_worldnames.size() - 1;
                     }
+                    sfx::play_variant_sound("menu_move", "default", 100);
                 } else if (action == "UP") {
                     if (sel3 < (int)world_generator->all_worldnames.size() - 1) {
                         ++sel3;
                     } else {
                         sel3 = 0;
                     }
+                    sfx::play_variant_sound("menu_move", "default", 100);
                 } else if (action == "LEFT" || action == "QUIT") {
                     layer = 2;
 
                     print_menu(w_open, sel1, iMenuOffsetX, iMenuOffsetY);
+                    sfx::play_variant_sound("menu_move", "default", 100);
                 }
                 if (action == "RIGHT" || action == "CONFIRM") {
+                    sfx::play_variant_sound("menu_move", "default", 100);
                     if (sel3 >= 0 && sel3 < (int)world_generator->all_worldnames.size()) {
                         bool query_yes = false;
                         bool do_delete = false;
@@ -792,21 +819,26 @@ bool game::opening_screen()
                     } else {
                         sel3 = templates.size() - 1;
                     }
+                    sfx::play_variant_sound("menu_move", "default", 100);
                 } else if (templates.empty() && (action == "UP" || action == "CONFIRM")) {
                     sel1 = 1;
                     layer = 2;
                     print_menu(w_open, sel1, iMenuOffsetX, iMenuOffsetY);
+                    sfx::play_variant_sound("menu_move", "default", 100);
                 } else if (action == "UP") {
                     if (sel3 < (int)templates.size() - 1) {
                         sel3++;
                     } else {
                         sel3 = 0;
                     }
+                    sfx::play_variant_sound("menu_move", "default", 100);
                 } else if (action == "LEFT"  || action == "QUIT" || templates.empty()) {
                     sel1 = 1;
                     layer = 2;
                     print_menu(w_open, sel1, iMenuOffsetX, iMenuOffsetY);
+                    sfx::play_variant_sound("menu_move", "default", 100);
                 } else if (!templates.empty() && action == "DELETE_TEMPLATE") {
+                    sfx::play_variant_sound("menu_move", "default", 100);
                     if (query_yn(_("Are you sure you want to delete %s?"),
                                  templates[sel3].c_str())) {
                         const auto path = FILENAMES["templatedir"] + templates[sel3] + ".template";
@@ -820,6 +852,7 @@ bool game::opening_screen()
                         }
                     }
                 } else if (action == "RIGHT" || action == "CONFIRM") {
+                    sfx::play_variant_sound("menu_move", "default", 100);
                     WORLDPTR world = world_generator->pick_world();
                     if (world == NULL) {
                         u = player();
