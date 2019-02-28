@@ -9419,7 +9419,9 @@ void game::zoom_in()
     if (tileset_zoom > MAXIMUM_ZOOM_LEVEL) {
         tileset_zoom = tileset_zoom / 2;
     } else {
+#ifndef CDDA_IOS
         tileset_zoom = 16;
+#endif // CDDA_IOS
     }
     rescale_tileset(tileset_zoom);
 #endif
@@ -9429,7 +9431,9 @@ void game::zoom_out()
 {
 #ifdef TILES
     if (tileset_zoom == 16) {
+#ifndef CDDA_IOS
         tileset_zoom = MAXIMUM_ZOOM_LEVEL;
+#endif // CDDA_IOS
     } else {
         tileset_zoom = tileset_zoom * 2;
     }

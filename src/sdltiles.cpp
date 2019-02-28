@@ -22,6 +22,8 @@
 #include "game.h"
 #include "lightmap.h"
 #include "rng.h"
+#include "messages.h"
+
 
 //TODO replace these includes with filesystem.h
 #ifdef _MSC_VER
@@ -50,16 +52,29 @@
 #include "sounds.h"
 #endif
 
+#ifdef CDDA_IOS
+#import "SDVersion.h"
+//#include "lrucache.hpp"
+#endif // CDDA_IOS
+
 #define dbg(x) DebugLog((DebugLevel)(x),D_SDL) << __FILE__ << ":" << __LINE__ << ": "
 
 //***********************************
 //Globals                           *
 //***********************************
 
+#ifdef CDDA_IOS
+BOOL isAppDirectoryInited = NO;
+NSFileManager* sharedFM = nil;
+NSURL* appSupportDir = nil;
+NSURL* appDirectory = nil;
+#endif // CDDA_IOS
+
 cata_tiles *tilecontext;
 static unsigned long lastupdate = 0;
 static unsigned long interval = 25;
 static bool needupdate = false;
+static bool isInBackground = false;
 
 #ifdef SDL_SOUND
 /** The music we're currently playing. */
@@ -68,6 +83,7 @@ std::string current_playlist = "";
 size_t current_playlist_at = 0;
 
 struct sound_effect {
+    std::string fileName;
     int volume;
 
     struct deleter {
@@ -243,6 +259,79 @@ bool fexists(const char *filename)
   return (bool)ifile;
 }
 
+#ifdef CDDA_IOS
+void ReleaseSounds( void )
+{
+//    const auto iter = sound_effects_p
+    for( auto iter = sound_effects_p.begin(); iter != sound_effects_p.end(); ++iter )
+    {
+        auto &vector = iter->second;
+        
+        if( vector.empty() ) {
+            return;
+        }
+        
+        for( int i = 0; i < vector.size(); ++i )
+        {
+            sound_effect* selected = &vector[i];
+            Mix_Chunk* chunk = selected->chunk.get();
+            if( chunk )
+            {
+                std::cout << "Releasing " << selected->fileName << std::endl;
+                Mix_FreeChunk( chunk );
+                selected->chunk.release();
+            }
+        }
+    }
+}
+int HandleAppEvents(void *userdata, SDL_Event *event)
+{
+    switch (event->type)
+    {
+//        case SDL_APP_TERMINATING:
+//            /* Terminate the app.
+//             Shut everything down before returning from this function.
+//             */
+//            return 0;
+        case SDL_APP_LOWMEMORY:
+            /* You will get this when your app is paused and iOS wants more memory.
+             Release as much memory as possible.
+             */
+            ReleaseSounds();
+            return 0;
+        case SDL_APP_WILLENTERBACKGROUND:
+            /* Prepare your app to go into the background.  Stop loops, etc.
+             This gets called when the user hits the home button, or gets a call.
+             */
+            //ReleaseSounds();
+            //return 0;
+        case SDL_APP_DIDENTERBACKGROUND:
+//            /* This will get called if the user accepted whatever sent your app to the background.
+//             If the user got a phone call and canceled it, you'll instead get an    SDL_APP_DIDENTERFOREGROUND event and restart your loops.
+//             When you get this, you have 5 seconds to save all your state or the app will be terminated.
+//             Your app is NOT active at this point.
+//             */
+            isInBackground = YES;
+            ReleaseSounds();
+            return 0;
+        case SDL_APP_WILLENTERFOREGROUND:
+//            /* This call happens when your app is coming back to the foreground.
+//             Restore all your state here.
+//             */
+//            return 0;
+        case SDL_APP_DIDENTERFOREGROUND:
+//            /* Restart your loops here.
+//             Your app is interactive and getting CPU again.
+//             */
+            isInBackground = NO;
+            return 0;
+        default:
+            /* No special processing, add it to the event queue */
+            return 1;
+    }
+}
+#endif // CDDA_IOS
+
 bool InitSDL()
 {
     int init_flags = SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER;
@@ -273,7 +362,9 @@ bool InitSDL()
 
     //SDL2 has no functionality for INPUT_DELAY, we would have to query it manually, which is expensive
     //SDL2 instead uses the OS's Input Delay.
-
+#ifdef CDDA_IOS
+    SDL_SetEventFilter(HandleAppEvents, NULL);
+#endif // CDDA_IOS
     atexit(SDL_Quit);
 
     return true;
@@ -1124,7 +1215,7 @@ void CheckMessages()
                 break;
         }
     }
-    if (needupdate) {
+    if ( needupdate && !isInBackground ) {
         try_update();
     }
     if(quit) {
@@ -1375,8 +1466,59 @@ WINDOW *curses_init(void)
     int overmap_fontwidth = 8;
     int overmap_fontheight = 16;
     int overmap_fontsize = 8;
-
+    
+#ifdef CDDA_IOS
+    std::ifstream jsonstream;//(FILENAMES["fontdata"].c_str(), std::ifstream::binary);
+    // Check for iPhone device screen size
+    if ( ( [SDVersion deviceSize] == Screen4inch ) || ( [SDVersion deviceVersion] == iPhone5 ) || ( [SDVersion deviceVersion] == iPhone5S ) )
+    {
+        jsonstream.open( FILENAMES["fontdata"].append( "_4inches" ) );
+        NSLog(@"Your screen is 4 inches");
+    }
+    else if ( ( [SDVersion deviceSize] == Screen3Dot5inch ) || ( [SDVersion deviceVersion] == iPhone4S ))
+    {
+        jsonstream.open( FILENAMES["fontdata"].append( "_3.5inches" ) );
+        NSLog(@"Your screen is 3.5 inches");
+    }
+    else if ( ( [SDVersion deviceSize] == Screen4Dot7inch ) || ( [SDVersion deviceVersion] == iPhone6 ) || ( [SDVersion deviceVersion] == iPhone6S ) )
+    {
+        jsonstream.open( FILENAMES["fontdata"].append( "_4.7inches" ) );
+        NSLog(@"Your screen is 4.7 inches");
+    }
+    else if ( ( [SDVersion deviceSize] == Screen5Dot5inch ) || ( [SDVersion deviceVersion] == iPhone6Plus ) || ( [SDVersion deviceVersion] == iPhone6SPlus ) )
+    {
+        jsonstream.open( FILENAMES["fontdata"].append( "_5.5inches" ) );
+        NSLog(@"Your screen is 5.5 inches");
+    }
+    else if( ( [SDVersion deviceVersion] == iPad2 ) ||
+             ( [SDVersion deviceVersion] == iPadMini ) )
+    {
+        jsonstream.open( FILENAMES["fontdata"].append( "_iPad2" ) );
+        NSLog(@"You got the iPad 2");
+    }
+    else if( ( [SDVersion deviceVersion] == iPadAir ) ||
+             ( [SDVersion deviceVersion] == iPadAir2 ) ||
+             ( [SDVersion deviceVersion] == iPadMini2 ) ||
+             ( [SDVersion deviceVersion] == iPadMini3 ) ||
+             ( [SDVersion deviceVersion] == iPadMini4 ) )
+    {
+        jsonstream.open( FILENAMES["fontdata"].append( "_iPadAir" ) );
+        NSLog(@"You got the iPad Air");
+    }
+    else if( [SDVersion deviceVersion] == iPadPro )
+    {
+        jsonstream.open( FILENAMES["fontdata"].append( "_iPadPro" ) );
+        NSLog(@"You got the iPad Pro");
+    }
+    else
+    {
+        jsonstream.open( FILENAMES["fontdata"].append( "_4.7inches" ) );
+        //jsonstream.open( FILENAMES["fontdata"].append( "_iPadPro" ) );
+        NSLog(@"Your device and screen size is unknown");
+    }
+#else
     std::ifstream jsonstream(FILENAMES["fontdata"].c_str(), std::ifstream::binary);
+#endif // CDDA_IOS
     if (jsonstream.good()) {
         JsonIn json(jsonstream);
         JsonObject config = json.get_object();
@@ -2033,6 +2175,31 @@ void play_music(std::string playlist) {
 
 #ifdef SDL_SOUND
 void sfx::load_sound_effects( JsonObject &jsobj ) {
+#ifdef CDDA_IOS
+    if( !isAppDirectoryInited )
+    {
+        sharedFM = [NSFileManager defaultManager];
+        NSArray* possibleURLs = [sharedFM URLsForDirectory:NSApplicationSupportDirectory
+                                                 inDomains:NSUserDomainMask];
+        if ([possibleURLs count] >= 1) {
+            // Use the first directory (if multiple are returned)
+            appSupportDir = [possibleURLs objectAtIndex:0];
+        }
+        
+        // If a valid app support directory exists, add the
+        // app's bundle ID to it to specify the final directory.
+        if (appSupportDir) {
+            NSString* appBundleID = [[NSBundle mainBundle] bundleIdentifier];
+            appDirectory = [appSupportDir URLByAppendingPathComponent:appBundleID];
+        }
+        else
+        {
+            
+        }
+        isAppDirectoryInited = YES;
+    }
+#endif // CDDA_IOS
+    
     const id_and_variant key( jsobj.get_string( "id" ), jsobj.get_string( "variant", "default" ) );
     const int volume = jsobj.get_int( "volume", 100 );
     auto &effects = sound_effects_p[key];
@@ -2041,12 +2208,19 @@ void sfx::load_sound_effects( JsonObject &jsobj ) {
     while( jsarr.has_more() ) {
         sound_effect new_sound_effect;
         const std::string file = jsarr.next_string();
+
+#ifdef CDDA_IOS
+        std::string path = ( std::string( [[appDirectory path] cStringUsingEncoding:NSUTF8StringEncoding] ) + "/sound/" + file );
+#else
         std::string path = ( FILENAMES[ "datadir" ] + "sound/" + file );
-        new_sound_effect.chunk.reset( Mix_LoadWAV( path.c_str() ) );
-        if( !new_sound_effect.chunk ) {
-            dbg( D_ERROR ) << "Failed to load audio file " << path << ": " << Mix_GetError();
-            continue; // don't want empty chunks in the map
-        }
+#endif // CDDA_IOS
+        
+        //new_sound_effect.chunk.reset( Mix_LoadWAV( path.c_str() ) );
+        //if( !new_sound_effect.chunk ) {
+        //    dbg( D_ERROR ) << "Failed to load audio file " << path << ": " << Mix_GetError();
+        //    continue; // don't want empty chunks in the map
+        //}
+        new_sound_effect.fileName = path;
         new_sound_effect.volume = volume;
 
         effects.push_back( std::move( new_sound_effect ) );
@@ -2076,20 +2250,39 @@ void sfx::load_playlist( JsonObject &jsobj )
 
 // Returns a random sound effect matching given id and variant or `nullptr` if there is no
 // matching sound effect.
-const sound_effect* find_random_effect( const id_and_variant &id_variants_pair )
+/*const */sound_effect* find_random_effect( const id_and_variant &id_variants_pair )
 {
     const auto iter = sound_effects_p.find( id_variants_pair );
     if( iter == sound_effects_p.end() ) {
         return nullptr;
     }
-    const auto &vector = iter->second;
+    /*const */auto &vector = iter->second;
     if( vector.empty() ) {
         return nullptr;
     }
-    return &vector[rng( 0, vector.size() - 1 )];
+    sound_effect* selected = &vector[rng( 0, vector.size() - 1 )];
+    
+    
+    if( !selected->chunk )
+    {
+        if( fexists( selected->fileName.c_str() ) )
+        {
+            add_msg( m_debug, "Found %s", selected->fileName.c_str() );
+            selected->chunk.reset( Mix_LoadWAV( selected->fileName.c_str() ) );
+        }
+        else
+        {
+            add_msg( m_debug, "Missing %s", selected->fileName.c_str() );
+            return nullptr;
+        }
+    }
+    else
+        add_msg( m_debug, "Playing %s", selected->fileName.c_str() );
+    
+    return selected;
 }
 // Same as above, but with fallback to "default" variant. May still return `nullptr`
-const sound_effect* find_random_effect( const std::string &id, const std::string& variant )
+/*const */sound_effect* find_random_effect( const std::string &id, const std::string& variant )
 {
     const auto eff = find_random_effect( id_and_variant( id, variant ) );
     if( eff != nullptr ) {
@@ -2156,6 +2349,7 @@ Mix_Chunk *do_pitch_shift( Mix_Chunk *s, float pitch ) {
 }
 
 void sfx::play_variant_sound( std::string id, std::string variant, int volume ) {
+    add_msg( m_debug, "[sound] ID:%s,variant:%s,vol:%d", id.c_str(), variant.c_str(), volume );
     if( volume == 0 ) {
         return;
     }

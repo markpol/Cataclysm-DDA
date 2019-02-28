@@ -29,6 +29,15 @@
 #include "SDL/SDL.h"
 #endif
 
+#ifdef CDDA_IOS
+#include "sdl_main.h"
+#import <TargetConditionals.h>
+#import <Foundation/Foundation.h>
+
+#import "SDVersion.h"
+
+#endif // CDDA_IOS
+
 void exit_handler(int s);
 
 namespace {
@@ -70,15 +79,97 @@ int main(int argc, char *argv[])
 #define QUOTE(STR) Q(STR)
     PATH_INFO::init_base_path(std::string(QUOTE(PREFIX)));
 #else
+#ifndef CDDA_IOS
     PATH_INFO::init_base_path("");
+#else
+    NSString* basePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/"];
+    NSString* documentPath = [[[[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject] path] stringByAppendingString:@"/"];
+    
+    std::cout << "Document Path: " << [documentPath cStringUsingEncoding:NSUTF8StringEncoding] << std::endl;
+    
+    //NSString* basePath = [[NSBundle mainBundle] bundlePath];
+    //PATH_INFO::init_base_path("");
+    PATH_INFO::init_base_path( [basePath cStringUsingEncoding:NSASCIIStringEncoding] );
+#endif // CDDA_IOS
 #endif
 
 #if (defined USE_HOME_DIR || defined USE_XDG_DIR)
     PATH_INFO::init_user_dir();
 #else
+#ifndef CDDA_IOS
     PATH_INFO::init_user_dir("./");
+#else
+    PATH_INFO::init_user_dir( [basePath cStringUsingEncoding:NSASCIIStringEncoding] );
+#endif // CDDA_IOS
 #endif
     PATH_INFO::set_standard_filenames();
+#ifdef CDDA_IOS
+    PATH_INFO::update_pathname("datadir", [[basePath stringByAppendingString:@"data/"] cStringUsingEncoding:NSASCIIStringEncoding] );
+    PATH_INFO::update_datadir();
+    
+    PATH_INFO::update_pathname("savedir", [[documentPath stringByAppendingString:@"save/"] cStringUsingEncoding:NSASCIIStringEncoding] );
+    PATH_INFO::update_pathname("templatedir", [[documentPath stringByAppendingString:@"templates/"]cStringUsingEncoding:NSASCIIStringEncoding] );
+    PATH_INFO::update_pathname("graveyarddir", [[documentPath stringByAppendingString:@"graveyard/"] cStringUsingEncoding:NSASCIIStringEncoding] );
+    PATH_INFO::update_pathname("memorialdir", [[documentPath stringByAppendingString:@"graveyard/"] cStringUsingEncoding:NSASCIIStringEncoding] );
+    
+    PATH_INFO::update_pathname("mods-user-default", [[documentPath stringByAppendingPathComponent:@"user-default-mods.json"] cStringUsingEncoding:NSASCIIStringEncoding] );
+    
+    NSString* userOptionsFilePath = [documentPath stringByAppendingPathComponent:@"options.txt"];
+    
+    if( ![[NSFileManager defaultManager] fileExistsAtPath:userOptionsFilePath] )
+    {
+        NSError* e;
+        
+        NSString* defautOptionsFilePath;
+        if ( ( [SDVersion deviceSize] == Screen4inch ) || ( [SDVersion deviceVersion] == iPhone5 ) || ( [SDVersion deviceVersion] == iPhone5S ) )
+        {
+            defautOptionsFilePath = [basePath stringByAppendingPathComponent:@"config/options_32.txt"];
+        }
+        else if ( ( [SDVersion deviceSize] == Screen3Dot5inch ) || ( [SDVersion deviceVersion] == iPhone4S ))
+        {
+            defautOptionsFilePath = [basePath stringByAppendingPathComponent:@"config/options_24.txt"];
+        }
+        else if ( ( [SDVersion deviceSize] == Screen4Dot7inch ) || ( [SDVersion deviceVersion] == iPhone6 ) || ( [SDVersion deviceVersion] == iPhone6S ))
+        {
+            defautOptionsFilePath = [basePath stringByAppendingPathComponent:@"config/options_32.txt"];
+        }
+        else if ( ( [SDVersion deviceSize] == Screen5Dot5inch ) || ( [SDVersion deviceVersion] == iPhone6Plus ) || ( [SDVersion deviceVersion] == iPhone6SPlus ) )
+        {
+            defautOptionsFilePath = [basePath stringByAppendingPathComponent:@"config/options_48.txt"];
+        }
+        else if( ( [SDVersion deviceVersion] == iPad2 ) ||
+                 ( [SDVersion deviceVersion] == iPadMini ) )
+        {
+            defautOptionsFilePath = [basePath stringByAppendingPathComponent:@"config/options_24.txt"];
+        }
+        else if( ( [SDVersion deviceVersion] == iPadAir ) ||
+                 ( [SDVersion deviceVersion] == iPadAir2 ) ||
+                 ( [SDVersion deviceVersion] == iPadMini2 ) ||
+                 ( [SDVersion deviceVersion] == iPadMini3 ) ||
+                 ( [SDVersion deviceVersion] == iPadMini4 ) )
+        {
+            defautOptionsFilePath = [basePath stringByAppendingPathComponent:@"config/options_48.txt"];
+        }
+        else if( [SDVersion deviceVersion] == iPadPro )
+        {
+            defautOptionsFilePath = [basePath stringByAppendingPathComponent:@"config/options_64.txt"];
+        }
+        else
+        {
+            defautOptionsFilePath = [basePath stringByAppendingPathComponent:@"config/options_32.txt"];
+        }
+        
+        [[NSFileManager defaultManager] copyItemAtPath:defautOptionsFilePath toPath:userOptionsFilePath error:&e];
+    }
+    PATH_INFO::update_pathname("options", [userOptionsFilePath cStringUsingEncoding:NSASCIIStringEncoding]);
+    
+    NSError* e;
+    if( ![[NSFileManager defaultManager] fileExistsAtPath:[documentPath stringByAppendingPathComponent:@"keybindings.json"]] )
+        [[NSFileManager defaultManager] copyItemAtPath:[basePath stringByAppendingPathComponent:@"config/keybindings.json"] toPath:[documentPath stringByAppendingPathComponent:@"keybindings.json"] error:&e];
+        
+    PATH_INFO::update_pathname("user_keybindings", [[documentPath stringByAppendingPathComponent:@"keybindings.json"] cStringUsingEncoding:NSASCIIStringEncoding] );
+
+#endif // CDDA_IOS
 
     MAP_SHARING::setDefaults();
     {

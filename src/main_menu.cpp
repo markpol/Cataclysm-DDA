@@ -35,7 +35,13 @@ static std::vector<std::string> mmenu_title;
 static std::vector<std::string> mmenu_motd;
 static std::vector<std::string> mmenu_credits;
 static std::vector<std::string> vMenuItems;
+static std::vector<std::string> vSubItems;
+static std::vector<std::string> vWorldSubItems;
 static std::vector<std::vector<std::string>> vMenuHotkeys;
+
+std::vector<std::string>* pvMenuItems;
+std::vector<std::string>* pvSubItems;
+std::vector<std::string>* pvWorldSubItems;
 
 void game::print_menu(WINDOW *w_open, int iSel, const int iMenuOffsetX, int iMenuOffsetY,
                       bool bShowDDA)
@@ -53,7 +59,7 @@ void game::print_menu(WINDOW *w_open, int iSel, const int iMenuOffsetX, int iMen
     }
 
     center_print(w_open, window_height - 1, c_red,
-                 _("Please report bugs to kevin.granade@gmail.com or post on the forums."));
+                 /*_(*/"Please report bugs to cdda@dancingbottle.com or post on the forums."/*)*/);
 
     int iLine = 0;
     const int iOffsetX = (window_width - FULL_SCREEN_WIDTH) / 2;
@@ -211,6 +217,7 @@ bool game::opening_screen()
     // please update MOTD and credits to indicate how long they can be.
 
     // fill menu with translated menu items
+    pvMenuItems = &vMenuItems;
     vMenuItems.clear();
     vMenuItems.push_back(pgettext("Main Menu", "<M|m>OTD"));
     vMenuItems.push_back(pgettext("Main Menu", "<N|n>ew Game"));
@@ -228,7 +235,9 @@ bool game::opening_screen()
         vMenuHotkeys.push_back(get_hotkeys(item));
     }
 
-    std::vector<std::string> vSubItems;
+    //std::vector<std::string> vSubItems;
+    pvSubItems = &vSubItems;
+    vSubItems.clear();
     vSubItems.push_back(pgettext("Main Menu|New Game", "<C|c>ustom Character"));
     vSubItems.push_back(pgettext("Main Menu|New Game", "<P|p>reset Character"));
     vSubItems.push_back(pgettext("Main Menu|New Game", "<R|r>andom Character"));
@@ -240,7 +249,10 @@ bool game::opening_screen()
         vNewGameHotkeys.push_back(get_hotkeys(item));
     }
 
-    std::vector<std::string> vWorldSubItems;
+    
+    //std::vector<std::string> vWorldSubItems;
+    pvWorldSubItems = &vWorldSubItems;
+    vWorldSubItems.clear();
     vWorldSubItems.push_back(pgettext("Main Menu|World", "<C|c>reate World"));
     vWorldSubItems.push_back(pgettext("Main Menu|World", "<D|d>elete World"));
     vWorldSubItems.push_back(pgettext("Main Menu|World", "<R|r>eset World"));
@@ -292,7 +304,7 @@ bool game::opening_screen()
 
     while(!start) {
         print_menu(w_open, sel1, iMenuOffsetX, iMenuOffsetY, (sel1 == 0 || sel1 == 7) ? false : true);
-
+        std::cout << layer << " " <<  sel1 << " " << sel2 << " " << sel3 << std::endl;
         if (layer == 1) {
             if (sel1 == 0) { // Print the MOTD.
                 const int motdy = (iMenuOffsetY - mmenu_motd.size()) * 2/3;
@@ -353,8 +365,10 @@ bool game::opening_screen()
                     sfx::play_variant_sound("menu_move", "default", 100);
                     display_help();
                 } else if (sel1 == 8) {
+#ifndef CDDA_IOS
                     uquit = QUIT_MENU;
                     return false;
+#endif // CDDA_IOS
                 } else {
                     sel2 = 0;
                     layer = 2;
