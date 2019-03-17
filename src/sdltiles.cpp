@@ -23,7 +23,7 @@
 #if defined(_MSC_VER) && defined(USE_VCPKG)
 #   include <SDL2/SDL_image.h>
 #else
-#   include <SDL_image.h>
+#   include "SDL_image.h"
 #endif
 
 #include "avatar.h"

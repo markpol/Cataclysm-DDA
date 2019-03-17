@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+bool do_mkdir( const std::string &path, const int mode );
 bool assure_dir_exist( const std::string &path );
 bool dir_exist( const std::string &path );
 bool file_exist( const std::string &path );

@@ -43,8 +43,6 @@ size_t strnlen( const char *const start, const size_t maxlen )
 
 namespace
 {
-
-#if defined(_WIN32)
 bool do_mkdir( const std::string &path, const int mode )
 {
     ( void )mode; //not used on windows
@@ -60,8 +58,6 @@ bool do_mkdir( const std::string &path, const int mode )
     return mkdir( path.c_str(), mode ) == 0;
 }
 #endif
-
-} //anonymous namespace
 
 bool assure_dir_exist( const std::string &path )
 {
