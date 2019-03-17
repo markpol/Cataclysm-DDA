@@ -8,7 +8,7 @@
 #   if defined(_MSC_VER) && defined(USE_VCPKG)
 #       include <SDL2/SDL.h>
 #   else
-#       include <SDL.h>
+#       include "SDL.h"
 #   endif
 #endif // TILES
 

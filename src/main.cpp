@@ -33,8 +33,9 @@
 #   if defined(_MSC_VER) && defined(USE_VCPKG)
 #      include <SDL2/SDL_version.h>
 #   else
-#      include <SDL_version.h>
+#      include "SDL_version.h"
 #   endif
+#   include "SDL_main.h"
 #endif
 
 #ifdef __ANDROID__
@@ -529,16 +530,43 @@ int main( int argc, char *argv[] )
             }
         }
     }
+    
+/*
+    #include "filesystem.h"
 
-    if( !dir_exist( FILENAMES["datadir"] ) ) {
-        printf( "Fatal: Can't find directory \"%s\"\nPlease ensure the current working directory is correct. Perhaps you meant to start \"cataclysm-launcher\"?\n",
-                FILENAMES["datadir"].c_str() );
+    std::string home = getenv( "HOME" );
+    std::string path = getenv( "HOME" ) + "/Library";
+
+    std::string full = home + path;
+    std::string full_new = full + "/test_sz333";
+
+    do_mkdir( "~/test_SZ66666", 0777 );
+    do_mkdir( full_new, 0777 );
+    
+    do_mkdir( "Documents/test_sz", 0777 );
+    do_mkdir( "Library/test_sz2", 0777 );
+*/
+ 
+    /*
+    if( assure_dir_exist( FILENAMES["user_dir"] ) ) {
+        printf( "Can't open or create %s. Check permissions.\n",
+               FILENAMES["user_dir"].c_str() );
         exit( 1 );
     }
+     */
 
-    if( !assure_dir_exist( FILENAMES["user_dir"] ) ) {
-        printf( "Can't open or create %s. Check permissions.\n",
-                FILENAMES["user_dir"].c_str() );
+    //PATH_INFO::update_pathname( "datadir", "Librabr" );
+    //PATH_INFO::update_config_dir();
+    
+    std::string home = getenv( "HOME" );
+    std::string dd = "/Library/data/";
+
+    PATH_INFO::update_pathname( "datadir", home + dd );
+    PATH_INFO::update_datadir();
+    
+    if( !dir_exist( FILENAMES["datadir"] ) ) {
+	        printf( "Fatal: Can't find directory \"%s\"\nPlease ensure the current working directory is correct. Perhaps you meant to start \"cataclysm-launcher\"?\n",
+                FILENAMES["datadir"].c_str() );
         exit( 1 );
     }
 
