@@ -40,7 +40,7 @@ int city_reference::get_distance_from_bounds() const
     return distance - omt_to_sm_copy( city->size );
 }
 
-std::string overmapbuffer::terrain_filename( const int x, const int y )
+std::string overmapbuffer::terrain_filename( int x, int y )
 {
     std::ostringstream filename;
 
@@ -50,7 +50,7 @@ std::string overmapbuffer::terrain_filename( const int x, const int y )
     return filename.str();
 }
 
-std::string overmapbuffer::player_filename( const int x, const int y )
+std::string overmapbuffer::player_filename( int x, int y )
 {
     std::ostringstream filename;
 
@@ -59,7 +59,7 @@ std::string overmapbuffer::player_filename( const int x, const int y )
     return filename.str();
 }
 
-overmap &overmapbuffer::get( const int x, const int y )
+overmap &overmapbuffer::get( int x, int y )
 {
     const point p { x, y };
 
@@ -85,8 +85,7 @@ overmap &overmapbuffer::get( const int x, const int y )
     return *new_om;
 }
 
-void overmapbuffer::create_custom_overmap( const int x, const int y,
-        overmap_special_batch &specials )
+void overmapbuffer::create_custom_overmap( int x, int y, overmap_special_batch &specials )
 {
     overmap *new_om = new overmap( x, y );
     if( last_requested_overmap != nullptr ) {
