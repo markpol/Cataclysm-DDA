@@ -1,6 +1,7 @@
 #include "coordinate_conversions.h"
 
 #include "game_constants.h"
+#include "options.h"
 
 static int divide( int v, int m )
 {
@@ -173,4 +174,32 @@ point ms_to_omt_remain( int &x, int &y )
 tripoint omt_to_seg_copy( const tripoint &p )
 {
     return tripoint( divide( p.x, SEG_SIZE ), divide( p.y, SEG_SIZE ), p.z );
+}
+
+void limit_and_loop_om_coordinates( int &x, int &y )
+{
+    if( get_option<bool>( "WORLD_LIMIT" ) ) {
+        const int limit_x = get_option<int>( "WORLD_LIMIT_X" );
+        if( limit_x > 0 ) {
+            x = x % limit_x;
+        }
+        const int limit_y = get_option<int>( "WORLD_LIMIT_Y" );
+        if( limit_y > 0 ) {
+            y = y % limit_y;
+        }
+    }
+}
+
+void limit_and_loop_abs_coordinates( int &x, int &y )
+{
+    if( get_option<bool>( "WORLD_LIMIT" ) ) {
+        const int limit_x = get_option<int>( "WORLD_LIMIT_X" );
+        if( limit_x > 0 ) {
+            x = x % limit_x;
+        }
+        const int limit_y = get_option<int>( "WORLD_LIMIT_Y" );
+        if( limit_y > 0 ) {
+            y = y % limit_y;
+        }
+    }
 }
