@@ -2,6 +2,9 @@
 
 #include "game_constants.h"
 #include "options.h"
+#include "debug.h"
+
+#define dbg(x) DebugLog((DebugLevel)(x),DC_ALL)
 
 static int divide( int v, int m )
 {
@@ -21,14 +24,14 @@ static int divide( int v, int m, int &r )
 point omt_to_om_copy( int x, int y )
 {
     point return_value = point( divide( x, OMAPX ), divide( y, OMAPY ) );
-    limit_and_loop_om_coordinates( return_value );
+    //limit_and_loop_om_coordinates( return_value );
     return return_value;
 }
 
 tripoint omt_to_om_copy( const tripoint &p )
 {
     tripoint return_value = tripoint( divide( p.x, OMAPX ), divide( p.y, OMAPY ), p.z );
-    limit_and_loop_om_coordinates( return_value );
+    //limit_and_loop_om_coordinates( return_value );
     return return_value;
 }
 
@@ -37,13 +40,13 @@ void omt_to_om( int &x, int &y )
     x = divide( x, OMAPX );
     y = divide( y, OMAPY );
 
-    limit_and_loop_om_coordinates( x, y );
+    //limit_and_loop_om_coordinates( x, y );
 }
 
 point omt_to_om_remain( int &x, int &y )
 {
     point return_value = point( divide( x, OMAPX, x ), divide( y, OMAPY, y ) );
-    limit_and_loop_om_coordinates( return_value );
+    //limit_and_loop_om_coordinates( return_value );
     return return_value;
 }
 
@@ -71,14 +74,14 @@ point sm_to_omt_remain( int &x, int &y )
 point sm_to_om_copy( int x, int y )
 {
     point return_value = point( divide( x, 2 * OMAPX ), divide( y, 2 * OMAPY ) );
-    limit_and_loop_om_coordinates( return_value );
+    //limit_and_loop_om_coordinates( return_value );
     return return_value;
 }
 
 tripoint sm_to_om_copy( const tripoint &p )
 {
     tripoint return_value = tripoint( divide( p.x, 2 * OMAPX ), divide( p.y, 2 * OMAPY ), p.z );
-    limit_and_loop_om_coordinates( return_value );
+    //limit_and_loop_om_coordinates( return_value );
     return return_value;
 }
 
@@ -86,13 +89,13 @@ void sm_to_om( int &x, int &y )
 {
     x = divide( x, 2 * OMAPX );
     y = divide( y, 2 * OMAPY );
-    limit_and_loop_om_coordinates( x, y );
+    //limit_and_loop_om_coordinates( x, y );
 }
 
 point sm_to_om_remain( int &x, int &y )
 {
     point return_value = point( divide( x, 2 * OMAPX, x ), divide( y, 2 * OMAPY, y ) );
-    limit_and_loop_om_coordinates( return_value );
+    //limit_and_loop_om_coordinates( return_value );
     return return_value;
 }
 
@@ -193,6 +196,8 @@ tripoint omt_to_seg_copy( const tripoint &p )
 
 void limit_and_loop_om_coordinates( int &x, int &y )
 {
+    const int x_org = x;
+    const int y_org = y;
     if( get_option<bool>( "WORLD_LIMIT" ) ) {
         const int limit_x = get_option<int>( "WORLD_LIMIT_X" );
         if( limit_x > 0 ) {
@@ -201,6 +206,15 @@ void limit_and_loop_om_coordinates( int &x, int &y )
         const int limit_y = get_option<int>( "WORLD_LIMIT_Y" );
         if( limit_y > 0 ) {
             y = y % limit_y;
+        }
+        if( x != x_org && y != y_org ) {
+            dbg( D_GAME ) << "OM_XY changed!";
+        }
+        if( x != x_org ) {
+            dbg( D_GAME ) << "OM_X:" << x_org << " -> " << x;
+        }
+        if( y != y_org ) {
+            dbg( D_GAME ) << "OM_Y:" << y_org << " -> " << y;
         }
     }
 }

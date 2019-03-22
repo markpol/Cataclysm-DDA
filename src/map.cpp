@@ -7661,14 +7661,14 @@ std::vector<tripoint> closest_tripoints_first( int radius, const tripoint &cente
 point map::getabs( const int x, const int y ) const
 {
     point coord_abs = point( x + abs_sub.x * SEEX, y + abs_sub.y * SEEY );
-    limit_and_loop_abs_coordinates( coord_abs );
+    //limit_and_loop_abs_coordinates( coord_abs );
     return coord_abs;
 }
 
 tripoint map::getabs( const tripoint &p ) const
 {
     tripoint coord_abs = tripoint( p.x + abs_sub.x * SEEX, p.y + abs_sub.y * SEEY, p.z );
-    limit_and_loop_abs_coordinates( coord_abs );
+    //limit_and_loop_abs_coordinates( coord_abs );
     return coord_abs;
 }
 
