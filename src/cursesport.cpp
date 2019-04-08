@@ -1,4 +1,4 @@
-#if defined(TILES) || defined(_WIN32)
+#if defined(TILES) || (defined(_WIN32)&& !defined(USE_PDCURSES))
 #include "cursesport.h"
 
 #include <stdexcept>

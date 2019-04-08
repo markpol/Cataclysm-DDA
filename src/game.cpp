@@ -389,7 +389,7 @@ void game::init_ui( const bool resized )
     }
 
     // First get TERMX, TERMY
-#if defined(TILES) || defined(_WIN32)
+#if (defined(TILES) || defined(_WIN32)) && !defined(USE_PDCURSES)
     TERMX = get_terminal_width();
     TERMY = get_terminal_height();
 

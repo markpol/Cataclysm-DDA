@@ -2342,7 +2342,7 @@ std::string options_manager::show( bool ingame, const bool world_options_only )
 
         wrefresh( w_options_header );
 
-#if defined(TILES) || defined(_WIN32)
+#if defined(TILES) || (defined(_WIN32) && !defined(USE_PDCURSES)) 
         if( mPageItems[iCurrentPage][iCurrentLine] == "TERMINAL_X" ) {
             int new_terminal_x = 0;
             int new_window_width = 0;
@@ -2549,7 +2549,7 @@ std::string options_manager::show( bool ingame, const bool world_options_only )
         set_language();
     }
 
-#if !defined(__ANDROID__) && (defined(TILES) || defined(_WIN32))
+#if !defined(__ANDROID__) && (defined(TILES) || (defined(_WIN32) && !defined(USE_PDCURSES)))
     if( terminal_size_changed ) {
         int scaling_factor = get_scaling_factor();
         int TERMX = ::get_option<int>( "TERMINAL_X" );
