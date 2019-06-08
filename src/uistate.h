@@ -57,6 +57,7 @@ class uistatedata
         bool overmap_blinking = true;           // toggles active blinking of overlays.
         bool overmap_show_overlays = false;     // whether overlays are shown or not.
         bool overmap_show_map_notes = false;
+        bool overmap_show_map_extras = true;
         bool overmap_show_land_use_codes = false; // toggle land use code sym/color for terrain
         bool overmap_show_city_labels = true;
         bool overmap_show_hordes = true;
@@ -143,6 +144,7 @@ class uistatedata
             json.member( "overmap_blinking", overmap_blinking );
             json.member( "overmap_show_overlays", overmap_show_overlays );
             json.member( "overmap_show_map_notes", overmap_show_map_notes );
+            json.member( "overmap_show_map_extras", overmap_show_map_extras );
             json.member( "overmap_show_land_use_codes", overmap_show_land_use_codes );
             json.member( "overmap_show_city_labels", overmap_show_city_labels );
             json.member( "overmap_show_hordes", overmap_show_hordes );
@@ -236,6 +238,7 @@ class uistatedata
             jo.read( "overmap_blinking", overmap_blinking );
             jo.read( "overmap_show_overlays", overmap_show_overlays );
             jo.read( "overmap_show_map_notes", overmap_show_map_notes );
+            jo.read( "overmap_show_map_extras", overmap_show_map_extras );
             jo.read( "overmap_show_land_use_codes", overmap_show_land_use_codes );
             jo.read( "overmap_show_city_labels", overmap_show_city_labels );
             jo.read( "overmap_show_hordes", overmap_show_hordes );

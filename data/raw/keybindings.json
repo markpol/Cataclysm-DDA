@@ -742,6 +742,13 @@
   },
   {
     "type": "keybinding",
+    "id": "TOGGLE_MAP_EXTRAS",
+    "category": "OVERMAP",
+    "name": "Toggle Map Extras",
+    "bindings": [ { "input_method": "keyboard", "key": "X" } ]
+  },
+  {
+    "type": "keybinding",
     "id": "TOGGLE_CITY_LABELS",
     "category": "OVERMAP",
     "name": "Toggle City Labels",
