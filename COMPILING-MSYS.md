@@ -14,7 +14,7 @@ Steps from current guide were tested on Windows 10 (64 bit) and MSYS2 (64 bit), 
 
 ## Installation:
 
-1. Go to [MSYS2 homepage](http://www.msys2.org/) and download 64 bit installer (e.g. [msys2-x86_64-20180531.exe](http://repo.msys2.org/distrib/x86_64/msys2-x86_64-20180531.exe)).
+1. Go to [MSYS2 homepage](http://www.msys2.org/) and download 64 bit installer (e.g. [msys2-x86_64-20190524.exe](http://repo.msys2.org/distrib/x86_64/msys2-x86_64-20190524.exe)).
 
 2. Run downloaded file and install MSYS2 (click `Next` button, specify directory where MSYS2 64 bit will be installed (e.g. `C:\msys64`), click `Next` button again, specify Start Menu folder name and click `Install` button).
 
@@ -39,7 +39,7 @@ pacman -Su
 4. Install packages required for compilation with:
 
 ```bash
-pacman -S git git-extras-git make mingw-w64-x86_64-{astyle,ccache,gcc,libmad,libwebp,ncurses,pkg-config,SDL2} mingw-w64-x86_64-SDL2_{image,mixer,ttf}
+pacman -S git git-extras ccache gcc make ncurses pkg-config mingw-w64-x86_64-{astyle,libmad,libwebp,SDL2} mingw-w64-x86_64-SDL2_{image,mixer,ttf}
 ```
 
 5. Update paths in system-wide profile file (e.g. `C:\msys64\etc\profile`) as following:
