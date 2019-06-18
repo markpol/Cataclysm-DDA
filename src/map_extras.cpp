@@ -2384,15 +2384,17 @@ void check_consistency()
 
 void map_extra::load( JsonObject &jo, const std::string &src )
 {
-    const bool strict = src == "dda";
 
-    assign( jo, "name", name, strict );
-    assign( jo, "description", description, strict );
-    assign( jo, "function", function, strict );
+    mandatory( jo, was_loaded, "name", name );
+    mandatory( jo, was_loaded, "description", description );
+    mandatory( jo, was_loaded, "function", function );
     function_pointer = MapExtras::get_function( function );
+    if( function_pointer == nullptr ) {
+        debugmsg( "invalid map extra function (%s) defined for map extra (%s)", function, id.str() );
+    }
     optional( jo, was_loaded, "sym", symbol, unicode_codepoint_from_symbol_reader, NULL_UNICODE );
-    assign( jo, "color", color, strict );
-    assign( jo, "autonote", autonote, strict );
+    color = jo.has_member( "color" ) ? color_from_string( jo.get_string( "color" ) ) : c_white;
+    optional( jo, was_loaded, "autonote", autonote, false );
 }
 
 void map_extra::finalize()
