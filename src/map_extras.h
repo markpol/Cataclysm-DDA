@@ -27,9 +27,6 @@ class map_extra
         // Used by generic_factory
         bool was_loaded = false;
         void load( JsonObject &jo, const std::string &src );
-        void finalize();
-        void check() const;
-        void reset();
 };
 
 namespace MapExtras

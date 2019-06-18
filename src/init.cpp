@@ -490,7 +490,6 @@ void DynamicDataLoader::unload_data()
     overmap_connections::reset();
     overmap_locations::reset();
     overmap_specials::reset();
-    MapExtras::reset();
     ammunition_type::reset();
     unload_talk_topics();
     behavior::reset();
@@ -547,7 +546,6 @@ void DynamicDataLoader::finalize_loaded_data( loading_ui &ui )
             { _( "Overmap terrain" ), &overmap_terrains::finalize },
             { _( "Overmap connections" ), &overmap_connections::finalize },
             { _( "Overmap specials" ), &overmap_specials::finalize },
-            { _( "Map extras" ), &MapExtras::finalize },
             { _( "Vehicle prototypes" ), &vehicle_prototype::finalize },
             { _( "Mapgen weights" ), &calculate_mapgen_weights },
             {
@@ -634,7 +632,6 @@ void DynamicDataLoader::check_consistency( loading_ui &ui )
             { _( "Overmap terrain" ), &overmap_terrains::check_consistency },
             { _( "Overmap locations" ), &overmap_locations::check_consistency },
             { _( "Overmap specials" ), &overmap_specials::check_consistency },
-            { _( "Map extras" ), &MapExtras::check_consistency },
             { _( "Ammunition types" ), &ammunition_type::check_consistency },
             { _( "Traps" ), &trap::check_consistency },
             { _( "Bionics" ), &check_bionics },

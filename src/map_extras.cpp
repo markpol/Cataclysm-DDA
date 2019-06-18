@@ -2365,21 +2365,6 @@ void load( JsonObject &jo, const std::string &src )
     extras.load( jo, src );
 }
 
-void finalize()
-{
-    extras.finalize();
-}
-
-void reset()
-{
-    extras.reset();
-}
-
-void check_consistency()
-{
-    extras.check();
-}
-
 }
 
 void map_extra::load( JsonObject &jo, const std::string &src )
@@ -2395,16 +2380,4 @@ void map_extra::load( JsonObject &jo, const std::string &src )
     optional( jo, was_loaded, "sym", symbol, unicode_codepoint_from_symbol_reader, NULL_UNICODE );
     color = jo.has_member( "color" ) ? color_from_string( jo.get_string( "color" ) ) : c_white;
     optional( jo, was_loaded, "autonote", autonote, false );
-}
-
-void map_extra::finalize()
-{
-}
-
-void map_extra::check() const
-{
-}
-
-void map_extra::reset()
-{
 }
