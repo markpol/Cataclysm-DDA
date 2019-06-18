@@ -405,7 +405,7 @@
     },
     "map_extras": {
       "forest": {
-        "chance": 20,
+        "chance": 5,
         "extras": {
           "mx_helicopter": 40,
           "mx_military": 8,
@@ -429,7 +429,7 @@
         }
       },
       "forest_thick": {
-        "chance": 20,
+        "chance": 3,
         "extras": {
           "mx_helicopter": 40,
           "mx_military": 8,
@@ -455,7 +455,7 @@
         }
       },
       "forest_water": {
-        "chance": 20,
+        "chance": 6,
         "extras": {
           "mx_helicopter": 40,
           "mx_military": 8,
@@ -479,7 +479,7 @@
         }
       },
       "field": {
-        "chance": 90,
+        "chance": 9,
         "extras": {
           "mx_helicopter": 40,
           "mx_military": 8,
