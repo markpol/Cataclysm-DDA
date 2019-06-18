@@ -2325,7 +2325,7 @@ map_extra_pointer get_function( const std::string &name )
 {
     const auto iter = builtin_functions.find( name );
     if( iter == builtin_functions.end() ) {
-        debugmsg( "no map special with name %s", name );
+        debugmsg( "no map extra function with name %s", name );
         return nullptr;
     }
     return iter->second;
