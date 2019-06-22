@@ -314,6 +314,8 @@ class overmap
         std::vector<basecamp> camps;
         std::vector<city> cities;
         std::vector<city> roads_out;
+        std::vector<city> railroad_stations;
+        std::vector<city> railroads_out;
         cata::optional<basecamp *> find_camp( const int x, const int y );
         cata::optional<basecamp *> find_camp( const point &p ) {
             return find_camp( p.x, p.y );
@@ -407,10 +409,14 @@ class overmap
         void place_roads( const overmap *north, const overmap *east, const overmap *south,
                           const overmap *west );
 
+        void place_railroads( const overmap *north, const overmap *east, const overmap *south,
+                              const overmap *west );
+
         // City Building
         overmap_special_id pick_random_building_to_place( int town_dist ) const;
 
         void place_cities();
+        void place_railroad_stations();
         void place_building( const tripoint &p, om_direction::type dir, const city &town );
 
         void build_city_street( const overmap_connection &connection, const point &p, int cs,
