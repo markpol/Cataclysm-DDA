@@ -6517,13 +6517,21 @@ void map::shift_traps( const tripoint &shift )
 {
     // Offset needs to have sign opposite to shift direction
     const tripoint offset( -shift.x * SEEX, -shift.y * SEEY, -shift.z );
-    for( auto iter = field_emit_locs.begin(); iter != field_emit_locs.end(); ) {
+    for( auto iter = field_emit_locs[0].begin(); iter != field_emit_locs[0].end(); ) {
         tripoint &pos = *iter;
         pos += offset;
         if( inbounds( pos ) ) {
             ++iter;
         } else {
-            iter = field_emit_locs[0]->erase( iter );
+            iter = field_emit_locs[0].erase( iter );
+        }
+    }
+    for( auto iter = field_emit_locs[1].begin(); iter != field_emit_locs[1].end(); ) {
+        tripoint &pos = *iter;
+        pos += offset;
+        if( inbounds( pos ) ) {
+            ++iter;
+        } else {
             iter = field_emit_locs[1].erase( iter );
         }
     }
@@ -7250,7 +7258,8 @@ void map::actualize( const tripoint &grid )
             if( furn.has_flag( "EMITTER" ) ) {
                 field_emit_locs[0].push_back( pnt );
             }
-            if( furn.has_flag( "EMITTER" ) ) {
+            const auto &ter = this->ter( pnt ).obj();
+            if( ter.has_flag( "EMITTER" ) ) {
                 field_emit_locs[1].push_back( pnt );
             }
             // plants contain a seed item which must not be removed under any circumstances
