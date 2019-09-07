@@ -1040,7 +1040,7 @@ class map
 
         void disarm_trap( const tripoint &p );
         void remove_trap( const tripoint &p );
-        const std::vector<tripoint> &get_furn_field_locations() const;
+        const std::array<std::vector<tripoint>, 2> &get_field_emit_locations() const;
         const std::vector<tripoint> &trap_locations( const trap_id &type ) const;
 
         //Spawns byproducts from items destroyed in fire.
@@ -1633,16 +1633,16 @@ class map
          */
         std::vector<submap *> grid;
         /**
-         * This vector contains an entry for each trap type, it has therefor the same size
+         * This vector contains an entry for each trap type, it has therefore the same size
          * as the traplist vector. Each entry contains a list of all point on the map that
          * contain a trap of that type. The first entry however is always empty as it denotes the
          * tr_null trap.
          */
         std::vector< std::vector<tripoint> > traplocs;
         /**
-         * Vector of tripoints containing active field-emitting furniture
+         * Vector of tripoints containing active field-emitting furniture and/or terrain
          */
-        std::vector<tripoint> field_furn_locs;
+        std::array<std::vector<tripoint>, 2> field_emit_locs;
         /**
          * Holds caches for visibility, light, transparency and vehicles
          */

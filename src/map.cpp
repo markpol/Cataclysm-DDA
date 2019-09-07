@@ -1292,7 +1292,7 @@ void map::furn_set( const tripoint &p, const furn_id &new_furniture )
         g->u.grab( OBJECT_NONE );
     }
     if( new_t.has_flag( "EMITTER" ) ) {
-        field_furn_locs.push_back( p );
+        field_emit_locs[ 0 ].push_back( p );
     }
     if( old_t.transparent != new_t.transparent ) {
         set_transparency_cache_dirty( p.z );
@@ -6502,7 +6502,8 @@ void map::load( const tripoint &w, const bool update_vehicle )
     for( auto &traps : traplocs ) {
         traps.clear();
     }
-    field_furn_locs.clear();
+    field_emit_locs[0].clear();
+    field_emit_locs[1].clear();
     submaps_with_active_items.clear();
     set_abs_sub( w );
     for( int gridx = 0; gridx < my_MAPSIZE; gridx++ ) {
@@ -6516,13 +6517,14 @@ void map::shift_traps( const tripoint &shift )
 {
     // Offset needs to have sign opposite to shift direction
     const tripoint offset( -shift.x * SEEX, -shift.y * SEEY, -shift.z );
-    for( auto iter = field_furn_locs.begin(); iter != field_furn_locs.end(); ) {
+    for( auto iter = field_emit_locs.begin(); iter != field_emit_locs.end(); ) {
         tripoint &pos = *iter;
         pos += offset;
         if( inbounds( pos ) ) {
             ++iter;
         } else {
-            iter = field_furn_locs.erase( iter );
+            iter = field_emit_locs[0]->erase( iter );
+            iter = field_emit_locs[1].erase( iter );
         }
     }
     for( auto &traps : traplocs ) {
@@ -7246,7 +7248,10 @@ void map::actualize( const tripoint &grid )
             const point p( x, y );
             const auto &furn = this->furn( pnt ).obj();
             if( furn.has_flag( "EMITTER" ) ) {
-                field_furn_locs.push_back( pnt );
+                field_emit_locs[0].push_back( pnt );
+            }
+            if( furn.has_flag( "EMITTER" ) ) {
+                field_emit_locs[1].push_back( pnt );
             }
             // plants contain a seed item which must not be removed under any circumstances
             if( !furn.has_flag( "DONT_REMOVE_ROTTEN" ) ) {
@@ -7561,9 +7566,9 @@ void map::clear_traps()
     }
 }
 
-const std::vector<tripoint> &map::get_furn_field_locations() const
+const std::array<std::vector<tripoint>, 2> &map::get_field_emit_locations() const
 {
-    return field_furn_locs;
+    return field_emit_locs;
 }
 
 const std::vector<tripoint> &map::trap_locations( const trap_id &type ) const

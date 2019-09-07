@@ -1132,6 +1132,7 @@ void map_data_common_t::load( JsonObject &jo, const std::string &src )
     }
 
     mandatory( jo, was_loaded, "description", description );
+    optional( jo, was_loaded, "emissions", emissions );
 }
 
 void ter_t::load( JsonObject &jo, const std::string &src )
@@ -1246,7 +1247,6 @@ void furn_t::load( JsonObject &jo, const std::string &src )
     optional( jo, was_loaded, "coverage", coverage );
     optional( jo, was_loaded, "comfort", comfort, 0 );
     optional( jo, was_loaded, "floor_bedding_warmth", floor_bedding_warmth, 0 );
-    optional( jo, was_loaded, "emissions", emissions );
     optional( jo, was_loaded, "bonus_fire_warmth_feet", bonus_fire_warmth_feet, 300 );
     optional( jo, was_loaded, "keg_capacity", keg_capacity, legacy_volume_reader, 0_ml );
     mandatory( jo, was_loaded, "required_str", move_str_req );
@@ -1286,6 +1286,19 @@ void map_data_common_t::check() const
             debugmsg( "Harvest data defined without examine function for %s", name_.c_str() );
         }
     }
+    if( has_flag( "EMITTER" ) ) {
+        if( emissions.empty() ) {
+            debugmsg( "Furniture ot terrain [%s] has the EMITTER flag, but no emissions were set",
+                      name_.c_str() );
+        } else {
+            for( const emit_id &e : emissions ) {
+                if( !e.is_valid() ) {
+                    debugmsg( "Furniture ot terrain [%s] has the EMITTER flag, but invalid emission [%s] was set",
+                              name_.c_str(), e.str().c_str() );
+                }
+            }
+        }
+    }
 }
 
 void furn_t::check() const
@@ -1299,18 +1312,6 @@ void furn_t::check() const
     }
     if( !close.is_valid() ) {
         debugmsg( "invalid furniture %s for closing %s", close.c_str(), id.c_str() );
-    }
-    if( has_flag( "EMITTER" ) ) {
-        if( emissions.empty() ) {
-            debugmsg( "furn %s has the EMITTER flag, but no emissions were set", id.c_str() );
-        } else {
-            for( const emit_id &e : emissions ) {
-                if( !e.is_valid() ) {
-                    debugmsg( "furn %s has the EMITTER flag, but invalid emission %s was set", id.c_str(),
-                              e.str().c_str() );
-                }
-            }
-        }
     }
 }
 
