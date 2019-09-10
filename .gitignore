@@ -39,6 +39,7 @@ cataclysm-tiles
 cataclysm-vcpkg
 cataclysmdda-*
 chkjson*
+CMakeSettings.json
 debug.log
 logg.txt
 
