@@ -269,6 +269,8 @@ static constexpr point point_south_west{ -1, 1 };
 static constexpr point point_west{ -1, 0 };
 static constexpr point point_north_west{ -1, -1 };
 
+static constexpr std::array<point, 4> point_cardinal_neighbors { point_south, point_east, point_west, point_north };
+
 static constexpr tripoint tripoint_north{ point_north, 0 };
 static constexpr tripoint tripoint_north_east{ point_north_east, 0 };
 static constexpr tripoint tripoint_east{ point_east, 0 };

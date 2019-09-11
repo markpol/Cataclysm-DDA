@@ -1073,9 +1073,6 @@ void cata_tiles::draw( const point &dest, const tripoint &center, int width, int
         }
     }
 
-    static const point neighborhood[4] = {
-        point_south, point_east, point_west, point_north
-    };
     for( int row = min_row; row < max_row; row ++ ) {
         std::vector<tile_render_info> draw_points;
         draw_points.reserve( max_col );
@@ -1195,7 +1192,7 @@ void cata_tiles::draw( const point &dest, const tripoint &center, int width, int
                 }
             }
             for( int i = 0; i < 4; i++ ) {
-                const tripoint np = pos + neighborhood[i];
+                const tripoint np = pos + point_cardinal_neighbors[i];
                 invisible[1 + i] = np.y < min_visible_y || np.y > max_visible_y ||
                                    np.x < min_visible_x || np.x > max_visible_x ||
                                    would_apply_vision_effects( g->m.get_visibility( ch.visibility_cache[np.x][np.y], cache ) );
@@ -1291,7 +1288,7 @@ void cata_tiles::draw( const point &dest, const tripoint &center, int width, int
             bool invisible[5];
             invisible[0] = false;
             for( int i = 0; i < 4; i++ ) {
-                const tripoint np = p + neighborhood[i];
+                const tripoint np = p + point_cardinal_neighbors[i];
                 invisible[1 + i] = np.y < min_visible_y || np.y > max_visible_y ||
                                    np.x < min_visible_x || np.x > max_visible_x ||
                                    would_apply_vision_effects( g->m.get_visibility( ch.visibility_cache[np.x][np.y], cache ) );
@@ -2077,9 +2074,7 @@ bool cata_tiles::draw_terrain( const tripoint &p, const lit_level ll, int &heigh
     const bool overridden = override != terrain_override.end();
     bool neighborhood_overridden = overridden;
     if( !neighborhood_overridden ) {
-        for( const point &dir : {
-        point_south, point_east, point_west, point_north
-    } ) {
+        for( const point &dir : point_cardinal_neighbors ) {
             if( terrain_override.find( p + dir ) != terrain_override.end() ) {
                 neighborhood_overridden = true;
                 break;
@@ -2244,9 +2239,7 @@ bool cata_tiles::draw_furniture( const tripoint &p, const lit_level ll, int &hei
     const bool overridden = override != furniture_override.end();
     bool neighborhood_overridden = overridden;
     if( !neighborhood_overridden ) {
-        for( const point &dir : {
-        point_south, point_east, point_west, point_north
-    } ) {
+        for( const point &dir : point_cardinal_neighbors ) {
             if( furniture_override.find( p + dir ) != furniture_override.end() ) {
                 neighborhood_overridden = true;
                 break;
@@ -2319,9 +2312,7 @@ bool cata_tiles::draw_trap( const tripoint &p, const lit_level ll, int &height_3
     const bool overridden = override != trap_override.end();
     bool neighborhood_overridden = overridden;
     if( !neighborhood_overridden ) {
-        for( const point &dir : {
-        point_south, point_east, point_west, point_north
-    } ) {
+        for( const point &dir : point_cardinal_neighbors ) {
             if( trap_override.find( p + dir ) != trap_override.end() ) {
                 neighborhood_overridden = true;
                 break;

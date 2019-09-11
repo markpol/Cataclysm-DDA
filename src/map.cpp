@@ -1410,10 +1410,6 @@ ter_id map::ter( const tripoint &p ) const
 uint8_t map::get_known_connections( const tripoint &p, int connect_group,
                                     const std::map<tripoint, ter_id> &override ) const
 {
-    constexpr std::array<point, 4> offsets = {{
-            point_south, point_east, point_west, point_north
-        }
-    };
     auto &ch = access_cache( p.z );
     uint8_t val = 0;
     std::function<bool( const tripoint & )> is_memorized;
@@ -1438,7 +1434,7 @@ uint8_t map::get_known_connections( const tripoint &p, int connect_group,
 
     // populate connection information
     for( int i = 0; i < 4; ++i ) {
-        tripoint neighbour = p + offsets[i];
+        tripoint neighbour = p + point_cardinal_neighbors[i];
         if( !inbounds( neighbour ) ) {
             continue;
         }
