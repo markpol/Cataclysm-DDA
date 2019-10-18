@@ -789,6 +789,22 @@ void overmap::convert_terrain( const std::unordered_map<tripoint, std::string> &
                    old == "dairy_farm_SW" ||
                    old == "dairy_farm_SE" ) {
             ter_set( pos, oter_id( old + "_north" ) );
+
+        } else if( old.compare( 0, 9, "megastore" ) == 0 ) {
+            const std::string megastore = "megastore";
+            const std::string megastore_entrance = "megastore_entrance";
+            if( old == megastore_entrance ) {
+                ter_set( pos, oter_id( megastore + "_1_0_0_north" ) );
+            } else if( old == megastore ) {
+                nearby.push_back( { -1, megastore_entrance,  1, megastore,          megastore + "_0_0_0_north" } );
+                nearby.push_back( {  1, megastore_entrance,  1, megastore,          megastore + "_0_2_0_north" } );
+                nearby.push_back( { -2, megastore,           1, megastore,          megastore + "_1_0_0_north" } );
+                nearby.push_back( {  0, megastore,          -1, megastore_entrance, megastore + "_1_1_0_north" } );
+                nearby.push_back( {  2, megastore,           1, megastore,          megastore + "_1_2_0_north" } );
+                nearby.push_back( { -2, megastore,          -2, megastore,          megastore + "_2_0_0_north" } );
+                nearby.push_back( {  0, megastore,          -2, megastore_entrance, megastore + "_2_1_0_north" } );
+                nearby.push_back( {  2, megastore,          -2, megastore,          megastore + "_2_2_0_north" } );
+            }
         }
 
         for( const auto &conv : nearby ) {
