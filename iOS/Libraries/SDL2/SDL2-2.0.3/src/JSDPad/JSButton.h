@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GameController.h"
+#import <GameController/GameController.h>
 
 
 @class JSButton;
@@ -30,6 +30,6 @@
 @property (nonatomic, strong) IBOutlet id <JSButtonDelegate> delegate;
 @property (nonatomic, assign) BOOL isModifying;
 @property (nonatomic, strong) UIPanGestureRecognizer* panGestureRecognizer;
-@property (unsafe_unretained,nonatomic) id<GameController> controller;
+@property (unsafe_unretained,nonatomic) GCController* controller;
 
 @end

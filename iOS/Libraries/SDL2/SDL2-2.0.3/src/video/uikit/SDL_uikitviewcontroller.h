@@ -32,10 +32,7 @@
 #import "MYBlurIntroductionView.h"
 #import "JGActionSheet.h"
 
-#import "GameController.h"
-
-
-@interface SDL_uikitviewcontroller : UIViewController<CNPGridMenuDelegate,JSDPadDelegate,JSButtonDelegate,UIGestureRecognizerDelegate, MYIntroductionDelegate, UITextFieldDelegate,RPPreviewViewControllerDelegate, GameController> {
+@interface SDL_uikitviewcontroller : UIViewController<CNPGridMenuDelegate,JSDPadDelegate,JSButtonDelegate,UIGestureRecognizerDelegate, MYIntroductionDelegate, UITextFieldDelegate,RPPreviewViewControllerDelegate> {
 @private
     SDL_Window *window;
 }

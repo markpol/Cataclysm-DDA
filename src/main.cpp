@@ -591,12 +591,19 @@ void exit_handler(int s)
         erase(); // Clear screen
 
         int ret;
-#if (defined _WIN32 || defined WINDOWS)
-        ret = system("cls"); // Tell the terminal to clear itself
-        ret = system("color 07");
-#else
-        ret = system("clear"); // Tell the terminal to clear itself
-#endif
+        
+        #ifdef CDDA_IOS
+            ret = 0;
+        #else
+            #if (defined _WIN32 || defined WINDOWS)
+                    ret = system("cls"); // Tell the terminal to clear itself
+                    ret = system("color 07");
+            #else
+                    ret = system("clear"); // Tell the terminal to clear itself
+            #endif
+        
+        #endif // CDDA_IOS
+        
         if (ret != 0) {
             DebugLog( D_ERROR, DC_ALL ) << "system(\"clear\"): error returned: " << ret;
         }

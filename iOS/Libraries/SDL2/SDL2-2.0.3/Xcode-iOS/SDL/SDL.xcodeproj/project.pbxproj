@@ -310,6 +310,7 @@
 		04F7808312FB753F00FC43C0 /* SDL_nullframebuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SDL_nullframebuffer.c; sourceTree = "<group>"; };
 		04FFAB8912E23B8D00BA343D /* SDL_atomic.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SDL_atomic.c; sourceTree = "<group>"; };
 		04FFAB8A12E23B8D00BA343D /* SDL_spinlock.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SDL_spinlock.c; sourceTree = "<group>"; };
+		4D1CE5FC23F2A20A00F9F70A /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
 		56A6702D18565E450007D20F /* SDL_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDL_internal.h; path = ../../src/SDL_internal.h; sourceTree = "<group>"; };
 		56A6703118565E760007D20F /* SDL_dynapi_overrides.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDL_dynapi_overrides.h; path = ../../src/dynapi/SDL_dynapi_overrides.h; sourceTree = "<group>"; };
 		56A6703218565E760007D20F /* SDL_dynapi_procs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDL_dynapi_procs.h; path = ../../src/dynapi/SDL_dynapi_procs.h; sourceTree = "<group>"; };
@@ -661,6 +662,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				4D1CE5FC23F2A20A00F9F70A /* GameController.framework */,
 				A60FB83C1BA3458D008EC763 /* MediaPlayer.framework */,
 				A68B767C1B1C4F0B00FE4036 /* Accelerate.framework */,
 				FD99B8BC0DD52E5C00FB1D6B /* Public Headers */,

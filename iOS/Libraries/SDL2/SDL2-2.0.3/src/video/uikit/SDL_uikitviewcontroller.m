@@ -1478,7 +1478,7 @@ enum
                 NSLog(@"Show tutorial");
                 //[self showLeaderboard];
             }];
-            button.persistAfterExecution = YES;
+//            button.persistAfterExecution = YES;
             
             //Using Block
             button = [alertView addButton:@"Show keybindings" actionBlock:^(void) {
@@ -1486,7 +1486,7 @@ enum
                 //[self showKeybindings];
                 
             }];
-            button.persistAfterExecution = YES;
+//            button.persistAfterExecution = YES;
             
             //Using Block
             button = [alertView addButton:@"Adjust user interface" actionBlock:^(void) {
@@ -1495,7 +1495,7 @@ enum
                 
                 
             }];
-            button.persistAfterExecution = NO;
+//            button.persistAfterExecution = NO;
             
             
             if( iOSVersionGreaterThanOrEqualTo(@"9") )
@@ -1516,12 +1516,12 @@ enum
                         [self startRecording];
                     }];
                 }
-                button.persistAfterExecution = NO;
+//                button.persistAfterExecution = NO;
             }
             
             
             alertView.shouldDismissOnTapOutside = YES;
-            [alertView showCustom:self image:[UIImage imageNamed:@"icon_152.jpg"] color:[UIColor blackColor] title:@"Options" subTitle:nil closeButtonTitle:nil duration:0.0f];
+            [alertView showCustom:self image:[UIImage imageNamed:@"icon_152.png"] color:[UIColor blackColor] title:@"Options" subTitle:nil closeButtonTitle:nil duration:0.0f];
             
             
         }
@@ -1822,7 +1822,7 @@ enum
                     NSLog(@"Something went wrong");
                 }];
                 
-                hud.labelText = @"Purchasing item";
+                hud.label.text = @"Purchasing item";
 
             }
             else if( 1 == indexPath.row )
@@ -1855,7 +1855,7 @@ enum
                 }];
                 
                 
-                hud.labelText = @"Restoring item";
+                hud.label.text = @"Restoring item";
             }
             hud.mode = MBProgressHUDModeText;
             hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -1960,7 +1960,7 @@ enum
     NSString *productIdentifier = notification.rm_productIdentifier;
     SKPaymentTransaction *transaction = notification.rm_transaction;
     NSLog( @"[storePaymentTransactionFailed]" );
-    [hud hide:YES];
+    [hud hideAnimated:YES];
 }
 
 // iOS 8+ only
@@ -1970,7 +1970,7 @@ enum
     NSString *productIdentifier = notification.rm_productIdentifier;
     SKPaymentTransaction *transaction = notification.rm_transaction;
     NSLog( @"[storePaymentTransactionDeferred]" );
-    [hud hide:YES];
+    [hud hideAnimated:YES];
 }
 
 // Restore transactions notifications
@@ -1978,14 +1978,14 @@ enum
 {
     NSError *error = notification.rm_storeError;
     NSLog( @"[storeRestoreTransactionsFailed]" );
-    [hud hide:YES];
+    [hud hideAnimated:YES];
 }
 
 - (void)storeRestoreTransactionsFinished:(NSNotification*)notification
 {
     NSArray *transactions = notification.rm_transactions;
     NSLog( @"[storeRestoreTransactionsFinished]" );
-    [hud hide:YES];
+    [hud hideAnimated:YES];
 }
 
 // Download notifications
@@ -2001,8 +2001,8 @@ enum
         hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     }
     hud.mode = MBProgressHUDModeText;
-    hud.labelText = @"Download failed.";
-    [hud hide:YES afterDelay:3];
+    hud.label.text = @"Download failed.";
+    [hud hideAnimated:YES afterDelay:3];
 }
 
 - (void)storeDownloadFinished:(NSNotification*)notification;
@@ -2054,8 +2054,8 @@ enum
         hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     }
     hud.mode = MBProgressHUDModeText;
-    hud.labelText = @"Thanks for your support";
-    [hud hide:YES afterDelay:3];
+    hud.label.text = @"Thanks for your support";
+    [hud hideAnimated:YES afterDelay:3];
 }
 
 - (void)storeDownloadUpdated:(NSNotification*)notification
@@ -2071,7 +2071,7 @@ enum
         hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     }
     hud.mode = MBProgressHUDModeDeterminateHorizontalBar;
-    hud.labelText = [NSString stringWithFormat:@"Sound pack %d%% downloaded", (int)(download.progress * 100.0f)] ;
+    hud.label.text = [NSString stringWithFormat:@"Sound pack %d%% downloaded", (int)(download.progress * 100.0f)] ;
     hud.progress = download.progress;
 }
 
@@ -2086,8 +2086,8 @@ enum
         hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     }
     hud.mode = MBProgressHUDModeText;
-    hud.labelText = @"Download cancelled";
-    [hud hide:YES afterDelay:3];
+    hud.label.text = @"Download cancelled";
+    [hud hideAnimated:YES afterDelay:3];
 }
 
 - (void)storeDownloadPaused:(NSNotification*)notification
@@ -2129,8 +2129,8 @@ enum
                     hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
                 }
                 hud.mode = MBProgressHUDModeText;
-                hud.labelText = @"External keyboard detected. On screen controls will be disabled.";
-                [hud hide:YES afterDelay:3];
+                hud.label.text = @"External keyboard detected. On screen controls will be disabled.";
+                [hud hideAnimated:YES afterDelay:3];
                 
                 [dPad removeFromSuperview];
                 [yesButton removeFromSuperview];
@@ -2154,8 +2154,8 @@ enum
                     hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
                 }
                 hud.mode = MBProgressHUDModeText;
-                hud.labelText = @"External keyboard disconnected.";
-                [hud hide:YES afterDelay:3];
+                hud.label.text = @"External keyboard disconnected.";
+                [hud hideAnimated:YES afterDelay:3];
                 
                 [self.view addSubview:dPad];
                 [self.view addSubview:yesButton];
@@ -2474,9 +2474,9 @@ enum
                 
                 MBProgressHUD* hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
                 hud.mode = MBProgressHUDModeText;
-                hud.labelText = @"Tap: Select. Drag/Pinch: Adjust. OPTIONS: Confirm.";
+                hud.label.text = @"Tap: Select. Drag/Pinch: Adjust. OPTIONS: Confirm.";
                                 //@"Drag or pinch to adjust UI. Tap OPTIONS to confirm."
-                [hud hide:YES afterDelay:5];
+                [hud hideAnimated:YES afterDelay:5];
                 
             }
             else if( 1 == indexPath.row )

@@ -2175,30 +2175,30 @@ void play_music(std::string playlist) {
 
 #ifdef SDL_SOUND
 void sfx::load_sound_effects( JsonObject &jsobj ) {
-#ifdef CDDA_IOS
-    if( !isAppDirectoryInited )
-    {
-        sharedFM = [NSFileManager defaultManager];
-        NSArray* possibleURLs = [sharedFM URLsForDirectory:NSApplicationSupportDirectory
-                                                 inDomains:NSUserDomainMask];
-        if ([possibleURLs count] >= 1) {
-            // Use the first directory (if multiple are returned)
-            appSupportDir = [possibleURLs objectAtIndex:0];
-        }
-        
-        // If a valid app support directory exists, add the
-        // app's bundle ID to it to specify the final directory.
-        if (appSupportDir) {
-            NSString* appBundleID = [[NSBundle mainBundle] bundleIdentifier];
-            appDirectory = [appSupportDir URLByAppendingPathComponent:appBundleID];
-        }
-        else
-        {
-            
-        }
-        isAppDirectoryInited = YES;
-    }
-#endif // CDDA_IOS
+//#ifdef CDDA_IOS
+//    if( !isAppDirectoryInited )
+//    {
+//        sharedFM = [NSFileManager defaultManager];
+//        NSArray* possibleURLs = [sharedFM URLsForDirectory:NSApplicationSupportDirectory
+//                                                 inDomains:NSUserDomainMask];
+//        if ([possibleURLs count] >= 1) {
+//            // Use the first directory (if multiple are returned)
+//            appSupportDir = [possibleURLs objectAtIndex:0];
+//        }
+//        
+//        // If a valid app support directory exists, add the
+//        // app's bundle ID to it to specify the final directory.
+//        if (appSupportDir) {
+//            NSString* appBundleID = [[NSBundle mainBundle] bundleIdentifier];
+//            appDirectory = [appSupportDir URLByAppendingPathComponent:appBundleID];
+//        }
+//        else
+//        {
+//            
+//        }
+//        isAppDirectoryInited = YES;
+//    }
+//#endif // CDDA_IOS
     
     const id_and_variant key( jsobj.get_string( "id" ), jsobj.get_string( "variant", "default" ) );
     const int volume = jsobj.get_int( "volume", 100 );
@@ -2209,11 +2209,11 @@ void sfx::load_sound_effects( JsonObject &jsobj ) {
         sound_effect new_sound_effect;
         const std::string file = jsarr.next_string();
 
-#ifdef CDDA_IOS
-        std::string path = ( std::string( [[appDirectory path] cStringUsingEncoding:NSUTF8StringEncoding] ) + "/sound/" + file );
-#else
+//#ifdef CDDA_IOS
+//        std::string path = ( std::string( [[appDirectory path] cStringUsingEncoding:NSUTF8StringEncoding] ) + "/sound/" + file );
+//#else
         std::string path = ( FILENAMES[ "datadir" ] + "sound/" + file );
-#endif // CDDA_IOS
+//#endif // CDDA_IOS
         
         //new_sound_effect.chunk.reset( Mix_LoadWAV( path.c_str() ) );
         //if( !new_sound_effect.chunk ) {

@@ -952,7 +952,9 @@ static int game_register_iuse(lua_State *L)
     return 0; // 0 return values
 }
 
-#include "lua/catabindings.cpp"
+#if LUA 
+    #include "lua/catabindings.cpp"
+#endif
 
 // Load the main file of a mod
 void lua_loadmod(std::string base_path, std::string main_file_name)
@@ -1037,6 +1039,7 @@ static const struct luaL_Reg global_funcs [] = {
     {NULL, NULL}
 };
 
+#if LUA
 // Lua initialization.
 void game::init_lua()
 {
@@ -1079,7 +1082,7 @@ void game::init_lua()
     lua_dofile(lua_state, FILENAMES["class_defslua"].c_str());
     lua_dofile(lua_state, FILENAMES["autoexeclua"].c_str());
 }
-
+#endif // #if LUA
 #endif // #ifdef LUA
 
 use_function::~use_function()
