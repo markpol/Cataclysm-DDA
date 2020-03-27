@@ -3,7 +3,7 @@
     "id": "rifle_assault",
     "copy-from": "hk417_13",
     "type": "GUN",
-    "name": "assault rifle",
+    "name": { "str": "assault rifle" },
     "ammo": "ammo_rifle",
     "description": "The products of decades of improvement, rifle such as this are handy, reliable, and adaptable.  An 'assault rifle', it is capable of providing both accurate semi-automatic fire and bursts of automatic fire.  Short of large creatures and light vehicles, this should take care of most of your problems out to several hundred meters.",
     "magazines": [ [ "ammo_rifle", [ "rifle_mag", "rifle_sniper_mag" ] ] ]
@@ -24,7 +24,8 @@
     "name": "pipe rifle",
     "ammo": "ammo_rifle",
     "description": "A crude longarm chambered in standard rifle ammunition, reinforced near the chamber.  It holds a single a round and has a crude assembly to fire it.  There's no extractor, so it might be slow to reload, and its construction makes for poor reliability and longevity.",
-    "clip_size": 1
+    "clip_size": 1,
+    "magazines": [  ]
   },
   {
     "id": "rifle_pipe_carbine",
